@@ -93,7 +93,7 @@ const gateState=()=>evaluate(`(()=>{const g=document.getElementById('site-gate')
     note:g.querySelector('.gate-note').hidden?'':g.querySelector('.gate-note').textContent,counts:g.querySelector('.gate-counts').textContent,focus:a?.id||a?.tagName||'',
     held:held.length,inert:held.filter(n=>n.inert).length,stored:sessionStorage.getItem('bbvm-intro-entered'),
     enterBox:(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(document.getElementById('gate-enter').getBoundingClientRect()),vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth}})()`);
-async function gateReady(){for(let i=0;i<60;i++){const g=await gateState();if(g.ready||!g.on)return g;await sleep(200);}return gateState();}
+async function gateReady(){for(let i=0;i<120;i++){const g=await gateState();if(g.ready||!g.on)return g;await sleep(200);}return gateState();} // the first visit runs 8 s (intro.js INTRO_TIMELINE)
 async function pressEnter(){for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,...(type==='keyDown'?{text:'\r'}:{})});}
 let mock='';
 async function load(){await send('Page.navigate',{url:URL0});

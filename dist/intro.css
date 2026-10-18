@@ -25,18 +25,17 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate button{font-family:inherit;cursor:pointer}
 .gate-sea{position:absolute;inset:0;width:100%;height:100%;transform-origin:var(--kx,68%) var(--ky,45%)}
 
-/* loader (2026-10-17): the whole screen is deep sea with the logo, the line and the loading step in the middle, over wide
-   ripples spreading up from below the screen (intro.js draws them into .gate-ripple; they show motion, not progress).
-   Logo, words and sea are plain markup and CSS, so they are in the first paint. The entry screen is drawn under it and
-   kept out of reach (intro.js) until the reveal: in --gf (360 ms, less near the 7 s limit, none when still) the words go
-   in the first third, the sea in the second while the ripples close onto the globe's rim, the ripples in the last. */
-.gate-loader{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+/* loader: the whole screen is deep sea with the logo, the line and the loading step in the middle. Logo, words and sea
+   are plain markup and CSS, so they are in the first paint. The first visit (2026-10-18, intro.js INTRO_TIMELINE): one
+   drop and its rings on .gate-ripple over the loader, then the loader opens round the drop through a wide soft mask
+   (intro.js writes mask-image and the words' opacity each frame) onto the entry screen drawn under it. The loader takes
+   the pointer until the entry screen is usable (the motion switch stays over it). */
+.gate-loader{position:absolute;inset:0;z-index:1;overflow:hidden}
 .gate-loader:focus{outline:none}
 .gate-loader:before{content:"";position:absolute;inset:0;
   background:radial-gradient(ellipse 70% 40% at 50% 106%,rgba(140,215,208,.13),rgba(140,215,208,0) 72%),
     radial-gradient(ellipse 72% 66% at 50% 56%,var(--g-deep) 0,#061727 40%,var(--g-bg) 70%,#020a12 100%)}
-.gate-ripple{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
-.gate-ripple.is-on{opacity:1}
+.gate-ripple{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none}
 .gate-loader-body{position:absolute;left:0;right:0;top:calc(30% - 20px);display:flex;flex-direction:column;align-items:center;
   padding:0 max(24px,env(safe-area-inset-right)) 0 max(24px,env(safe-area-inset-left));text-align:center}
 .gate-lockup{display:flex;align-items:center;gap:12px;margin:0;font-size:28px;line-height:40px;font-weight:500;letter-spacing:-.01em}
@@ -44,8 +43,13 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-lockup strong{font-weight:700}
 .gate-motto{margin:30px 0 0;font-size:clamp(30px,min(3.6vw,6.2vh),54px);font-weight:700;line-height:1.2;letter-spacing:-.03em;white-space:nowrap}
 .gate-step{margin:34px 0 0;font-size:16px;line-height:1.5;color:var(--g-ink2);letter-spacing:.01em;font-variant-numeric:tabular-nums}
-.gate.is-revealing .gate-loader-body{opacity:0;transition:opacity calc(var(--gf,360ms)/3) cubic-bezier(.22,1,.36,1)}
-.gate.is-revealing .gate-loader:before{opacity:0;transition:opacity calc(var(--gf,360ms)/3) cubic-bezier(.22,1,.36,1) calc(var(--gf,360ms)/3)}
+/* no globe in time (intro.js introStatus): one line and two buttons in place of the step line */
+.gate-fail{margin:30px 0 0;font-size:16px;line-height:1.5;color:var(--g-ink2)}
+.gate-fail p{margin:0}
+.gate-fail-do{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;margin-top:18px!important}
+.gate-retry{min-height:44px;padding:0 26px;border:0;border-radius:999px;background:#f4efe6;color:var(--g-bg);font-size:15px;font-weight:700}
+.gate-skip{min-height:44px;padding:0 4px;border:0;border-bottom:1px solid rgba(244,243,238,.5);background:none;color:var(--g-ink);font-size:15px;font-weight:500}
+.gate-retry:hover{background:#fff}.gate-skip:hover{color:var(--g-teal)}
 /* the one motion switch: over the loader in its own corner of the bar while the rest of the entry screen waits */
 .gate-motion{position:relative;z-index:2}
 
@@ -195,12 +199,10 @@ html.gate-leaving .gate-center{transform:translateY(-28px);opacity:0}
 html.gate-leaving .gate.is-ready .gate-sea{transform:scale(1.22);transition:transform .8s cubic-bezier(.5,0,.25,1)}
 html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 
-/* still (the switch, first set from prefers-reduced-motion): ripples stand (one still picture), no fades or zooms;
-   the reveal and entering are instant */
-.gate.is-still .gate-sea,.gate.is-still .gate-ripple,.gate.is-still .gate-loader-body,.gate.is-still .gate-loader:before,.gate.is-still .gate-hero,
+/* still (the switch, first set from prefers-reduced-motion): no drop, rings or refraction (intro.js cross-fades the
+   loader instead), no fades or zooms; entering is instant */
+.gate.is-still .gate-sea,.gate.is-still .gate-hero,
 .gate.is-still .gate-center,.gate.is-still .gate-callout,.gate.is-still .gate-enter,.gate.is-still .gate-switch,.gate.is-still .gate-switch:after{transition:none}
-/* before intro.js reads the setting (the loader can show first) */
-@media (prefers-reduced-motion:reduce){.gate-ripple,.gate-loader-body,.gate-loader:before{transition:none}}
 
 /* stacked: phones and upright tablets. Copy, then the globe band (intro.js centres Korea in it), the card, the strip. */
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
@@ -238,7 +240,7 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-down{display:none}
 }
 @media (max-width:760px){
-  /* the loader on a phone: the line in two, a little higher (the ripples keep to the lower 40%) */
+  /* the loader on a phone: the line in two, a little higher (the drop lands under it, intro.js RIPPLE_CENTER) */
   .gate-loader-body{top:calc(27% - 17px)}
   .gate-lockup{gap:10px;font-size:22px;line-height:34px}
   .gate-lockup svg{width:34px;height:34px}
@@ -271,6 +273,6 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 /* short screens side by side (2026-10-17 #1): the count line first gives way (the solution line names the species total);
    on short landscape screens the copy keeps its button first */
 @media (min-width:761px) and (max-height:920px){.gate-counts{display:none}}
-/* a short landscape screen: the loader's words higher and closer, clear of the ripples */
+/* a short landscape screen: the loader's words higher and closer, clear of where the drop lands */
 @media (min-width:761px) and (max-height:560px){.gate-loader-body{top:14%}.gate-motto{margin-top:18px}.gate-step{margin-top:20px}}
 @media (min-width:761px) and (max-height:560px){.gate-why,.gate-callout,.gate-sources{display:none}}

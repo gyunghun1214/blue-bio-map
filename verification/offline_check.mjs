@@ -83,8 +83,8 @@ try{
   await send('Page.navigate',{url:URL0+'?offline=1'});
   const note=await waitFor("document.querySelector('#site-gate .gate-note')?.hidden===false?document.querySelector('#site-gate .gate-note').textContent:''",v=>v);
   check('O-1 entry screen says it opens the dated saved copy for the offline demo',note===`오프라인 시연 · ${snapshot.fetched_at} 기준 공개 자료 사본으로 엽니다.`,note);
-  // Enter acts only once the entry screen is ready (intro.js GATE_MIN_MS); a fast runner reaches the note before that.
-  await waitFor("document.getElementById('site-gate').classList.contains('is-ready')",v=>v);
+  // Enter acts only once the entry screen is ready (intro.js INTRO_TIMELINE.total, 8 s); a fast runner reaches the note before that.
+  await waitFor("document.getElementById('site-gate').classList.contains('is-ready')",v=>v,30000);
   await pressEnter();
   const entered=await waitFor("document.getElementById('site-gate').hidden&&sessionStorage.getItem('bbvm-intro-entered')==='1'",v=>v,5000);
   check('O-1b Enter opens the map from the offline entry screen',entered===true,String(entered));
@@ -139,7 +139,7 @@ try{
     const lp=await evaluate(`(r=>({x:r.left+r.width/2,y:r.top+r.height/2}))(document.querySelector('${sel}').getBoundingClientRect())`);
     for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:lp.x,y:lp.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
     await sleep(400);
-    const home=await waitFor("document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden?document.querySelector('#site-gate .gate-note').textContent:''",v=>v);
+    const home=await waitFor("document.getElementById('site-gate')?.classList.contains('is-ready')&&!document.getElementById('site-gate').hidden?document.querySelector('#site-gate .gate-note').textContent:''",v=>v,30000);
     check(`O-12b ${page?'expedition page':'map page'}: the logo opens the globe entry screen, still in offline demo mode`,home===`오프라인 시연 · ${snapshot.fetched_at} 기준 공개 자료 사본으로 엽니다.`,home);
     await pressEnter();
     const back=await waitFor("document.getElementById('site-gate').hidden&&(document.getElementById('connection-state')?.textContent||'').startsWith('오프라인')",v=>v,8000);
