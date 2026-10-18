@@ -149,7 +149,8 @@ fs.writeFileSync(path.join(OUT,'timing.json'),JSON.stringify(timing,null,1));
   await ctx.close();
 }
 
-// 5) no replay: in, then other tabs and a species, a reload in the same tab; and the end has no jump
+// 5) no replay inside the app: in, then other tabs and a species; a reload in the same tab plays the piece again from the
+// loader (2026-10-18, verification/2026-10-18-reload-shows-intro); and the end has no jump
 {
   const ctx=await browser.newContext(DESK),p=await page(ctx);await p.goto(URL0);
   let s=await until(p,s=>s.ready,15000);
@@ -160,8 +161,8 @@ fs.writeFileSync(path.join(OUT,'timing.json'),JSON.stringify(timing,null,1));
   await p.evaluate(()=>{setView('explore');const id=data.species[0]?.id;if(id)applyHash({s:String(id)});});await p.waitForTimeout(600);
   const inApp=await p.evaluate(()=>({on:document.documentElement.classList.contains('gate-on'),hidden:document.getElementById('site-gate').hidden}));
   await p.reload();await p.waitForTimeout(2500);
-  const reloaded=await p.evaluate(()=>({on:document.documentElement.classList.contains('gate-on'),start:performance.getEntriesByName('intro:start').length}));
-  check('no replay: switching tabs and species shows no intro, nor a reload in the same tab',!inApp.on&&inApp.hidden&&!reloaded.on&&reloaded.start===0,JSON.stringify({inApp,reloaded}));
+  const reloaded=await p.evaluate(()=>({on:document.documentElement.classList.contains('gate-on'),ready:document.getElementById('site-gate').classList.contains('is-ready'),start:performance.getEntriesByName('intro:start').length}));
+  check('no replay: switching tabs and species shows no intro; a reload in the same tab plays it again from the loader (2026-10-18)',!inApp.on&&inApp.hidden&&reloaded.on&&!reloaded.ready&&reloaded.start===1,JSON.stringify({inApp,reloaded}));
   check('no console errors through the app',p.errors.length===0,p.errors.join(' | '));
   await ctx.close();
 }

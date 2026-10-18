@@ -1,11 +1,15 @@
 // Loading and entry screen of the main map (index.html): a full-screen sea whose wide ripples spread while the line under
 // the logo names the app's real loading step, then an entry screen (copy on the left, a large globe on the right) that opens the map, the comparison or the sources. Loaded
-// without defer in <head> so the screen is up before the first paint. The part above the browser marker below is pure
-// and tested in node (verification/test_intro_ui.mjs).
+// without defer in <head> so the screen is up before the first paint. It shows on a tab's first visit, after the site
+// logo and on every reload (F5, pull to refresh) from the loader on; a shared link, Back and Forward open the map
+// directly (shouldShowGate). The part above the browser marker below is pure and tested in node (verification/test_intro_ui.mjs).
 const GATE_KEY='bbvm-intro-entered', MOTION_KEY='bbvm-reduce-motion';
 // The site logo (here and on expedition.html) goes home, as on most sites: a plain click on it leaves this one-time
 // signal and follows its link, and the next load shows the entry screen again although the tab already entered.
 const HOME_KEY='bbvm-intro-home';
+// app.js reloads the page by itself once when a data file is newer than its code (reloadOnceForNewData) and leaves this
+// one-time mark just before: that reload is the app's, not the visitor's, so it opens the way the load before it did.
+const APP_RELOAD_KEY='bbvm-app-reload';
 const APP_HASH_KEYS=['s','v','t','b','m','p','u']; // what app.js readHash/applyHash use: a shared link opens the map directly
 // (after '#' or, from 2026-10-15, as a query such as ?v=compare: the caller passes both)
 // The first visit (2026-10-18, LKH): one 8 s piece from the loader's first paint. The words stand still, one drop falls,
@@ -19,8 +23,24 @@ const GATE_STEPS=[['page','페이지를 준비하는 중'],['map','지도를 불
 const GLOBE_WAIT='지구 화면을 준비하는 중', GLOBE_FAIL='지구 화면을 불러오지 못했어요.'; // GLOBE_FAIL: index.html .gate-fail
 
 const hasAppHash=hash=>{try{const q=new URLSearchParams(String(hash||'').replace(/^#/,''));return APP_HASH_KEYS.some(k=>q.get(k));}catch{return false;}};
-// No storage (private mode, blocked) only means the screen can't be remembered: it still shows once per load.
-const shouldShowGate=(hash,storage)=>{if(hasAppHash(hash))return false;try{return storage?.getItem(HOME_KEY)==='1'||storage?.getItem(GATE_KEY)!=='1';}catch{return true;}};
+// navType: how this page was opened (navigationType). A reload (2026-10-18, LKH) shows the screen from the loader on,
+// whatever the address and the tab hold. Otherwise a shared link opens the map directly, and so does a tab that already
+// entered, unless the logo was clicked. No storage (private mode, blocked) only means the screen can't be remembered:
+// it still shows once per load.
+const shouldShowGate=(hash,storage,navType)=>{if(navType==='reload')return true;if(hasAppHash(hash))return false;
+  try{return storage?.getItem(HOME_KEY)==='1'||storage?.getItem(GATE_KEY)!=='1';}catch{return true;}};
+// Navigation Timing's type ('navigate', 'reload', 'back_forward', …); where it is missing the old interface's type 1 is a
+// reload; with neither, or on an error, 'navigate', which keeps the rules as they were.
+const navigationType=perf=>{try{const t=perf?.getEntriesByType?.('navigation')?.[0]?.type;if(t)return String(t);
+  return perf?.navigation?.type===1?'reload':'navigate';}catch{return 'navigate';}};
+// The visitor's type: the app's own reload (APP_RELOAD_KEY) counts as the load before it. The mark is read once.
+const visitorNav=(navType,storage)=>{let mark=null;try{mark=storage?.getItem(APP_RELOAD_KEY)??null;if(mark!==null)storage.removeItem(APP_RELOAD_KEY);}catch{}
+  return navType==='reload'&&mark==='1'?'navigate':navType;};
+// A reload's address without its tab (v, in the query and the hash alike; the rest as it was): app.js applies the species,
+// the map view and the rest under the screen, and the way in picks the tab as on a first visit (enter() leaves the app's
+// tab as it is for 바다 탐색하기, so a v=compare kept here would stay on 비교와 지표).
+const withoutTab=(search,hash)=>{const drop=(s,lead)=>{s=String(s||'');const q=new URLSearchParams(s.slice(1));if(!q.has('v'))return s;
+  q.delete('v');const t=q.toString();return t?lead+t:'';};return drop(search,'?')+drop(hash,'#');};
 // A plain click only: a middle or modified click opens a new tab or window and leaves this one as it is.
 const homeClick=e=>e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey&&!e.defaultPrevented;
 
@@ -329,8 +349,16 @@ void main(){
   if(typeof document==='undefined')return;
   const root=document.documentElement;
   let store=null,local=null;try{store=window.sessionStorage;}catch{}try{local=window.localStorage;}catch{}
-  let show=false;try{show=shouldShowGate(location.hash+'&'+location.search.slice(1),store);}catch{}
-  try{store?.removeItem(HOME_KEY);}catch{} // used once: a reload or Back after it opens the map as before
+  let nav='navigate';try{nav=visitorNav(navigationType(performance),store);}catch{}
+  let show=false;try{show=shouldShowGate(location.hash+'&'+location.search.slice(1),store,nav);}catch{}
+  try{store?.removeItem(HOME_KEY);}catch{} // used once: Back or the address opened again afterwards opens the map as before
+  // A reload starts over: not entered in this tab yet (enter() remembers it again), and the address loses its tab before
+  // app.js reads it (withoutTab). replaceState fires no hashchange, so the screen stays up. The browser would also scroll
+  // the page behind back to where it was (a phone's explore list): held at the top while the screen is up (release()).
+  let heldScroll=false;
+  if(show&&nav==='reload'){try{store?.removeItem(GATE_KEY);}catch{}
+    try{const rest=withoutTab(location.search,location.hash);if(rest!==location.search+location.hash)history.replaceState(history.state,'',location.pathname+rest);}catch{}
+    try{if(history.scrollRestoration==='auto'){history.scrollRestoration='manual';heldScroll=true;}}catch{}}
   // The header logo links to this page without a hash ('./'), so the app also starts over (no species, tab or dialog).
   document.addEventListener('click',e=>{if(e.target.closest?.('a.brand')&&homeClick(e))try{store?.setItem(HOME_KEY,'1');}catch{}});
   if(!show)return;
@@ -459,7 +487,8 @@ void main(){
   }catch{fail();}});
 
   function hold(node){if(node===el||node.tagName==='SCRIPT'||node.tagName==='LINK'||node.inert)return;node.inert=true;node.setAttribute('aria-hidden','true');inerted.push(node);}
-  function release(){observer?.disconnect();for(const n of inerted.splice(0)){n.inert=false;n.removeAttribute('aria-hidden');}}
+  function release(){observer?.disconnect();for(const n of inerted.splice(0)){n.inert=false;n.removeAttribute('aria-hidden');}
+    if(heldScroll){heldScroll=false;try{history.scrollRestoration='auto';}catch{}}} // Back to this page restores as before
   const q=s=>el.querySelector(s);
 
   function render(){

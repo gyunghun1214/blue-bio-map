@@ -12,7 +12,10 @@ await shot(page,'hint-1-map');
 await sleep(7000);
 const t2=await page.evaluate(()=>({hidden:document.querySelector('.bbc-hint').hidden,stored:localStorage.getItem('bbChatHintSeen')}));
 await shot(page,'hint-2-8s');
-await page.reload();await page.waitForFunction(()=>/연결됨/.test(document.getElementById('connection-state')?.textContent||''),null,{timeout:60000});await sleep(1500);
+await page.reload();await page.waitForFunction(()=>/연결됨/.test(document.getElementById('connection-state')?.textContent||''),null,{timeout:60000});
+// 2026-10-18: a reload shows the entry screen again from the loader; through it as on the first visit, then the hint stays away
+await page.waitForFunction(()=>document.getElementById('site-gate').classList.contains('is-ready'),null,{timeout:30000});
+await page.click('.gate-enter');await sleep(1500);
 const t3=await page.evaluate(()=>document.querySelector('.bbc-hint').hidden);
 // scroll dismiss on a fresh profile
 const ctx2=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});

@@ -701,9 +701,12 @@ function firstSeen({file,version}){
   try{const key='reload:'+file,seen=sessionStorage.getItem(key)===String(version);sessionStorage.setItem(key,String(version));return !seen;}
   catch{return false;}
 }
-// All gates report first; a single reload then fetches the new app.js for every newer file at once.
+// All gates report first; a single reload then fetches the new app.js for every newer file at once. The mark just before
+// it tells intro.js the reload is the app's own, not the visitor's F5: it shows no entry screen for it (2026-10-18). With
+// the entry screen up there is no mark, so the reloaded page shows that screen again from the start.
 function reloadOnceForNewData(outdated){
   if(!outdated.map(firstSeen).includes(true))return false;
+  try{const c=document.documentElement.classList;if(!c.contains('gate-on')||c.contains('gate-leaving'))sessionStorage.setItem('bbvm-app-reload','1');}catch{}
   location.reload();
   return true;
 }

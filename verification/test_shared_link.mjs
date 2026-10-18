@@ -48,7 +48,10 @@ const fresh={getItem:()=>null};
 assert.equal(ictx.G.shouldShowGate('#v=compare&',fresh),false,'hash link skips the entry screen');
 assert.equal(ictx.G.shouldShowGate('&v=compare',fresh),false,'query link skips the entry screen');
 assert.equal(ictx.G.shouldShowGate('&offline=1',fresh),true,'?offline alone still shows it');
-assert.ok(intro.includes("shouldShowGate(location.hash+'&'+location.search.slice(1),store)"),'the page passes hash and query');
+assert.ok(intro.includes("shouldShowGate(location.hash+'&'+location.search.slice(1),store,nav)"),'the page passes hash and query (and how it was opened: a reload shows the screen, 2026-10-18)');
+// a reload of a link shows the entry screen (2026-10-18); every other way in keeps the link rule above
+assert.equal(ictx.G.shouldShowGate('#v=compare&',fresh,'reload'),true,'a reload of a hash link: entry screen');
+assert.equal(ictx.G.shouldShowGate('&v=compare',fresh,'navigate'),false,'a query link opened afresh: still the map');
 // a link opened in a tab that shows the entry screen (no reload) skips it too; app.js then applies the tab underneath
 assert.ok(intro.includes("addEventListener('hashchange',()=>{if(!left&&hasAppHash(location.hash))fail();});"),'in-tab link skips the entry screen');
 

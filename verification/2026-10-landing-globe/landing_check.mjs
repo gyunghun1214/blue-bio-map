@@ -165,8 +165,9 @@ try{
   check('바다 탐색하기: leaves with the zoom, lands on 탐색 지도 with focus in search, remembered for this tab',mid&&!g.on&&g.hidden&&g.view==='explore'&&g.focus==='search'&&g.stored==='1',JSON.stringify({mid,...g}));
   check('After leaving: the entry screen requests no more frames and gives back its canvas',after1===after0&&await evaluate("document.querySelector('.gate-sea').width===0"),`${after0} → ${after1}`);
   await shot('arrive-explore');
+  // 2026-10-18 (verification/2026-10-18-reload-shows-intro): a reload shows the entry screen again, from the loader
   await send('Page.reload',{});await sleep(400);await waitLoaded();g=await gate();
-  check('Same tab, reload: no entry screen',!g.on&&g.hidden,JSON.stringify(g));
+  check('Same tab, reload: the entry screen again (2026-10-18 rule)',g.on&&!g.hidden,JSON.stringify(g));
   await onNewDocument();
 
   // ---------- every way in ----------
