@@ -53,8 +53,9 @@ const STYLE=css=>`{const s=document.createElement('style');s.textContent=${JSON.
 // what the page used: the GPU's name (a context of its own), the globe's files, the marks, the screen
 const ABOUT=`(()=>{const m=n=>performance.getEntriesByName(n)[0]?.startTime??null;let gpu='';try{const c=document.createElement('canvas').getContext('webgl');const d=c.getExtension('WEBGL_debug_renderer_info');gpu=String(c.getParameter(d?d.UNMASKED_RENDERER_WEBGL:c.RENDERER));}catch{}
   const res=performance.getEntriesByType('resource').map(r=>r.name);
-  return {marks:Object.fromEntries(['jank:sync','intro:start','intro:done','bbvm-globe-drawn','bbvm-globe-gl-ready','bbvm-globe-decoded','bbvm-globe-gl-failed'].map(n=>[n,m(n)])),
+  return {marks:Object.fromEntries(['jank:sync','intro:start','intro:done','bbvm-globe-drawn','bbvm-globe-gl-ready','bbvm-globe-decoded','bbvm-globe-gl-failed','bbvm-ripple-gl'].map(n=>[n,m(n)])),
     globe:res.some(u=>/globe-v3\\//.test(u))&&m('bbvm-globe-gl-ready')!==null?'WebGL (globe-v3)':res.some(u=>/globe-v2\\//.test(u))?'사진 (globe-v2)':'?',
+    ripple:m('bbvm-ripple-gl')!==null?'WebGL':'2D',
     gpu,dpr:devicePixelRatio,w:innerWidth,h:innerHeight,screen:[screen.width,screen.height],focus:document.hasFocus(),ua:navigator.userAgent,
     canvases:[...document.querySelectorAll('#site-gate canvas')].map(c=>c.className+' '+c.width+'×'+c.height),...window.__jank};})()`;
 
@@ -249,7 +250,7 @@ const profile=fs.mkdtempSync(path.join(os.tmpdir(),'intro-jank-'));
 for(let n=1;n<=RUNS;n++){
   const C=await launch(profile,n);
   try{const r=await once(C,n);all.push(r);
-    console.log(`\n# ${LABEL} ${SIZE} run ${n}/${RUNS} (${n===1?'cold':'warm'}): globe ${r.info.globe}, GPU "${r.info.gpu}", dpr ${r.info.dpr}, ${r.info.w}×${r.info.h}, focus ${r.info.focus}, visibility ${r.info.vis.map(v=>v[1]).join('→')}`);
+    console.log(`\n# ${LABEL} ${SIZE} run ${n}/${RUNS} (${n===1?'cold':'warm'}): globe ${r.info.globe}, ripples ${r.info.ripple}, GPU "${r.info.gpu}", dpr ${r.info.dpr}, ${r.info.w}×${r.info.h}, focus ${r.info.focus}, visibility ${r.info.vis.map(v=>v[1]).join('→')}`);
     console.log(`intro:start→done ${r.info.marks['intro:done']!==null&&r.info.marks['intro:start']!==null?Math.round(r.info.marks['intro:done']-r.info.marks['intro:start'])+' ms':'–'}, gaps >100 ms: ${r.gaps.map(g=>g.ms+' ms @'+g.at+'s').join(', ')||'none'}`);
     if(r.buckets)console.log(r.buckets.map(b=>`${pad(b.s,2)}s ${pad(b.frames,3)} fps  >33:${pad(b.over33,3)}  >100:${pad(b.over100,2)}  max ${pad(b.max,4)} ms  held ${pad(b.held,4)}/${pad(b.heldMax,3)} ms`).join('\n'));
     if(r.info.errors.length)console.log('page errors:',r.info.errors.slice(0,5));
@@ -278,7 +279,7 @@ function traceText(t){
 }
 const layerText=r=>!r.layers?'':['','### 합성 레이어 (시점별, 오른쪽은 0–11초 초당 다시 그린 횟수)','',
   ...Object.entries(r.layers).flatMap(([at,rows])=>[`- ${at}: `+rows.filter(x=>x.draws).map(x=>`${x.node||'(익명)'} ${x.size} [${x.why}] 그림: ${x.paintsPerSecond}`).join(' · ')])].join('\n')+'\n';
-const md=[`# 인트로 프레임 측정: ${LABEL} (${SIZE})`,'',...(ablate.length||CSS||JS?[`- 끈 것: ${ablate.join(', ')||'(직접 넣은 CSS/JS)'}`]:[]),`- 주소 ${URL0}, ${HEADLESS?'headless':'화면에 띄운 Chrome'}, 지구 ${env.globe}, GPU "${env.gpu}", dpr ${env.dpr}, 페이지 ${env.w}×${env.h}, 실행 ${all.length}회 (1회째 새 캐시)`,
+const md=[`# 인트로 프레임 측정: ${LABEL} (${SIZE})`,'',...(ablate.length||CSS||JS?[`- 끈 것: ${ablate.join(', ')||'(직접 넣은 CSS/JS)'}`]:[]),`- 주소 ${URL0}, ${HEADLESS?'headless':'화면에 띄운 Chrome'}, 지구 ${env.globe}, 파문 ${env.ripple}, GPU "${env.gpu}", dpr ${env.dpr}, 페이지 ${env.w}×${env.h}, 실행 ${all.length}회 (1회째 새 캐시)`,
   `- ${env.ua||''}`,`- GPU: ${env.chromeGpu?.device||''} · ${env.chromeGpu?.gl||''}`,`- 기능: ${Object.entries(env.chromeGpu?.features||{}).map(([k,v])=>k+'='+v).join(', ')}`,'',table(med,`## ${all.length>1?'2회째부터의 중앙값 (캐시 있음)':'1회'}`),'',
   ...all.map(r=>table(r.buckets||[],`## ${r.run}회째 (${r.run===1?'새 캐시':'캐시 있음'}) · 100ms 넘는 간격: ${r.gaps.map(g=>g.ms+'ms @'+g.at+'초').join(', ')||'없음'}`)+'\n'+traceText(r.trace)+layerText(r))].join('\n');
 const base=path.join(OUT,`${LABEL}-${SIZE}`);

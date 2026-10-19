@@ -54,7 +54,9 @@ for(const [name,opt] of [['1440x900',DESK],['390x844',PHONE]]){
     await p.waitForTimeout(80);s=await state(p);
     await p.screenshot({path:path.join(OUT,`${name}-t${(at/1000).toFixed(1)}.png`)});
     rows.push([name,at,s.t.toFixed(0),s.ready,s.loader,s.mask?'mask':'',s.step]);
-    if(at===6800)check(`${name} 6.8 s: still opening, not usable yet`,!s.ready&&s.loader&&!!s.mask,JSON.stringify(s));
+    // once the words are gone the rest of the opening is drawn on the ripple canvas, the loader then has no mask (2026-10-19,
+    // verification/2026-10-19-intro-jank)
+    if(at===6800)check(`${name} 6.8 s: still opening, not usable yet`,!s.ready&&s.loader&&(!!s.mask||s.rip[0]>0&&!s.rip[2]),JSON.stringify(s));
     // the page's frames run on the clock's 16 ms grid: the one at or past 8.0 s comes within two frames
     if(at===8000){await p.clock.runFor(34);await p.waitForTimeout(80);s=await state(p);}
     if(at===8000)check(`${name} 8.0 s: usable, loader and ripple canvas gone, focus on the way in, not busy`,s.ready&&!s.loader&&s.rip[0]===0&&s.rip[2]&&s.busy===null&&(name==='390x844'||s.focus==='gate-enter'),JSON.stringify(s));

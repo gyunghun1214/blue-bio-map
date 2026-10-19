@@ -344,6 +344,64 @@ void main(){
   gl_FragColor=vec4(o*a,a);
 }`;
 }
+// The first visit's ripples by WebGL (2026-10-19). The 2D canvas stroked each ring as wide paths (trough, glow, crest)
+// every frame, which the browser then rasterised on its GPU thread: from 3 s on that thread fell behind (more so on a
+// larger screen), and the frames with it. This shader works out what the 2D canvas draws at each pixel, in its order: the
+// loader's sheet with its opening once the words are gone (drawSheet), the drop (drawDrop), then each ring's trough, glow
+// and crest (drawRing), source-over. A ring is the same polygon (n points round rc, the same wavering), each stroke a
+// band of the same half width round the side of it the pixel faces, as much of the pixel (a 1×1 px box) as the band
+// covers; the gradients mix their straight colours as the 2D canvas does, the sheet as CSS paints it.
+// u_view: pixel ratio, canvas height (device px), rc; u_sheet: the screen (css px), the sheet on, the opening's last stop;
+// u_hole: its first four stops; u_drop: the drop's light (centre, radius, on), u_dropA: its alpha at 0 and at .35; per
+// ring u_g: radius, crest half width, wavering, points; u_p: the wavering's two phases; u_a: the alphas of the trough,
+// the glow and the crest (at its two ends)
+function rippleShader(){
+  const N=WAVE.rings;
+  return `precision highp float;
+uniform vec4 u_view,u_sheet,u_hole,u_drop,u_g[${N}],u_p[${N}],u_a[${N}];uniform vec2 u_dropA;uniform int u_count;
+const float TAU=6.283185307179586;
+vec4 over(vec4 d,vec3 c,float a){return vec4(c*a,a)+d*(1.-a);}
+// how much of a 1×1 px box round the pixel's centre lies on the near side of a line u device px along its normal
+// (a ≥ b its components): the exact area, a ramp with rounded ends
+float F(float u,float a,float b){float h=.5*(a+b),e=.5*(a-b);
+  if(u<=-h)return 0.;if(u>=h)return 1.;
+  if(u<-e)return (u+h)*(u+h)/(2.*a*b);if(u>e)return 1.-(h-u)*(h-u)/(2.*a*b);
+  return .5+u/a;}
+// the pixel's share of a stroke hw css px to each side of the segment AB
+float seg(vec2 p,vec2 A,vec2 B,float hw){vec2 E=B-A;float l=length(E);if(l<1e-6)return 0.;
+  vec2 N=vec2(E.y,-E.x)/l;float s=dot(p-A,N)*u_view.x,k=hw*u_view.x,a=max(abs(N.x),abs(N.y)),b=min(abs(N.x),abs(N.y));
+  return F(k-s,a,b)-F(-k-s,a,b);}
+// the opening (the CSS mask's alpha): 0, .1, .5, .9 and 1 at its five stops
+float hole(float d){vec4 s=u_hole;float s4=u_sheet.w;
+  return d<=s.x?0.:d<s.y?.1*(d-s.x)/(s.y-s.x):d<s.z?.1+.4*(d-s.y)/(s.z-s.y):d<s.w?.5+.4*(d-s.z)/(s.w-s.z):d<s4?.9+.1*(d-s.w)/(s4-s.w):1.;}
+void main(){
+  vec2 p=vec2(gl_FragCoord.x,u_view.y-gl_FragCoord.y)/u_view.x,rc=u_view.zw,dd=p-rc;float rho=length(dd);
+  vec4 o=vec4(0.);
+  if(u_sheet.z>.5){
+    vec2 z=u_sheet.xy;float t=length((p-z*vec2(.5,.56))/(z*vec2(.72,.66))),l=.13*(1.-min(1.,length((p-z*vec2(.5,1.06))/(z*vec2(.7,.4)))/.72));
+    vec3 c=t<.4?mix(vec3(10.,32.,50.),vec3(6.,23.,39.),t/.4):t<.7?mix(vec3(6.,23.,39.),vec3(4.,16.,27.),(t-.4)/.3):mix(vec3(4.,16.,27.),vec3(2.,10.,18.),min(1.,(t-.7)/.3));
+    float A=hole(rho);o=vec4(mix(c/255.,vec3(140.,215.,208.)/255.,l)*A,A);
+  }
+  if(u_drop.w>.5){float t=length(p-u_drop.xy)/u_drop.z;
+    if(t<1.)o=t<.35?over(o,mix(vec3(214.,244.,240.),vec3(160.,222.,216.),t/.35)/255.,mix(u_dropA.x,u_dropA.y,t/.35))
+      :over(o,mix(vec3(160.,222.,216.),vec3(140.,215.,208.),(t-.35)/.65)/255.,u_dropA.y*(1.-(t-.35)/.65));}
+  float phi=rho>0.?atan(dd.y,dd.x):0.;if(phi<0.)phi+=TAU;
+  for(int i=0;i<${N};i++){
+    if(i>=u_count)break;
+    vec4 g=u_g[i],q=u_p[i],a=u_a[i];float r=g.x,w=g.y,wob=g.z,n=g.w,hg=max(2.,.7*w),r0=r-1.6*w;
+    if(rho<r0-.8*w-wob-2.||rho>r+hg+wob+2.)continue;
+    // the polygon's side in the pixel's direction: its two points as drawRing places them
+    float st=TAU/n,j=min(floor(phi/st),n-1.),t0=j*st,t1=t0+st;
+    vec2 u0=vec2(cos(t0),sin(t0)),u1=vec2(cos(t1),sin(t1));
+    float f0=wob*(.6*sin(5.*t0+q.x)+.4*sin(9.*t0+q.y)),f1=wob*(.6*sin(5.*t1+q.x)+.4*sin(9.*t1+q.y));
+    if(r0+wob>0.)o=over(o,vec3(1.,8.,15.)/255.,a.x*seg(p,rc+max(0.,r0+f0)*u0,rc+max(0.,r0+f1)*u1,.8*w));
+    vec2 A=rc+(r+f0)*u0,B=rc+(r+f1)*u1;float k=clamp((dd.x+dd.y+1.4*r)/(2.8*r),0.,1.);
+    o=over(o,vec3(140.,215.,208.)/255.,a.y*seg(p,A,B,hg));
+    o=over(o,mix(vec3(196.,238.,234.),vec3(140.,215.,208.),k)/255.,mix(a.z,a.w,k)*seg(p,A,B,.6));
+  }
+  gl_FragColor=o;
+}`;
+}
 
 // ---- browser ----
 (()=>{
@@ -472,7 +530,7 @@ void main(){
     kick();
   });
 
-  const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();freeGL();};
+  const fail=()=>{left=true;cancelAnimationFrame(raf);root.classList.remove('gate-on','gate-leaving');if(el)el.hidden=true;release();freeGL();freeRipple();};
   // A shared link opened in this tab while the screen is up changes only the hash (no reload): it skips the screen, as the
   // same link does on a fresh load, and app.js applies its tab and species underneath (its own hashchange listener).
   addEventListener('hashchange',()=>{if(!left&&hasAppHash(location.hash))fail();});
@@ -520,7 +578,7 @@ void main(){
     if(opened||left)return;opened=true;gate.phase='ready';refr=[];over=1;dirty=true;
     el.classList.remove('is-revealing');el.classList.add('is-ready');el.removeAttribute('aria-busy');
     const loader=q('.gate-loader');loader.hidden=true;loader.style.opacity='';loader.style.webkitMaskImage=loader.style.maskImage='';
-    rip.hidden=true;rip.width=rip.height=0;render();
+    freeRipple();rip.hidden=true;rip.width=rip.height=0;render();
     performance.mark?.('intro:done');
     const hero=q('.gate-hero');hero.removeAttribute('aria-hidden');
     if(keep)return kick();
@@ -685,7 +743,9 @@ void main(){
       if(t>=1&&!drawnPhoto){drawnPhoto=true;performance.mark?.('bbvm-globe-drawn');}
     }
     fading=t<1&&(gl||!!photo);
-    // what is drawn over the globe takes no refraction: during the first visit it comes in as the rings calm (over)
+    // what is drawn over the globe takes no refraction: during the first visit it comes in as the rings calm (over), and
+    // until then it is not drawn at all
+    if(over<=0)return;
     ctx.globalAlpha=over;
     if(gl||photo){
       // over the picture, only Korea's coast, a hairline (the land borders and the wider coasts are left to the picture)
@@ -782,30 +842,113 @@ void main(){
     if(painted||(t0!==null&&!paint)||(t0!==null&&performance.now()-t0>=INTRO_TIMELINE.drop[0]))return;
     t0=at;painted=!!paint;
   }
-  let rip=null,rctx=null,ripKey='',lastMask='';
+  // ripEmpty: nothing on the ripple canvas (it is cleared only when something was on it)
+  let rip=null,rctx=null,ripKey='',lastMask='',ripEmpty=true;
   function drawIntro(t){
     const dpr=Math.min(2,devicePixelRatio||1),w=innerWidth,h=innerHeight,W=Math.round(w*dpr),H=Math.round(h*dpr),loader=q('.gate-loader'),body=q('.gate-loader-body');
-    if(rip.width!==W||rip.height!==H){rip.width=W;rip.height=H;}
+    // still (reduce), the canvas on screen is only kept clear: the WebGL one is not brought in for it
+    let gl=RG.on;if(!reduce)try{gl=rippleReady(W,H);}catch{rippleFail();}
+    const cv=gl?RG.c:rip;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H;ripEmpty=true;}
     // the drop's place: for this screen size, settled once the drop starts falling (a late web font moves the words)
     const key=w+'x'+h;if(key!==ripKey||t<INTRO_TIMELINE.drop[0]){ripKey=key;rc=rippleCenter(w,h,stacked0(),body.getBoundingClientRect().bottom);}
     const D=rippleReach(rc,w,h);
-    rctx.setTransform(dpr,0,0,dpr,0,0);rctx.clearRect(0,0,w,h);
-    if(reduce){refr=[];const o=crossfadeAt(t,readyAt);over=1-o;return setLoader(loader,body,o,null,1);}
+    if(reduce){refr=[];const o=crossfadeAt(t,readyAt);over=1-o;clearRipple(w,h,dpr);return setLoader(loader,body,o,null,1,D);}
     const amp=Math.max(.6,Math.min(1,w/1440)),rings=ripplesAt(t,D),v=revealAt(t,D,readyAt);
     refr=rings.map(g=>({r:g.r,push:g.k*WAVE.refract*amp,w:g.w}));over=v.over;
-    setLoader(loader,body,1,v,v.words);
-    const d=dropAt(t,rc,h);if(d)drawDrop(d);
-    for(const g of rings)drawRing(g,t,amp);
+    // the rings still on the screen (the globe's refraction above takes them all)
+    const sheet=setLoader(loader,body,1,v,v.words,D),d=dropAt(t,rc,h),seen=rings.filter(g=>ringOn(g,D));
+    if(!sheet&&!d&&!seen.length)return clearRipple(w,h,dpr);
+    ripEmpty=false;
+    if(gl){try{return rippleGL(t,amp,v,sheet,d,seen,w,h,dpr);}catch{rippleFail();rip.width=W;rip.height=H;ripEmpty=false;}}
+    rctx.setTransform(dpr,0,0,dpr,0,0);rctx.clearRect(0,0,w,h);
+    if(sheet)drawSheet(v,w,h);
+    if(d)drawDrop(d);
+    for(const g of seen)drawRing(g,t,amp);
   }
+  const clearRipple=(w,h,dpr)=>{if(ripEmpty)return;ripEmpty=true;
+    if(RG.on){RG.gl.clearColor(0,0,0,0);RG.gl.clear(RG.gl.COLOR_BUFFER_BIT);}else{rctx.setTransform(dpr,0,0,dpr,0,0);rctx.clearRect(0,0,w,h);}};
+  // The ripples by WebGL (rippleShader): a canvas of its own, its program linked while the words stand (with
+  // KHR_parallel_shader_compile asked each frame without waiting for the driver), drawn once empty so the driver has all
+  // of it before the drop falls, then put in the 2D canvas's place. Until then, and wherever any of it fails (no WebGL, a
+  // software renderer, the program, a lost context), the 2D canvas draws as before.
+  const RG={c:null,gl:null,prog:null,buf:null,u:{},par:null,on:false};
+  function initRipple(){
+    const c=document.createElement('canvas'),o={alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false,failIfMajorPerformanceCaveat:true};
+    const gl=c.getContext('webgl2',o)||c.getContext('webgl',o);if(!gl)throw Error('no WebGL');
+    RG.c=c;RG.gl=gl;
+    if(!gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT)?.precision)throw Error('no highp');
+    const dbg=gl.getExtension('WEBGL_debug_renderer_info');
+    if(dbg&&SOFTWARE_GL.test(String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))))throw Error('software renderer');
+    const prog=RG.prog=gl.createProgram(),sh=(type,src)=>{const x=gl.createShader(type);gl.shaderSource(x,src);gl.compileShader(x);gl.attachShader(prog,x);gl.deleteShader(x);};
+    sh(gl.VERTEX_SHADER,GLOBE_VS);sh(gl.FRAGMENT_SHADER,rippleShader());gl.bindAttribLocation(prog,0,'a');gl.linkProgram(prog);
+    RG.par=gl.getExtension('KHR_parallel_shader_compile');
+    c.className='gate-ripple';c.setAttribute('aria-hidden','true');c.addEventListener('webglcontextlost',rippleFail);
+  }
+  // the program, once the driver has it: its inputs, one empty draw at this size, the canvas in the 2D one's place
+  function rippleReady(W,H){
+    if(RG.on||!RG.gl)return RG.on;
+    const gl=RG.gl,p=RG.prog,u=RG.u;
+    if(RG.par&&!gl.getProgramParameter(p,RG.par.COMPLETION_STATUS_KHR))return false;
+    if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(p));
+    gl.useProgram(p);RG.buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,RG.buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    for(const k of ['u_view','u_sheet','u_hole','u_drop','u_dropA','u_count','u_g','u_p','u_a'])u[k]=gl.getUniformLocation(p,k);
+    RG.c.width=W;RG.c.height=H;gl.viewport(0,0,W,H);
+    gl.uniform4f(u.u_view,1,H,0,0);gl.uniform4f(u.u_sheet,1,1,0,0);gl.uniform4f(u.u_drop,0,0,1,0);gl.uniform1i(u.u_count,0);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    rip.replaceWith(RG.c);rip.width=rip.height=0;RG.on=true;ripEmpty=true;performance.mark?.('bbvm-ripple-gl');
+    return true;
+  }
+  function rippleFail(){freeRipple();ripEmpty=true;}
+  // letting go (the entry screen is up, or the screen goes): the 2D canvas back in its place
+  function freeRipple(){
+    const {c,gl}=RG;if(!c)return;
+    c.removeEventListener('webglcontextlost',rippleFail);
+    if(RG.on)c.replaceWith(rip);
+    try{gl.deleteBuffer(RG.buf);gl.deleteProgram(RG.prog);gl.getExtension('WEBGL_lose_context')?.loseContext();}catch{}
+    c.width=c.height=0;Object.assign(RG,{c:null,gl:null,prog:null,buf:null,u:{},par:null,on:false});
+  }
+  // One frame by the shader: what drawSheet, drawDrop and drawRing below would draw, with their numbers, rounded as they
+  // round them
+  const RING_G=new Float32Array(4*WAVE.rings),RING_P=new Float32Array(4*WAVE.rings),RING_A=new Float32Array(4*WAVE.rings);
+  function rippleGL(t,amp,v,sheet,d,rings,w,h,dpr){
+    const gl=RG.gl,u=RG.u,st=sheet?[1,.75,.5,.25,0].map(f=>+(v.r-v.F*f).toFixed(1)):[0,0,0,0,0],fall=!!d&&d.a>0,a=fall?d.a:d?d.splash*.7:0;
+    gl.viewport(0,0,RG.c.width,RG.c.height);gl.uniform4f(u.u_view,dpr,RG.c.height,rc.x,rc.y);
+    gl.uniform4f(u.u_sheet,w,h,sheet?1:0,st[4]);gl.uniform4f(u.u_hole,st[0],st[1],st[2],st[3]);
+    gl.uniform4f(u.u_drop,d?d.x:0,d?d.y:0,d?d.r*(fall?2.6:2):1,a>0?1:0);gl.uniform2f(u.u_dropA,+(.85*a).toFixed(3),+(.3*a).toFixed(3));
+    rings.forEach((g,i)=>{const ph=g.r*.013;RING_G.set([g.r,g.w,Math.min(.9,.004*g.r)*g.k*amp,Math.max(64,Math.min(512,Math.round(g.r*.5)))],4*i);
+      RING_P.set([(ph+t/900)%(2*Math.PI),(-ph-t/1300)%(2*Math.PI),0,0],4*i);RING_A.set([.3,.07,.66,.3].map(x=>+(x*g.k).toFixed(3)),4*i);});
+    gl.uniform1i(u.u_count,rings.length);gl.uniform4fv(u.u_g,RING_G);gl.uniform4fv(u.u_p,RING_P);gl.uniform4fv(u.u_a,RING_A);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }
+  // A ring draws something: strong enough, and its innermost stroke (the trough, 2.4 crest half widths inside it, plus its
+  // wavering) not yet past the farthest corner of the screen (D)
+  const ringOn=(g,D)=>g.r>=2&&g.k>=.004&&g.r-2.4*g.w-2<=D;
   // The loader's opening: a wide soft-edged disc round the drop (clear inside r−F, whole from r, smootherstep between), its
-  // opacity when still, its words; written only when they change.
-  function setLoader(loader,body,o,v,words){
+  // opacity when still, its words; written only when they change. Once the words are gone the loader shows only its
+  // sheet, which is then drawn on the ripple canvas under the rings with the same opening (drawSheet; true is returned):
+  // the loader itself is left with opacity 0 and no mask (so the browser draws no full-screen mask each frame) and still
+  // takes the pointer. Once the opening is past the farthest corner (r−F ≥ D) nothing is left of it to draw.
+  function setLoader(loader,body,o,v,words,D){
+    const open=!!v&&v.r>0,clear=open&&v.r-v.F>=D,sheet=open&&!clear&&words<=0;
     let m='';
-    if(v&&v.r>0){const {r,F}=v,st=(f,a)=>`rgba(0,0,0,${a}) ${(r-F*f).toFixed(1)}px`;
+    if(open&&!clear&&!sheet){const {r,F}=v,st=(f,a)=>`rgba(0,0,0,${a}) ${(r-F*f).toFixed(1)}px`;
       m=`radial-gradient(circle at ${rc.x.toFixed(1)}px ${rc.y.toFixed(1)}px,${st(1,0)},${st(.75,.1)},${st(.5,.5)},${st(.25,.9)},${st(0,1)})`;}
-    const key=m+'|'+o.toFixed(3)+'|'+words.toFixed(3);if(key===lastMask)return;lastMask=key;
-    loader.style.webkitMaskImage=loader.style.maskImage=m;
-    loader.style.opacity=o<1?o.toFixed(3):'';body.style.opacity=words<1?words.toFixed(3):'';
+    const op=clear||sheet?'0':o<1?o.toFixed(3):'',key=m+'|'+op+'|'+words.toFixed(3);
+    if(key!==lastMask){lastMask=key;loader.style.webkitMaskImage=loader.style.maskImage=m;
+      loader.style.opacity=op;body.style.opacity=words<1?words.toFixed(3):'';}
+    return sheet;
+  }
+  // The loader's sheet as intro.css .gate-loader:before paints it (the deep sea in an ellipse 72% × 66% round 50% 56%,
+  // then the light along the bottom, 70% × 40% round 50% 106%), kept only where the mask above would keep it: the same
+  // stops, rounded as there, one before the centre cut at the centre where it crosses it.
+  function drawSheet(v,w,h){
+    const s=rctx,ell=(x,y,rx,ry,stops)=>{const g=s.createRadialGradient(0,0,0,0,0,1);for(const [o,c] of stops)g.addColorStop(o,c);
+      s.save();s.transform(w*rx,0,0,h*ry,w*x,h*y);s.fillStyle=g;s.fillRect(-4,-4,8,8);s.restore();};
+    ell(.5,.56,.72,.66,[[0,'#0a2032'],[.4,'#061727'],[.7,'#04101b'],[1,'#020a12']]);
+    ell(.5,1.06,.7,.4,[[0,'rgba(140,215,208,.13)'],[.72,'rgba(140,215,208,0)']]);
+    const {r,F}=v,st=[1,.75,.5,.25,0].map(f=>+(r-F*f).toFixed(1)),al=[0,.1,.5,.9,1],R=st[4],g=s.createRadialGradient(rc.x,rc.y,0,rc.x,rc.y,R);
+    st.forEach((p,i)=>{if(p>=0)g.addColorStop(p/R,`rgba(0,0,0,${al[i]})`);else if(st[i+1]>0)g.addColorStop(0,`rgba(0,0,0,${al[i]+(al[i+1]-al[i])*-p/(st[i+1]-p)})`);});
+    s.globalCompositeOperation='destination-in';s.fillStyle=g;s.fillRect(0,0,w,h);s.globalCompositeOperation='source-over';
   }
   // The drop: a small soft light, a little longer than wide while it falls; where it went in, a small light that fades.
   function drawDrop(d){
@@ -871,6 +1014,7 @@ void main(){
     observer=new MutationObserver(list=>{for(const m of list)for(const n of m.addedNodes)if(n.nodeType===1&&n.parentNode===document.body)hold(n);});
     observer.observe(document.body,{childList:true});
     canvas=q('.gate-sea');ctx=canvas.getContext('2d');rip=q('.gate-ripple');rctx=rip.getContext('2d');
+    if(!reduce)try{initRipple();}catch{freeRipple();}
     // t0: the loader is in the first paint (intro.css), so the browser's paint record is when the piece began (it may
     // come after the first frames, startAt); a hidden tab, which paints none, starts now
     try{new PerformanceObserver(l=>{const p=l.getEntries().map(e=>e.startTime);if(p.length)startAt(Math.min(...p),true);}).observe({type:'paint',buffered:true});}catch{}
