@@ -791,6 +791,15 @@ function changelogFile(file,outdated){
 }
 // the freeze date shown beside the version: only when the ledger's current version is the version on screen
 const frozenOn=info=>methodChangelog?.current?.method_version===info?.version?methodChangelog.current.frozen_on||'':'';
+// Release stamp (2026-10-19, LKH): dist/release.json names the build shown at the presentation ({"label","date","commit"},
+// and an optional "note" for a fix made after the freeze; README '제출 뒤 동결'). With no commit the popover shows the
+// method version as before.
+let releaseInfo=null;
+const releaseText=r=>{const c=String(r?.commit??'').trim();return /^[0-9a-f]{7,40}$/i.test(c)?[[r.label,r.date].map(x=>String(x??'').trim()).filter(Boolean).join(' '),`커밋 ${c.slice(0,7).toLowerCase()}`,String(r.note??'').trim()].filter(Boolean).join(' · '):'';};
+function renderPopVersion(){
+  const info=data?.assessmentInfo;
+  $('pop-version').textContent=releaseText(releaseInfo)||(data&&info?.version?`${released(info)?'':'시범 '}${info.version}${frozenOn(info)?` · ${frozenOn(info)} 동결`:''}`:'');
+}
 // Replication search record (prereg-replication-search-2026-10-15 6; dist/replication-search.json, built by
 // scripts/build_replication_search.py): when and where the current top MBPI item was searched for an independent replication.
 // Shown in the folded MBPI detail only. Schema 1 is read; a higher number is a newer file this code does not know; anything else
@@ -4451,12 +4460,13 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 // Header status chips: the notice (version · research use) opens its full text; a snapshot or newer-file status gets a
 // yellow chip whose popover holds the banner sentence and the reload button. A load with no data keeps the red banner.
 function updateStatusChips(){
-  const info=data?.assessmentInfo,err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
+  const err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text
   $('notice-chip').classList.toggle('load-failed',!data&&$('connection-state').textContent==='불러오기 실패');
   // 2026-10-15 explore design match: the chip reads '연구 프로토타입'; the version and freeze date sit in its popover
+  // (2026-10-19: or the presentation build from release.json, once its commit is filled in)
   $('notice-chip-text').innerHTML=!data?($('connection-state').textContent==='불러오기 실패'?'자료를 불러오지 못했어요':'자료 불러오는 중'):(data.offline?'오프라인 시연 · ':'')+'연구 프로토타입';
-  $('pop-version').textContent=data&&info?.version?`${released(info)?'':'시범 '}${info.version}${frozenOn(info)?` · ${frozenOn(info)} 동결`:''}`:'';
+  renderPopVersion();
   const was=!$('alert-chip').hidden;
   $('alert-chip').hidden=!alert;
   $('alert-chip-text').textContent=!alert?'':[data?.snapshotAt?`저장 사본 · ${data.snapshotAt} 기준`:'',data?.outdated?.length?'새 버전 있음':''].filter(Boolean).join(' · ');
@@ -4546,6 +4556,7 @@ async function start(){
   const screenReq=readData('screen-text-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional too
   const licReq=fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: the section stays hidden without it; drawn below once the Korean notes are in
   licReq.then(m=>loadProgress('sources',{license:m})); // the entry screen counts its evidence sources (intro.js, 2026-10-17 #1)
+  fetch('release.json').then(r=>r.ok?r.json():null).then(r=>{releaseInfo=r;renderPopVersion();},()=>{}); // optional: the version stays without it
   const mapReq=readData('countries.json',FRESH_READ);mapReq.catch(()=>{}); // asked for now, used once effort.json is in (they no longer wait for each other)
   try{const r=await readData('effort.json',FRESH_READ);if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
   {const t=await termsReq;if(t?.schema==='source-terms-ko-1'&&t.by_text&&typeof t.by_text==='object')sourceTermsKo=t.by_text;}
