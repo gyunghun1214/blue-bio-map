@@ -759,6 +759,9 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 /* the selected point: a light blue-grey ring outside the marker; a hollow (재현 확인 중) or floor point stays hollow */
 #compare .matrix-point.pilot[aria-current=true]{width:20px;min-width:20px;height:20px;box-shadow:0 0 0 3px var(--cs-panel),0 0 0 5.5px var(--cs-accent-hi)}
 #compare .matrix-point.pilot.single[aria-current=true],#compare .matrix-point.pilot.floor[aria-current=true]{background:var(--cs-panel)}
+/* 2026-10-19 (LKH, 사이트 v3 2/10): a preliminary MCUI (Rapid LC, app.js rawPreliminaryMcui) is a hollow circle in its type colour,
+   selected or not; the legend names it while one is placed */
+#compare .matrix-point.pilot.prelim,#compare .matrix-point.pilot.prelim[aria-current=true]{background:var(--cs-panel)}
 #compare .matrix-point .point-label{background:rgba(13,39,55,.82);color:var(--cs-ink);font-size:14px}
 #compare .matrix-point[aria-current=true] .point-label{background:rgba(13,39,55,.92);font-size:16px;font-weight:700}
 #compare .matrix-cluster{border:1.5px dashed #6b8798;background:rgba(143,179,191,.04)}

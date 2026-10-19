@@ -218,7 +218,9 @@ try{
   check('3.9 MEXT row (맛조개) and 3.15 name-linked RDA rows (고등어·참문어) pass the browser re-check (no 기술 오류)',
     JSON.stringify(mextRows)===JSON.stringify([[413600,'scored',57.7,'MEXT:10280'],[127022,'scored',59.9,'K0150000000a'],[534443,'scored',37.8,'K6110030000a']]),JSON.stringify(mextRows));
   const eck=await pick(371986);
-  const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,basis:s.assessment?.mcui_basis,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent,mcui:document.querySelector('#detail details[data-axis=MCUI]')?.textContent||''}})()");
+  // 2026-10-19 (LKH, 사이트 v3 2·3/10): the two check lines of the species detail, word for word
+  const PRELIM='예비 평가(공식 평가 전) · 분포 범위 계산 · 역검증에서 위협종 2종을 놓쳐 기준 미충족 · IUCN이나 국가 평가가 나오면 교체',MBPI_CHECK='MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용';
+  const eckAxes=await evaluate("(()=>{const s=data.species.find(x=>x.aphiaID===371986);return {scores:s.assessment?.scores,basis:s.assessment?.mcui_basis,report:s.assessment?.report_version,cells:s.cells.length,map:document.getElementById('map-judgment').textContent,mcui:document.querySelector('#detail details[data-axis=MCUI]')?.textContent||'',mbpi:document.querySelector('#detail details[data-axis=MBPI]')?.textContent||''}})()");
   // 4.11 (prereg 3): the paper's 6-compound ACE cohort is below the 30-compound minimum, so the ChEMBL dieckol record leads (56.8)
   check('Ecklonia candidate: MBPI 56.8 (shown 57, 4.16) from the ChEMBL dieckol record (4.11: the paper-local ACE cohort is below the stratum minimum) without spatial or combined scores',
     eckAxes.report===report.method_version&&eckAxes.scores?.MBPI===56.8&&
@@ -230,11 +232,15 @@ try{
     // type, and only the species detail names '예비 평가(공식 평가 전)'
     eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
     // 2026-10-17 (LKH): the MCUI box names where the category comes from in one line; the basis stays 'preliminary' in the report
-    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&!/예비|공식|Rapid LC/.test(eckAxes.mcui)&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
+    // 2026-10-19 (LKH, 사이트 v3 2·3/10): the number reads '10.0 (LC·예비)' and the box opens with the preliminary line (PRELIM);
+    // the MBPI section says what was measured and the stored result of the MBPI check
+    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
+    !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
+    eckAxes.mbpi.includes('근거: 효소·수용체 등 단백질 표적 Ki 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형: 활용 연구 검토')&&!/예비|Rapid LC|역검증|56\.8/.test(eckAxes.map):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     /MBPI 57(?![.\d])/.test(eck)&&!eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
-    JSON.stringify({...eckAxes,mcui:eckAxes.mcui.slice(0,80),flags:['MBPI 57','효소·수용체 등 단백질 표적','eckstolonol','1.47 ± 0.04 mM','시범','10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)'].map(x=>x+':'+eck.includes(x))})+' | '+eck.slice(0,500));
+    JSON.stringify({...eckAxes,mcui:eckAxes.mcui.slice(0,240),mbpi:eckAxes.mbpi.slice(0,240),flags:['MBPI 57','효소·수용체 등 단백질 표적','eckstolonol','1.47 ± 0.04 mM','시범','10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)'].map(x=>x+':'+eck.includes(x))})+' | '+eck.slice(0,500));
 
   let t=await pick(836033);
   // 2026-10-17 (LKH): 참굴's temporary picture is gone; its right-panel head has the same 패류 icon tile as 홍합's, same size and
@@ -517,19 +523,22 @@ try{
     map.setZoom(BUBBLE_MAX_ZOOM+1,{animate:false});const stepIn=overlay.getLayers().filter(l=>l._schematicDot).length;return {n,bad,stepIn,limit:BUBBLE_MAX_ZOOM}})()`);
   check('Every species opens on bubbles (first fit stops at the last bubble zoom); one step in shows dots',firstView.n>=20&&!firstView.bad.length&&firstView.stepIn>0&&firstView.limit===6,JSON.stringify(firstView));
   // 2026-10-13 design 2, card shape A: a type dot, the name and latin name, then '활용 · 보전 · verdict', every value from the app
-  const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
+  const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0,prelim=0,wantPrelim=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
     const t=matrixType(s),v=k=>{const x=axisState(s,k).value;return x===null?'–':scoreText(s,k,x)},m=axisState(s,'MCUI').value,line=el.querySelector('.card-line');if(!line){bad.push(s.label+': no line');continue;}n++;
-    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+(m===null?'–':m.toFixed(1))+'|'+matrixTypePlain(t);
+    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,
+      pre=s.assessment.mcui_basis==='preliminary'&&m!==null,exp=v('BBVI')+'|'+(m===null?'–':pre?v('MCUI'):m.toFixed(1))+'|'+matrixTypePlain(t);
+    // 2026-10-19 (LKH, 사이트 v3 2/10): a preliminary MCUI (mcui_basis alone) shows its tag on the face, '10.0 (LC·예비)'
+    if(pre)wantPrelim++;if(got.includes('·예비)'))prelim++;
     // 2026-10-15 탐색 지도 시안: the card face shows the MCUI number only; its category (#208) stays in the card's spoken text.
     // 2026-10-19 (LKH 9/10): with one decimal like every MCUI ('10.0', was '10')
     const cat=(v('MCUI').match(/\\((.+)\\)$/)||[])[1];if(cat&&!vs[1].textContent.includes('('+cat+')'))bad.push(s.label+': no category '+cat);
     if(got!==exp||el.dataset.type!==(t||'none')||vs[1].classList.contains('high')!==(m!==null&&m>=rule.mcui_threshold)||verdict.title!==matrixPlainNote()||!verdict.title.startsWith('연구 순서를 고르기 위한 분류')||verdict.title.includes('아님'))bad.push(s.label+': '+got+' / '+exp);
     if(vs[0].classList.contains('single'))single++;if(axisState(s,'BBVI').value!==null&&bbviLabel(s))wantSingle++;}
-    const first=document.querySelector('#species-list .species-card .card-line .cl-v');return {bad,n,want,single,wantSingle,shown:first?getComputedStyle(first).display:''}})()`);
+    const first=document.querySelector('#species-list .species-card .card-line .cl-v');return {bad,n,want,single,wantSingle,prelim,wantPrelim,shown:first?getComputedStyle(first).display:''}})()`);
   // 2026-10-17 (LKH): the verdict's tooltip says what the class is for ('연구 순서를 고르기 위한 분류'); no single-paper mark on the card
   // face, while the BBVI labels stay in the report (wantSingle counts them)
   check('Species cards (design 2, shape A): 활용 BBVI · 보전 MCUI · verdict on every assessed card from the app’s values and types; MCUI at or over the line in red; the verdict tooltip names the research class; no single-paper mark (the BBVI label stays in the report)',
-    !cardLine.bad.length&&cardLine.n===cardLine.want&&cardLine.n>0&&cardLine.single===0&&cardLine.wantSingle>0&&cardLine.shown!=='none',JSON.stringify(cardLine));
+    !cardLine.bad.length&&cardLine.n===cardLine.want&&cardLine.n>0&&cardLine.single===0&&cardLine.wantSingle>0&&cardLine.shown!=='none'&&cardLine.prelim===10&&cardLine.wantPrelim===10,JSON.stringify(cardLine));
   // 2026-10-15 (LKH): the 탐색 후보 cards carry no grey evidence lines (근거 · 항목 · 독립 논문 · 재현 · 관련 문헌, MBPI 근거 층);
   // the evidence profile stays in the species detail's folded MBPI section
   const evCards=await evaluate(`(()=>{const cards=[...document.querySelectorAll('#species-list .species-card')],bad=[];
@@ -624,7 +633,30 @@ try{
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
   // 2026-10-17 (LKH): the MCUI SCALE card (#mt-mcui-map) left the top of the tab; the hero is the first block
-  check('Method tab: no validation scorecard, no fold 05 (application promise table), no change-history fold and no MCUI SCALE card; folds 01–03; the hero is the first block',gap.gone.length===0&&gap.words.length===0&&!gap.changelog&&JSON.stringify(gap.folds)===JSON.stringify(['mt-acc-01','mt-acc-02','mt-acc-03'])&&gap.first==='mt-hero'&&fs.existsSync(path.join(DIST,'method-changelog.json')),JSON.stringify({gone:gap.gone,words:gap.words,folds:gap.folds,changelog:gap.changelog,first:gap.first}));
+  // 2026-10-19 (LKH, 사이트 v3 1/10 '되살리기'): fold 04 is the 검증 기록 table (below)
+  check('Method tab: no validation scorecard, no fold 05 (application promise table), no change-history fold and no MCUI SCALE card; folds 01–04; the hero is the first block',gap.gone.length===0&&gap.words.length===0&&!gap.changelog&&JSON.stringify(gap.folds)===JSON.stringify(['mt-acc-01','mt-acc-02','mt-acc-03','mt-acc-04'])&&gap.first==='mt-hero'&&fs.existsSync(path.join(DIST,'method-changelog.json')),JSON.stringify({gone:gap.gone,words:gap.words,folds:gap.folds,changelog:gap.changelog,first:gap.first}));
+  // 2026-10-19 (LKH, 사이트 v3 1/10): fold 04 under 03 lists posthoc-scorecard.json: the count line, one row per check with its
+  // record files linked on GitHub (the file's repository value), the result in words and colour (the consistency checks dashed
+  // and unfilled, never the filled 통과 pill), no text under 12px; the species detail's '검증 기록 보기' opens the tab, the fold
+  // and that check's row
+  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr')];
+    d.open=true;await wait(200);
+    const pill=oc=>{const p=d.querySelector('.mt-ck-pill[data-oc='+oc+']');if(!p)return null;const st=getComputedStyle(p);return {text:p.textContent,border:st.borderTopStyle,bg:st.backgroundColor};};
+    const order=[...sc.rows].sort((a,b)=>a.order-b.order);
+    const r={after:d.previousElementSibling?.id,title:document.getElementById('mt-ck-title').textContent,sum:document.getElementById('mt-ck-sum').textContent,n:rows.length,
+      keys:rows.map(t=>t.dataset.key).join()===order.map(x=>x.key).join(),links:rows.every((t,i)=>[...t.querySelectorAll('a')].map(a=>a.href).join()===order[i].records.map(p=>sc.repository+p).join()),
+      figs:[...d.querySelectorAll('.mt-ck-fig')].map(e=>e.textContent),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
+      small:[...d.querySelectorAll('*')].filter(e=>e.childElementCount===0&&e.textContent.trim()&&parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.textContent.slice(0,30))};
+    d.open=false;setView('explore',false);selectSpecies(145721);await wait(400);
+    const b=document.querySelector('#detail [data-go-checks="MCUI_preliminary"]');b?.click();await wait(1400);
+    const row=document.getElementById('mt-ck-MCUI_preliminary'),rr=row?.getBoundingClientRect();
+    r.go={btn:!!b,view:currentView,open:d.open,inView:!!rr&&rr.top>=0&&rr.bottom<=innerHeight,flash:!!row?.classList.contains('flash')};
+    setView(was,false);if(sel)selectSpecies(sel);return r})()`);
+  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look); the detail\'s 검증 기록 보기 opens the row',
+    ck.after==='mt-acc-03'&&ck.title==='검증 기록 8건'&&ck.sum==='통과 1 · 기준 미충족 3 · 미충족 후 사용 중단 1 · 일관성 확인(독립 아님) 2 · 검증 불성립 1'&&ck.n===8&&ck.keys&&ck.links&&
+    JSON.stringify(ck.figs)===JSON.stringify(['시범 3.15 기록: 순위상관 0.873 · 11종','4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1','시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)'])&&
+    ck.pass?.text==='통과'&&ck.pass.bg!=='rgba(0, 0, 0, 0)'&&ck.consistent?.text==='일관성 확인(독립 아님)'&&ck.consistent.border==='dashed'&&ck.consistent.bg==='rgba(0, 0, 0, 0)'&&ck.fail?.text==='기준 미충족'&&
+    ck.small.length===0&&ck.go.btn&&ck.go.view==='method'&&ck.go.open&&ck.go.inView&&ck.go.flash,JSON.stringify(ck));
   const cucT=await pick(241776);
   // 2026-10-17 (LKH): the case is labelled by what it is ('원문 조사 사례 · 참고 자료')
   check('Sea cucumber detail: checked bioactivity case shown as a source-paper case',cucT.includes('원문 조사 사례 · 참고 자료')&&cucT.includes('Holotoxin')&&!cucT.includes('지표 입력 아님'),cucT.slice(cucT.indexOf('화합물'),cucT.indexOf('화합물')+400));
@@ -726,7 +758,7 @@ try{
     renderList();r.cards=document.querySelectorAll('.species-card').length;r.cardStrata=document.querySelectorAll('.species-card .card-stratum').length;r.strata=data.species.map(x=>mbpiStratumOf(x)).filter(Boolean).map(st=>'MBPI 근거 · '+st.short);
     // the detail is rendered off-screen for 미역, so the selected species and the map stay as the later checks expect
     const wak=data.species.find(x=>x.aphiaID===145721),box=document.createElement('div');box.innerHTML=renderVerifiedIndices(wak);
-    const m=box.querySelector('[data-axis="MBPI"]');r.summary=m?.querySelector('summary')?.textContent||'';r.first=m?.querySelector('.mbpi-first')?.textContent||'';r.range=(m?.textContent||'').includes('민감도 median·mean 범위 19.6–89.2');
+    const m=box.querySelector('[data-axis="MBPI"]');r.summary=m?.querySelector('summary')?.textContent||'';r.first=m?.querySelector('.mbpi-first')?.textContent||'';r.check=m?.querySelector('.mbpi-check')?.textContent||'';r.range=(m?.textContent||'').includes('민감도 median·mean 범위 19.6–89.2');
     box.innerHTML=axisCards(wak);r.axis=box.textContent;r.kept=selected.aphiaID===before;
     renderCompareProfile();renderCompareDrawer(selected);r.profile=document.querySelector('#cmp-drawer #cdr-use')?.textContent||'';r.profileStratum=mbpiStratumOf(selected)?.short||'';return r})()`);
   check('MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts (혈압 14 from 4.11, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 assessed species have an MBPI stratum (13 ACE 펩타이드; 4.11: 감태 leads with a ChEMBL compound), shown in the detail, not on the 탐색 후보 card (2026-10-15); 미역 detail opens with the AHTPDB stratum and keeps the 19.6–89.2 aggregation range (2026-10-17: the post-hoc result stays in posthoc-scorecard.json); the compare profile\'s 근거 자세히 보기 drawer names the selected species\' stratum too',
@@ -737,7 +769,10 @@ try{
     strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===13&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===0&&
     // 2026-10-17 (LKH): the 미역 MBPI section opens with the stratum (the post-hoc line left it; the result stays in
     // posthoc-scorecard.json) and keeps the 19.6–89.2 aggregation range in its 민감도 line
-    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&!/사후 검증|미충족/.test(strat.first)&&strat.range&&
+    // 2026-10-19 (LKH, 사이트 v3 3/10): above the stratum, what was measured ('근거: … 시험 N건 · …'), and below it the stored
+    // result of the MBPI check with its link to the method tab
+    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
+    !/사후 검증|미충족/.test(strat.first)&&strat.check==='MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용 검증 기록 보기'&&strat.range&&
     readDist('posthoc-scorecard.json').rows.some(r=>r.indicator==='MBPI'&&r.result==='failed')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
   // 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx is one line under the detail's MBPI (opening to its reason and the
@@ -840,7 +875,8 @@ try{
   check('Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14)',JSON.stringify(effortOp.eb)==='["0.07","0.15","0.25","0.37"]'&&Math.max(...effortOp.fills)<=.14,JSON.stringify(effortOp));
   // 2026-10-17 (LKH): the 3.27 back-test cases left the method tab; the report and the research snapshot keep them
   const backTest=fs.readFileSync(path.join(DIST,'..','research','verified-indices','posthoc-3.27','mbpi-drug-origin','cases-snapshot.json'),'utf8');
-  check('Method tab: back-test cases (3.27) kept in the report and the research snapshot, not on the screen',await evaluate("const m=document.getElementById('method').textContent;!m.includes('사후 검증')&&!m.includes('기준 미충족')&&!m.includes('Conus magus')")&&fs.readFileSync(path.join(DIST,'assessments.json'),'utf8').includes('Conus magus')&&['Conus magus','Ecteinascidia turbinata','Halichondria okadai'].every(x=>backTest.includes(x)));
+  // 2026-10-19 (LKH, 사이트 v3 1/10): '기준 미충족' is back, in fold 04's table alone; the case list stays off
+  check('Method tab: back-test cases (3.27) kept in the report and the research snapshot, not on the screen',await evaluate("(()=>{const m=document.getElementById('method'),t=m.textContent,f=document.getElementById('mt-acc-04').textContent;return !t.includes('사후 검증')&&!t.includes('Conus magus')&&f.includes('기준 미충족')&&!t.replaceAll(f,'').includes('기준 미충족')})()")&&fs.readFileSync(path.join(DIST,'assessments.json'),'utf8').includes('Conus magus')&&['Conus magus','Ecteinascidia turbinata','Halichondria okadai'].every(x=>backTest.includes(x)));
   // 2026-10-17 (LKH): the cells are worded as what they are
   check('Method tab: no outdated grid-centre wording; cells are 기록이 있는 칸의 위치(넓게 묶음)',await evaluate("(()=>{const m=document.getElementById('method').textContent;return !m.includes('격자 중심')&&m.includes('기록이 있는 칸의 위치(넓게 묶음)')&&!m.includes('실제 발견')})()"));
   // 2026-10-17 (LKH): the coverage row and the caution box left the detail; the coverage stages are still computed
@@ -1030,10 +1066,11 @@ try{
   const hijMap=await liveMap(494972);
   // 4.14 (prereg-4.14 2·3): 톳's lists are another region's and a Rapid LC check, so MCUI is not computed and the row says why
   // 4.17 (prereg-4.17 2·5): the Rapid LC check is a preliminary assessment again; the row shows MCUI 10.0 with no basis words
+  // 2026-10-19 (LKH, 사이트 v3 2/10): '10.0 (LC·예비)'
   // 2026-10-17 (LKH): the collection rows (영양 기록 수 …) left the detail; the 근거 상태 block carries the three indicators and
   // the profile keeps its collection statuses
   const hijProfile=await evaluate("(()=>{const i=data.species.find(x=>x.aphiaID===494972).info;return {n:i.nutrition?.status,c:i.compounds?.status,k:i.conservation?.status}})()");
-  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/식량 근거\s*63\.3 · 정식 산출/.test(t)&&/생리활성 근거\s*65 · 정식 산출/.test(t)&&/보전 평가\s*10\.0 \(LC\) · 정식 산출/.test(t)&&!/영양 기록 수|지표 보고서에서 검토/.test(t)&&hijProfile.n==='not_collected'&&hijProfile.c==='not_collected'&&hijProfile.k==='not_reviewed'&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
+  check('톳 live: published cells, nutrition/compounds/conservation from the index report',(await shapes())===hijMap.cells&&/식량 근거\s*63\.3 · 정식 산출/.test(t)&&/생리활성 근거\s*65 · 정식 산출/.test(t)&&/보전 평가\s*10\.0 \(LC·예비\) · 정식 산출/.test(t)&&!/영양 기록 수|지표 보고서에서 검토/.test(t)&&hijProfile.n==='not_collected'&&hijProfile.c==='not_collected'&&hijProfile.k==='not_reviewed'&&new RegExp(`지도 표시 기록\\s*[\\d,]+건 · ${hijMap.cells}개 격자`).test(t)&&t.includes('GBIF'),t);
   await detailEl();await shot('desktop-live-hijiki');
   t=await pick(241776);
   check('Sea cucumber live: published 4-degree cells visible',(await shapes())===cucMap.cells&&t.includes('공개 셀')&&t.includes(`${cucMap.cells}개 · 4°×4°`)&&(await evaluate("document.getElementById('map-source').textContent")).includes('공개 4° 셀'),t);

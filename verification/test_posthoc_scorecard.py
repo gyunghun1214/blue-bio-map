@@ -1,7 +1,8 @@
 """검증 성적표 (scripts/build_posthoc_scorecard.py): the committed dist/posthoc-scorecard.json and reports/posthoc-scorecard.csv
 are reproducible from posthoc.validation_sets of the published report and config/posthoc-scorecard.json; every check is
 listed with its stored result unchanged; outcome_class follows the config rule; a same-data or two-species consistency check
-is never 통과; the indicator build reads neither file."""
+is never 통과; the indicator build reads neither file. 2026-10-19 (LKH, 사이트 v3 1/10): the table is back on the method tab
+(fold 04), and three rows quote the stored numbers of their record file (`figure`), read from that file by the build."""
 import copy
 import csv
 import io
@@ -103,10 +104,49 @@ class PosthocScorecard(unittest.TestCase):
         rows = list(csv.reader(io.StringIO(text.lstrip("﻿"))))
         self.assertEqual(len(rows), len(self.sets) + 1)
         head = rows[0]
-        for col in ("검증 이름", "무엇을 확인했나", "사전 등록", "outcome_class", "실패 후 조치", "기록 파일"):
+        for col in ("검증 이름", "무엇을 확인했나", "사전 등록", "outcome_class", "기록 수치", "실패 후 조치", "기록 파일"):
             self.assertIn(col, head)
+        self.assertEqual(rows[1][head.index("기록 수치")], "verified-pilot-3.15 기록: 순위상관 0.873 · 11종")
         self.assertEqual([r[head.index("outcome_class")] for r in rows[1:]],
                          [self.rows[k]["outcome_class"] for k in sorted(self.rows, key=lambda k: self.rows[k]["order"])])
+
+    def test_figures_quote_their_record_files(self):
+        # the numbers slide 21 cites, as the record files store them (0.873, not the slide's rounded 0.87)
+        self.assertEqual({k: r["figure"]["text"] for k, r in self.rows.items() if r["figure"]}, {
+            "MFPI": "순위상관 0.873 · 11종",
+            "MBPI": "운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1",
+            "MCUI_preliminary": "14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)",
+        })
+        for key, row in self.rows.items():
+            if not row["figure"]:
+                continue
+            self.assertEqual(row["figure"]["record"], row["records"][0], key)
+            record = read(ROOT / row["records"][0])
+            self.assertEqual(row["figure"]["record_version"], record["report_version"], key)
+        mfpi = read(ROOT / self.rows["MFPI"]["records"][0])["MFPI"]
+        self.assertEqual((mfpi["spearman_rho"], mfpi["n"], mfpi["result"]), (0.873, 11, "passed"))
+        mbpi = read(ROOT / self.rows["MBPI"]["records"][0])["MBPI"]
+        self.assertEqual(mbpi["operating_mbpi"]["미역"], 89.2)
+        self.assertEqual([(r["scientific_name"], r["mbpi"]) for r in mbpi["rows"]],
+                         [("Conus magus", None), ("Halichondria (Halichondria) okadai", 73.8), ("Ecteinascidia turbinata", 56.1)])
+        mcui = read(ROOT / self.rows["MCUI_preliminary"]["records"][0])["MCUI"]
+        self.assertEqual(mcui["false_lc_for_threatened"], [r["korean_name"] for r in mcui["rows"] if r["false_lc_for_threatened"]])
+
+    def test_a_figure_is_read_never_typed(self):
+        config = copy.deepcopy(CONFIG)
+        # a label pinned to the wrong record row, a path the record does not hold, a figure on a markdown record: each stops the build
+        config["sets"]["MBPI"]["figure"]["of"][0][1] = "Conus magus"
+        with self.assertRaises(ValueError):
+            build(config, REPORT)
+        config = copy.deepcopy(CONFIG)
+        config["sets"]["MFPI"]["figure"]["paths"][0] = ["MFPI", "rho"]
+        with self.assertRaises(ValueError):
+            build(config, REPORT)
+        config = copy.deepcopy(CONFIG)
+        config["sets"]["MCUI_stock_decline"]["figure"] = {"text": "{0}", "paths": [["n"]]}
+        with self.assertRaises(ValueError):
+            build(config, REPORT)
+        self.assertNotIn("89.2", json.dumps(CONFIG, ensure_ascii=False))
 
     def test_build_does_not_change_the_report(self):
         before = copy.deepcopy(REPORT)
