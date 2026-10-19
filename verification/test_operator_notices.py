@@ -48,7 +48,8 @@ class OperatorNoticeTest(unittest.TestCase):
 
     def test_tools_used_to_build_the_site(self):
         # prompt 8/10: the tools the repository's history shows (authors Codex and Sites, .openai/hosting.json, the Claude
-        # co-author lines, the Workers AI route of the guide chatbot until 2026-10-15), listed under the source notices
+        # co-author lines, the Workers AI route of the guide chatbot until 2026-10-15, model @cf/google/gemma-4-26b-a4b-it
+        # from f930107, added on LKH's card 2026-10-19), listed under the source notices
         made = self.html[self.html.index('<section class="mt-made"'):]
         made = made[:made.index("</section>")]
         self.assertLess(self.html.index("(SIL OFL 1.1).</p>"), self.html.index('<section class="mt-made"'))
@@ -59,7 +60,7 @@ class OperatorNoticeTest(unittest.TestCase):
             ("Claude(Anthropic)", "기획 정리, 자료 점검, 발표 자료·대본 초안"),
             ("ChatGPT(OpenAI)", "화면 디자인 시안"),
             ("Codex·Sites(OpenAI)", "초기 시험판 일부 코드와 시험 배포(2026-09, 지금 공개 주소와 별도)"),
-            ("안내 챗봇", "2026-10-15까지 일부 답에 Cloudflare Workers AI 사용, 지금은 고정 답만")])
+            ("안내 챗봇", "2026-10-15까지 일부 답에 Cloudflare Workers AI(Google Gemma 모델) 사용, 지금은 고정 답만")])
         self.assertIn('<p class="mt-made-note">자료 선택, 지표 규칙, 최종 판단은 팀이 했습니다. 서비스 안에는 AI가 없습니다'
                       "(안내 챗봇은 고정 질문·답).</p>", made)
         # the early trial stays on record: .openai/ is kept and README says it is no longer used
