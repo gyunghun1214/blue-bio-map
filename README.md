@@ -69,7 +69,7 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
   3. Manage site에 보이는 JS 코드에서 `"token": "…"`의 따옴표 안 값만 복사해 `dist/analytics.json`의 `cf_beacon_token`에 넣는다(공개돼도 되는 값이다).
   4. PR로 병합하면 자동 배포된다. 집계는 몇 분 뒤부터 대시보드에 보인다.
   - 세는 범위: 페이지(경로)별 방문·조회 수. 바다 탐험은 `expedition.html`을 연 횟수까지 센다. 마지막 지점 도달은 주소의 `#stop=N`만 바뀌고 Web Analytics에 사용자 정의 이벤트가 없어 이 비콘만으로는 셀 수 없다.
-- 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다.
+- 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다(초기 시험판, 지금은 쓰지 않음).
 
 ## 발표 기준판과 제출 뒤 동결 (2026-10-19)
 
