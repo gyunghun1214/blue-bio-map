@@ -31,6 +31,7 @@ if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
+const FEEDBACK_URL='https://github.com/gyunghun1214/blue-bio-map/issues/new?template=feedback.md';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
 const chrome=spawn(chromePath,['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
   '--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
@@ -185,17 +186,18 @@ try{
       return {scroll:h.scrollTop,top:u.top,bottom:u.bottom,vh:innerHeight,lift:getComputedStyle(g.querySelector('.gate-sea')).translate,focus:document.activeElement?.id||''};})()`);
     check('G-1f the pill under the first screen scrolls down to 이렇게 쓸 수 있습니다 (all of it on screen, its heading focused), the globe riding up with the first screen',
       down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
-    // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps marked 계획
+    // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps;
+    // 2026-10-19 (LKH, prompt 4/10): each step's tag gives its target in place of '계획'
     const next=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=g.querySelector('.gate-next'),b=n.getBoundingClientRect(),u=g.querySelector('.gate-uses').getBoundingClientRect();
       return {h:n.querySelector('.gate-next-h').textContent,top:b.top,bottom:b.bottom,uses:u.bottom,vh:innerHeight,vw:innerWidth,
         steps:[...n.querySelectorAll('.gate-next-list li')].map(li=>({now:li.classList.contains('is-now'),k:li.querySelector('.gate-next-k').textContent,t:li.querySelector('.gate-next-t').textContent,tag:li.querySelector('.gate-next-tag')?.textContent||'',
           box:(r=>[r.left,r.right])(li.getBoundingClientRect())}))};})()`);
-    check('G-1g 다음 단계 after the uses: 지금 with the species total, then three steps each marked 계획, all on screen at the end of the scroll',
+    check('G-1g 다음 단계 after the uses: 지금 with the species total, then three steps each tagged with its target, all on screen at the end of the scroll',
       next.h==='다음 단계'&&next.top>=next.uses-1&&next.bottom<=next.vh+1&&JSON.stringify(next.steps.map(({box,...s})=>s))===JSON.stringify([
         {now:true,k:'지금',t:`한반도 주변 ${total}종 공개`,tag:''},
-        {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'계획'},
-        {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'계획'},
-        {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'계획'}])&&next.steps.every(s=>s.box[0]>=0&&s.box[1]<=next.vw),JSON.stringify(next));
+        {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'목표 2027 상반기'},
+        {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'목표 2027 하반기'},
+        {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'목표 2028'}])&&next.steps.every(s=>s.box[0]>=0&&s.box[1]<=next.vw),JSON.stringify(next));
     await shot('gate-uses-desktop',false);
     await evaluate("document.querySelector('#site-gate .gate-hero').scrollTop=0;document.getElementById('gate-enter').focus();1");await sleep(500);
     await pressEnter();await sleep(1100);
@@ -595,15 +597,22 @@ try{
   // 2026-10-15 application-doc gaps: both-high species shows alternative production before the map summary; links; dialog; status table
   const gap=await evaluate(`(()=>{selectSpecies(342067);const d=document.getElementById('detail');const alt=d.querySelector('.alt-production'),map=d.querySelector('#detail-map-summary');
     const before=!!alt&&!!map&&!!(alt.compareDocumentPosition(map)&Node.DOCUMENT_POSITION_FOLLOWING),inat=d.querySelector('.detail-actions a')?.href||'';
-    d.querySelector('[data-coord-request]').click();const dlg=document.getElementById('coord-dialog'),open=dlg.open,txt=dlg.innerText,form=!!dlg.querySelector('input,textarea,select');dlg.close();
+    d.querySelector('[data-coord-request]').click();const dlg=document.getElementById('coord-dialog'),open=dlg.open,txt=dlg.innerText,form=!!dlg.querySelector('input,textarea,select'),fb=[...dlg.querySelectorAll('a')].map(a=>[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'));dlg.close();
     selectSpecies(836033);const oyAlt=!!document.querySelector('#detail .alt-production'),cp=!!document.querySelector('#cmp-profile .alt-production');
     const m=document.getElementById('method'),gone=['mt-scorecard','mt-acc-05','promise-table','promise-count','mt-mcui-map'].filter(id=>document.getElementById(id)),
       words=['VALIDATION SCORECARD','검증 성적표','신청서 약속','구현 현황','방법은 언제, 왜 바뀌었나요','MCUI SCALE','대응표는 이 탭 맨 위'].filter(w=>m.textContent.includes(w)),folds=[...m.querySelectorAll('details.mt-acc')].map(d=>d.id),changelog=!!document.getElementById('mt-changelog');
-    return {before,altText:alt?.innerText||'',inat,open,txt,form,oyAlt,gone,words,folds,changelog,first:m.firstElementChild?.id||m.firstElementChild?.className}})()`);
+    return {before,altText:alt?.innerText||'',inat,open,txt,form,fb,oyAlt,gone,words,folds,changelog,first:m.firstElementChild?.id||m.firstElementChild?.className}})()`);
   // 2026-10-17 (LKH): the squid's aquaculture line says what the record holds ('사육 시도 기록'); its tier stays 'none' in aquaculture-tier.json
   check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('사육 시도 기록')&&!gap.altText.includes('조사 필요')&&readDist('aquaculture-tier.json').rows.find(r=>r.aphia_id===342067)?.tier==='none'&&!gap.oyAlt,JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,alt:gap.altText.slice(0,200)}));
   // 2026-10-17 (LKH): the dialog says where raw coordinates are kept ('비공개 저장소에만 보관') and that it is a procedure guide; it has no form
-  check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&!gap.form&&['원좌표는 비공개 저장소에만 보관합니다','이용 절차 안내','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x))&&!/제공하지 않습니다|운영하지 않습니다|제공 대상이 아닙니다/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,txt:gap.txt.slice(0,200)}));
+  // 2026-10-19 (LKH, prompt 4/10): its text ends with the feedback link of the footer (a new GitHub issue, outside the site)
+  check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates, ending with the outside feedback link',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&!gap.form&&['원좌표는 비공개 저장소에만 보관합니다','이용 절차 안내','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x))&&!/제공하지 않습니다|운영하지 않습니다|제공 대상이 아닙니다/.test(gap.txt)&&
+    JSON.stringify(gap.fb)===JSON.stringify([`의견 보내기|${FEEDBACK_URL}|_blank|noopener`])&&/확정합니다\. 의견 보내기\s*닫기\s*$/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,fb:gap.fb,txt:gap.txt.slice(-120)}));
+  // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
+  // in a new tab (the issue form is GitHub's: the site itself has no form)
+  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a');return {t:f?f.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',forms:document.querySelectorAll('form,textarea').length};})()`);
+  check('Footer: operator, update rule and the outside feedback link; no form on the site',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
+    foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0,JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
   // 2026-10-17 (LKH): the MCUI SCALE card (#mt-mcui-map) left the top of the tab; the hero is the first block
