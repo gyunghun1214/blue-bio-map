@@ -59,7 +59,7 @@ for(const [name,page] of [['index.html',html],['expedition.html',exp]]){
   assert.match(page,/<script defer src="analytics\.js\?v=[0-9a-f]{10}"><\/script>\n?<\/body>/,`${name}: the last thing in the body`);
   assert.ok(!page.includes('cloudflareinsights'),`${name}: no beacon tag in the markup`);
 }
-assert.match(html,/<p class="fine mt-visits" data-analytics-note hidden>방문 수만 셉니다\. 쿠키와 개인정보는 모으지 않습니다\(<span lang="en">Cloudflare Web Analytics<\/span>\)\.<\/p><\/div>\n<\/section>/);
+assert.match(html,/<p class="fine mt-visits" data-analytics-note hidden>방문 수를 셉니다\. 쿠키와 개인정보는 모으지 않습니다\(<span lang="en">Cloudflare Web Analytics<\/span>\)\.<\/p><\/div>\n<\/section>/);
 // (5) dist/_headers sets no Content-Security-Policy, so there is nothing to widen for the beacon
 assert.ok(!/Content-Security-Policy/i.test(read('_headers')));
 
