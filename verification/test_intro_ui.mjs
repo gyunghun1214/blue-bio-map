@@ -339,9 +339,11 @@ const method=html.slice(html.indexOf('<section id="method"'),html.indexOf('</sec
 const sourceList=gateHtml.slice(gateHtml.indexOf('<div class="gate-sources">'));
 const sources=[...sourceList.slice(0,sourceList.indexOf('</ul>')).matchAll(/<li>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'').trim());
 assert.ok(sources.length>=4);
-for(const s of sources){const key=s.replace(' 적색목록','');assert.ok([readme,app,method].some(t=>t.includes(key)),`source "${s}" is cited in README, app.js or the method tab`);}
+// 2026-10-19 (LKH, prompt 6/10): or a source record of assessments.json whose provider and title hold every word of the
+// name (MBRIS 국가 해양수산생물종 목록: the Korean names of five species were checked there)
+const assessments=read('assessments.json'),records=Object.values(JSON.parse(assessments).sources).map(r=>`${r.provider||''} ${r.title||''}`);
+for(const s of sources){const key=s.replace(' 적색목록','');assert.ok([readme,app,method].some(t=>t.includes(key))||records.some(r=>key.split(' ').every(w=>r.includes(w))),`source "${s}" is cited in README, app.js, the method tab or assessments.json`);}
 // links go only to addresses the site already uses (none made up); OBIS and GBIF have no site-level address here
-const assessments=read('assessments.json');
 const links=[...gateHtml.matchAll(/<a [^>]*href="([^"]+)"[^>]*>/g)].map(m=>[m[1],m[0]]);
 for(const [href,tag] of links.filter(([h])=>/^https?:/.test(h))){
   assert.ok(app.includes(href)||assessments.includes(href),`${href} is an address the site already cites`);
