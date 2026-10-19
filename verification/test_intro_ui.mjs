@@ -571,8 +571,13 @@ assert.ok(!read('intro.css').includes('gate-ex'),'intro.css: no .gate-ex rule');
 // the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons
 const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
 assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.',
-  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거만 해도 출처 건에 나뉘어 있습니다.']);
+  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거 출처만 해도 건입니다.']);
 assert.match(why,/<li class="gate-src is-wait">[^<]*<b class="gate-src-n"><\/b>/,'출처 N: no number in the HTML, the line waits for it');
+// 2026-10-19 (LKH, prompt 7/10): the count is named '근거 출처'; the method tab's list says how it relates to its own total,
+// counting with the same uses as evidenceSourceCount
+assert.match(why,/근거 출처만 해도 <b class="gate-src-n"><\/b>건입니다\./);
+assert.deepEqual(JSON.parse(app.match(/const SOURCE_EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),JSON.parse(intro.match(/const EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),'app.js and intro.js count the same uses');
+assert.match(html,/<summary>전체 출처 목록 <span id="all-sources-n"><\/span><small id="all-sources-parts" class="mt-src-parts" hidden><\/small><\/summary>/);
 assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total">\d+<\/b>종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다\.<\/p>/);
 const at=s=>gateHtml.indexOf(s);
 assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"'),'slogan → problems → solution → buttons');

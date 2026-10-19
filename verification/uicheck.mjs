@@ -157,7 +157,7 @@ try{
         cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.querySelector('.gate-center').textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
     check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
-      JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거만 해도 출처 ${evidenceSources}건에 나뉘어 있습니다.`])
+      JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거 출처만 해도 ${evidenceSources}건입니다.`])
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
@@ -472,8 +472,13 @@ try{
   await evaluate("document.getElementById('cmp-dialog').close();cmpBasket=[];renderCompare();setCompareMode('table');1");}
   await evaluate("document.querySelector('[data-view=method]').click();1");await sleep(300);
   // 2026-10-17 (#9): the citation list sits in one fold, closed at first; its title counts the entries and 자료 출처 보기 opens it
-  const srcFold=await evaluate("(()=>{const f=document.getElementById('mt-sources-fold'),r={closed:!f.open,summary:f.querySelector(':scope>summary').textContent,n:document.querySelectorAll('#all-sources .citation').length};document.querySelector('[data-mt-go=\"sources\"]').click();r.open=f.open;r.focus=document.activeElement?.id;return r;})()");
-  check('Method tab: the source list is one fold, closed at first and titled with its entry count; 자료 출처 보기 opens it and focuses the list',srcFold.closed&&srcFold.n>0&&srcFold.summary===`자료 출처 전체 보기 (${srcFold.n}건)`&&srcFold.open&&srcFold.focus==='all-sources',JSON.stringify(srcFold));
+  // 2026-10-19 (LKH, prompt 7/10): '전체 출처 목록 N건', then what the entries are and how the entry screen's 근거 출처
+  // (license-matrix.json rows feeding an indicator or the map's cells) relates to them, every number counted
+  const srcFold=await evaluate("(()=>{const f=document.getElementById('mt-sources-fold'),s=f.querySelector(':scope>summary'),r={closed:!f.open,title:s.firstChild.textContent+document.getElementById('all-sources-n').textContent,parts:document.getElementById('all-sources-parts').textContent,n:document.querySelectorAll('#all-sources .citation').length,names:data.species.length,datasets:new Set(data.species.flatMap(x=>x.sources.map(c=>c.id))).size};document.querySelector('[data-mt-go=\"sources\"]').click();r.open=f.open;r.focus=document.activeElement?.id;return r;})()");
+  const licRows=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))),licCells=licRows.filter(r=>r.uses.includes('출현 지도 셀')).length;
+  check('Method tab: the source list is one fold, closed at first and titled 전체 출처 목록 with its entry count, what the entries are and how 근거 출처 relates to them; 자료 출처 보기 opens it and focuses the list',
+    srcFold.closed&&srcFold.n>0&&srcFold.title===`전체 출처 목록 ${srcFold.n}건`&&srcFold.open&&srcFold.focus==='all-sources'&&
+    srcFold.parts===`지표 근거 ${srcFold.n-srcFold.datasets-srcFold.names}건 · 데이터셋 인용 ${srcFold.datasets}건 · 종별 학명 ${srcFold.names}건. 첫 화면의 근거 출처 ${licRows.length}건은 지표 근거 ${licRows.length-licCells}건과 지도 셀에 쓴 데이터셋 ${licCells}건(이용조건별로 셈)입니다.`,JSON.stringify(srcFold));
   const src=await evaluate("document.getElementById('all-sources').innerText");
   check('Sources: AFCD/CMNPD show their own change notes, not OBIS labels',src.includes('해삼 기원 보고 화합물 개수만 집계')&&src.includes('데이터셋 원문')&&!src.includes('OBIS 데이터셋'),src.slice(0,400));
 

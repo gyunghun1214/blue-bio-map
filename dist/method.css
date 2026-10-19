@@ -225,6 +225,7 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-sources-fold[open]{padding-bottom:12px}
 #method .mt-sources-fold>summary{padding:10px 0;color:var(--mt-ink);font-size:14px;font-weight:600;cursor:pointer}
 #method .mt-sources-fold>summary span{color:var(--mt-ink2);font-weight:500}
+#method .mt-src-parts{display:block;margin-top:4px;color:var(--mt-ink2);font-size:12.5px;font-weight:400;line-height:1.55}
 #method .mt-src-k{margin-top:20px;color:var(--mt-ink);font-size:14px;font-weight:600}
 #method #all-sources{max-height:min(46vh,420px);margin-top:10px;padding:2px 18px;border:1px solid var(--mt-line);border-radius:12px;background:var(--mt-low)}
 #method .citation{border-top-color:var(--mt-line);color:var(--mt-ink2)}

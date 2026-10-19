@@ -4372,12 +4372,28 @@ function renderSources(){
   const all=new Map();data.species.forEach(s=>s.sources.forEach(src=>all.set(src.id,src)));
   // Indicator sources (the report's own registry) are cited here too, so a comparison cohort is named on the method tab.
   const report=data.assessmentInfo||{};
-  const indicator=[...new Set(data.species.flatMap(s=>s.assessment?.source_ids||[]))]
-    .map(id=>[id,report.sources?.[id]]).filter(([,src])=>src)
+  const indicatorSrc=[...new Set(data.species.flatMap(s=>s.assessment?.source_ids||[]))]
+    .map(id=>[id,report.sources?.[id]]).filter(([,src])=>src);
+  const indicator=indicatorSrc
     .map(([id,src])=>`<div class="citation">${cite(src.title||src.provider||id,src.citation||src.provider||'')}<br>${sourceLink(src.url,'원문 ↗')}${src.license?' · '+orig(memoKo(src.license)):''}<br><span>${[memoKo(src.terms),src.accessed&&src.accessed+' 조회'].filter(Boolean).map(x=>orig(x)).join(' · ')}</span></div>`).join('');
   $('all-sources').innerHTML=data.species.map(s=>`<div class="citation">${cite(s.label+' · 학명',s.wormsCitation)}<br>${sourceLink(s.wormsUrl,'WoRMS 원문 ↗')} · ${sourceLink('https://www.marinespecies.org/about.php','WoRMS 이용조건 · CC BY 텍스트')}</div>`).join('')+Array.from(all.values()).map(s=>`<div class="citation">${cite(s.title,s.citation)}<br>${sourceLink(s.url,'데이터셋 원문 ↗')} · ${sourceLink(s.licenseUrl,s.license)}<br><span>변경: ${esc(s.changes||'종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.')} ${esc(s.accessed||data.collectedAt)} 접근.</span></div>`).join('')+indicator;
   // 2026-10-17 (#9): the list sits in one fold; its title counts the entries
-  const nSrc=$('all-sources').querySelectorAll('.citation').length;if($('all-sources-n'))$('all-sources-n').textContent=nSrc?`(${nSrc}건)`:'';
+  const nSrc=$('all-sources').querySelectorAll('.citation').length;if($('all-sources-n'))$('all-sources-n').textContent=nSrc?`${nSrc}건`:'';
+  sourceParts=nSrc?{indicator:indicatorSrc.length,datasets:all.size,names:data.species.length}:null;renderSourceParts();
+}
+// 2026-10-19 (LKH, prompt 7/10): under the list's title, what its entries are and how the entry screen's '근거 출처' count
+// relates to them. That count is the rows of license-matrix.json that feed an indicator or the map's cells (intro.js
+// evidenceSourceCount, the same uses as below): the indicator sources of this list plus the datasets of the map's cells,
+// counted once per dataset and licence. Every number is counted here; none is typed in.
+const SOURCE_EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
+let sourceParts=null,licenseRows=null;
+function renderSourceParts(){
+  const el=$('all-sources-parts');if(!el)return;
+  const ev=Array.isArray(licenseRows)?licenseRows.filter(r=>Array.isArray(r?.uses)&&r.uses.some(u=>SOURCE_EVIDENCE_USES.includes(u))):[];
+  const cells=ev.filter(r=>r.uses.includes('출현 지도 셀')).length;
+  el.textContent=[sourceParts&&`지표 근거 ${sourceParts.indicator}건 · 데이터셋 인용 ${sourceParts.datasets}건 · 종별 학명 ${sourceParts.names}건.`,
+    ev.length&&`첫 화면의 근거 출처 ${ev.length}건은 지표 근거 ${ev.length-cells}건과 지도 셀에 쓴 데이터셋 ${cells}건(이용조건별로 셈)입니다.`].filter(Boolean).join(' ');
+  el.hidden=!el.textContent;
 }
 
 // 출처별 상업 이용 구분 (license-matrix.json, scripts/build_license_matrix.py). Display only: the groups read each source's
@@ -4556,6 +4572,7 @@ async function start(){
   const screenReq=readData('screen-text-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional too
   const licReq=fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: the section stays hidden without it; drawn below once the Korean notes are in
   licReq.then(m=>loadProgress('sources',{license:m})); // the entry screen counts its evidence sources (intro.js, 2026-10-17 #1)
+  licReq.then(m=>{licenseRows=Array.isArray(m?.rows)?m.rows:null;renderSourceParts();}); // and the method tab says how that count relates to its list
   fetch('release.json').then(r=>r.ok?r.json():null).then(r=>{releaseInfo=r;renderPopVersion();},()=>{}); // optional: the version stays without it
   const mapReq=readData('countries.json',FRESH_READ);mapReq.catch(()=>{}); // asked for now, used once effort.json is in (they no longer wait for each other)
   try{const r=await readData('effort.json',FRESH_READ);if(r.ok){effortData=await r.json();$('effort-date').textContent=`OBIS · ${effortData.retrieved} 조회`;}}catch{/* optional layer */}
