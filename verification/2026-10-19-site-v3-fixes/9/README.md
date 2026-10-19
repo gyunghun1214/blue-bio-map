@@ -74,6 +74,70 @@ MCUI는 카드·오른쪽 패널·비교 프로필의 큰 숫자를 따로 쓰�
 (미역: 탐색 카드 68 · 10.0, 종 상세 68 · 46.7 · 89 · 10.0 (LC·예비), 비교 표 46.7 · 89 · 68 · 10.0(LC·예비), 바다 탐험 46.7 · 89 · 10.0 · 68).
 표와 `before.json`·`after.json`은 9번 커밋(abb91ef) 때 잰 값입니다.
 
+**compare-matrix-1440.png** (1440px)
+
+<img src="compare-matrix-1440.png" width="720" alt="compare-matrix-1440.png">
+
+**compare-matrix-1280.png** (1280×720)
+
+<img src="compare-matrix-1280.png" width="720" alt="compare-matrix-1280.png">
+
+**compare-matrix-390.png** (390px)
+
+<img src="compare-matrix-390.png" width="300" alt="compare-matrix-390.png">
+
+**compare-profile-390.png** (390px)
+
+<img src="compare-profile-390.png" width="300" alt="compare-profile-390.png">
+
+**compare-table-1440.png** (1440px)
+
+<img src="compare-table-1440.png" width="720" alt="compare-table-1440.png">
+
+**compare-table-1280.png** (1280×720)
+
+<img src="compare-table-1280.png" width="720" alt="compare-table-1280.png">
+
+**compare-table-390.png** (390px)
+
+<img src="compare-table-390.png" width="300" alt="compare-table-390.png">
+
+**detail-1440.png** (1440px)
+
+<img src="detail-1440.png" width="720" alt="detail-1440.png">
+
+**detail-1280.png** (1280×720)
+
+<img src="detail-1280.png" width="720" alt="detail-1280.png">
+
+**detail-390.png** (390px)
+
+<img src="detail-390.png" width="300" alt="detail-390.png">
+
+**expedition-cards-1440.png** (1440px)
+
+<img src="expedition-cards-1440.png" width="720" alt="expedition-cards-1440.png">
+
+**expedition-cards-1280.png** (1280×720)
+
+<img src="expedition-cards-1280.png" width="720" alt="expedition-cards-1280.png">
+
+**expedition-cards-390.png** (390px)
+
+<img src="expedition-cards-390.png" width="300" alt="expedition-cards-390.png">
+
+**explore-list-1440.png** (1440px)
+
+<img src="explore-list-1440.png" width="720" alt="explore-list-1440.png">
+
+**explore-list-1280.png** (1280×720)
+
+<img src="explore-list-1280.png" width="720" alt="explore-list-1280.png">
+
+**explore-list-390.png** (390px)
+
+<img src="explore-list-390.png" width="300" alt="explore-list-390.png">
+
 ## 다시 재는 법
 
 `dist/`를 두 포트로 띄운다(main과 이 브랜치, `python3 -m http.server`). 각각 `node capture.mjs http://127.0.0.1:<port>/ before.json`(또는 `after.json`)으로
