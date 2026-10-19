@@ -140,7 +140,7 @@ function analyzeTrace(events,info){
   if(!sync)return {error:'no jank:sync mark in the trace'};
   const off=sync.ts-info.marks['jank:sync']*1000,T=ms=>ms*1000+off,t0=T(info.marks['intro:start']),rpid=sync.pid;
   const label=k=>{const [pid]=k.split(':').map(Number),p=pn.get(pid)||'?',t=tn.get(k)||'?';
-    return (pid===rpid?'Renderer':/gpu/i.test(p)?'GPU':/browser/i.test(p)?'Browser':p)+'/'+t.replace(/\d+$/,'');};
+    return (pid===rpid?'Renderer':/renderer/i.test(p)?'Renderer(other)':/gpu/i.test(p)?'GPU':/browser/i.test(p)?'Browser':p)+'/'+t.replace(/\d+$/,'');};
   // complete events per thread (B/E pairs folded in), then self time by nesting
   const per=new Map(),open=new Map();
   const add=(k,e)=>{let a=per.get(k);if(!a)per.set(k,a=[]);a.push(e);};
