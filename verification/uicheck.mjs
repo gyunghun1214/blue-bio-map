@@ -14,9 +14,9 @@ const ark=release.find(e=>e.aphiaID===504357), arkPlaces=places(ark), arkOld=ark
 // none; when every candidate has cells, the same checks run on 시카메굴 and expect its cells instead.
 const noCell=release.find(e=>!e.cells.length)?.aphiaID, emptyPick=noCell||836041, emptyPlaces=noCell?0:places(release.find(e=>e.aphiaID===836041));
 const candidatesBeside=publishedIds=>catalogIds.filter(a=>!publishedIds.includes(a)).length;
-// 4.16: an MBPI/BBVI whose top item is not replicated is shown as a whole number unless rounding would hide a non-zero value
-// or move it across the BBVI line (the same rule as scoreText in app.js, read from the published method).
-const bbviLine=report.method?.matrix?.bbvi_threshold, screenScore=(s,k,v)=>{const e=s.evidence_profile;if((k==='MBPI'||k==='BBVI')&&e&&e.item_count>0&&e.top_item_replication!=='replicated'){const r=Math.round(v);if(!(r===0&&v!==0)&&!(Number.isFinite(bbviLine)&&k==='BBVI'&&(r>=bbviLine)!==(v>=bbviLine)))return String(r);}return v.toFixed(1);};
+// 2026-10-19 (LKH 9/10): every MBPI/BBVI is shown as a whole number unless rounding would hide a non-zero value or move it
+// across the BBVI line; MFPI and MCUI keep one decimal (the rule of dist/score-format.js, written here on its own).
+const bbviLine=report.method?.matrix?.bbvi_threshold, screenScore=(s,k,v)=>{if(k==='MBPI'||k==='BBVI'){const r=Math.round(v);if(!(r===0&&v!==0)&&!(Number.isFinite(bbviLine)&&k==='BBVI'&&(r>=bbviLine)!==(v>=bbviLine)))return String(r);}return v.toFixed(1);};
 const reportScores=[...report.species,...(report.candidate_species||[])].flatMap(s=>Object.entries(s.scores).filter(([,v])=>v!==null).map(([k,v])=>screenScore(s,k,v)));
 // Up to 3.1 a national MCUI (참굴 2.3: all four axes computed) never enters the IUCN matrix; 3.2 places it with its own marker.
 const nationalPlaced=!!report.method?.matrix?.include_national_mcui, readiness=readDist('matrix-readiness.json');
@@ -519,8 +519,9 @@ try{
   // 2026-10-13 design 2, card shape A: a type dot, the name and latin name, then '활용 · 보전 · verdict', every value from the app
   const cardLine=await evaluate(`(()=>{const bad=[],rule=matrixRule();let n=0,want=0,single=0,wantSingle=0;for(const el of document.querySelectorAll('#species-list .species-card')){const s=data.species.find(x=>x.aphiaID===Number(el.dataset.species));if(!s?.assessment)continue;want++;
     const t=matrixType(s),v=k=>{const x=axisState(s,k).value;return x===null?'–':scoreText(s,k,x)},m=axisState(s,'MCUI').value,line=el.querySelector('.card-line');if(!line){bad.push(s.label+': no line');continue;}n++;
-    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+(m===null?'–':mcuiFace(m))+'|'+matrixTypePlain(t);
-    // 2026-10-15 탐색 지도 시안: the card face shows the MCUI number only ('10', not '10.0'); its category (#208) stays in the card's spoken text
+    const vs=[...line.querySelectorAll('.cl-v')],verdict=line.querySelector('.card-verdict'),got=vs.map(x=>x.querySelector('b').textContent+(x.querySelector('.cl-cat')?.textContent||'')).join('|')+'|'+verdict.querySelector('.verdict').textContent,exp=v('BBVI')+'|'+(m===null?'–':m.toFixed(1))+'|'+matrixTypePlain(t);
+    // 2026-10-15 탐색 지도 시안: the card face shows the MCUI number only; its category (#208) stays in the card's spoken text.
+    // 2026-10-19 (LKH 9/10): with one decimal like every MCUI ('10.0', was '10')
     const cat=(v('MCUI').match(/\\((.+)\\)$/)||[])[1];if(cat&&!vs[1].textContent.includes('('+cat+')'))bad.push(s.label+': no category '+cat);
     if(got!==exp||el.dataset.type!==(t||'none')||vs[1].classList.contains('high')!==(m!==null&&m>=rule.mcui_threshold)||verdict.title!==matrixPlainNote()||!verdict.title.startsWith('연구 순서를 고르기 위한 분류')||verdict.title.includes('아님'))bad.push(s.label+': '+got+' / '+exp);
     if(vs[0].classList.contains('single'))single++;if(axisState(s,'BBVI').value!==null&&bbviLabel(s))wantSingle++;}
@@ -614,10 +615,12 @@ try{
   check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates, ending with the outside feedback link',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&!gap.form&&['원좌표는 비공개 저장소에만 보관합니다','이용 절차 안내','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x))&&!/제공하지 않습니다|운영하지 않습니다|제공 대상이 아닙니다/.test(gap.txt)&&
     JSON.stringify(gap.fb)===JSON.stringify([`의견 보내기|${FEEDBACK_URL}|_blank|noopener`])&&/확정합니다\. 의견 보내기\s*닫기\s*$/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,fb:gap.fb,txt:gap.txt.slice(-120)}));
   // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
-  // in a new tab (the issue form is GitHub's: the site itself has no form)
-  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a');return {t:f?f.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',forms:document.querySelectorAll('form,textarea').length};})()`);
-  check('Footer: operator, update rule and the outside feedback link; no form on the site',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
-    foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0,JSON.stringify(foot));
+  // in a new tab (the issue form is GitHub's: the site itself has no form that takes personal details; the one form on the page
+  // is the guide's question box, a single text field answered from its fixed list, chatbot.js sends nothing)
+  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a');return {t:f?f.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
+    forms:[...document.querySelectorAll('form,textarea')].filter(e=>!e.matches('form.bbc-form')).length,guide:[...document.querySelectorAll('form.bbc-form input')].map(i=>i.type).join()};})()`);
+  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
+    foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
   // 2026-10-17 (LKH): the MCUI SCALE card (#mt-mcui-map) left the top of the tab; the hero is the first block
@@ -734,7 +737,7 @@ try{
     strat.strata.filter(t=>t==='MBPI 근거 · ACE 펩타이드').length===13&&strat.strata.filter(t=>t==='MBPI 근거 · ACE 화합물').length===0&&
     // 2026-10-17 (LKH): the 미역 MBPI section opens with the stratum (the post-hoc line left it; the result stays in
     // posthoc-scorecard.json) and keeps the 19.6–89.2 aggregation range in its 민감도 line
-    strat.summary==='MBPI · 생리활성89.2 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&!/사후 검증|미충족/.test(strat.first)&&strat.range&&
+    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&!/사후 검증|미충족/.test(strat.first)&&strat.range&&
     readDist('posthoc-scorecard.json').rows.some(r=>r.indicator==='MBPI'&&r.result==='failed')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
   // 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx is one line under the detail's MBPI (opening to its reason and the
@@ -754,20 +757,21 @@ try{
       const t=e.textContent+' '+[...e.querySelectorAll('[title],[aria-label]')].map(x=>(x.title||'')+' '+(x.getAttribute('aria-label')||'')).join(' ');return /의약 후보|MBPI-Rx/.test(t);});
     r.method=document.getElementById('method-03')?.textContent||'';
     cmpSort=keep.sort;cmpBasket=keep.basket;setCompareMode(keep.mode);renderComparison();renderCompare();setView(keep.view,false);r.kept=selected.aphiaID===keep.sel;return r})()`);
-  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='—'?null:Number(x),vals=rxAll.filter(v=>v!==null);
+  {const rxAll=await evaluate("data.species.map(s=>mbpiRxOf(s)?.value??null)"),n=rxAll.filter(v=>v===null).length,num=x=>x==='—'?null:Number(x),vals=rxAll.filter(v=>v!==null),
+     whole=v=>v===null?null:Math.round(v);  // the column shows each value as a whole number, like MBPI (2026-10-19)
    // 4.14 (prereg-4.14 4): a sort ranks only inside one stratum (strata in first-seen order), '–' last both ways
    const strata=[...new Set(rx.groups.filter(Boolean))],rank=i=>rx.groups[i]?strata.indexOf(rx.groups[i]):Infinity,
      within=sign=>rxAll.map((v,i)=>i).sort((i,j)=>rank(i)-rank(j)||(rxAll[i]===null||rxAll[j]===null?(rxAll[i]===null)-(rxAll[j]===null)||i-j:sign*(rxAll[i]-rxAll[j])||i-j)).map(i=>rxAll[i]);
     // 2026-10-17 (LKH): the MBPI-Rx line reads '(보조, 탐색용)' with the value and stratum only; a species with no value shows '—'; the
     // post-hoc result and the pre-registration stay in posthoc-scorecard.json and research/verified-indices
-    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 62.6 · 항균 펩타이드 and opens to the criterion; 미역 reads — (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values, 10 —, — last both ways); #method-03 names it; the species profile shows it beside MBPI (2026-10-15, checked below); no card, basket, dialog, matrix or map text mentions it',
-      rx.order==='MFPI,MBPI,RX,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색용)62.6 · 항균 펩타이드'&&
+    check('MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 63 · 항균 펩타이드 (62.6, a whole number like MBPI since 2026-10-19) and opens to the criterion; 미역 reads — (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values, 10 —, — last both ways); #method-03 names it; the species profile shows it beside MBPI (2026-10-15, checked below); no card, basket, dialog, matrix or map text mentions it',
+      rx.order==='MFPI,MBPI,RX,RX,MCUI,BBVI'&&rx.oy==='의약 후보 MBPI(보조, 탐색용)63 · 항균 펩타이드'&&
       rx.body.includes('층 분류 기준: 그 층의 비교집단이 식품 단백질')&&!/사후 검증|사전 등록|prereg/.test(rx.body)&&
       fs.existsSync(path.join(DIST,'..','research','verified-indices','prereg-mbpi-rx-4.10-2026-10-12.md'))&&
       rx.wak==='의약 후보 MBPI(보조, 탐색용)—'&&
       rx.heads==='name,MFPI,MBPI,MBPI_RX,BBVI,MCUI'&&/^MBPI-Rx의약 표적 보조/.test(rx.rxHead)&&rx.start.length===total&&n===10&&vals.length===20&&
-      rx.start.filter(x=>x==='—').length===10&&rx.start.every((x,i)=>num(x)===rxAll[i])&&
-      strata.length>1&&JSON.stringify(rx.desc.map(num))===JSON.stringify(within(-1))&&JSON.stringify(rx.asc.map(num))===JSON.stringify(within(1))&&
+      rx.start.filter(x=>x==='—').length===10&&rx.start.every((x,i)=>num(x)===whole(rxAll[i]))&&
+      strata.length>1&&JSON.stringify(rx.desc.map(num))===JSON.stringify(within(-1).map(whole))&&JSON.stringify(rx.asc.map(num))===JSON.stringify(within(1).map(whole))&&
       rx.desc.slice(-10).every(x=>x==='—')&&rx.asc.slice(-10).every(x=>x==='—')&&
       rx.label===`총 ${total}종 · 정렬: MBPI-Rx 높은 순 (층별)`&&rx.focus==='MBPI_RX'&&JSON.stringify(rx.reset)===JSON.stringify(rx.start)&&
       rx.elsewhere.length===0&&rx.method.includes('의약 후보 MBPI(MBPI-Rx, 보조)')&&!/기준 미충족|prereg/.test(rx.method)&&rx.kept,
@@ -1150,7 +1154,8 @@ try{
   check('Value map (4.0): 30종 밖 같은 속 친척 종 list and one purple marker per public cell; each candidate listed by name, record statuses kept in the file',
     !outList.hidden&&outList.summary===`30종 밖 같은 속 친척 종 ${outside.length}종 목록`&&outList.li.length===outside.length&&outList.purple===outCells&&
     outside.every(s=>outList.li.some(t=>t.includes(s.name)))&&!outList.li.some(t=>/불일치|미표시|점수 없음/.test(t))&&outside.some(s=>s.review.status==='fetch_check_failed')&&
-    outList.li.every(t=>/BBVI \d+\.\d/.test(t)),JSON.stringify({...outList,li:outList.li.slice(0,3),outCells}));
+    // 2026-10-19 (LKH 9/10): a relative's BBVI reads as everywhere else, a whole number
+    outList.li.every(t=>/BBVI \d+(?:,| ·|$)/.test(t)&&!/BBVI \d+\./.test(t)),JSON.stringify({...outList,li:outList.li.slice(0,3),outCells}));
   await pick(emptyPick);await sleep(300);ms=await modeState();
   check(`Value mode + candidate ${noCell?'without public cells: stays in value mode, explains no link':'시카메굴 with NIBR-point cells: stays in value mode, no no-cell alert'}`,
     ms.mode==='value'&&ms.panelText.includes('공개 가능한 출현 격자가 없어')===!!noCell&&new RegExp('s='+emptyPick).test(ms.hash),JSON.stringify(ms));

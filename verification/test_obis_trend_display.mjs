@@ -13,6 +13,7 @@ const report=JSON.parse(read('dist/assessments.json'));
 const rows=[...report.species,...report.candidate_species];
 const ctx={};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+';globalThis.api={warn:obisWarn,profile:cpObisTrend,detail:occurrenceTrendDetail,off:obisOffLabel,list:obisWarnList};',ctx);
 ctx.info={method:report.method,sources:report.sources,version:report.method_version};
 ctx.rows=rows;

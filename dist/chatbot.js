@@ -162,7 +162,7 @@ function chatbotFact(kind,arg){
       if(!stockMcui(s))return `${name}의 MCUI는 지금 ${score('MCUI')}점이고 ${chatbotFact('basis',name)}에서 왔어요.`;
       const c=s.assessment?.conservation_status?.category,risk=extinctionMcui(s),ch=stockChange(s.assessment.stock_decline);
       const signal=`자원 감소 신호${ch?`(어획량 ${ch})`:''}`;
-      return Number.isFinite(risk)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${risk.toFixed(1)}점이지만, ${signal}로 ${score('MCUI')}점이 됐어요.`
+      return Number.isFinite(risk)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${scoreValue(s,'MCUI',risk)}점이지만, ${signal}로 ${score('MCUI')}점이 됐어요.`
         :`${name}의 MCUI는 ${signal}로 ${score('MCUI')}점이 됐어요.`;
     }
   }catch{}

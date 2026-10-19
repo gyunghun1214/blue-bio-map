@@ -35,6 +35,7 @@ const context={
   },divIcon(o){return o;}}
 };
 vm.createContext(context);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),context); // as on the page: app.js writes its numbers with it
 vm.runInContext(pre+'\n'+mapCode+'\nglobalThis.check=cellAssessmentStatus;globalThis.draw=renderCellMap;globalThis.banner=mapJudgmentStatus;',context);
 
 const species={live:true,aphiaID:123,name:'Accepted species',label:'시험 종',cells:[]};
@@ -159,7 +160,7 @@ assert.equal(nodes.get('map-chip').title,'기록 연도 2015–2020');
 assert.deepEqual([nodes.get('map-cells').textContent,nodes.get('map-count').textContent,nodes.get('map-years').textContent],[1,'500','2015–2020']);
 assert.equal(nodes.get('key-bubble-mark').hidden,true);assert.equal(nodes.get('key-dot-mark').hidden,false);
 assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n기록이 있는 칸의 위치(넓게 묶음)','the cell size comes from the cells');
-assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 51.5','the value alone (2026-10-17: evidence labels stay off the screen)');
+assert.equal(context.tag({assessment:{scores:{BBVI:51.54},bbvi_label:'단일 논문'}}),'BBVI 52','the value alone (2026-10-17: evidence labels stay off the screen), a whole number (2026-10-19)');
 assert.equal(context.tag({assessment:{scores:{}}}),'BBVI —');
 // A cell's species summary: confirmed, usable, conservation priority (2026-10-17: no evidence-gap count).
 const gap={label:'근거 부족 종',assessment:{scores:{BBVI:20},priority_survey:true}}, none={label:'평가 없음 종'};

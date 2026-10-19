@@ -7,7 +7,8 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const code=read('expedition.js').split('// ---- browser ----')[0];
 const ctx={};vm.createContext(ctx);
-vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtScore,NOTES,stockText,mcuiTag,mcuiSource,RANGE_LIST,mappingText,sourceTitle,licenseNote,methodNote,project,routePoints,routeStops,anchor,SHARED_ANCHOR,wa});',ctx);
+vm.runInContext(read('score-format.js'),ctx); // loaded before expedition.js on the page: the main map's one number rule
+vm.runInContext(code+';Object.assign(globalThis,{SAIL,sailFromQuery,tripSeconds,tripAt,tripSpeed,skip,sampleRoute,routeAt,makeState,go,next,prev,step,advanceReveal,openDetail,closeDetail,placeAt,hashFor,stopFromHash,headlineAxes,fmtAxis,NOTES,stockText,mcuiTag,mcuiSource,RANGE_LIST,mappingText,sourceTitle,licenseNote,methodNote,project,routePoints,routeStops,anchor,SHARED_ANCHOR,wa});',ctx);
 const data=JSON.parse(read('expedition-stops.json'));
 // stops on the route (the one without a published cell at sea is listed last, off the route)
 const stops=ctx.routeStops(data.stops);
@@ -135,7 +136,14 @@ for(const h of ['','#stop=0','#stop=4','#stop=x','#nostop=1','#stop=1.5'])assert
 assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:71.6,MBPI:96.3,MCUI:10,BBVI:83.9}})],['MFPI','MBPI']);
 assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:null,MBPI:8.7,MCUI:80,BBVI:null}})],['MBPI','MCUI']);
 assert.deepEqual([...ctx.headlineAxes({scores:{MFPI:10,MBPI:8.7,MCUI:80,BBVI:9}})],['MFPI','MBPI'],'a higher MCUI number does not move it forward');
-assert.equal(ctx.fmtScore(null),null);assert.equal(ctx.fmtScore(80),'80.0');
+// numbers (2026-10-19, LKH 9/10): the main map's rule for every stop, 미역 included: BBVI and MBPI whole, MFPI and MCUI one
+// decimal; a missing value stays missing; one more decimal only where rounding would reach 0 or a matrix line
+assert.equal(ctx.fmtAxis({scores:{MCUI:null}},'MCUI'),null);
+assert.deepEqual(['MFPI','MBPI','MCUI','BBVI'].map(k=>ctx.fmtAxis({scores:{MFPI:70,MBPI:89.2,MCUI:10,BBVI:67.9}},k)),['70.0','89','10.0','68']);
+assert.deepEqual([ctx.fmtAxis({scores:{MBPI:0.4}},'MBPI'),ctx.fmtAxis({scores:{BBVI:49.6}},'BBVI'),ctx.fmtAxis({scores:{BBVI:50.4}},'BBVI')],['0.4','49.6','50']);
+{const data=JSON.parse(read('expedition-stops.json'));
+  for(const st of data.stops)for(const k of ['MFPI','MBPI','MCUI','BBVI']){const v=st.scores[k];if(v===null)continue;
+    assert.equal(ctx.fmtAxis(st,k),k==='BBVI'||k==='MBPI'?String(Math.round(v)):Number(v).toFixed(1),`${st.korean_name} ${k}`);}}
 
 // map link: the keys index.html's applyHash reads (s, v, m) with the format writeHash writes
 const app=read('app.js');
@@ -165,7 +173,7 @@ assert.ok(strings(data).some(t=>OLD_WORDS.test(t)),'the published file still car
 const WEAK=/미충족|미통과|실패|불성립|사용 중단|제한적 확인|예비|공식 평가 전|공식 평가 아님|자체 평가|자체 예비|Rapid|역검증|서식국|다른 나라|재현 확인 중|독립 재현|근거 논문 1편|단일 논문|조사 필요|확인 필요|미확인|미산출|점수 없음|정보충분도|공백|사후 검증|사전 등록|결과를 본 뒤|결과 확인 후|검증|상업 이용 불가|조사 후보|운영 발행|판정 아님|우선 조사|탐색적 재검토|하한|신약을 찾았다|자료 없음|링크 없음|인용 없음|미배정|not validated|failed|not stated|not described|unverified|no CC licen[cs]e|No open licen[cs]e|no reuse licen[cs]e|non-commercial|verified/;
 const NEGATIVE=/아님|아닙니다|아니에요|아니라|않음|않습니다|않아요|뜻하지|넣지 못한|넣지 않/;
 const page=vm.createContext({matchMedia:()=>({matches:false}),__data:data});
-vm.runInContext(js,page);
+vm.runInContext(read('score-format.js'),page);vm.runInContext(js,page);
 vm.runInContext('DATA=__data;STATE=makeState(routeStops(DATA.stops).length,sampleRoute(routeStops(DATA.stops)).stopT);',page);
 const said=h=>[h.replace(/<(script|style)\b[\s\S]*?<\/\1>/g,' ').replace(/<[^>]*>/g,' '),...[...h.matchAll(/\s(?:aria-label|title|alt)="([^"]*)"/g)].map(m=>m[1])].join(' ')
   .replace(/&(amp|lt|gt|quot|#39);/g,(_,e)=>({amp:'&',lt:'<',gt:'>',quot:'"','#39':"'"})[e]).replace(/\s+/g,' ');
@@ -202,7 +210,7 @@ const bases={};
 data.stops.forEach((st,i)=>{
   const m=st.mcui, front=said(card(i)), back=said(detail(i)), cons=said(detail(i).match(/<h3>보전 평가 근거[\s\S]*?<\/section>/)[0]);
   bases[m.basis]=(bases[m.basis]||0)+1;
-  const tag=m.driver==='stock_decline'?`자원 감소 신호 · 어획량 −${m.stock_decline.decline_pct}% (KOSIS 어획량 통계) · 멸종위험 근거 ${m.extinction_risk}점`
+  const tag=m.driver==='stock_decline'?`자원 감소 신호 · 어획량 −${m.stock_decline.decline_pct}% (KOSIS 어획량 통계) · 멸종위험 근거 ${Number(m.extinction_risk).toFixed(1)}점`
     :m.basis==='iucn'?`IUCN ${m.category} (${m.assessment_year} 평가)`:m.basis==='national'?`한국 국가 평가 ${m.category}`:`보전 상태 범주 ${m.category}`;
   assert.ok(front.includes(tag),`${st.korean_name}: card tag ${tag}`);
   assert.ok(front.includes(`${Number(st.scores.MCUI).toFixed(1)} /100 (${m.category}`),`${st.korean_name}: MCUI value and category`);
@@ -264,7 +272,7 @@ assert.equal(ctx.methodNote('Bottom sowing, off-bottom mesh bags/trays on trestl
   assert.ok(text.includes('MFPI —')&&text.includes('MBPI —')&&text.includes('MCUI —')&&text.includes('BBVI —'));}
 assert.doesNotMatch(js.split('// ---- browser ----')[1],OLD_WORDS,'no older label words typed into the page code');
 assert.doesNotMatch(js.split('// ---- browser ----')[1],/미충족|미통과|미확인|자료 없음|링크 없음|조사 후보|운영 발행|정보충분도|검증|연출용|아님|않음/,'no weakness word typed into the drawing code');
-for(const f of ['expedition.js','expedition.css']){
+for(const f of ['score-format.js','expedition.js','expedition.css']){
   const expected=crypto.createHash('sha256').update(read(f).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
   assert.deepEqual([...html.matchAll(new RegExp(`${f.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]),[expected],`${f}?v= must be ${expected}`);
 }

@@ -51,6 +51,7 @@ jobs:
           python scripts/build_aquaculture_tier.py --check
           node verification/test_compare_ui.mjs
           node verification/test_weight_slider.mjs
+          node verification/test_score_format.mjs
           node verification/test_mbpi_kind.mjs
           node verification/test_species_group_icon.mjs
           node --check dist/chatbot.js

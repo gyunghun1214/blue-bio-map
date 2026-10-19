@@ -12,6 +12,7 @@ const sp=(aphiaID,name,label)=>({aphiaID,name,label,live:true});
 const all=()=>original.species.map(s=>sp(s.aphia_id,s.scientific_name,s.korean_name));
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>report()})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.attach=attachPilotAssessments;
   globalThis.score=pilotScore;
@@ -268,7 +269,7 @@ assert.match(dom.comparison.innerHTML,/>80\.0 \(EN, A2bd\)<small>/);
 assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 자원 감소\)<small>정식 산출 · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8%<\/small>/);
 assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat">\(LC \+ 자원 감소\)<\/small><\/span>/);
 assert.doesNotMatch(dom.comparison.innerHTML,/cv-stock|◆/);
-assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10 · 자원 감소 60 → 높은 값 60<\/p>/);
+assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10\.0 · 자원 감소 60\.0 → 높은 값 60\.0<\/p>/);
 assert.match(dom.comparison.innerHTML,/기준 평균 121,486톤\(2015~17\) → 최근 평균 24,507톤\(2022~24\) <b>\(−79\.8%\)<\/b>/);
 assert.equal((dom.comparison.innerHTML.match(/class="stock-decline/g)||[]).length,next.species.length,'every species shows its stock-decline line');
 for(const s of next.species)assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
@@ -407,9 +408,9 @@ for(const text of ['점수에 쓴 값 · dieckol','1.47','ACE:EC-3.4.15.1','HHL2
   assert.ok(mbpiBody.includes(text),`Ecklonia MBPI evidence missing ${text}`);
 // 2026-10-17 (LKH): the paper count, the single-paper label and the follow-up leads (the 3CLpro paper) stay in the record
 assert.ok(!mbpiBody.includes('독립 원논문 1편'),'no paper-count line');
-assert.match(mbpiBody,/<b>67\.5 · 정식 산출 · ACE 화합물<\/b>/);
+assert.match(mbpiBody,/<b>68 · 정식 산출 · ACE 화합물<\/b>/);  // 67.5: a whole number on screen (2026-10-19)
 assert.doesNotMatch(mbpiBody,/방법 검증|독립 재현|단일 논문/);
-assert.match(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/MBPI 67\.5 · /);
+assert.match(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/MBPI 68 · /);
 assert.doesNotMatch(ctx.plain(ctx.summary(next.species.find(s=>s.aphiaID===371986))),/재현|단일 논문/);
 assert.ok(mbpiBody.includes('dieckol')&&!mbpiBody.includes('후속 조사 단서'),'scored ACE evidence shown; the leads block is not drawn');
 assert.ok(!mbpiBody.includes('3CLpro')&&JSON.stringify(arch410.candidate_species.find(s=>s.aphia_id===371986).bioactivity_partial).includes('3CLpro'),'the 3CLpro lead stays in the record');
@@ -418,7 +419,7 @@ ctx.fetch=async()=>({status:200,ok:true,json:async()=>report410()});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
 ctx.next=next;vm.runInContext('data=globalThis.next;comparisonFocus=null',ctx);ctx.compare();
 assert.doesNotMatch(dom.comparison.innerHTML,/data-score-aphia="371986" data-score-axis="MBPI"[^>]*(최상위 근거|재현|단일 논문)/);
-assert.match(dom.comparison.innerHTML,/>67\.5<small>정식 산출 · 근거 보기<\/small>/);
+assert.match(dom.comparison.innerHTML,/>68<small>정식 산출 · 근거 보기<\/small>/);
 const badLabel=report410();badLabel.candidate_species.find(s=>s.aphia_id===371986).mbpi_label=null;
 ctx.fetch=async()=>({status:200,ok:true,json:async()=>badLabel});
 next={live:true,species:[cand(371986,'Ecklonia cava','감태')]};await ctx.attach(next);
@@ -500,7 +501,7 @@ next={live:true,species:all()};await ctx.attach(next);ctx.next=next;vm.runInCont
 html=ctx.renderScores(by(145721));
 assert.ok(!html.includes('<h4>원값·출처 · 점수 미사용</h4>'),'145721: scored values are not repeated as unscored raw values');
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  for(const text of ['89.2 · 정식 산출','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
+  for(const text of ['89 · 정식 산출','IY','6.1 µM','10.1021/jf020482t','IW','1.5 µM','KNFL','225.87 µM','10.3390/md19030177','CC BY 4.0',
     '기질 HHL','89.2 × 근거 계수 1 = 89.2','펩타이드 352개','doi:10.1093/nar/gku1141','공개 DB · 개발자 이메일 확인(2026-09-27): 누구나 사용 가능'])
     assert.ok(mbpi.includes(text),`wakame MBPI missing ${text}`);
   // 2026-10-17 (LKH): the potency replications (with their reasons) and the item caveats stay in the record and are not drawn
@@ -514,7 +515,7 @@ assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.
 // 2026-10-12: the MBPI section opens with one line from published values only, then the top item's stratum; the summary
 // names the stratum too. 2026-10-17 (LKH): the post-hoc result, the aggregation range and its reason paragraph stay in the record
 {const mbpi=html.slice(html.indexOf('MBPI · 생리활성'),html.indexOf('data-axis="MCUI"'));
-  assert.match(mbpi,/<b>89\.2 · 정식 산출 · ACE 펩타이드<\/b><\/summary>/);
+  assert.match(mbpi,/<b>89 · 정식 산출 · ACE 펩타이드<\/b><\/summary>/);
   assert.ok(mbpi.includes('<p class="fine mbpi-first">근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>'),'wakame first line');
   assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('점수 근거'),'the first line sits above the scored items');
   assert.ok(!/사후 검증|기준 미충족|집계 방식에 따라/.test(mbpi)&&original.method.posthoc.validation_sets.MBPI,'the post-hoc result stays in the record');}
@@ -563,7 +564,8 @@ refOyster.reference_combination={label:'참고 통합값 · 독립 재현 미확
 let refOy=await oysterOnly(refReport);vm.runInContext('data=globalThis.next',Object.assign(ctx,{next}));
 assert.equal(ctx.score(refOy,'MBPI'),67.5,'fixture MBPI must attach');{
   html=ctx.renderScores(refOy);
-  for(const text of ['참고 통합값 · 독립 재현 미확인','<b>참고값 69.6</b>','w 0.75 → 70.6','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
+  // on the BBVI scale, so its numbers read as BBVI's do (2026-10-19): 69.6 → 70, 70.6 → 71
+  for(const text of ['참고 통합값 · 독립 재현 미확인','<b>참고값 70</b>','w 0.75 → 71','BBVI 점수·매트릭스·순위에 쓰지 않습니다'])assert.ok(html.includes(text),`reference: missing ${text}`);
   assert.equal(ctx.score(refOy,'BBVI'),null,'a reference combination never becomes BBVI');
 }
 refOyster.reference_combination.inputs.MFPI=70;
@@ -589,12 +591,12 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   assert.ok(h.indexOf('data-axis="MBPI"')<h.indexOf('rx-disclosure')&&h.indexOf('rx-disclosure')<h.indexOf('data-axis="MCUI"'),'the line sits right under MBPI');
   const oy=line(h);
   // 2026-10-17 (LKH): the post-hoc result, the pre-registration path and the excluded-item count stay in the record (mbpi_rx, method)
-  assert.ok(oy.includes('<summary><span>의약 후보 MBPI(보조, 탐색용)</span><b>62.6 · 항균 펩타이드</b></summary>'),oy);
+  assert.ok(oy.includes('<summary><span>의약 후보 MBPI(보조, 탐색용)</span><b>63 · 항균 펩타이드</b></summary>'),oy);  // 62.6, a whole number like MBPI
   for(const t of ['근거 층: 항균 펩타이드(<span lang="en">DBAASP','층 분류 기준: 그 층의 비교집단이 식품 단백질','기본 MBPI·BBVI·매트릭스와 따로 봅니다'])assert.ok(oy.includes(t),`oyster MBPI-Rx line: ${t}`);
   for(const t of ['이 종에서 뺀 항목','사후 검증','사전 등록','기준 미충족'])assert.ok(!oy.includes(t),`oyster MBPI-Rx line does not draw ${t}`);
   assert.ok(rule.prereg&&vs.result&&rows.find(r=>r.aphia_id===836033).mbpi_rx.excluded_item_count===2,'the record keeps them');
-  assert.ok(line(ctx.renderScores(by(371986))).includes('<b>56.8 · ChEMBL 화합물</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
-  assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45.3 · ChEMBL 화합물</b>'),'톳: the ChEMBL item once the ACE peptides are out');
+  assert.ok(line(ctx.renderScores(by(371986))).includes('<b>57 · ChEMBL 화합물</b>'),'감태: the ChEMBL dieckol item (4.11 drops the 6-compound ACE cohort)');
+  assert.ok(line(ctx.renderScores(by(494972))).includes('<b>45 · ChEMBL 화합물</b>'),'톳: the ChEMBL item once the ACE peptides are out');
   for(const r of rows.filter(r=>r.mbpi_rx.value===null)){const l=line(ctx.renderScores(by(r.aphia_id)));
     // 2026-10-17 (LKH): no value reads '—' (the reason stays in the record)
     assert.ok(l.includes('<summary><span>의약 후보 MBPI(보조, 탐색용)</span><b>—</b></summary>')&&r.mbpi_rx.reason&&!l.includes(r.mbpi_rx.reason)&&!l.includes('근거 층:')&&!l.includes('근거 없음'),`${r.korean_name}: ${l}`);}
@@ -627,11 +629,12 @@ vm.runInContext('globalThis.rxOf=mbpiRxOf',ctx);
   // 2026-10-13 dark data table: 종·유형·5 values·expand (근거 수준·출현기록·자료 연결 현황 moved into the expanded row)
   assert.ok(t.includes('MBPI-Rx<small>의약 표적 보조</small>')&&(t.match(/<th scope="col"/g)||[]).length===8&&!t.includes('colspan="11"')&&t.includes('colspan="8"'));
   const cell=id=>t.split(`<tr class="cmp-row" data-aphia="${id}">`)[1].split('cmp-rx">')[1].split('</td>')[0];
-  assert.match(cell(836033),/^<span class="cv rx-cv"><span class="cv-num">62\.6<\/span><span class="cv-bar" aria-hidden="true"><i style="width:62\.6%"><\/i><\/span><\/span>$/);
-  assert.match(cell(504357),/<span class="cv-num">75\.0<\/span>/);
+  // 2026-10-19 (LKH 9/10): MBPI-Rx is on the MBPI scale and reads as MBPI does, a whole number (the bar keeps the value)
+  assert.match(cell(836033),/^<span class="cv rx-cv"><span class="cv-num">63<\/span><span class="cv-bar" aria-hidden="true"><i style="width:62\.6%"><\/i><\/span><\/span>$/);
+  assert.match(cell(504357),/<span class="cv-num">75<\/span>/);
   // 2026-10-17 (LKH): no value reads '—' in the cell and in the expanded row (never 0, a button or a gap phrase)
   for(const r of rows.filter(r=>r.mbpi_rx.value===null))assert.equal(cell(r.aphia_id),'<span class="cv rx-cv"><span class="cv-num rx-none">—</span></span>',r.korean_name);
-  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조</h4>62.6<small>항균 펩타이드 · MBPI·BBVI와 별도인 보조 지표</small>'),'oyster 자세히');
+  assert.ok(t.includes('<h4>의약 후보 MBPI · 보조</h4>63<small>항균 펩타이드 · MBPI·BBVI와 별도인 보조 지표</small>'),'oyster 자세히');
   assert.ok(t.includes('<h4>의약 후보 MBPI · 보조</h4>—</div>')&&!/근거 없음|사후 검증|점수 아님/.test(t),'wakame 자세히');
   // sorting by it (4.14, prereg-4.14 8): grouped by the top item's stratum (groups in catalogue order of first appearance), high → low
   // or low → high only inside a group, the species without a value (10 since 4.13) last in catalogue order both ways
@@ -682,7 +685,7 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
   assert.equal(ctx.evText(by(371986),'card'),'근거 · 항목 10 · 독립 논문 11편 · 독립 재현 확인 중 · 관련 문헌 3편');
   assert.equal(ctx.evDep(by(836033)),'최상위 항목 제외 시 MBPI 63 · 근거 계수(0.75) 적용 전 백분위 96');
   assert.equal(ctx.evText(by(145721)),'MBPI 근거 · 산출 항목 8 · 독립 논문 3편 · 최상위 항목 독립 재현 확인 · 관련 문헌(점수 미사용) 0편');
-  assert.equal(ctx.evDep(by(145721)),'최상위 항목 제외 시 MBPI 71.5 · 근거 계수(1) 적용 전 백분위 89.2');
+  assert.equal(ctx.evDep(by(145721)),'최상위 항목 제외 시 MBPI 72 · 근거 계수(1) 적용 전 백분위 89');
   for(const r of rows){const s=by(r.aphia_id),e=r.evidence_profile,t=ctx.evText(s),h=ctx.renderScores(s);
     assert.ok(t.startsWith(`${rule.label} · 산출 항목 ${e.item_count} · 독립 논문 ${e.independent_paper_count}편 · ${rule.replication_labels[e.top_item_replication].replace(/\)$/,'')}`),r.korean_name+': '+t);
     assert.ok(t.endsWith(`관련 문헌(점수 미사용) ${e.unscored_related_count}편`),t);
@@ -691,19 +694,19 @@ next={live:true,species:[...all(),...original.candidate_species.map(s=>cand(s.ap
     // 2026-10-17 (LKH): the profile (paper count, replication state) stays in the record and is not drawn
     assert.ok(!h.includes(ctx.plain(d).replace(/&/g,'&amp;'))&&!h.includes('근거 프로필'),r.korean_name+': the profile line is not drawn');
     assert.ok(!/근거 논문 1편|단일 논문/.test(h),r.korean_name+': no old label words');
-    // whole numbers for MBPI and BBVI without a replicated top item (0.4 and the BBVI line keep their decimal)
-    const whole=e.top_item_replication!=='replicated';
+    // 2026-10-19 (LKH 9/10): whole numbers for MBPI and BBVI for every species, the replicated 미역 too (0.4 and the BBVI
+    // line keep their decimal); MFPI one decimal
     for(const k of ['MBPI','BBVI']){const v=r.scores[k],txt=ctx.scoreText(s,k,v);
-      if(!whole||(Math.round(v)===0&&v!==0))assert.equal(txt,v.toFixed(1),`${r.korean_name} ${k}`);
+      if(Math.round(v)===0&&v!==0)assert.equal(txt,v.toFixed(1),`${r.korean_name} ${k}`);
       else assert.equal(txt,String(Math.round(v)),`${r.korean_name} ${k}`);}
     assert.equal(ctx.scoreText(s,'MFPI',r.scores.MFPI),r.scores.MFPI.toFixed(1),'MFPI keeps one decimal');
     assert.equal(ctx.score(s,'BBVI'),r.scores.BBVI,'the value itself is the report value');}
   assert.equal(ctx.scoreText(by(145086),'MBPI',0.4),'0.4','a non-zero value never reads 0');
   assert.equal(ctx.scoreText(by(836033),'BBVI',49.6),'49.6','rounding never crosses the BBVI line');
   assert.equal(ctx.scoreText(by(836033),'BBVI',50.4),'50');
-  assert.equal(ctx.scoreText(by(145721),'BBVI',67.9),'67.9','the replicated species keeps one decimal');
-  // an older report without the profile shows no profile line and keeps one decimal
+  assert.equal(ctx.scoreText(by(145721),'BBVI',67.9),'68','the replicated species reads as every other (2026-10-19)');
+  // an older report without the profile shows no profile line; its numbers follow the same rule
   const old=report();delete old.method.evidence_profile;ctx.fetch=async()=>({status:200,ok:true,json:async()=>old});
   const n={live:true,species:[sp(836033,'Magallana gigas','참굴')]};await ctx.attach(n);vm.runInContext('data=globalThis.n',Object.assign(ctx,{n}));
-  assert.equal(ctx.evText(n.species[0]),'');assert.equal(ctx.scoreText(n.species[0],'BBVI',71.9),'71.9');}
+  assert.equal(ctx.evText(n.species[0]),'');assert.equal(ctx.scoreText(n.species[0],'BBVI',71.9),'72');}
 console.log('PASS: v2 report joins, screen values equal report, MFPI/MCUI traces, blank-as-missing, IUCN states, inconsistent-score guards, research candidates');

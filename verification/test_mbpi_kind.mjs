@@ -22,6 +22,7 @@ const ctx={AbortSignal,structuredClone,console,URLSearchParams,document:{getElem
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={scoreText,mbpiKindOf,mbpiKindShare,cpMbpiKind,mbpiRxOf,mbpiFirstLine,pilotScore,matrixType,officialType,'+
   'assessedForMatrix,matrixTypeLabel,set w(v){bbviWeight=v}};',ctx);
 const T=ctx.T;
@@ -56,9 +57,10 @@ for(const {s,r,k} of table){
   const h=T.cpMbpiKind(s), rx=T.mbpiRxOf(s);
   if(k)assert.ok(h.includes(`<span class="cp-kind-badge" data-kind="${k.kind}">${k.long}</span>`)&&h.includes(T.mbpiKindShare(k)),`${s.label}: badge`);
   if(rx&&rx.value===null){assert.equal(r.mbpi_rx.value,null);assert.ok(h.includes('<span class="cp-rx-none">—</span>')&&!h.includes('근거 없음')&&!h.includes('cp-rx-num'),`${s.label}: no MBPI-Rx`);}
-  if(rx&&rx.value!==null){const same=(r.bioactivity_trace||[])[r.mbpi_rx.top_item.trace_index]===t0(r);
-    assert.ok(h.includes(`<b class="cp-rx-num">${same?T.scoreText(s,'MBPI',r.mbpi_rx.value):r.mbpi_rx.value.toFixed(1)}</b>`),`${s.label}: MBPI-Rx ${r.mbpi_rx.value}`);
-    if(same)assert.equal(T.scoreText(s,'MBPI',r.mbpi_rx.value),T.scoreText(s,'MBPI',T.pilotScore(s,'MBPI')),`${s.label}: same item reads as MBPI`);}
+  // 2026-10-19 (LKH 9/10): MBPI-Rx is on the MBPI scale and reads as MBPI does, a whole number; the same item gives the same text
+  if(rx&&rx.value!==null){const same=(r.bioactivity_trace||[])[r.mbpi_rx.top_item.trace_index]===t0(r), txt=T.scoreText(s,'MBPI',r.mbpi_rx.value);
+    assert.ok(/^\d+$/.test(txt)&&h.includes(`<b class="cp-rx-num">${txt}</b>`),`${s.label}: MBPI-Rx ${r.mbpi_rx.value}`);
+    if(same)assert.equal(txt,T.scoreText(s,'MBPI',T.pilotScore(s,'MBPI')),`${s.label}: same item reads as MBPI`);}
   if(k)assert.ok(T.mbpiFirstLine(s).includes(`근거 종류: ${k.long} · ${T.mbpiKindShare(k)}`),`${s.label}: detail line`);
 }
 // a species whose drug-target items are all gone has a functional top and no MBPI-Rx; the reverse never happens

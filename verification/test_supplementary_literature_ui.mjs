@@ -8,6 +8,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'), report=JSON.parse(read('assessments.json')), lit=JSON.parse(read('supplementary-literature.json'));
 const ctx={};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.rows=supplementaryRows;globalThis.line=supplementaryLine;globalThis.litRows=litRows;'+
   'globalThis.setData=d=>{data=d};globalThis.setLit=f=>{supplementaryLit=supplementaryRows(f,[])};'+

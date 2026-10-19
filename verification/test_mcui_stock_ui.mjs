@@ -11,6 +11,7 @@ const app=read('dist/app.js');
 const report=JSON.parse(read('dist/assessments.json'));
 const ctx={};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+';globalThis.valid=verifiedConservationValid;globalThis.detail=stockDeclineDetail;'+
   'globalThis.recheck=stockDeclineRecheck;globalThis.change=stockChange;',ctx);
 ctx.info={method:report.method,sources:report.sources,version:report.method_version};
@@ -77,7 +78,7 @@ for(const a of rows)assert.doesNotMatch(a.stock_decline.label,/\b(?:LC|NT|VU|EN|
 
 // detail: the catch line, the means, the link level, the share, the 2025p note, the stock-assessment state and the caution
 const html=ctx.detail({label:'살오징어',assessment:squid});
-for(const text of ['자원 감소 신호 · KOSIS 어획량 추세','어획량 급감 · 60점','IUCN LC 10 · 자원 감소 60 → 높은 값 60',
+for(const text of ['자원 감소 신호 · KOSIS 어획량 추세','어획량 급감 · 60.0점','IUCN LC 10.0 · 자원 감소 60.0 → 높은 값 60.0',
   '기준 평균 121,486톤(2015~17) → 최근 평균 24,507톤(2022~24)','(−79.8%)','KOSIS 품종 살오징어(오징어) · 연결 종 단위','최근 3년 양식 비중 0.0%',
   '2025년 잠정치 31,006톤(점수 미사용)','KOSIS 어획량 통계로 계산한 값입니다(IUCN 기준 A의 30·50·80% 구간 적용)','class="sd-spark scored"','class="sd-ref"'])
   assert.ok(html.includes(text),`살오징어 detail: ${text}`);

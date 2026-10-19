@@ -18,6 +18,7 @@ const report=(name='Accepted species')=>({method_version:'pilot-1',status:'provi
   species:[{aphia_id:123,scientific_name:name,source_ids:['s'],scores:{MFPI:50,MBPI:70,MCUI:80,BBVI:60},food_trace:food1(),bioactivity_trace:[{compound_id:'CID:1',stratum:['target-A','binding'],median_pchembl:7,peer_count:3,rank:50,independent_references:1,evidence_factor:.75,reference_ids:['s']}],conservation_trace:{category:'EN',assessment_year:2025,source_id:'s',current_status_verified:true,current_status_source_id:'s',current_status_checked_on:'2026-09-23'}}]});
 const ctx={fetch:async()=>({status:404,ok:false})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(code+';globalThis.attach=attachPilotAssessments;globalThis.pilot=pilotScore;globalThis.assessed=assessedForMatrix;globalThis.blockers=assessmentBlockers;globalThis.showDecision=showDecision',ctx);
 
 let data=specimen();

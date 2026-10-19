@@ -8,6 +8,7 @@ const app=read('app.js'),report=JSON.parse(read('assessments.json')),readiness=J
 const config=JSON.parse(fs.readFileSync(new URL('../config/verified-indices-v4.19.json',import.meta.url),'utf8'));  // 4.19 and 4.18 keep 4.17's matrix rule; 4.17: range-state and Rapid LC bases scored again as preliminary assessments; 4.16 keeps 4.14's matrix rule (display-only evidence profile); 4.14: no substitute basis is scored (include_substitute_mcui []), neutral names, exploratory line;  // 3.27 adds the single-paper BBVI keys; 4.0 is the released set; 4.2 admits the sub-national basis; 4.3 the scored Rapid LC and floor BBVI; 4.4 the relaxation-(d) item
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>structuredClone(report)})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 // the map helpers sit after setView; take that block alone (no DOM or Leaflet calls in it)
 const mapHelpers=app.match(/^\/\/ Figure 5 legend colours[^]*?(?=^function valueSpeciesCard)/m)[0];
 vm.runInContext(app.split('function setView')[0]+mapHelpers+';Object.assign(globalThis,{attachPilotAssessments,matrixType,assessedForMatrix,'+
