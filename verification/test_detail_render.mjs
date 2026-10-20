@@ -68,11 +68,11 @@ for(const s of next.species){
     if((at>=0)!==own)p.push(own?'감태 caption missing':'감태 caption');
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
     if(h.includes('github.com/gyunghun1214'))p.push('private repo link');
-    // PR #222 (2026-10-17) took potency replications off the detail screen (MBPI summary count, score-basis independence
-    // line, replication rows); they stay in assessments.json, so a species whose top item has one checks they stay off.
-    const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null), used=(top?.potency_replications||[]).filter(r=>r.used).length;
-    if(place==='detail'&&used)replicatedSpecies++;
-    if(place==='detail'&&h.includes('효능 재현'))p.push('potency replication shown again (removed in PR #222)');
+    // PR #222 (2026-10-17) took potency replications off the screen (MBPI summary count, score-basis independence line,
+    // replication rows); they stay in assessments.json, so no rendered place may show them again.
+    const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null);
+    if(place==='detail'&&top?.potency_replications?.length)replicatedSpecies++;
+    if(h.includes('효능 재현'))p.push('potency replication shown again (removed in PR #222)');
     if(place==='decision'){
       // Every MBPI item is named, with its stratum and, when it has measurements, a number. A field the shared helper
       // misses prints '' rather than 'undefined', so a stratum without its own branch shows up only here.
@@ -90,7 +90,7 @@ console.log(`findings ${findings.length} (detail ${count.detail} · decision ${c
 findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
-assert.ok(replicatedSpecies>0,'a species with a counted replication of its top item (미역 purified VW, 4.11) was rendered, so the check above is not empty');
+assert.ok(replicatedSpecies>0,'species whose top MBPI item has replication records (5 at 4.16: 미역, 톳, 참굴, 큰가리비, 갑오징어) were rendered, so the absence check runs on data the removed rows used to show; drop this guard once the data has none');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
 
 // PR #222 (2026-10-17) also removed 갑오징어's replication rows (pKi scale and gap, counted or not and why); its top item
@@ -103,4 +103,4 @@ assert.ok(cuttle.includes('MBPI'),'갑오징어 detail rendered');
 for(const gone of ['효능 재현','pKi 8.398 · 차이 0.218','독립 DOI로 셈','다른 기원의 측정이라 효능만 재현합니다','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'])
   assert.ok(!cuttle.includes(gone),`갑오징어 detail shows '${gone}' again (removed in PR #222)`);
 assert.doesNotMatch(cuttle,/쓰지 않음: [^<]*[가-힣]/,'갑오징어 detail shows the reason line of an uncounted replication again (removed in PR #222)');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean, potency replications kept off the detail (PR #222)`);
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean, potency replications kept off the screen (PR #222)`);
