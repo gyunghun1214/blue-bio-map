@@ -149,7 +149,7 @@ main{max-width:none;margin:0;padding:0}
 .value-plot{display:grid;grid-template-columns:auto 1fr;gap:4px;width:100%}
 .value-axis-y{writing-mode:vertical-rl;text-orientation:sideways;transform:rotate(180deg);text-align:center;font-size:var(--fs-min);color:var(--ink2)}
 .value-axis-x{grid-column:2;text-align:right;font-size:var(--fs-min);color:var(--ink2)}
-.v-none,.v-selected{display:inline-block;flex:none;width:18px;height:12px;border:1.5px dashed #657588;border-radius:3px;background:rgba(183,192,202,.25)}.v-selected{border:3px solid #102e45;background:transparent}
+.v-selected{display:inline-block;flex:none;width:18px;height:12px;border:1.5px dashed #657588;border-radius:3px;background:rgba(183,192,202,.25)}.v-selected{border:3px solid #102e45;background:transparent}
 .value-tip{width:max-content;max-width:min(340px,80vw);white-space:normal;line-height:1.45}.value-selected-line{font-weight:700}
 .type-table-wrap{overflow-x:auto}.type-table{width:100%;border-collapse:collapse;font-size:14px}.type-table th,.type-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .type-swatch{display:inline-block;width:22px;height:14px;border:1.5px solid;border-radius:3px}
@@ -211,18 +211,8 @@ main{max-width:none;margin:0;padding:0}
 
 /* ---------- Compare / method ---------- */
 #compare,#method{max-width:1320px;margin:0 auto;padding:32px 24px 56px}
-.section-heading h2{font-size:22px;font-weight:700;letter-spacing:-.02em}
-.section-heading p{color:var(--muted)}
-.pill{border-radius:99px}
 .comparison,.matrix-explanation,.method-card,.method-bottom article,.source-section,.decision-detail,.weight-control{border-radius:14px}
 /* Species evidence opens under the chosen card's row (dense lets later cards fill that row first). */
-.decision-list{grid-auto-flow:row dense}
-.decision-list>.decision-detail{grid-column:1/-1;margin:0 0 6px}
-.decision-more{margin-top:auto;padding-top:6px;color:var(--teal);font-size:12.5px;font-weight:600}
-.decision-more:after{content:" ▾"}
-.decision-card[aria-expanded=true] .decision-more:after{content:" ▴"}
-.decision-close{display:block;margin:18px auto 0;padding:8px 22px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--teal);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
-.decision-close:after{content:" ▴"}
 .method-card{border:1px solid var(--line);box-shadow:none}
 /* Five species columns fit the table box from about 1250px (1440×900 and 1280×900): 170px row labels + 5 × (160px bar + cell
    padding); narrower screens scroll the table sideways. */
@@ -369,8 +359,7 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 /* method tab: labelled, spaced bullets */
 .method-card li{margin:8px 0}.method-card li b{color:var(--ink);margin-right:4px}
 /* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭. 휴대폰은 DOM 순서대로 매트릭스 바로 밑 */
-.matrix-layout .matrix-unplaced{margin:16px 0 0}
-@media(min-width:741px){.matrix-layout{row-gap:0}.matrix-layout>div:first-child{display:contents}.matrix-explanation{grid-column:2;grid-row:1/4}.matrix-layout .matrix-unplaced{grid-column:1/-1}#matrix-note{margin-bottom:0}}
+@media(min-width:741px){.matrix-explanation{grid-column:2;grid-row:1/4}#matrix-note{margin-bottom:0}}
 
 /* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
 #comparison{overscroll-behavior-x:contain;scrollbar-width:thin}
@@ -439,7 +428,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .flow-scroll{overflow-x:auto}
 .flow{display:block;width:100%;min-width:860px;height:auto;font-family:inherit}
 .flow .bx rect{fill:#f7fafb;stroke:var(--line);stroke-width:1.5}
-.flow .bx.aux rect{fill:#fff;stroke-dasharray:5 4}
 .flow [data-step]{cursor:pointer;outline:none}
 .flow [data-step]:hover rect,.flow [data-step]:focus-visible rect{stroke:var(--ink);stroke-width:2.2}
 .flow .ft{font-size:13px;font-weight:700;fill:var(--ink)}
@@ -450,7 +438,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .flow .ix.cons rect{fill:#fdf0e7;stroke:#e07a3f;stroke-width:1.8}
 .flow .ix.final rect{fill:#eef3f8;stroke:var(--ink);stroke-width:1.8}
 .flow .fa{fill:none;stroke:#8aa0b0;stroke-width:1.6}
-.flow .fa.dash{stroke-dasharray:4 4}
 .flow .fh{fill:#8aa0b0}
 .flow .noadd path{stroke:#c0392b;stroke-width:1.6;stroke-dasharray:3 3}
 .flow .noadd rect{fill:#fff;stroke:#c0392b;stroke-width:1.5}
@@ -464,9 +451,6 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix .quadrant.typed{background:color-mix(in srgb,var(--qc) 7%,#fff)}
 .matrix .q2,.matrix .q4{align-items:flex-end;text-align:right}
 .matrix .quadrant{padding:10px 12px}
-.matrix-layout .matrix-point.pilot{background:var(--mp,var(--teal));border:2px solid #fff;border-radius:50%;width:18px;min-width:18px;height:18px}
-.matrix-layout .matrix-point.pilot.single{background:#fff;border:3px solid var(--mp,var(--teal))}
-.matrix-layout .matrix-point.pilot.floor{background:#fff;border:3px dashed #8a959c}
 .matrix-point:hover,.matrix-point:focus-visible{z-index:6}
 .matrix-point .point-label.above{top:auto;left:50%;bottom:100%;margin:0 0 3px}
 .matrix-point .point-label.below{top:100%;left:50%;margin:3px 0 0}
@@ -477,22 +461,8 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .matrix-tick.up::after{bottom:0}.matrix-tick.down::after{top:0}
 .matrix-types:empty{display:none}
 .matrix-types{margin:4px 0 0}
-.mt-key{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;font-size:12.5px;color:var(--muted)}
-.mt-key span{display:inline-flex;align-items:center;gap:5px}
-.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.mt-box{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
-.mt-box>b{display:flex;align-items:center;gap:7px;font-size:13.5px;margin-bottom:6px}
-.mt-box>b span{color:var(--muted);font-weight:500}
-.mt-box>div{display:flex;flex-wrap:wrap;gap:5px}
-.mt-box button{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:2px 9px;font-size:12.5px;color:var(--ink);cursor:pointer}
-.mt-box button:hover{border-color:var(--teal)}
-.mt-box small{color:var(--muted);font-size:var(--fs-min)}
-.mt-box em{font-size:12.5px;color:var(--muted)}
 .mt-sw{width:16px;height:16px;border-radius:4px;flex:none}
-.mt-dot{width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--ink);flex:none;box-sizing:border-box}
-.mt-dot.hollow{background:#fff}
-@media(min-width:741px){.matrix-layout .matrix-types{grid-column:1/-1}}
-@media(max-width:740px){.matrix{height:400px}.mt-grid{grid-template-columns:1fr}.matrix-layout .matrix-point.pilot{width:14px;min-width:14px;height:14px;border-width:2px}.matrix-layout .matrix-point.pilot.single,.matrix-layout .matrix-point.pilot.floor{border-width:2.5px}}
+@media(max-width:740px){.matrix{height:400px}}
 .matrix-point .point-label.far::before{content:"";position:absolute;top:50%;left:0;width:var(--ll);border-top:1px solid #6d8291;transform-origin:0 0;transform:rotate(var(--la))}
 .matrix-point .point-label.far.left::before{left:auto;right:0;transform-origin:100% 0;transform:rotate(calc(var(--la) - 3.14159rad))}
 
@@ -519,13 +489,9 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 #comparison .type-chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;white-space:nowrap}
 #comparison .type-chip i{width:12px;height:12px;border-radius:3px;flex:none}
 #comparison .type-chip.none{color:var(--muted)}
-#comparison td.cmp-ev{min-width:170px;max-width:240px}
 #comparison .ev-chip{display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--line);border-radius:10px;background:#f6f9fb;font-size:var(--fs-min);line-height:1.5;white-space:nowrap}
 #comparison .ev-chip.none{color:var(--muted);border-style:dashed;background:none}
-#comparison td.cmp-occ{min-width:120px;font-size:13px}
-#comparison td.cmp-occ .score-cell small{display:block;font-size:var(--fs-min)}
 #comparison td .coverage-bar{min-width:210px}
-#comparison td.cmp-cov{min-width:220px}
 #comparison .cmp-more-btn{border:1px solid #a9c3d0;border-radius:6px;background:#fff;padding:4px 9px;font-size:12.5px;color:var(--ink);white-space:nowrap;cursor:pointer}
 #comparison .cmp-more-btn[aria-expanded=true]{background:#eef6f6;border-color:var(--teal)}
 #comparison .cmp-more-btn::after{content:" ▾"}#comparison .cmp-more-btn[aria-expanded=true]::after{content:" ▴"}
@@ -539,23 +505,14 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 @media(max-width:740px){#comparison{max-height:75vh}#comparison thead th:first-child,#comparison tbody th{min-width:112px;width:112px}}
 #comparison .ev-chip{white-space:normal}
 #comparison thead th:first-child,#comparison tbody th{min-width:128px;width:128px}
-#comparison td.cmp-occ{min-width:96px}
-#comparison td .coverage-bar{min-width:200px}#comparison td.cmp-cov{min-width:210px}
+#comparison td .coverage-bar{min-width:200px}
 #comparison td .coverage-bar .seg b{font-size:var(--fs-min)}
 /* 4.10 (2026-10-12): the secondary, exploratory MBPI-Rx. In the detail it sits under MBPI, indented with a dashed edge so it
    reads as a note on MBPI rather than a fifth indicator; in the table it is a number and a grey bar without a button. */
-.score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure){margin:-4px 0 10px 18px;border-style:dashed}
-.score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure) summary{padding:8px 0}
-.score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure) summary span{color:var(--muted);font-size:12.5px;font-weight:600}
-/* 4.12: related papers no score uses, under the MBPI section; contrary evidence gets the warm accent */
-.lit-list{margin:6px 0 0;padding:0;list-style:none}
-.lit-list li{padding:7px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.45}
-.lit-list li p{margin:2px 0 0}
-.lit-list .lit-rel{display:inline-block;margin-right:4px;padding:0 6px;border-radius:4px;background:#eef3f6;color:var(--ink2);font-size:var(--fs-min);font-weight:700}
-.lit-list li[data-relation=contrary] .lit-rel{background:#fdecea;color:#a3271c}
-.lit-list .lit-src{color:var(--muted)}
-.ax-note.ax-evidence{word-break:keep-all;overflow-wrap:anywhere;line-height:1.4}
-.score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure) summary b{font-size:12px}
+.score-disclosure:is(.rx-disclosure,.breadth-disclosure){margin:-4px 0 10px 18px;border-style:dashed}
+.score-disclosure:is(.rx-disclosure,.breadth-disclosure) summary{padding:8px 0}
+.score-disclosure:is(.rx-disclosure,.breadth-disclosure) summary span{color:var(--muted);font-size:12.5px;font-weight:600}
+.score-disclosure:is(.rx-disclosure,.breadth-disclosure) summary b{font-size:12px}
 #comparison .rx-cv{display:block;min-width:64px;padding:4px 6px}
 #comparison .rx-cv .cv-bar i{background:#8aa0b0}
 #comparison .rx-none{color:var(--muted);font-weight:500}
@@ -690,7 +647,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .vm-grid button[aria-pressed=true]{border-color:#fff!important;box-shadow:0 0 0 1px #071d2b inset}
 #explore .vm-grid button:hover::after,#explore .vm-grid button:focus-visible::after{background:#061520;box-shadow:0 0 0 1px var(--nv-edge)}
 #explore .value-grid span{color:#f3f8fb;text-shadow:0 0 2px rgba(7,29,43,.7)}
-#explore .v-none{border-color:#8193a4}
 #explore .unexplored-outside summary{color:#c9a8f5}
 
 /* species pane */
@@ -725,7 +681,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .use-empty{color:#ffb39b}
 #explore .species-card .use-line{color:var(--ink2)}
 #explore .kind{border-color:#2b6e66;background:#123c41;color:#8eeadb}
-#explore .kind.cand{border-color:#7a5a20;background:#3a2c12;color:#f2d79b}
 
 /* detail: the taxon group's icon (no verified species photos in the repository) beside the name; sections, order and
    evidence labels as before, only the colours change */
@@ -777,7 +732,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* folds (2026-10-11 design concept, app.js syncFolds): from 1180px the species filters sit under '필터 더 보기' and the evidence
    below the two axis cards under '근거 자세히 보기'. A folded box is clipped and inert, not display:none, so its text stays laid
    out; below 1180px nothing folds and the two buttons are not shown. */
-.filter-toggle,.detail-cta,.mm-ico{display:none}
+.filter-toggle, .mm-ico{display:none}
 .filter-fold.folded,.detail-fold.folded{max-height:0;overflow:hidden;opacity:0}
 
 /* 1180px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
@@ -851,12 +806,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .ax-head h3::before{content:"";flex:none;width:18px;height:18px;background:var(--teal);-webkit-mask:var(--ax-i) center/contain no-repeat;mask:var(--ax-i) center/contain no-repeat}
   #explore .ax-card+.ax-sep+.ax-card .ax-head h3::before{background:#f0905a}
   #explore .ax-where{margin-top:4px;padding:12px 2px 2px;border-top:1px solid var(--line)}
-  #explore .detail-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:14px 0 0;padding:12px 16px;border:0;border-radius:10px;background:var(--teal);color:#04231e;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(68,215,192,.22)}
-  #explore .detail-cta::after{content:"";flex:none;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg)}
-  #explore .detail-cta:hover{background:#5fe3cf}
-  #explore .detail-cta[aria-expanded=true]{background:none;color:var(--teal-ink);box-shadow:inset 0 0 0 1px var(--teal)}
-  #explore .detail-cta[aria-expanded=true]::after{margin-top:4px;transform:rotate(-135deg)}
-  #explore .detail-cta:focus-visible{outline:2px solid #fff;outline-offset:2px}
   #explore .detail-fold:not(.folded){margin-top:6px}
 }
 /* below about 1800px 멍이's first-visit hint (left of 멍이, beside the zoom buttons) would cover the mode bar's right end: the bar
@@ -926,9 +875,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .status-chips:has(#alert-chip:not([hidden])) #notice-chip::before,#notice-chip.load-failed::before{background:#f2b233}
 .status-pop .pop-project{margin:0 0 8px;color:var(--muted);font-size:var(--fs-min);font-weight:700;letter-spacing:.04em}
 /* the team tag gives way where the tabs shrink (960px and below); phones keep the chip inside the screen */
-@media (max-width:960px){.chip-tail{display:none}}
 /* the freeze date rides the version on wide headers; narrower ones keep it in the status line (snapshot-date) */
-@media (max-width:1100px){.chip-freeze{display:none}}
 @media (max-width:740px){.status-chip#notice-chip{max-width:calc(100vw - 80px)}}
 
 /* map summary chip over the free part of the map: '● 참굴 기록 셀 19개 · 335건 · 2010–2026' (one line, display only). From 741 to
@@ -1015,8 +962,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .flow .bx.stock rect{fill:#fff8ea;stroke:#f2b84b;stroke-width:1.8}
 /* 4.14: the conservation state in words beside the value ('공식 LC' / '보전평가 미확인'), never only in a tooltip */
 .species-card .card-line .cl-cons{margin-left:4px;font-size:var(--fs-min);font-weight:500;color:var(--muted)}
-.species-card .card-line .cl-cons.unknown,.card-scores .held-word{color:#f2b233}
-.card-scores .held-word{font-size:var(--fs-min);font-weight:600}
+.species-card .card-line .cl-cons.unknown{color:#f2b233}
 /* 4.14: a sorted MFPI/MBPI table is grouped by cohort or stratum; a BBVI/MCUI sort carries its mixed-order notice */
 #comparison tr.cmp-group>th{padding:8px 12px 6px;text-align:left;font-size:12px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.12)}
 #comparison tr.cmp-group.mixed>th{color:#f2b233}
@@ -1027,8 +973,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* 2026-10-15 team check: no text under --fs-min (12px since the readability pass) on phones (390/375px: card score labels, group icons, map notes, sparkline
    labels, attribution, the matrix list). Desktop sizes stay as they are. */
 @media(max-width:740px){
-  .card-scores i small,.group-icon small,.use-group small,.card-scores .held-word,
-  #explore .key-note,.map-ui-bl .effort-key small,.matrix-unplaced small{font-size:var(--fs-min)}
+  .card-scores i small, .group-icon small, .use-group small, #explore .key-note, .map-ui-bl .effort-key small, .matrix-unplaced small{font-size:var(--fs-min)}
   .sd-spark text{font-size:var(--fs-min)}
   #explore .leaflet-control-attribution{font-size:var(--fs-min)!important} /* style.css sets 10px !important */
 }
@@ -1081,7 +1026,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* 2026-10-15 OBIS 출현 추세: the 4.11 suspension label and the ⚠ for a decline signal under the MCUI line (score unchanged) */
 .obis-off{display:inline-block;margin-left:6px;padding:1px 8px;border:1px solid currentColor;border-radius:99px;font-size:var(--fs-min);font-weight:600;opacity:.8;white-space:nowrap}
 .obis-warn-mark{margin-right:5px;color:#e0a33a;font-style:normal}
-.mt-obis{color:#f2b84b;font-style:normal;font-size:12px;line-height:1}
 /* '방법 결정' words open the method change timeline (app.js linkDecisions) */
 .md-link{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
 .md-link:hover{color:var(--teal,#3dd6c3)}
@@ -1324,10 +1268,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sp-art-icon .group-icon i{width:32px;height:32px}
   #explore .sp-type{display:flex;align-items:center;gap:14px;margin:0 0 12px;color:#fff;font-size:20px;font-weight:700}
   #explore .sp-type .sp-shape{width:22px;height:22px}
-  #explore .sp-badge-row{display:flex;align-items:center;gap:14px;padding:0 0 20px;border-bottom:1px solid var(--x-border)}
-  #explore .sp-badge{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 20px;border:1.5px solid var(--x-fill);border-radius:999px;background:none;color:#CDEBF4;font:inherit;font-size:16px;font-weight:700;text-align:left;cursor:pointer}
-  #explore .sp-badge:hover{background:rgba(142,197,215,.08)}
-  #explore .sp-badge span{font-size:20px;line-height:1}
   #explore .sp-info-wrap{position:relative;display:inline-flex}
   #explore .sp-info{display:grid;place-items:center;width:24px;height:24px;padding:0;border:1.5px solid #C3D1D9;border-radius:50%;background:none;color:#C3D1D9;font-size:13px;line-height:1;cursor:pointer}
   #explore .sp-info[aria-expanded=true],#explore .sp-info:hover{border-color:#fff;color:#fff}
@@ -1357,7 +1297,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .side-panel[data-tab=cell] .sp-foot{display:none}
   #explore .sp-cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:58px;border:0;border-radius:10px;background:var(--x-fill);color:#04121E;font:inherit;font-size:19px;font-weight:800;cursor:pointer}
   #explore .sp-cta:hover{background:#A6D5E4}
-  #explore .sp-cta:focus-visible,#explore .sp-actions .detail-act:focus-visible,#explore .sp-badge:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  #explore .sp-cta:focus-visible,#explore .sp-actions .detail-act:focus-visible{outline:2px solid #fff;outline-offset:3px}
   /* '선택 격자' tab: the summaries and panels that sat under the map */
   #explore .sp-cell{padding-top:16px}
   #explore .sp-cell:has(.map-below) .sp-cell-empty{display:none}
@@ -1390,7 +1330,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .evd-close:focus-visible,#explore .evd-foot button:focus-visible{outline:2px solid #fff;outline-offset:2px}
   #explore .ev-drawer #detail,#explore .ev-drawer .detail-pane{position:static;flex:1;min-height:0;height:auto;max-height:none;margin:0;padding:16px 22px 18px;overflow-y:auto;overscroll-behavior:contain;
     border:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;outline:0}
-  #explore .ev-drawer .detail-cta{display:none}
   #explore .evd-foot{display:flex;justify-content:space-between;gap:10px;padding:12px 18px 16px;border-top:1px solid var(--x-border)}
   #explore .evd-foot button{min-height:44px;padding:0 18px;border:1.5px solid var(--x-border2);border-radius:10px;background:none;color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
   #explore .evd-foot .evd-compare{border-color:var(--x-fill);color:#CDEBF4}
@@ -1414,8 +1353,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sp-latin{margin-top:6px}
   #explore .sp-art{width:150px;max-width:none;margin-top:-4px}
   #explore .sp-type{margin:4px 0 10px}
-  #explore .sp-badge-row{padding-bottom:12px}
-  #explore .sp-badge{min-height:40px;padding:6px 16px}
   #explore .sp-score{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:10px;padding:12px 0 10px}
   #explore .sp-score-head{grid-column:1}
   #explore .sp-range{grid-column:2;grid-row:1;margin:0;justify-self:end}
@@ -1431,8 +1368,6 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore #sp-name{margin-top:4px;font-size:34px}
   #explore .sp-art{width:116px;margin:-2px -8px 0 0}
   #explore .sp-type{margin:2px 0 8px;font-size:18px}
-  #explore .sp-badge-row{padding-bottom:10px}
-  #explore .sp-badge{min-height:36px;padding:4px 14px;font-size:15px}
   #explore .sp-score{padding:8px 0 6px}
   #explore .sp-num{font-size:44px}
   #explore .sp-cat{margin-top:0;font-size:16px}

@@ -25,10 +25,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare [hidden]{display:none!important}
 
 /* ---------- title ---------- */
-#compare .cmp-hero{margin:4px 0 22px}
-#compare .cmp-eyebrow{margin:0 0 10px;color:var(--cs-ink2);font-size:var(--fs-min);font-weight:600;letter-spacing:.42em;text-transform:uppercase}
-#compare .cmp-title{margin:0;color:var(--cs-ink);font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-.025em}
-#compare .cmp-lead{margin:8px 0 0;color:#d6e2e9;font-size:17px;line-height:1.45}
 
 /* ---------- search and filter bar ---------- */
 #compare .cmp-bar{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--cs-line);border-radius:12px;background:var(--cs-panel)}
@@ -65,8 +61,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cmp-panel-head h2{margin:0;color:var(--cs-ink);font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.02em}
 #compare .cmp-panel-head p{margin:4px 0 0;color:var(--cs-ink2);font-size:14px}
 /* '읽는 법' and '비교 기준' share one anchor, so both popovers open under the right end of the head */
-#compare .cmp-tools{position:relative;display:flex;flex:none;gap:8px}
-#compare .cmp-tools>div>.cmp-ghost{min-height:34px;padding:0 12px;font-size:13.5px;font-weight:500}
 #compare .cmp-i{display:inline-grid;place-items:center;width:15px;height:15px;border:1.3px solid currentColor;border-radius:50%;font-family:Georgia,serif;font-size:var(--fs-min);font-style:italic;font-weight:700;line-height:1}
 #compare #cmp-read-toggle[aria-expanded=true],#compare #cmp-basis-toggle[aria-expanded=true]{border-color:var(--cs-accent-hi);color:var(--cs-accent-hi)}
 #compare #cmp-basis-toggle[aria-expanded=true] svg{transform:rotate(180deg)}
@@ -183,7 +177,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cmp-profile{display:flex;flex-direction:column;min-width:0;padding:22px 24px 20px;background:var(--cs-panel2)}
 #compare .cp-head{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"id add" "id tile" "note note" "type type";gap:0 14px;align-items:start}
 #compare .cp-id{grid-area:id;min-width:0}
-#compare .cp-id .cmp-eyebrow{margin:0 0 18px;font-size:var(--fs-min);letter-spacing:.38em}
 #compare .cp-id h2{margin:0;color:var(--cs-ink);font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-.02em;word-break:keep-all}
 #compare .cp-latin{margin:4px 0 0;color:#d6e2e9;font-size:17px;font-style:italic}
 #compare .cp-add{grid-area:add;justify-self:end;min-height:34px;padding:0 14px;border-color:var(--cs-sel-line);color:var(--cs-accent-hi)}
@@ -198,17 +191,10 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .group-icon small{display:none}
 #compare .cp-tile .group-icon i{width:32px;height:32px;background:var(--g,#94a3b8)}
 #compare .cp-typeline{grid-area:type;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:14px 0 0}
-#compare .cp-sw{flex:none;width:14px;height:14px;border-radius:3px;background:#5d6f7b}
 #compare .cp-typeline b{color:var(--qt,var(--cs-ink));font-size:18px;font-weight:800}
 #compare .cp-typeline>span:not(.cp-status){color:var(--cs-ink2);font-size:14px}
-#compare .cp-status{display:inline-flex;align-items:center;padding:2px 10px;border:1px solid var(--cs-line2);border-radius:99px;color:var(--cs-ink);font-size:12px;font-weight:600}
 #compare .cp-use,#compare .cp-con{margin-top:16px;padding-top:16px;border-top:1px solid var(--cs-line)}
 /* the value column and the bars line up across BBVI, MFPI and MBPI */
-#compare .cp-main{display:grid;grid-template-columns:minmax(118px,max-content) minmax(0,1fr);grid-template-areas:"h chip" "big bar";align-items:center;gap:6px 0}
-#compare .cp-main h3{grid-area:h;margin:0;color:var(--cs-ink);font-size:17px;font-weight:500;white-space:nowrap}
-#compare .cp-main h3 b{font-weight:800}
-#compare .cp-main h3 span{color:var(--cs-ink2)}
-#compare .cp-con .cp-main h3 b{color:var(--cs-sand)}
 #compare .cp-chip{grid-area:chip;justify-self:end;max-width:100%;padding:3px 10px;border:1px solid var(--cs-line2);border-radius:99px;color:var(--cs-ink2);font-size:12px;line-height:1.35;text-align:right}
 #compare .cp-big{grid-area:big;justify-self:start;padding:0 14px 0 0;border:0;background:none;color:var(--cs-ink);font:inherit;font-size:48px;font-weight:800;line-height:1.08;letter-spacing:-.02em;font-variant-numeric:tabular-nums;cursor:pointer}
 #compare .cp-big:hover,#compare .cp-sub-num:hover,#compare .cp-sub-name:hover span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
@@ -217,12 +203,11 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-bar i{display:block;height:100%;border-radius:inherit;background:var(--cs-use)}
 #compare .cp-bar.sand i{background:var(--cs-con)}
 #compare .cp-cut{position:absolute;top:-5px;bottom:-5px;width:2px;margin-left:-1px;border-radius:1px;background:#fff}
-#compare .cp-main .cp-bar{grid-area:bar}
 #compare .cp-sub{display:grid;grid-template-columns:118px minmax(0,1fr) 58px;align-items:center;margin-top:8px}
 #compare .cp-sub-name{justify-self:start;border:0;background:none;padding:0;color:var(--cs-ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 #compare .cp-sub .cp-bar{height:6px}
 #compare .cp-sub-num{justify-self:end;border:0;background:none;padding:0;color:var(--cs-ink);font:inherit;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;cursor:pointer}
-#compare .cp-rest,#compare .cp-tag{margin:12px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
+#compare .cp-rest{margin:12px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
 /* 4.16 evidence profile: amount and top-item replication on one line */
 #compare .cp-evidence{margin:10px 0 0;padding:8px 10px;border-left:2px solid var(--cs-line2);color:var(--cs-ink2);font-size:12px;line-height:1.55;overflow-wrap:anywhere}
 #compare .cp-evidence b{display:block;font-size:var(--fs-min);letter-spacing:.04em;color:var(--cs-ink)}
@@ -243,7 +228,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare :is(.cmp-more,.cmp-fold) :is(h3,h4){color:var(--cs-ink)}
 #compare :is(.cmp-more,.cmp-fold) :is(p,li,dd,dt){color:#c7d4dc}
 #compare :is(.cmp-more,.cmp-fold) a{color:var(--cs-accent-hi)}
-#compare .decision-close{border-color:var(--cs-line2);background:transparent;color:var(--cs-ink)}
 
 /* ---------- table view ---------- */
 #compare .cmp-table-view{margin-top:18px}
@@ -255,8 +239,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cmp-tray{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(260px,360px);align-items:center;gap:16px;margin-top:22px;padding:12px 14px 12px 22px}
 /* nothing chosen yet: one low dashed line */
 #compare .cmp-tray.empty{display:flex;align-items:center;min-height:43px;padding:9px 20px;border-style:dashed;border-color:var(--cs-line2);background:var(--cs-low);box-shadow:none}
-#compare .ct-empty{margin:0;color:var(--cs-ink2);font-size:13.5px;line-height:1.45}
-#compare .ct-empty b{margin-right:10px;color:var(--cs-ink);font-weight:800;font-variant-numeric:tabular-nums}
 #compare .ct-head h2{margin:0;color:var(--cs-ink);font-size:18px;font-weight:800}
 #compare .ct-count{color:var(--cs-ink2);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
 #compare .ct-toggle{display:none}
@@ -287,24 +269,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cmp-fold[open]>summary::after{transform:rotate(-135deg)}
 #compare .cmp-fold>:not(summary){margin:0 22px 18px}
 #compare .matrix-unplaced{border-color:var(--cs-sand);background:#211c13;color:#e9d8bf}
-#compare .mt-key{color:var(--cs-ink2)}
 /* a card per type: the plain verdict on top, the formal name and the species under it */
-#compare .mt-cell{padding:10px 12px;border:1px solid var(--cs-line);border-radius:10px;background:var(--cs-panel)}
-#compare .mt-plain{margin:0 0 3px;color:var(--qt,var(--cs-ink));font-size:14.5px;font-weight:800}
-#compare .mt-cell .mt-box{padding:0;border:0;border-radius:0;background:none}
-#compare .mt-box>b{flex-wrap:wrap;color:var(--cs-ink2);font-weight:500}
-#compare .mt-box>b span,#compare .mt-box small,#compare .mt-box em{color:var(--cs-ink3)}
-#compare .mt-box button{border-color:var(--cs-line);background:rgba(17,57,67,.35);color:var(--cs-ink)}
-#compare .mt-box button:hover{border-color:var(--cs-accent-hi)}
-#compare .mt-box button[data-dim]{opacity:.35}
-#compare .mt-dot{background:#dfe8ee;border-color:#dfe8ee}
-#compare .mt-dot.hollow{background:none}
-#compare .decision-section{margin:0}
-#compare .decision-card{border-color:var(--cs-line);background:var(--cs-panel);color:var(--cs-ink)}
-#compare .decision-card em,#compare .decision-card span{color:var(--cs-ink2)}
-#compare .decision-card[aria-expanded=true]{border-color:var(--cs-accent-hi)}
-#compare .decision-more{color:var(--cs-accent-hi)}
-#compare .decision-list>.decision-detail{border:1px solid var(--cs-line);background:var(--cs-panel);color:var(--cs-ink)}
 
 /* ---------- side-by-side dialog ---------- */
 #compare .cmp-dialog{width:min(1040px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid var(--cs-line2);border-radius:14px;background:#0a2335;color:var(--cs-ink);box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -359,9 +324,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 }
 @media (max-width:740px){
   #compare{padding:14px 12px 96px}
-  #compare .cmp-title{font-size:30px}
-  #compare .cmp-lead{font-size:15.5px}
-  #compare .cmp-eyebrow{letter-spacing:.3em}
   #compare .cmp-mode{width:100%}
   #compare .cmp-search{flex:1 1 100%}
   #compare .cmp-groups{gap:8px}
@@ -371,7 +333,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare .cmp-panel-head h2{font-size:23px}
   #compare .cmp-panel-head p{font-size:13px}
   /* page 12px + panel 12px: a popover reaches 8px from both screen edges */
-  #compare .cmp-tools{margin-left:auto}
   #compare .cmp-pop,#compare .cmp-read-pop{right:-16px;width:calc(100vw - 16px)}
   #compare .matrix-frame{margin-top:14px;padding:0 8px 54px 32px}
   #compare.simulating .matrix-frame{padding-top:38px}
@@ -391,13 +352,11 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare .cp-id h2{font-size:30px}
   #compare .cp-tile .group-icon{width:64px;height:64px}
   #compare .cp-big{font-size:40px}
-  #compare .cp-main{grid-template-columns:minmax(100px,max-content) minmax(0,1fr)}
   #compare .cp-sub{grid-template-columns:100px minmax(0,1fr) 50px}
   /* the basket folds into a bar fixed above the page bottom, left of 멍이 (fab 48px at right 16px) */
   #compare .cmp-tray{position:fixed;left:8px;right:72px;bottom:10px;z-index:900;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"head go" "list list";gap:8px;margin:0;padding:8px 10px 8px 14px;background:#0a2335;box-shadow:0 10px 30px rgba(0,0,0,.55)}
   /* with nothing chosen the line stays in the page (no bar over the matrix or beside 멍이) */
   #compare .cmp-tray.empty{position:static;margin-top:16px;padding:9px 14px;background:var(--cs-low);box-shadow:none}
-  #compare .ct-empty{font-size:12.5px}
   /* the toggle carries the count on phones; the heading stays for screen readers */
   /* 멍이's first-visit hint sits at the same height (bottom 22px); the bar waits above it until the hint closes */
   body:has(.bbc-hint:not([hidden])) #compare .cmp-tray{bottom:76px}
@@ -428,7 +387,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .w-range::-moz-range-thumb{width:14px;height:14px;border:3px solid #0c2638;border-radius:50%;background:#f2f7f9}
 #compare .cmp-pop .weight-control{position:relative;display:block}
 #compare .cmp-pop .w-range{background:linear-gradient(#eaf2f5,#eaf2f5) var(--w0) 50%/2px 16px no-repeat}
-#compare .w-ends{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600}
 #compare .w-end-bio{color:var(--cs-bio)}
 #compare .w-end-food{color:var(--cs-accent-hi);text-align:right}
 #compare .w-presets{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
@@ -457,19 +415,10 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare[data-cmp-mode=table] .cmp-bar{border-bottom-color:transparent;border-radius:12px 12px 0 0}
 #compare .cmp-wrow{padding:0 8px 8px;border:1px solid var(--cs-line);border-top:0;border-radius:0 0 12px 12px;background:var(--cs-panel)}
 #compare .cmp-wrow[hidden]{display:none}
-#compare .cmp-wrow-in{display:flex;align-items:center;gap:10px 20px;padding:10px 16px;border:1px solid var(--cs-line);border-radius:9px;background:var(--dt-well)}
-#compare .cmp-wrow-t{display:grid;flex:none;margin:0;color:var(--cs-ink);font-size:12.5px;line-height:1.45}
-#compare .cmp-wrow-t b{font-weight:600}
-#compare .cmp-wrow-t small{color:var(--cs-ink2);font-size:12px}
-#compare .cmp-wrow-s{display:flex;flex:1 1 auto;align-items:center;gap:12px;min-width:0}
-#compare .w-v-bio,#compare .w-v-food{flex:none;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
-#compare .w-v-bio{color:var(--cs-bio)}
-#compare .w-v-food{color:var(--cs-accent-hi)}
 #compare .cmp-w-slot{display:flex;flex:1 1 auto;min-width:120px}
 #compare .cmp-w-slot .w-range{--w:50%;--w0:50%;-webkit-appearance:none;appearance:none;width:100%;height:30px;margin:0;cursor:pointer;background:linear-gradient(#eaf2f5,#eaf2f5) var(--w0) 50%/2px 16px no-repeat}
 #compare .cmp-w-slot .w-range:disabled{cursor:not-allowed}
 #compare .w-range:focus-visible{outline:2px solid var(--cs-accent-hi);outline-offset:2px;border-radius:4px}
-#compare .cmp-wrow-note{flex:none;margin:0;color:var(--cs-ink2);font-size:12px}
 /* five type cards; a pressed card keeps only its type in the table */
 #compare .dt-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 18px}
 #compare .dt-card{display:grid;align-content:start;gap:3px;min-height:44px;padding:12px 14px;border:1px solid var(--cs-line);border-radius:10px;background:var(--cs-panel);color:var(--cs-ink);font:inherit;text-align:left;cursor:pointer;transition:background-color .2s,border-color .2s}
@@ -558,8 +507,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison .dt-x-sum{font-variant-numeric:tabular-nums}
 #compare #comparison .dt-x-sub{margin:6px 0 0;color:var(--dt-ink2);font-size:12px;line-height:1.5}
 #compare #comparison .dt-x-link{display:inline-flex;align-items:center;gap:4px;min-height:44px;color:var(--cs-accent-hi);font-size:13px;font-weight:700}
-#compare #comparison .dt-x-ev{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-#compare #comparison .dt-x-ev>b{margin-right:4px;color:var(--dt-ink2);font-size:12px;font-weight:600}
 #compare #comparison .ev-chip{margin:0;padding:3px 9px;border:1px solid var(--dt-chip);border-radius:6px;background:none;color:var(--dt-ink2);font-size:12px;white-space:normal}
 #compare #comparison .ev-chip.warn{border-color:var(--dt-warn-line);color:var(--dt-warn)}
 #compare #comparison .ev-chip.none{border-style:dashed}
@@ -582,11 +529,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare .dt-card[data-cmp-type=none]{grid-column:1/-1}
   #compare #comparison .dt-x3{grid-template-columns:1fr}
 }
-@media (max-width:760px){
-  #compare .cmp-wrow-in{flex-wrap:wrap}
-  #compare .cmp-wrow-s{flex:1 1 100%;order:2}
-  #compare .cmp-wrow-note{order:3}
-}
 @media (max-width:740px){
   #compare #comparison thead th:first-child,#compare #comparison tbody th{min-width:140px;width:140px}
 }
@@ -594,11 +536,9 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
 #compare #comparison .stock-decline.scored{border-color:#f2b84b}
 /* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) (theme.css holds the explore part) */
-@media(max-width:740px){#compare .cmp-i{font-size:var(--fs-min)}#compare .cp-id .cmp-eyebrow{font-size:var(--fs-min)}}
+@media(max-width:740px){#compare .cmp-i{font-size:var(--fs-min)}}
 /* 7/15 (2026-10-15): the MCUI category beside its number, the MCUI definition and the '보조 정보' line */
-#compare .cp-con .cp-main{grid-template-areas:"h chip" "def def" "big bar"}
 #compare .cp-def{grid-area:def;margin:0;color:var(--cs-ink2);font-size:12px;line-height:1.4}
-#compare .cp-big .cp-cat{margin-left:6px;color:var(--cs-ink2);font-size:17px;font-weight:600;letter-spacing:0;vertical-align:middle}
 #compare .cp-aux{margin:6px 0 0;color:var(--cs-ink2);font-size:12px;line-height:1.55}
 #compare #comparison .cv-num .cv-cat{display:block;margin-top:1px;color:var(--dt-ink2);font-size:var(--fs-min);font-weight:600;letter-spacing:0}
 #compare #comparison .dt-x-aux{color:var(--dt-ink)}
@@ -617,8 +557,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #compare .cp-obis-more summary{color:var(--cs-ink3);font-size:12px;cursor:pointer}
 #compare .cp-obis-more p{margin-top:6px}
 /* ⚠ beside a matrix point: a decline signal with an MCUI under the line. Distinct from the hollow point */
-#compare .matrix-point .mp-obis{position:absolute;right:calc(100% + 1px);bottom:calc(100% + 1px);color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
-#compare .matrix-point.pilot[data-clustered] .mp-obis,#compare .matrix-point.pilot[data-dim] .mp-obis{visibility:hidden}
 #compare .matrix-cluster-btn .mp-obis-pill{position:absolute;left:-5px;top:-8px;color:#f2b84b;font-size:12px;font-style:normal;line-height:1;text-shadow:0 0 2px #081d2e,0 0 2px #081d2e;pointer-events:none}
 
 /* 2026-10-15: MBPI evidence kind (의약 표적 / 기능성 펩타이드) and the secondary MBPI-Rx under the profile's MBPI */
@@ -659,7 +597,6 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   max-width:1640px;padding:16px 24px 40px
 }
 body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B2233) 0,#04121E 1100px) no-repeat,#04121E}
-#compare .cmp-hero{display:none}
 #compare .cmp-i{width:16px;height:16px;font-size:12px}
 
 /* ---------- toolbar · slider panel · status line ---------- */
@@ -775,7 +712,6 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .lg-dot{width:13px;height:13px;border-color:#e5edf1;background:#e5edf1}
 #compare .lg-dot.hollow{border-color:#8fb3bf;background:none}
 #compare .lg-dot.sel{width:12px;height:12px;margin:0 4px;border-color:#5fcf8a;background:#5fcf8a;box-shadow:0 0 0 2.5px var(--cs-panel),0 0 0 4.5px var(--cs-accent-hi)}
-#compare .cmp-legend .mt-obis{color:#f2b84b;font-style:normal}
 #compare .cmp-spread-note{margin:0 0 0 auto;color:var(--cs-ink);font-size:13.5px}
 #compare .cmp-limit{margin:12px 0 0;color:var(--cs-ink2);font-size:14px}
 
@@ -796,7 +732,6 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .cp-typeline{grid-area:type;gap:8px 12px;margin:10px 0 0}
 #compare .cp-typeline b{color:var(--qt,var(--cs-ink));font-size:20px;font-weight:700}
 #compare .cp-typeline.none b{color:var(--cs-ink2)}
-#compare .cp-status{padding:3px 12px;border-color:var(--cs-line2);background:#13293a;color:var(--cs-ink);font-size:13px;font-weight:500}
 #compare .cp-use,#compare .cp-con{margin-top:0;padding:14px 0 12px;border-top:0}
 #compare .cp-use{border-bottom:1px solid var(--cs-line)}
 #compare .cp-h{display:flex;align-items:center;gap:8px}
@@ -806,7 +741,6 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .cp-info span{display:grid;place-items:center;width:19px;height:19px;border:1.5px solid currentColor;border-radius:50%;font-family:Georgia,serif;font-size:12px;font-style:italic;font-weight:700;line-height:1}
 #compare .cp-info:hover{color:var(--cs-ink)}
 #compare .cp-chip{margin-left:auto;padding:3px 10px;border-color:var(--cs-line2);border-radius:8px;color:var(--cs-ink);font-size:12.5px;white-space:nowrap}
-#compare .cp-obis-mark{margin-left:auto;color:#f2b84b;font-size:12.5px;white-space:nowrap}
 #compare .cp-bigrow{display:grid;grid-template-columns:minmax(132px,max-content) minmax(0,1fr);align-items:center;gap:0 12px;margin-top:4px}
 #compare .cp-big{padding:0;font-size:56px;font-weight:800;line-height:1.1}
 #compare .cp-con .cp-big{color:var(--cs-sand)}

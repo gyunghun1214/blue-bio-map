@@ -284,7 +284,7 @@ function scoreHtml(stop,k,big){
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
 const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
 const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
-function cardHtml(stop,i,level,mode){
+function cardHtml(stop,i,level){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
   const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
     <p class="x-obs">이 ${c.size_deg}° 셀에서 ${esc(yearsText(c))} 관측 기록 <b>${esc(c.records)}</b>건 <small>(지점 ${esc(c.sites)}곳)</small></p>
@@ -393,12 +393,12 @@ function renderCard(){
   if(!show){card.hidden=true;card.dataset.stop='';return;}
   const i=s.arrived;
   const key=i+(s.reveal[i]>=REVEAL_DETAIL?':seen':'');
-  if(card.dataset.stop!==key){card.innerHTML=cardHtml(DATA.stops[i],i,s.reveal[i],'3d');card.dataset.stop=key;}
+  if(card.dataset.stop!==key){card.innerHTML=cardHtml(DATA.stops[i],i,s.reveal[i]);card.dataset.stop=key;}
   card.querySelector('.x-card').dataset.level=s.reveal[i];
   card.hidden=false;
 }
 function renderCards(){
-  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('');
+  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0))).join('');
 }
 function render(){renderProgress();renderCard();}
 function save(){

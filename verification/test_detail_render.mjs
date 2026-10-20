@@ -40,7 +40,8 @@ assert.equal(N,0,'감태 compound cohort below the stratum minimum');
 const BAD=/undefined|NaN|\[object Object\]/g, SEA_EN=/Sea of Japan|East China Sea|Kuroshio Current|Yellow Sea(?! Fisheries)/g; // 해삼's institute name is not a sea label
 // A template that puts its own period after a source sentence that already ends in one prints '..' ('cod..'); '...' stays.
 const DOTS=/[^.]\.\.(?!\.)/g;
-// The evidence files keep exclusion reasons and 누락 items in English; the page shows each one in Korean (REASON_KO in app.js).
+// The evidence files keep exclusion reasons and 누락 items in English; none may reach the page in English (since PR #222 the
+// page draws no exclusion reason, so app.js's REASON_KO translation table was removed on 2026-10-21).
 const EN_REASONS=[];
 (function walk(o,parent){if(Array.isArray(o))o.forEach(v=>walk(v,parent));else if(o&&typeof o==='object')for(const [k,v] of Object.entries(o)){
   if(typeof v==='string'&&(k==='exclusion_reason'||k==='reason'&&parent==='potency_replications')){if(!/[가-힣]/.test(v))EN_REASONS.push(T.esc(v));}
