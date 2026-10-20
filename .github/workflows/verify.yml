@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Check browser and data code
+        # bash -e: any failing command fails the step. The default pwsh judged only the last command's exit code, so five
+        # failing checks (a CRLF checkout, a Windows path) passed unnoticed until 2026-10-20.
+        shell: bash
         run: |
           node --check dist/app.js
           node --check verification/uicheck.mjs

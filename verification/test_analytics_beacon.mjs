@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-const D=new URL('../dist/',import.meta.url), read=f=>fs.readFileSync(new URL(f,D),'utf8');
+const D=new URL('../dist/',import.meta.url), read=f=>fs.readFileSync(new URL(f,D),'utf8').replace(/\r\n/g,'\n'); // a Windows checkout (CI) has CRLF
 assert.deepEqual(JSON.parse(read('analytics.json')),{cf_beacon_token:''},'committed with an empty token: nothing loads until the team adds one');
 const code=read('analytics.js');
 
