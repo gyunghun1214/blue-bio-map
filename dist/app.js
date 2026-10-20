@@ -85,7 +85,6 @@ const mbpiRxOf = s => {
   if(!top||cls[top.stratum_id]!=='include'||top.adjusted!==best||top.stratum_id!==rx.stratum_id||!Number.isFinite(rx.value)||Math.abs(rx.value-best)>=.06)return null;
   return {value:rx.value,stratum:itemStratum(top,a)};
 };
-// 2026-10-17: a species without MBPI-Rx is outside the drug-target strata; the reason says where its items are
 // 2026-10-15 (display only): what kind of evidence an MBPI rests on. 'functional' = the strata the MBPI-Rx pre-registration
 // classes 'exclude' (ACE·잔틴 산화효소 peptides, food-protein functional peptides); every other stratum is a drug target
 // (항균·항암·기타 표적). Nothing is recomputed: share = functional items / scored items, kind = the class of the item MBPI takes
@@ -1412,9 +1411,6 @@ function substituteText(s){
       `${orig(s.food_name)}(${[escL(s.taxon_label),'섭취 부위 '+escL(s.part),s.doc_code&&'문서 코드 '+escL(s.doc_code),s.n!=null&&'n '+escL(s.n)].filter(Boolean).join(', ')})의 값을 썼습니다. `+
       `${verifiedSource(s.source_id,'uFiSh ↗')}`;
 }
-// The evidence files keep reasons and 누락 items in English (research notes); the page shows them in Korean. One missing here
-// prints as written, and verification/test_detail_render.mjs reports it.
-// 4.9: the scale is the row's own (pIC50 in the ACE stratum, pKi/pEC50 in a relaxed one), so the gap reason carries it.
 const supplementalRecord=o=>`<p class="fine">별도 원값(점수 미사용) ${escL(o.record_id)} · ${escL(o.sample_state)} · ${escL(o.basis)}: `+
   `${Object.entries(o.values||{}).map(([key,v])=>`${escL(nutrientNames[key]||key)} ${escL(v.value)} ${escL(v.unit)}`).join(' / ')}. `+
   `${verifiedSource(o.source_id,'원자료 ↗')}</p>`;
@@ -1474,10 +1470,9 @@ function verifiedBioTrace(s){
   if(!items.length||a.axis_errors?.MBPI)return '';
   const cfg=data.assessmentInfo?.method?.bioactivity||{};
   const top=Math.max(...items.map(x=>x.adjusted));
-  // Independence is judged on the value that sets MBPI, as the BBVI rule does; other rows are other peptides or compounds.
+  // The item that sets MBPI; the other rows are other peptides or compounds.
   const best=items.find(x=>Math.abs(x.adjusted-top)<1e-9);
   const doiLink=d=>`<a href="https://doi.org/${encodeURI(d)}" target="_blank" rel="noopener">${escL(d)}</a>`;
-  // e.g. "Do et al. 2012" from the provider line; the DOI link when the provider names no author-year.
   // ponytail: the strongest rows only; a ChEMBL trace can hold dozens, and every row stays in assessments.json.
   const SHOWN=12, sorted=[...items].sort((x,y)=>y.adjusted-x.adjusted);
   const rows=sorted.slice(0,SHOWN).map(x=>{
@@ -1609,9 +1604,6 @@ function verifiedNationalFactBody(s){
   return n?`<p>국가 평가(한국 범위): ${escL(n.category)} · 게재명 ${orig(n.name_as_published)} · 목록 ${escL(n.list_page_printed)}쪽 · ${verifiedSource(n.source_id,'국가생물적색자료집 2024 ↗')}</p>`+
     '<p class="fine">한국 범위의 참고 정보입니다. 이 종의 MCUI는 IUCN 전 지구 평가를 바탕으로 합니다.</p>':'';
 }
-// 4.17 (prereg-4.17-2026-10-15 2): the preliminary assessment behind the MCUI, with its inputs, in the species detail only
-// 4.19 (prereg-4.19-2026-10-15 1): a reporting-rate ratio at or below the decline ratio no longer blocks the Rapid LC check;
-// its numbers stay in the species detail beside the check
 // 4.11 (prereg 5.1): a sub-national list whose back-test failed is shown as reference beside the next basis, never as the score.
 function subNationalReference(sub){
   const ref=sub?.sub_national_reference;
@@ -2266,7 +2258,6 @@ function closeDrawer(restore=true){
   if(restore){const ok=x=>x&&document.contains(x)&&x.offsetParent!==null&&!x.closest('#ev-drawer');(ok(drawerReturn)?drawerReturn:$('sp-cta'))?.focus({preventScroll:true});}
   drawerReturn=null;
 }
-// kept for the checks that open every fold (readability_check): nothing in #detail folds any more, the drawer holds it all
 // the species pane's selects and 활용 특성 chips fold the same way under '필터 더 보기' (selected chips stay in #use-extra)
 let filtersOpen=false;
 function syncFolds(){
@@ -2364,7 +2355,6 @@ function renderCandidateDetail(s){
     // 3.1: count only the scoring item's stratum; ChEMBL items of other target x endpoint cohorts are listed apart
     const trace=pilot?.bioactivity_trace||[], same=trace.filter(x=>x.stratum_id===bestBio(pilot)?.stratum_id), other=trace.length-same.length;
     const papers=new Set(same.flatMap(x=>x.original_paper_dois||[]).map(d=>d.toLowerCase())).size;
-    // 3.24: a used potency replication is the second paper behind the top item (its BBVI rests on it), so the summary names it
     const bioDetail=mbpi===null?'기원종→화합물→assay 원문 미검수':pilot?.mbpi_floor?`MBPI ${scoreText(s,'MBPI',mbpi)} · ${pilot.mbpi_label}. ${pilot.mbpi_floor.meaning}`:`${released()?'정식 산출':'검증 전 시범'} MBPI ${scoreText(s,'MBPI',mbpi)} · 같은 시험 조건 측정값 ${same.length}개, 원논문 ${papers}편${papers<2?', 독립 재현 미확인':''}${other?` · 다른 비교집단 ${other}개는 점수 근거에 따로 표시`:''}. 같은 코호트 안의 상대 백분위이며 임상 효능·종 간 가치 순위가 아닙니다.`;
     const categories={ENDANGERED:'EN · 위기',LEAST_CONCERN:'LC · 관심대상'};
     const conservation=i.record?.category
@@ -3046,7 +3036,6 @@ function speciesCellStyle(type,active){
 }
 // Typed species whose MCUI is a national list (Korean or range state): the cell colour then rests on a national assessment.
 const nationalTyped=g=>[...g.species.values()].filter(s=>matrixType(s)&&extinctionSeparate(s)&&!subNationalMcui(s)&&!preliminaryMcui(s)).length;
-// 3.27: typed species whose BBVI carries the single-paper label
 // 4.3: sub-national values are counted apart, never as national
 const typedNotes=g=>{const t=[...g.species.values()].filter(matrixType),n=f=>t.filter(f).length;
   return [['국가 평가 기반 MCUI',nationalTyped(g)],['지방 목록 MCUI',n(subNationalMcui)]].filter(([,k])=>k).map(([l,k])=>' · '+l+' '+k+'종').join('');};

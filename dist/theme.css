@@ -212,7 +212,6 @@ main{max-width:none;margin:0;padding:0}
 /* ---------- Compare / method ---------- */
 #compare,#method{max-width:1320px;margin:0 auto;padding:32px 24px 56px}
 .comparison,.matrix-explanation,.method-card,.method-bottom article,.source-section,.decision-detail,.weight-control{border-radius:14px}
-/* Species evidence opens under the chosen card's row (dense lets later cards fill that row first). */
 .method-card{border:1px solid var(--line);box-shadow:none}
 /* Five species columns fit the table box from about 1250px (1440×900 and 1280×900): 170px row labels + 5 × (160px bar + cell
    padding); narrower screens scroll the table sideways. */
@@ -358,7 +357,7 @@ footer{max-width:none;padding:16px 20px;background:#fff}
 .seg.checked_none,.seg.searched_none{background:#eef1f4;color:#33475b;border:1px dashed #8a9bab}
 /* method tab: labelled, spaced bullets */
 .method-card li{margin:8px 0}.method-card li b{color:var(--ink);margin-right:4px}
-/* 남색 설명 상자는 매트릭스 높이까지만, 미배치·축 쌍 상자는 아래 전체 폭. 휴대폰은 DOM 순서대로 매트릭스 바로 밑 */
+/* 남색 설명 상자는 매트릭스 높이까지만, 휴대폰은 DOM 순서대로 매트릭스 바로 밑 */
 @media(min-width:741px){.matrix-explanation{grid-column:2;grid-row:1/4}#matrix-note{margin-bottom:0}}
 
 /* Comparison table scrolls sideways: keep the swipe inside the table, show a thin bar and a keyboard focus ring */
@@ -732,7 +731,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* folds (2026-10-11 design concept, app.js syncFolds): from 1180px the species filters sit under '필터 더 보기' and the evidence
    below the two axis cards under '근거 자세히 보기'. A folded box is clipped and inert, not display:none, so its text stays laid
    out; below 1180px nothing folds and the two buttons are not shown. */
-.filter-toggle, .mm-ico{display:none}
+.filter-toggle,.mm-ico{display:none}
 .filter-fold.folded,.detail-fold.folded{max-height:0;overflow:hidden;opacity:0}
 
 /* 1180px and up: the map fills the screen under the app bar and the species list and the detail float over it (sticky while
@@ -874,8 +873,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #notice-chip::before{content:"";flex:none;width:7px;height:7px;margin-right:3px;border-radius:50%;background:#44d7c0}
 .status-chips:has(#alert-chip:not([hidden])) #notice-chip::before,#notice-chip.load-failed::before{background:#f2b233}
 .status-pop .pop-project{margin:0 0 8px;color:var(--muted);font-size:var(--fs-min);font-weight:700;letter-spacing:.04em}
-/* the team tag gives way where the tabs shrink (960px and below); phones keep the chip inside the screen */
-/* the freeze date rides the version on wide headers; narrower ones keep it in the status line (snapshot-date) */
+/* phones keep the status chip inside the screen */
 @media (max-width:740px){.status-chip#notice-chip{max-width:calc(100vw - 80px)}}
 
 /* map summary chip over the free part of the map: '● 참굴 기록 셀 19개 · 335건 · 2010–2026' (one line, display only). From 741 to
