@@ -1,7 +1,14 @@
+# CSP (2026-10-21): the pages' only inline script is index.html's onload="this.media='all'" (the three late stylesheets),
+# allowed by its hash in script-src-attr. script-src keeps 'unsafe-inline' only for browsers without script-src-elem/-attr
+# (Chrome <75, Firefox <108, Safari <15.4), which ignore those two and would otherwise never apply the late stylesheets.
+# Outside origins: Supabase (live-data.js), GIBS and GEBCO map tiles (app.js), Cloudflare Web Analytics (analytics.js, only
+# with a token). verification/test_csp_headers.mjs checks the policy against the pages and the code.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; script-src-elem 'self' https://static.cloudflareinsights.com; script-src-attr 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://gibs.earthdata.nasa.gov https://wms.gebco.net; font-src 'self'; connect-src 'self' https://mmsyrshjuaxdvegjhpdz.supabase.co https://cloudflareinsights.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 # Loaded from index.html with ?v=<first 10 hex of sha256 of the LF-normalized file>: recompute it whenever the file changes
 # (verification/test_client_outdated.mjs fails until it matches).
