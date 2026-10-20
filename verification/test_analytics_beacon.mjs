@@ -60,7 +60,11 @@ for(const [name,page] of [['index.html',html],['expedition.html',exp]]){
   assert.ok(!page.includes('cloudflareinsights'),`${name}: no beacon tag in the markup`);
 }
 assert.match(html,/<p class="fine mt-visits" data-analytics-note hidden>방문 수를 셉니다\. 쿠키와 개인정보는 모으지 않습니다\(<span lang="en">Cloudflare Web Analytics<\/span>\)\.<\/p><\/div>\n<\/section>/);
-// (5) dist/_headers sets no Content-Security-Policy, so there is nothing to widen for the beacon
-assert.ok(!/Content-Security-Policy/i.test(read('_headers')));
+// (5) the Content-Security-Policy in dist/_headers lets the beacon load (script-src and, where supported, script-src-elem)
+// and send its counts (connect-src)
+const csp=/^\s+Content-Security-Policy:\s*(.+)$/m.exec(read('_headers'))?.[1]||'';
+const allows=(directive,origin)=>csp.split(';').some(d=>{const [k,...v]=d.trim().split(/\s+/);return k===directive&&v.includes(origin);});
+for(const d of ['script-src','script-src-elem'])assert.ok(allows(d,'https://static.cloudflareinsights.com'),`CSP ${d} lets the beacon load`);
+assert.ok(allows('connect-src','https://cloudflareinsights.com'),'CSP connect-src lets the beacon send');
 
 console.log('PASS: visit counting loads the beacon only with a token, never offline; the note shows only then; both pages load it deferred');
