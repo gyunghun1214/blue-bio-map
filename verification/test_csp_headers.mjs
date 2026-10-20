@@ -1,8 +1,8 @@
 // Content-Security-Policy in dist/_headers (2026-10-21): it must keep matching the pages and the code, or the site breaks
 // only where the header is served (Cloudflare), never on the local python server. (1) every inline event handler in the
-// pages is allowed by its hash and there is no inline <script>; (2) the outside origins the code loads from are allowed in
-// the directive that governs them; (3) the browser features the Permissions-Policy turns off are used nowhere.
-// The beacon's origins are checked in test_analytics_beacon.mjs. Run: node verification/test_csp_headers.mjs
+// pages is allowed by its hash, none is written into markup from the JS, and there is no inline <script>; (2) the Supabase
+// API, the two map tile servers and the visit-count beacon are allowed in the directive that governs each; (3) the browser
+// features the Permissions-Policy turns off are used nowhere. Run: node verification/test_csp_headers.mjs
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -16,7 +16,7 @@ const dir=Object.fromEntries(csp.split(';').map(d=>d.trim().split(/\s+/)).filter
 
 // (1) inline code in the pages
 const pages=fs.readdirSync(D).filter(f=>f.endsWith('.html'));
-const handlers=pages.flatMap(f=>[...read(f).matchAll(/\son[a-z]+="([^"]*)"/g)].map(m=>[f,m[1]]));
+const handlers=pages.flatMap(f=>[...read(f).matchAll(/\son[a-z]+=(["'])(.*?)\1/g)].map(m=>[f,m[2]]));
 assert.ok(handlers.length>0,'index.html loads its late stylesheets with onload handlers');
 assert.ok(dir['script-src-attr']?.includes("'unsafe-hashes'"),'script-src-attr allows hashed handlers');
 for(const [f,code] of handlers){
@@ -26,6 +26,11 @@ for(const [f,code] of handlers){
 for(const f of pages){
   assert.doesNotMatch(read(f),/<script\b(?![^>]*\bsrc=)[^>]*>/,`${f}: an inline <script> would be blocked`);
   assert.doesNotMatch(read(f),/javascript:/i,`${f}: a javascript: URL would be blocked`);
+}
+const scripts=fs.readdirSync(D).filter(f=>f.endsWith('.js'));
+for(const f of scripts){
+  assert.doesNotMatch(read(f),/<[a-z][^<>]*\son[a-z]+=/i,`${f}: markup with an inline handler would be blocked`);
+  assert.doesNotMatch(read(f),/setAttribute\(\s*['"]on/,`${f}: an inline handler set as an attribute would be blocked`);
 }
 assert.ok(!dir['script-src-elem'].includes("'unsafe-inline'")&&!dir['script-src-attr'].includes("'unsafe-inline'"),
   "'unsafe-inline' only in script-src, the fallback for browsers without script-src-elem/-attr");
@@ -37,10 +42,14 @@ assert.ok(api&&dir['connect-src'].includes(origin(api)),`connect-src allows the 
 const tiles=[...read('app.js').matchAll(/tileLayer(?:\.wms)?\([^)]*?'(https:\/\/[^']+)'/g)].map(m=>origin(m[1]));
 assert.ok(tiles.length>=2,'the satellite and depth tile servers are found in app.js');
 for(const o of tiles)assert.ok(dir['img-src'].includes(o),`img-src allows map tiles from ${o}`);
+// the beacon script (analytics.js, only with a token) and the host it sends its counts to (the beacon's own default)
+const beacon=/\.src='(https:\/\/[^']+)'/.exec(read('analytics.js'))?.[1];
+for(const d of ['script-src','script-src-elem'])assert.ok(beacon&&dir[d].includes(origin(beacon)),`${d} allows the beacon ${beacon}`);
+assert.ok(dir['connect-src'].includes('https://cloudflareinsights.com'),'connect-src lets the beacon send');
 for(const [k,v] of Object.entries({'object-src':["'none'"],'frame-ancestors':["'none'"],'base-uri':["'self'"]}))assert.deepEqual(dir[k],v,k);
 
 // (3) the features turned off
 assert.match(block,/^\s+Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)$/m);
-for(const f of fs.readdirSync(D).filter(f=>f.endsWith('.js')))
+for(const f of scripts)
   assert.doesNotMatch(read(f),/getUserMedia|mediaDevices|geolocation/,`${f} uses a feature the Permissions-Policy turns off`);
-console.log(`PASS: CSP allows the ${handlers.length} inline handlers by hash, no inline script; Supabase in connect-src, ${tiles.length} tile servers in img-src; camera, microphone and geolocation unused`);
+console.log(`PASS: CSP allows the ${handlers.length} inline handlers by hash, none in the JS, no inline script; Supabase in connect-src, ${tiles.length} tile servers in img-src, the beacon in script-src/connect-src; camera, microphone and geolocation unused`);
