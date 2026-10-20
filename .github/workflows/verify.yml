@@ -33,6 +33,8 @@ jobs:
           node verification/test_map_boundary.mjs
           node verification/test_csv_export.mjs
           node verification/test_client_outdated.mjs
+          node verification/test_analytics_beacon.mjs
+          node verification/test_release_stamp.mjs
           node verification/test_mbpi_chembl_ui.mjs
           node verification/test_matrix_map.mjs
           node verification/test_mfpi_substitutes_ui.mjs
@@ -49,6 +51,7 @@ jobs:
           python scripts/build_aquaculture_tier.py --check
           node verification/test_compare_ui.mjs
           node verification/test_weight_slider.mjs
+          node verification/test_score_format.mjs
           node verification/test_mbpi_kind.mjs
           node verification/test_species_group_icon.mjs
           node --check dist/chatbot.js

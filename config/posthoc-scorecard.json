@@ -1,6 +1,6 @@
 {
  "schema_version": "posthoc-scorecard-config-1",
- "note": "Display text for the '검증 성적표' at the top of the method tab (scripts/build_posthoc_scorecard.py). The results themselves come from posthoc.validation_sets of dist/assessments.json and are never restated here; this file only names each check in Korean, says whether its criterion was fixed before the run, and what was done after a check that did not pass. Nothing here enters a score, a type or the map.",
+ "note": "Display text for the '검증 기록' table of the method tab, fold 04 (scripts/build_posthoc_scorecard.py). The results themselves come from posthoc.validation_sets of dist/assessments.json and are never restated here; this file only names each check in Korean, says whether its criterion was fixed before the run, what was done after a check that did not pass, and which stored numbers of its record file the table quotes (figure: paths into the first record JSON; the build reads the values there, this file holds none). Nothing here enters a score, a type or the map.",
  "outcome_classes": ["통과", "실패", "실패 후 사용 중단", "일관성 확인(독립 아님)", "검증 불성립"],
  "outcome_rule": [
   "result passed -> 통과",
@@ -36,14 +36,18 @@
    "name": "MFPI · 식품성분표 교차 확인",
    "checked": "한국 식품성분표 대신 일본 식품성분표 값으로 다시 계산해도 11종의 영양 순위가 유지되는지",
    "preregistered": "yes", "preregistered_note": "실행 전 기준 고정(ρ ≥ 0.6, p < 0.05, 8종 이상)",
-   "after_failure": {"action": "none", "detail": "점수에 사용"}
+   "after_failure": {"action": "none", "detail": "점수에 사용"},
+   "figure": {"text": "순위상관 {0} · {1}종", "paths": [["MFPI", "spearman_rho"], ["MFPI", "n"]]}
   },
   "MBPI": {
    "order": 2, "indicator": "MBPI",
    "name": "MBPI · 신약 기원종 순위",
    "checked": "신약이 나온 해양생물 3종의 MBPI가 운영 종보다 높게 나오는지",
    "preregistered": "yes", "preregistered_note": "기준 문장을 먼저 등록(수치 기준 없음)",
-   "after_failure": {"action": "kept", "detail": "BBVI에 그대로 쓰고, 종 상세의 MBPI 설명에 이 결과를 함께 적음"}
+   "after_failure": {"action": "kept", "detail": "BBVI에 그대로 쓰고, 종 상세의 MBPI 설명에 이 결과를 함께 적음"},
+   "figure": {"text": "운영 종 미역 {0} · 신약 기원종 {3}종 중 값이 나온 {4}종: 해면 {1} · 멍게류 {2}",
+              "paths": [["MBPI", "operating_mbpi", "미역"], ["MBPI", "rows", 1, "mbpi"], ["MBPI", "rows", 2, "mbpi"], ["MBPI", "n"], ["MBPI", "computed"]],
+              "of": [[["MBPI", "rows", 1, "scientific_name"], "Halichondria (Halichondria) okadai"], [["MBPI", "rows", 2, "scientific_name"], "Ecteinascidia turbinata"]]}
   },
   "MBPI_RX": {
    "order": 3, "indicator": "MBPI",
@@ -72,7 +76,8 @@
    "checked": "이미 평가가 있는 14종에 자체 예비평가(Rapid LC)를 적용했을 때 위협종을 LC로 판정하지 않는지",
    "preregistered": "yes", "preregistered_note": "실행 전 기준 고정",
    "after_failure": {"action": "kept", "detail": "공식 평가가 없는 {preliminary_species}종의 MCUI에 예비 평가로 사용 · 종 상세에 '예비 평가(공식 평가 전)'로 표시 · IUCN 또는 해양생물자원관 결과가 나오면 교체",
-                     "history": "2026-10-02 참고로 내림 → 4.3 점수에 사용 → 4.14 참고로 내림 → 4.17 예비 평가로 다시 사용(팀장 결정 2026-10-15)"}
+                     "history": "2026-10-02 참고로 내림 → 4.3 점수에 사용 → 4.14 참고로 내림 → 4.17 예비 평가로 다시 사용(팀장 결정 2026-10-15)"},
+   "figure": {"text": "{0}종 중 {1}종 일치 · LC로 판정한 위협종 {n2}종: {2}", "paths": [["MCUI", "n"], ["MCUI", "agreement"], ["MCUI", "false_lc_for_threatened"]]}
   },
   "MCUI_preliminary_criterion_A": {
    "order": 7, "indicator": "MCUI",

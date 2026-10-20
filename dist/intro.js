@@ -135,7 +135,8 @@ function gateNote(g){
 }
 // The design's "N종의 해양생물 · 공개 데이터 기반" (2026-10-17, LKH: one count, no published/candidate split). Empty until known.
 const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양생물 · 공개 데이터 기반`;
-// 2026-10-17 (#1) problem → solution under the slogan. The third problem line's '출처 N건' is the rows of license-matrix.json
+// 2026-10-17 (#1) problem → solution under the slogan. The third problem line's '근거 출처 N건' (named so on 2026-10-19; the
+// method tab's '전체 출처 목록' says how it relates to that list) is the rows of license-matrix.json
 // (app.js reads the file anyway and passes it on) that feed an indicator or the map's cells: counted on every load, never
 // typed in; null keeps the line out (no file, no rows).
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];

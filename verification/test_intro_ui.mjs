@@ -339,9 +339,11 @@ const method=html.slice(html.indexOf('<section id="method"'),html.indexOf('</sec
 const sourceList=gateHtml.slice(gateHtml.indexOf('<div class="gate-sources">'));
 const sources=[...sourceList.slice(0,sourceList.indexOf('</ul>')).matchAll(/<li>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'').trim());
 assert.ok(sources.length>=4);
-for(const s of sources){const key=s.replace(' 적색목록','');assert.ok([readme,app,method].some(t=>t.includes(key)),`source "${s}" is cited in README, app.js or the method tab`);}
+// 2026-10-19 (LKH, prompt 6/10): or a source record of assessments.json whose provider and title hold every word of the
+// name (MBRIS 국가 해양수산생물종 목록: the Korean names of five species were checked there)
+const assessments=read('assessments.json'),records=Object.values(JSON.parse(assessments).sources).map(r=>`${r.provider||''} ${r.title||''}`);
+for(const s of sources){const key=s.replace(' 적색목록','');assert.ok([readme,app,method].some(t=>t.includes(key))||records.some(r=>key.split(' ').every(w=>r.includes(w))),`source "${s}" is cited in README, app.js, the method tab or assessments.json`);}
 // links go only to addresses the site already uses (none made up); OBIS and GBIF have no site-level address here
-const assessments=read('assessments.json');
 const links=[...gateHtml.matchAll(/<a [^>]*href="([^"]+)"[^>]*>/g)].map(m=>[m[1],m[0]]);
 for(const [href,tag] of links.filter(([h])=>/^https?:/.test(h))){
   assert.ok(app.includes(href)||assessments.includes(href),`${href} is an address the site already cites`);
@@ -569,8 +571,13 @@ assert.ok(!read('intro.css').includes('gate-ex'),'intro.css: no .gate-ex rule');
 // the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons
 const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
 assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.',
-  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거만 해도 출처 건에 나뉘어 있습니다.']);
+  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거 출처만 해도 건입니다.']);
 assert.match(why,/<li class="gate-src is-wait">[^<]*<b class="gate-src-n"><\/b>/,'출처 N: no number in the HTML, the line waits for it');
+// 2026-10-19 (LKH, prompt 7/10): the count is named '근거 출처'; the method tab's list says how it relates to its own total,
+// counting with the same uses as evidenceSourceCount
+assert.match(why,/근거 출처만 해도 <b class="gate-src-n"><\/b>건입니다\./);
+assert.deepEqual(JSON.parse(app.match(/const SOURCE_EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),JSON.parse(intro.match(/const EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),'app.js and intro.js count the same uses');
+assert.match(html,/<summary>전체 출처 목록 <span id="all-sources-n"><\/span><small id="all-sources-parts" class="mt-src-parts" hidden><\/small><\/summary>/);
 assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total">\d+<\/b>종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다\.<\/p>/);
 const at=s=>gateHtml.indexOf(s);
 assert.ok(at('class="gate-title"')<at('class="gate-problems"')&&at('class="gate-problems"')<at('class="gate-lead"')&&at('class="gate-lead"')<at('id="gate-enter"'),'slogan → problems → solution → buttons');
@@ -616,8 +623,9 @@ const usesText=usesHtml.replace(/<[^>]+>/g,' ');
 for(const w of ['예시','사례','기관','부처','해양수산부','해수부','환경부','국립','자원관','공단','지자체','활용 중','사용 중','쓰고 있','도입','우뭇가사리','공백','예비','미평가','검증','조사 필요','재현','부족','최초'])
   assert.ok(!usesText.includes(w),`no "${w}" in 이렇게 쓸 수 있습니다`);
 
-// (16) 2026-10-17 (#4) '다음 단계' after the uses, under the first screen: where the map stands now, then three planned steps,
-// each marked '계획'. No number but the species total (filled from the data like the solution line); no licence or
+// (16) 2026-10-17 (#4) '다음 단계' after the uses, under the first screen: where the map stands now, then three planned steps.
+// No number but the species total (filled from the data like the solution line) and, since 2026-10-19 (LKH, prompt 4/10),
+// each step's target ('목표 2027 상반기' · '목표 2027 하반기' · '목표 2028') in its tag in place of '계획'; no licence or
 // commercial-layer wording, nothing that names a body or an agreement.
 assert.ok(at('class="gate-foot"')<at('<div class="gate-below">')&&at('<div class="gate-below">')<at('<section class="gate-uses"')&&at('<section class="gate-uses"')<at('<section class="gate-next"'),'under the first screen: the uses, then the next steps');
 const nextHtml=gateHtml.slice(at('<section class="gate-next"'),gateHtml.indexOf('</section>',at('<section class="gate-next"')));
@@ -627,12 +635,12 @@ const steps=[...nextHtml.matchAll(/<li( class="is-now")?>([\s\S]*?)<\/li>/g)].ma
   ...Object.fromEntries([...li.matchAll(/<p class="gate-next-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<b class="gate-total">\d+<\/b>/,'N').replace(/<[^>]+>/g,'')]))}));
 assert.deepEqual(steps,[
   {now:true,k:'지금',t:'한반도 주변 N종 공개'},
-  {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'계획'},
-  {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'계획'},
-  {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'계획'}],'지금 as it is, the planned steps marked 계획');
+  {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'목표 2027 상반기'},
+  {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'목표 2027 하반기'},
+  {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'목표 2028'}],'지금 as it is, each planned step tagged with its target');
 assert.match(browser,/if\(total\)for\(const b of el\.querySelectorAll\('\.gate-total'\)\)b\.textContent=String\(total\);/,'the species total fills the solution line and 지금 alike');
-const nextText=nextHtml.replace(/<b class="gate-total">\d+<\/b>/,'').replace(/<[^>]+>/g,' ');
-assert.ok(!/\d/.test(nextText),'no number typed into the steps');
+const nextText=nextHtml.replace(/<b class="gate-total">\d+<\/b>/,'').replace(/<p class="gate-next-tag">목표 20\d\d(?: [상하]반기)?<\/p>/g,'').replace(/<[^>]+>/g,' ');
+assert.ok(!/\d/.test(nextText),'no number typed into the steps but the targets in the tags');
 for(const w of ['비상업','상업 레이어','레이어','CC0','CC BY','라이선스','이용 조건','예비값','교체','지표 산출','셀','협약','MOU','해양수산부','해수부','환경부','국립','자원관','공단',
   '공백','예비','미평가','검증','조사 필요','확인 필요','재현','부족','최초','실패','미충족','미확인','미산출','점수 없음'])
   assert.ok(!nextText.includes(w),`no "${w}" in 다음 단계`);

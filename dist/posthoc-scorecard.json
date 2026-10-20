@@ -63,7 +63,12 @@
    "records": [
     "research/verified-indices/posthoc-validation-2026-10-02.json"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": {
+    "text": "순위상관 0.873 · 11종",
+    "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
+    "record_version": "verified-pilot-3.15"
+   }
   },
   {
    "key": "MBPI",
@@ -85,7 +90,12 @@
    "records": [
     "research/verified-indices/posthoc-validation-mbpi-4.11-2026-10-13.json"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": {
+    "text": "운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1",
+    "record": "research/verified-indices/posthoc-validation-mbpi-4.11-2026-10-13.json",
+    "record_version": "verified-4.11"
+   }
   },
   {
    "key": "MBPI_RX",
@@ -108,7 +118,8 @@
     "research/verified-indices/posthoc-validation-mbpi-rx-4.10-2026-10-12.json",
     "research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": null
   },
   {
    "key": "MCUI",
@@ -130,7 +141,8 @@
    "records": [
     "config/verified-indices-v4.19.json"
    ],
-   "record_note": "별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목"
+   "record_note": "별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목",
+   "figure": null
   },
   {
    "key": "MCUI_stock_decline",
@@ -152,7 +164,8 @@
    "records": [
     "research/verified-indices/prereg-4.12-2026-10-14.md"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": null
   },
   {
    "key": "MCUI_preliminary",
@@ -174,7 +187,12 @@
    "records": [
     "research/verified-indices/posthoc-validation-2026-10-02.json"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": {
+    "text": "14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)",
+    "record": "research/verified-indices/posthoc-validation-2026-10-02.json",
+    "record_version": "verified-pilot-3.15"
+   }
   },
   {
    "key": "MCUI_preliminary_criterion_A",
@@ -197,7 +215,8 @@
     "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
     "research/verified-indices/posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": null
   },
   {
    "key": "MCUI_trend",
@@ -220,7 +239,8 @@
     "research/verified-indices/posthoc-validation-3.27-2026-10-03.json",
     "research/verified-indices/posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md"
    ],
-   "record_note": null
+   "record_note": null,
+   "figure": null
   }
  ]
 }

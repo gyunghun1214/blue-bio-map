@@ -152,11 +152,11 @@ function headlineAxes(stop){
   const v=k=>stop.scores[k];
   return ['MFPI','MBPI','MCUI'].filter(k=>v(k)!==null&&v(k)!==undefined).slice(0,2);
 }
-const fmtScore=v=>v===null||v===undefined?null:Number(v).toFixed(1);
-// 4.16 (2026-10-15, as on the main map): an MBPI or BBVI whose top MBPI item is not independently replicated (the stop carries
-// the single-paper label) is shown as a whole number; one decimal stays where rounding would land on 0 or on the BBVI line 50.
-const fmtAxis=(stop,k)=>{const v=stop.scores[k];if(v===null||v===undefined)return null;
-  const r=Math.round(v);return (k==='MBPI'||k==='BBVI')&&stop.bbvi_label&&!((r===0||r===50)&&r!==v)?String(r):Number(v).toFixed(1);};
+// 2026-10-19 (LKH 9/10): the main map's one rule (score-format.js scoreNumber, loaded before this module): BBVI and MBPI
+// whole numbers, MFPI and MCUI one decimal, for every stop. The matrix lines are the report's (BBVI 50, MCUI 50); a stop's
+// type comes with the data, judged before rounding.
+const LINES={BBVI:50,MCUI:50};
+const fmtAxis=(stop,k)=>{const v=stop.scores[k];return v===null||v===undefined?null:globalThis.scoreNumber(k,Number(v),LINES[k]);};
 // 와/과 after a Korean name (the last Hangul syllable decides; "홍합(참담치)" reads 치).
 const wa=name=>{const h=[...String(name)].reverse().find(ch=>ch>='가'&&ch<='힣');return h&&(h.charCodeAt(0)-0xAC00)%28?'과':'와';};
 
@@ -176,7 +176,7 @@ const has=v=>v!==null&&v!==undefined&&v!=='';
 // calculation (basis 'preliminary') or from another government's list ('range_state') read like any other category here,
 // and their detail names the category's source in one line (mcuiSource).
 const stockText=m=>m?.driver==='stock_decline'&&has(m.stock_decline?.decline_pct)
-  ?`자원 감소 신호 · 어획량 −${Number(m.stock_decline.decline_pct)}% (KOSIS 어획량 통계)${has(m.extinction_risk)?` · 멸종위험 근거 ${Number(m.extinction_risk)}점`:''}`:'';
+  ?`자원 감소 신호 · 어획량 −${Number(m.stock_decline.decline_pct)}% (KOSIS 어획량 통계)${has(m.extinction_risk)?` · 멸종위험 근거 ${globalThis.scoreNumber('MCUI',Number(m.extinction_risk))}점`:''}`:'';
 function mcuiTag(stop){
   const m=stop.mcui||{};
   if(stockText(m))return stockText(m);
@@ -358,9 +358,9 @@ function detailHtml(stop,i){
     ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${esc(stop.korean_name)} <i>${esc(stop.scientific_name)}</i></h2>
     ${type?`<p class="x-type">${esc(type)}</p>`:''}</header>
   <section><h3>관측 위치·기간</h3>${obs}</section>
-  <section><h3>식량 가치 근거 <small>MFPI ${fmtScore(stop.scores.MFPI)??'—'}</small></h3>${foodHtml(stop.food)}</section>
+  <section><h3>식량 가치 근거 <small>MFPI ${fmtAxis(stop,'MFPI')??'—'}</small></h3>${foodHtml(stop.food)}</section>
   <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'—'}</small></h3>${bioHtml(stop.bio)}</section>
-  <section><h3>보전 평가 근거 <small>MCUI ${fmtScore(stop.scores.MCUI)===null?'—':fmtScore(stop.scores.MCUI)+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${consHtml(stop)}</section>
+  <section><h3>보전 평가 근거 <small>MCUI ${fmtAxis(stop,'MCUI')===null?'—':fmtAxis(stop,'MCUI')+(mcuiCat(stop)?` (${esc(mcuiCat(stop))})`:'')}</small></h3>${consHtml(stop)}</section>
   <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'—'}</small></h3>
     <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다. ${esc(NOTES.score)}입니다.</p>
     ${version?`<p class="x-fine">지표 버전 ${esc(version)}${DATA.status==='released'?' · 정식 산출':''}</p>`:''}</section>

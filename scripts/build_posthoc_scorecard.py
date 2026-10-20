@@ -1,8 +1,9 @@
-"""Build dist/posthoc-scorecard.json (the '검증 성적표' at the top of the method tab) and, with --csv, the same table as CSV.
+"""Build dist/posthoc-scorecard.json (the '검증 기록' table of the method tab, fold 04) and, with --csv, the same table as CSV.
 
 Every row comes from posthoc.validation_sets of the published report (dist/assessments.json); config/posthoc-scorecard.json
 only adds the Korean name, a one-line description, whether the criterion was fixed before the run and what was done after a
-check that did not pass. `outcome_class` normalises the stored `result` into five classes (config outcome_rule):
+check that did not pass, and which stored numbers of the first record file a row quotes (`figure`: the values are read from
+that record here, never typed in the config). `outcome_class` normalises the stored `result` into five classes (config outcome_rule):
 통과 · 실패 · 실패 후 사용 중단 · 일관성 확인(독립 아님) · 검증 불성립. A same-data or two-species consistency check is never
 통과. The stored results and their records are read, never rewritten. Nothing here enters a score, a type or the map: the
 indicator build does not read this file. Offline.
@@ -28,7 +29,7 @@ CLASSES = ["통과", "실패", "실패 후 사용 중단", "일관성 확인(독
 CONSISTENCY = {"consistent_same_data", "reproduced_n2"}
 PREREG = {"yes": "예", "no": "아니오"}
 CSV_COLUMNS = ["순서", "지표", "검증 이름", "무엇을 확인했나", "사전 등록", "사전 등록 메모", "저장된 결과(result)",
-               "outcome_class", "화면 표시", "실패 후 조치", "조치 내용", "기록 파일"]
+               "outcome_class", "화면 표시", "기록 수치", "실패 후 조치", "조치 내용", "기록 파일"]
 
 
 def require(ok: bool, message: str) -> None:
@@ -54,6 +55,33 @@ def outcome_class(validation: dict, note: dict) -> str:
         if value < sample["min"]:
             return "검증 불성립"
     return "실패"
+
+
+def record_figure(key: str, spec: dict | None, records: list[str]) -> dict | None:
+    """The numbers a row quotes from its first record file: each path is read from that JSON as stored (a list is joined
+    with '·' and {nI} gives its length); `of` pins a path to the value it must hold, so a label never moves to another row."""
+    if not spec:
+        return None
+    require(records and records[0].endswith(".json"), f"{key}: a figure needs a JSON record")
+    record = json.loads((ROOT / records[0]).read_text(encoding="utf-8"))
+
+    def at(path):
+        value = record
+        for step in path:
+            require(isinstance(value, (dict, list)), f"{key}: {path} not in {records[0]}")
+            try:
+                value = value[step]
+            except (KeyError, IndexError, TypeError):
+                raise ValueError(f"{key}: {path} not in {records[0]}") from None
+        return value
+
+    for path, expected in spec.get("of", []):
+        require(at(path) == expected, f"{key}: {path} is not {expected!r} in {records[0]}")
+    values = [at(path) for path in spec["paths"]]
+    require(all(isinstance(v, (int, float, list)) and not isinstance(v, bool) for v in values), f"{key}: a figure value is not a number or list")
+    text = spec["text"].format(*["·".join(map(str, v)) if isinstance(v, list) else str(v) for v in values],
+                               **{f"n{i}": len(v) for i, v in enumerate(values) if isinstance(v, list)})
+    return {"text": text, "record": records[0], "record_version": record.get("report_version")}
 
 
 def indicator_badges(config: dict, rows: list[dict]) -> dict:
@@ -95,6 +123,7 @@ def build(config: dict, report: dict) -> dict:
             "action_detail": after["detail"].format(**fill), "action_history": after.get("history"),
             "exploratory": bool(v.get("exploratory")),
             "records": records or [config_path], "record_note": None if records else "별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목",
+            "figure": record_figure(key, note.get("figure"), records),
         })
     counts = {c: sum(r["outcome_class"] == c for r in rows) for c in CLASSES}
     return {
@@ -117,7 +146,8 @@ def render_csv(out: dict) -> str:
     for r in out["rows"]:
         action = r["action_label"] if r["action"] != "none" else "해당 없음(점수에 사용)"
         w.writerow([r["order"], r["indicator"], r["name"], r["checked"], r["preregistered_label"], r["preregistered_note"],
-                    r["result"], r["outcome_class"], r["outcome_label"], action,
+                    r["result"], r["outcome_class"], r["outcome_label"],
+                    f"{r['figure']['record_version']} 기록: {r['figure']['text']}" if r["figure"] else "", action,
                     r["action_detail"] + (f" ({r['action_history']})" if r["action_history"] else ""),
                     " ; ".join(r["records"])])
     return "﻿" + buf.getvalue()  # BOM so spreadsheet programs read the Korean text as UTF-8

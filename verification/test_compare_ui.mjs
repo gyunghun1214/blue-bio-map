@@ -24,6 +24,7 @@ const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,queryS
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={toggleBasket,setCompareMode,setCompareFilter,renderCompareTray,renderCompareDialog,renderCompareProfile,renderCompareDrawer,'+
   'get basket(){return cmpBasket},set basket(v){cmpBasket=v},get mode(){return cmpMode},get filter(){return {...cmpFilter}},get selected(){return selected},set selected(v){selected=v},cmpMatch,pilotScore,'+
   'plainWords,MATRIX_PLAIN,matrixTypePlain,matrixPlainNote,matrixType,matrixTypeLabel,cmpTag,cmpPieces,cmpChip,cmpUseRest,matrixClusters,cmpExpeditionLink,set stops(v){cmpStops=v},'+
@@ -63,7 +64,9 @@ let prof=$('cmp-profile').innerHTML;const face=strip(prof),all=both();
 if(!ids.slice(0,3).includes(ROCKFISH))assert.match(prof,/id="cmp-add"[^>]*aria-disabled="true"/,'full basket disables 담기 for a new species');
 assert.ok(!all.includes('최상위 근거 독립 재현 확인 중')&&!all.includes('근거 논문 1편')&&!all.includes('단일 논문')&&all.includes('보전 평가 범주 기반'),'조피볼락: no BBVI replication label on screen and a neutral MCUI basis (4.17: preliminary assessment)');
 assert.equal(by(ROCKFISH).assessment.bbvi_label,'단일 논문','the record keeps the 조피볼락 label');
-assert.ok(!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반/.test(face)&&!/예비|역검증|Rapid LC|보전평가 미확인|IUCN 기반(?! MCUI와)/.test(all),'4.17 (prereg-4.17 5): the profile and its drawer never names the preliminary assessment, nor calls it IUCN');
+assert.ok(!/역검증|Rapid LC|보전평가 미확인|IUCN 기반/.test(face)&&!/역검증|Rapid LC|보전평가 미확인|IUCN 기반(?! MCUI와)/.test(all),'4.17 (prereg-4.17 5): the profile and its drawer never call the preliminary assessment IUCN');
+// 2026-10-19 (LKH, 사이트 v3 2/10): its number says '예비' beside the category, on the face and in the drawer, and nowhere else
+assert.ok(face.includes('10.0 LC·예비')&&all.includes('MCUI 10.0 (LC·예비) · 정식 산출')&&all.split('예비').length===3,'조피볼락: 10.0 (LC·예비) on the profile and in its drawer');
 T.basket=[];T.selected=by(OYSTER);prof=both();
 assert.ok(prof.includes('72')&&!prof.includes('71.9')&&prof.includes('한국 국가 평가')&&!prof.includes('비교 불가'),'참굴 profile: BBVI value and its national MCUI basis');
 

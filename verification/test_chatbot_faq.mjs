@@ -72,13 +72,13 @@ assert.ok(!chipIds.includes('validation')&&!starters.some(s=>s[0]==='validation'
 assert.equal(faq.find(f=>f.id==='validation').a,'지표를 어떻게 계산했는지는 {tab:method} 탭에 출처와 함께 정리되어 있어요.','검증 질문은 중립 안내만');
 // 매트릭스는 놓인 종 수만(빠진 종의 이름·이유·빠진 수 없음). 자원 감소로 정해진 MCUI는 멸종위험 점수를 모르면 그 부분을 쓰지 않는다.
 Object.assign(ctx,{data:{species:['가','나','다'].map(label=>({label,assessment:{conservation_status:{category:'LC'},stock_decline:{decline_pct:40}}}))},
-  assessedForMatrix:s=>s.label!=='다',pilotScore:()=>35,scoreText:(s,k,v)=>v.toFixed(1),stockMcui:()=>true,extinctionMcui:()=>null,stockChange:d=>'−'+d.decline_pct.toFixed(1)+'%'});
+  assessedForMatrix:s=>s.label!=='다',pilotScore:()=>35,scoreText:(s,k,v)=>v.toFixed(1),scoreValue:(s,k,v)=>v.toFixed(1),stockMcui:()=>true,extinctionMcui:()=>null,stockChange:d=>'−'+d.decline_pct.toFixed(1)+'%'});
 assert.equal(fact('matrix'),'지금은 매트릭스에 2종이 놓여 있어요.');
 assert.equal(fact('mcuiwhy','가'),'가의 MCUI는 자원 감소 신호(어획량 −40.0%)로 35.0점이 됐어요.');
 Object.assign(ctx,{assessedForMatrix:()=>true,extinctionMcui:()=>10});
 assert.equal(fact('matrix'),'지금은 3종 모두 매트릭스에 놓여 있어요.');
 assert.equal(fact('mcuiwhy','가'),'가의 멸종위험 범주(LC)만 보면 MCUI는 10.0점이지만, 자원 감소 신호(어획량 −40.0%)로 35.0점이 됐어요.');
-for(const k of ['data','assessedForMatrix','pilotScore','scoreText','stockMcui','extinctionMcui','stockChange'])delete ctx[k];
+for(const k of ['data','assessedForMatrix','pilotScore','scoreText','scoreValue','stockMcui','extinctionMcui','stockChange'])delete ctx[k];
 
 // (4) 유형·탭 이름과 '높음' 기준값은 답변에 직접 쓰지 않고 자리표시로 읽어 옴
 const tabs=[...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g)].map(m=>m[1]);

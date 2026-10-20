@@ -1064,6 +1064,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .coord-steps li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;padding:9px 0;border-top:1px solid rgba(150,180,200,.14);font-size:13.5px;line-height:1.55}
 .coord-steps b{color:#f2c46d}
 .coord-note{margin:12px 0 0;color:#a9bbc6;font-size:12.5px;line-height:1.55}
+.coord-link{color:#7fe6d6;text-decoration:underline;text-underline-offset:3px}
 .coord-foot{display:flex;justify-content:flex-end;margin-top:16px}
 .coord-ok{min-height:40px;padding:0 20px;border:1px solid #44d7c0;border-radius:8px;background:#44d7c0;color:#06202a;font:inherit;font-weight:700;cursor:pointer}
 @media(max-width:740px){
@@ -1084,6 +1085,10 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* '방법 결정' words open the method change timeline (app.js linkDecisions) */
 .md-link{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
 .md-link:hover{color:var(--teal,#3dd6c3)}
+/* 2026-10-19 (LKH, 사이트 v3 2·3/10): '검증 기록 보기' in the species detail's MCUI and MBPI sections opens the method tab at that
+   check's row of 검증 기록 (app.js openChecks); a button styled as a link, in the page's link colour */
+.go-checks{display:inline;margin:0 0 0 6px;padding:0;border:0;background:none;color:var(--blue);font:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+.go-checks:hover{text-decoration-thickness:2px}
 /* ==========================================================================================================================
    2026-10-15 explore design match (prompt explore-design-match v2, mockup explore-map-target.png 1586×992). The mockup decides
    the look; data, scores, wording rules and the type colours (#d7392f · #f2b233 · #3f7fcf · #2f9a57) stay as they were.

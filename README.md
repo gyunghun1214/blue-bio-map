@@ -63,7 +63,27 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 - 자동 배포: Cloudflare Workers Builds가 이 저장소에 연결되어 있으면 `main`에 병합할 때마다 `npx wrangler deploy`로 자동 배포된다. 코드를 고치고 PR을 병합하는 것으로 충분하다.
 - 수동 배포: 저장소 루트에서 `npx wrangler deploy` (Cloudflare 로그인 필요).
 - 응답 헤더: `dist/_headers`. `app.js`·`style.css`·`pilot.css`·`live-data.js`·`vendor/*`는 1년 `immutable` 캐시이므로, 내용을 바꾸면 `index.html`의 `?v=` 값을 LF로 맞춘 파일 내용의 sha256 앞 10자로 다시 계산한다(`node verification/test_client_outdated.mjs`가 불일치를 잡는다. `vendor/`는 파일 이름을 바꾼다). 열려 있던 탭이나 캐시된 옛 `app.js`가 더 새 버전의 자료 파일(`assessments.json`의 `verified-pilot-*`, 각 JSON의 스키마 번호)을 받으면 파일·버전별로 한 번만 새로고침하고, 그래도 옛 코드면 "새 버전 있음"으로 표시한다. `index.html`·`*.json`은 기본 캐시.
-- 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다.
+- 방문 수 세기(2026-10-19): Cloudflare Web Analytics(쿠키 없음) 비콘을 `dist/analytics.js`가 불러온다. 토큰은 `dist/analytics.json`의 `cf_beacon_token` 한 곳에만 두고, 값이 비어 있으면 비콘을 아예 불러오지 않는다(오프라인 시연 `?offline=1`에서도 불러오지 않는다). 토큰이 들어가면 '근거와 방법' 탭 맨 아래에 "방문 수를 셉니다. 쿠키와 개인정보는 모으지 않습니다(Cloudflare Web Analytics)." 한 줄이 보인다. `dist/_headers`에는 보안 정책(CSP)이 없어 따로 허용할 주소가 없다(CSP를 더하면 `script-src`에 `https://static.cloudflareinsights.com`, `connect-src`에 `https://cloudflareinsights.com`을 넣는다). 켜는 순서:
+  1. Cloudflare 대시보드 → Analytics & Logs → Web Analytics → Add a site
+  2. 호스트 이름에 `blue-bio-map.blue-bio-map.workers.dev`를 넣고 고른 뒤 Done
+  3. Manage site에 보이는 JS 코드에서 `"token": "…"`의 따옴표 안 값만 복사해 `dist/analytics.json`의 `cf_beacon_token`에 넣는다(공개돼도 되는 값이다).
+  4. PR로 병합하면 자동 배포된다. 집계는 몇 분 뒤부터 대시보드에 보인다.
+  - 세는 범위: 페이지(경로)별 방문·조회 수. 바다 탐험은 `expedition.html`을 연 횟수까지 센다. 마지막 지점 도달은 주소의 `#stop=N`만 바뀌고 Web Analytics에 사용자 정의 이벤트가 없어 이 비콘만으로는 셀 수 없다.
+- 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다(초기 시험판, 지금은 쓰지 않음).
+
+## 발표 기준판과 제출 뒤 동결 (2026-10-19)
+
+상단 '연구 프로토타입 ▾'을 누르면 나오는 안내의 버전 줄은 `dist/release.json`(`{"label": "발표 기준판", "date": "2026-10-27", "commit": ""}`)을 읽는다. `commit`이 비어 있으면 지금처럼 지표 버전(예: `verified-4.19 · 동결 날짜`)이 보이고, 커밋이 들어가면 "발표 기준판 2026-10-27 · 커밋 abc1234"로 보인다. 지표 버전은 같은 안내의 '발행 …' 줄에 그대로 남는다.
+
+제출 직전(파일 하나만 고친다):
+1. 발표에 쓸 화면이 모두 병합된 뒤 main 마지막 커밋의 앞 7자리를 확인한다: `git fetch origin main && git log -1 --format=%h origin/main`
+2. `dist/release.json`의 `commit`에 그 7자리를 넣고(날짜가 바뀌면 `date`도) 이 파일만 바꾼 PR을 병합한다. 화면 내용은 1의 커밋과 같다.
+3. 자동 배포가 끝나면 공개 주소에 `?fresh=<임의값>`을 붙여 열고, 안내에 "발표 기준판 2026-10-27 · 커밋 abc1234"가 보이는지 확인한다.
+
+제출 뒤 동결:
+1. 2에서 병합한 커밋에 태그를 단다: `git tag final-2026-10-27 <병합 커밋> && git push origin final-2026-10-27` (태그는 팀이 정할 때 만든다. 여기에는 절차만 적는다).
+2. 그 뒤로는 main에 병합하지 않는다. main 병합은 곧바로 공개 주소에 배포된다.
+3. 꼭 고쳐야 하면 고친 내용을 병합한 다음, `dist/release.json`만 바꾸는 PR로 `commit`을 새 main 커밋으로 바꾸고 `"note": "11-02 오탈자 수정"`처럼 무엇을 바꿨는지 적는다. 화면에는 "발표 기준판 2026-10-27 · 커밋 def5678 · 11-02 오탈자 수정"으로 보인다.
 
 ## 자료 사용
 
