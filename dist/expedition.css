@@ -49,17 +49,14 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-list{position:fixed;inset:72px clamp(16px,3vw,32px) auto auto;margin:0;width:min(340px,calc(100vw - 32px));max-height:calc(100vh - 96px);overflow:auto;overscroll-behavior:contain;padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(4,18,34,.94);color:var(--ink);backdrop-filter:blur(10px);scrollbar-width:thin}
 .x-list h2{margin:0 0 10px;font-size:13px;font-family:var(--mono);letter-spacing:.12em;color:var(--teal);font-weight:600}
 .x-list ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.x-list .x-group+.x-group{margin-top:12px}
 .x-list h3{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--ink2)}
 .x-list [aria-current]{border-color:var(--teal)}
 /* survey candidate and off-route marks */
 .x-badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px}
 .x-badge{display:inline-block;padding:2px 8px;border-radius:99px;font:600 var(--fs-min) var(--font);font-style:normal;letter-spacing:.02em}
-.x-badge.is-candidate{background:rgba(94,227,208,.14);color:var(--teal);box-shadow:inset 0 0 0 1px rgba(94,227,208,.45)}
 .x-badge.is-off{background:rgba(240,138,75,.16);color:#ffd2b5;box-shadow:inset 0 0 0 1px rgba(240,138,75,.5)}
 .x-shared{color:#ffd2b5}
 .x-card.is-off{border-style:dashed}
-.x-detail .x-badge.is-candidate{background:#dff5f2;color:var(--paper-teal);box-shadow:none}
 .x-detail .x-badge.is-off{background:#fdebdf;color:#8a3d10;box-shadow:none}
 .x-list button{width:100%;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03)}
 .x-list button:hover{border-color:var(--teal)}

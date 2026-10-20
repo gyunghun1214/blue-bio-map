@@ -10,7 +10,7 @@ const app=read('app.js'), report=JSON.parse(read('assessments.json')), lit=JSON.
 const ctx={};vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+
-  ';globalThis.rows=supplementaryRows;globalThis.line=supplementaryLine;globalThis.litRows=litRows;'+
+  ';globalThis.rows=supplementaryRows;globalThis.litRows=litRows;'+
   'globalThis.setData=d=>{data=d};globalThis.setLit=f=>{supplementaryLit=supplementaryRows(f,[])};'+
   'globalThis.axis=axisState;globalThis.type=matrixType;globalThis.label=bbviLabel;globalThis.RELATION=LIT_RELATION;',ctx);
 const species=[...report.species,...report.candidate_species].map(a=>({aphiaID:a.aphia_id,label:a.korean_name,name:a.scientific_name,cells:[],
@@ -36,22 +36,20 @@ const snap=()=>species.map(s=>[s.aphiaID,...['MFPI','MBPI','MCUI','BBVI'].map(k=
 ctx.setLit(null);const none=snap();
 ctx.setLit(lit);assert.equal(snap(),none);
 ctx.setLit({...lit,records:lit.records.map(r=>({...r,relation:'new_quantitative',aphia_id:species[0].aphiaID,finding:'IC50 0.0001 µM'}))});assert.equal(snap(),none);
-// the only readers of the map are the list, the card line and the loader
+// the only readers of the map are litRows (read by these checks) and the loader
 assert.deepEqual([...new Set(app.match(/supplementaryLit\b/g))],['supplementaryLit']);
 assert.equal((app.match(/supplementaryLit\b/g)||[]).length,3);
 
-// Display: the list opened under the MBPI section, contrary evidence first, each row with why it is not scored.
-// 2026-10-17 (LKH): the list stays in supplementary-literature.json (read and gated as before) and is not drawn.
+// Display: 2026-10-17 (LKH) the list stays in supplementary-literature.json (read and gated as before) and is not drawn;
+// its renderer (supplementaryLine, returning '' since then) was removed with its call on 2026-10-21.
+assert.ok(!/supplementaryLine|lit-disclosure|관련 문헌 · 점수 미사용/.test(app),'no code draws the related-paper list');
 ctx.setLit(lit);
 const withRows=species.filter(s=>ctx.litRows(s).length);
 assert.ok(withRows.length>0);
-for(const s of withRows)assert.equal(ctx.line(s),'',`${s.label}: the related-paper list is not drawn`);
-for(const s of species.filter(s=>!ctx.litRows(s).length)){assert.equal(ctx.line(s),'');}
 const ecklonia=by('감태');
 assert.equal(ctx.litRows(ecklonia).filter(r=>r.relation==='contrary').length,1,'the contrary row stays read from the file');
-assert.equal(ctx.line(ecklonia),'');
-// a report outside the verified line shows nothing
-assert.equal(ctx.line({...ecklonia,assessment:{...ecklonia.assessment,report_version:'pilot-1'}}),'');
+// a report outside the verified line reads nothing
+assert.equal(ctx.litRows({...ecklonia,assessment:{...ecklonia.assessment,report_version:'pilot-1'}}).length,0);
 
 // Schema gate: a newer schema is reported and not read, an unknown one is ignored, bad rows are dropped.
 let out=[];assert.equal(ctx.rows({...lit,schema_version:'supplementary-literature-2'},out).size,0);
