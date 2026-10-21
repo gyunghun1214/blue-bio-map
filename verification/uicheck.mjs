@@ -161,10 +161,11 @@ try{
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
+    // (2026-10-21, site v4 05: the problem is one sentence, and the contest line and the 'connect' line count as the block)
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
-      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead').map(tb);
+      const added=vis('.gate-task,.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
     check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
@@ -1653,8 +1654,8 @@ try{
   const small=await evaluate(`(()=>{const g=document.getElementById('site-gate'),hero=g.querySelector('.gate-hero'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {problems:r('.gate-problems').top,solve:r('.gate-why .gate-lead').bottom,enter:r('#gate-enter').bottom,shown:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden&&li.getClientRects().length).length,
       vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
-  check('G-9 phone 375×667: the three problem lines, the solution and the button inside the first screen, no sideways scroll',
-    gs.on&&gs.ready&&small.shown===3&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
+  check('G-9 phone 375×667: the problem sentence and the source line, the solution and the button inside the first screen, no sideways scroll',
+    gs.on&&gs.ready&&small.shown===2&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
   await sleep(1200);await shot('gate-mobile-375',false);
   await viewport(1560,900,false);
   // 2026-10-17 (#9): '전체 출처·방법 보기' lands on the source list, which now sits in a fold: the way in opens it
