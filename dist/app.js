@@ -906,6 +906,7 @@ function renderPosthocTable(){
   $('mt-ck-title').textContent=`검증 기록 ${sc.total}건`;
   $('mt-ck-sum').innerHTML=Object.keys(SCORECARD_OC).filter(c=>sc.counts?.[c]).map(c=>`<span data-oc="${SCORECARD_OC[c]}">${esc(CHECK_COUNT_LABEL[c])} ${esc(sc.counts[c])}</span>`).join(' · ');
   const record=p=>`<a href="${escRaw(sc.repository+p)}" target="_blank" rel="noopener" title="${escRaw(p)}">${escRaw(p.split('/').pop())} ↗</a>`;
+  const commitUrl=c=>sc.repository.replace(/\/blob\/[^/]+\/$/,'/commit/')+c;
   body.innerHTML=[...sc.rows].sort((a,b)=>a.order-b.order).map(r=>{const oc=SCORECARD_OC[r.outcome_class];
     return `<tr data-oc="${oc}" data-key="${esc(r.key)}" id="mt-ck-${esc(r.key)}">`+
       `<th scope="row"><b>${esc(r.name)}</b><small class="mt-ck-rec">기록 ${r.records.map(record).join('')}${r.record_note?`<span>${esc(r.record_note)}</span>`:''}</small></th>`+
@@ -914,10 +915,21 @@ function renderPosthocTable(){
       `<td data-label="결과"><span class="mt-ck-pill" data-oc="${oc}">${esc(r.outcome_label)}</span>`+
         `${r.figure?`<small class="mt-ck-fig">${esc(checkVersion(r.figure.record_version))} 기록: ${esc(r.figure.text)}</small>`:''}</td>`+
       `<td data-label="그 뒤 처리"><b${r.action==='none'?' class="mt-ck-na"':''}>${esc(r.action_label)}</b><small>${esc(r.action_detail)}</small>`+
-        `${r.action_history?`<small class="mt-ck-hist">${esc(r.action_history)}</small>`:''}</td></tr>`;}).join('');
+        `${r.action_history?`<small class="mt-ck-hist">${esc(r.action_history)}</small>`:''}</td></tr>`;}).join('')+
+    // 2026-10-21 (site v4 09): checks registered before any result: the pre-registration file, the commit that added it
+    // alone, and when the result comes; never counted above (its result is not stored yet)
+    (Array.isArray(sc.registered)?sc.registered:[]).filter(r=>r?.key&&r.name&&r.prereg&&/^[0-9a-f]{7}$/.test(r.prereg_commit||'')&&/^\d{4}-\d{2}$/.test(r.results_due||'')).map(r=>
+      `<tr data-oc="registered" data-key="${esc(r.key)}" id="mt-ck-${esc(r.key)}">`+
+      `<th scope="row"><b>${esc(r.name)}</b><small class="mt-ck-rec">기록 ${record(r.prereg)}</small></th>`+
+      `<td data-label="무엇을 확인했나"><span>${esc(r.checked)}</span></td>`+
+      `<td data-label="사전 등록"><b>예</b><small><a href="${escRaw(commitUrl(r.prereg_commit))}" target="_blank" rel="noopener">사전 등록 커밋 ${esc(r.prereg_commit)} ↗</a></small></td>`+
+      `<td data-label="결과"><span class="mt-ck-pill" data-oc="registered">등록됨</span><small class="mt-ck-fig">${esc(r.results_due)} 공개 예정</small></td>`+
+      `<td data-label="그 뒤 처리"><b class="mt-ck-na">결과가 나오면 이 줄에 적음</b></td></tr>`).join('');
   $('mt-ck-foot').textContent=`‘일관성 확인(독립 아님)’은 점수를 만든 자료와 같은 자료로 보거나 2종만 비교한 확인이라 통과로 세지 않습니다. `+
     `‘검증 불성립’은 미리 정한 최소 표본 수에 못 미쳐 판정하지 못했다는 뜻입니다. 사전 등록 ‘예’ ${sc.preregistered}건은 결과를 보기 전에 기준을 정했습니다. `+
     `결과 칸의 숫자는 각 기록 파일에 저장된 그때 값이고, 기록 파일은 프로젝트 GitHub 저장소에 있습니다. ${checkVersion(sc.report_version)} 기준.`;
+  // the full history of rule changes stays a file (the 2026-10-17 timeline is not drawn again; LKH 2026-10-21, option A)
+  const ledger=$('mt-ck-ledger');if(ledger)ledger.innerHTML=`지표 규칙이 바뀐 이력 전체: ${record('research/method-changelog.json')}`;
 }
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it

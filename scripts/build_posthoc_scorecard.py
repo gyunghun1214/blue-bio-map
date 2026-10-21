@@ -16,6 +16,7 @@ import argparse
 import csv
 import io
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -125,13 +126,23 @@ def build(config: dict, report: dict) -> dict:
             "records": records or [config_path], "record_note": None if records else "별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목",
             "figure": record_figure(key, note.get("figure"), records),
         })
+    # 2026-10-21 (site v4 09): checks registered before any result, each with its pre-registration file and the commit that
+    # added that file alone; shown as their own rows ('등록됨') until a result is stored, never counted as a check
+    registered = []
+    for r in config.get("registered", []):
+        require(r["indicator"] in config["indicator_badges"]["order"], f"{r['key']}: unknown indicator")
+        require(r["key"] not in sets, f"{r['key']}: has a stored result; move it to sets")
+        require((ROOT / r["prereg"]).is_file(), f"{r['key']}: pre-registration {r['prereg']} not found")
+        require(re.fullmatch(r"[0-9a-f]{7}", r["prereg_commit"] or "") is not None, f"{r['key']}: prereg_commit must be a short SHA")
+        require(re.fullmatch(r"\d{4}-\d{2}", r["results_due"] or "") is not None, f"{r['key']}: results_due must be YYYY-MM")
+        registered.append({k: r[k] for k in ("key", "indicator", "name", "checked", "prereg", "prereg_commit", "results_due")})
     counts = {c: sum(r["outcome_class"] == c for r in rows) for c in CLASSES}
     return {
         "schema_version": SCHEMA, "display_only": True, "report_version": report["method_version"],
         "source": "dist/assessments.json posthoc.validation_sets + config/posthoc-scorecard.json",
         "repository": config["repository"], "total": len(rows), "counts": counts,
         "preregistered": sum(r["preregistered"] == "yes" for r in rows),
-        "indicators": indicator_badges(config, rows), "rows": rows,
+        "indicators": indicator_badges(config, rows), "rows": rows, "registered": registered,
     }
 
 
@@ -150,6 +161,9 @@ def render_csv(out: dict) -> str:
                     f"{r['figure']['record_version']} 기록: {r['figure']['text']}" if r["figure"] else "", action,
                     r["action_detail"] + (f" ({r['action_history']})" if r["action_history"] else ""),
                     " ; ".join(r["records"])])
+    for r in out.get("registered", []):
+        w.writerow(["", r["indicator"], r["name"], r["checked"], "예", f"사전 등록 커밋 {r['prereg_commit']}", "", "등록됨",
+                    f"등록됨 · 결과 {r['results_due']} 공개 예정", "", "", "", r["prereg"]])
     return "﻿" + buf.getvalue()  # BOM so spreadsheet programs read the Korean text as UTF-8
 
 
