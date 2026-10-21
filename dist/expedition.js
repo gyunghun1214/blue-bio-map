@@ -174,7 +174,8 @@ const has=v=>v!==null&&v!==undefined&&v!=='';
 // MCUI: an IUCN or Korean national category by its name; an MCUI set by the KOSIS catch trend by that trend (with the
 // extinction-risk basis it was compared with, when there is one). The 15 stops whose category comes from a range
 // calculation (basis 'preliminary') or from another government's list ('range_state') read like any other category here,
-// and their detail names the category's source in one line (mcuiSource).
+// and their detail names the category's source in one line (mcuiSource). 2026-10-20 (LKH): beside the number, a category
+// from the range calculation adds '예비' ('10.0 (LC·예비)'), judged on the basis alone, as on the main map (PR #240).
 const stockText=m=>m?.driver==='stock_decline'&&has(m.stock_decline?.decline_pct)
   ?`자원 감소 신호 · 어획량 −${Number(m.stock_decline.decline_pct)}% (KOSIS 어획량 통계)${has(m.extinction_risk)?` · 멸종위험 근거 ${globalThis.scoreNumber('MCUI',Number(m.extinction_risk))}점`:''}`:'';
 function mcuiTag(stop){
@@ -273,7 +274,7 @@ function cellExtent(c){
 }
 function yearsText(c){return c.year_start===c.year_end?`${c.year_start}년`:`${c.year_start}–${c.year_end}년`;}
 // 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
-const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
+const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.basis==='preliminary'?'·예비':''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
 // The small line under a score (plain text): what the number is
 const axisTag=(stop,k)=>k==='MCUI'?mcuiTag(stop):k==='MBPI'?NOTES.mbpi:k==='BBVI'?NOTES.score:'';
 function scoreHtml(stop,k,big){
