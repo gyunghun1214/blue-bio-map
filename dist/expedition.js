@@ -273,8 +273,8 @@ function cellExtent(c){
   const s=c.size_deg;return `${s}° 셀 · 북위 ${c.lat0}–${c.lat0+s}° · 동경 ${c.lon0}–${c.lon0+s}°`;
 }
 function yearsText(c){return c.year_start===c.year_end?`${c.year_start}년`:`${c.year_start}–${c.year_end}년`;}
-// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
-const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.basis==='preliminary'?'·예비':''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
+// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 어획량 감소'); never the word IUCN
+const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.basis==='preliminary'?'·예비':''}${m.driver==='stock_decline'?' + 어획량 감소':''}`:'';};
 // The small line under a score (plain text): what the number is
 const axisTag=(stop,k)=>k==='MCUI'?mcuiTag(stop):k==='MBPI'?NOTES.mbpi:k==='BBVI'?NOTES.score:'';
 function scoreHtml(stop,k,big){

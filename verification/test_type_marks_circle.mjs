@@ -32,8 +32,8 @@ assert.doesNotMatch(html,/[▲■◆◇△□]/,'index.html has no shape glyph')
 assert.match(app,/MCUI \$\{scoreText\(s,'MCUI',pilotScore\(s,'MCUI'\)\)\}\$\{kind\}/,'point tooltip keeps the MCUI text with its brackets and basis');
 // the sentences that described the diamond now say where the signal is written
 for(const [where,text] of [[html,'두 값은 따로 봅니다 · 점 색은 유형입니다 · 자원 감소 신호로 정한 MCUI는 숫자 옆 괄호와 점 툴팁에 적습니다'],
-  [html,'자원 감소 신호(KOSIS 어획량 추세)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘자원 감소’로 적습니다.'],
-  [app,'KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘자원 감소’로 적습니다.'],
+  [html,'자원 감소 신호(KOSIS 어획량 추세)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다.'],
+  [app,'KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다.'],
   [chatbot,'칸마다 유형 색 원(●)과 위치 이름이']])assert.ok(where.includes(text),text);
 for(const [name,s] of [['index.html',html],['app.js',app],['chatbot.js',chatbot]])assert.doesNotMatch(s,/마름모/,`${name}: no 마름모`);
 assert.doesNotMatch(chatbot,/유형 모양\(/,'chatbot FAQ no longer lists type shapes');

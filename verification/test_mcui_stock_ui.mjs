@@ -13,7 +13,7 @@ const ctx={};
 vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+';globalThis.valid=verifiedConservationValid;globalThis.detail=stockDeclineDetail;'+
-  'globalThis.recheck=stockDeclineRecheck;globalThis.change=stockChange;',ctx);
+  'globalThis.recheck=stockDeclineRecheck;globalThis.change=stockChange;globalThis.band=stockBandLabel;globalThis.aux=mcuiAuxParts;globalThis.lead=stockLead;',ctx);
 ctx.info={method:report.method,sources:report.sources,version:report.method_version};
 vm.runInContext('data={assessmentInfo:globalThis.info,species:[]}',ctx);
 
@@ -78,7 +78,7 @@ for(const a of rows)assert.doesNotMatch(a.stock_decline.label,/\b(?:LC|NT|VU|EN|
 
 // detail: the catch line, the means, the link level, the share, the 2025p note, the stock-assessment state and the caution
 const html=ctx.detail({label:'살오징어',assessment:squid});
-for(const text of ['자원 감소 신호 · KOSIS 어획량 추세','어획량 급감 · 60.0점','IUCN LC 10.0 · 자원 감소 60.0 → 높은 값 60.0',
+for(const text of ['자원 감소 신호 · KOSIS 어획량 추세','어획량 감소 신호(50% 이상) · 60.0점','IUCN LC 10.0 · 어획량 감소 신호 60.0 → 높은 값 60.0',
   '기준 평균 121,486톤(2015~17) → 최근 평균 24,507톤(2022~24)','(−79.8%)','KOSIS 품종 살오징어(오징어) · 연결 종 단위','최근 3년 양식 비중 0.0%',
   '2025년 잠정치 31,006톤(점수 미사용)','KOSIS 어획량 통계로 계산한 값입니다(IUCN 기준 A의 30·50·80% 구간 적용)','class="sd-spark scored"','class="sd-ref"'])
   assert.ok(html.includes(text),`살오징어 detail: ${text}`);
@@ -97,4 +97,16 @@ for(const a of rows){const has=ctx.detail({label:a.korean_name,assessment:a}).in
   assert.equal(has,a.stock_decline.unscored_reason==='aquaculture_dominant',`${a.korean_name}: latest-year line only for farming-led species`);}
 assert.ok(!html.includes('sd-latest'),'살오징어: no latest-year line');
 assert.ok(!ctx.detail({label:'전복',assessment:{...by('전복(종 수준)'),stock_decline:{...ab,aquaculture_t:[...ab.aquaculture_t.slice(0,-1),null]}}}).includes('sd-latest'),'a gap hides the line');
+// 2026-10-21 (site v4 06): the bands are shown as '어획량 감소 신호(N% 이상)'; the report keeps its band words, the screen never
+// says '붕괴' or '급감', and every decline number on the aux line names KOSIS, with the 2025 provisional catch beside it
+assert.deepEqual(rule.bands.map(b=>ctx.band({label:b.label})),['어획량 감소 신호(30% 이상)','어획량 감소 신호(50% 이상)','어획량 감소 신호(80% 이상)']);
+assert.equal(ctx.band({label:rule.labels.no_signal}),rule.labels.no_signal);
+for(const a of rows){const sp={label:a.korean_name,assessment:a},d=a.stock_decline;
+  const screen=[ctx.detail(sp),ctx.detail(sp,true),ctx.aux(sp).join(' · '),d.score!==null&&a.mcui_driver==='stock_decline'?ctx.lead(sp):''].join('\n');
+  for(const w of ['붕괴','급감'])assert.ok(!screen.includes(w),`${a.korean_name}: no '${w}' on screen`);
+  if(Number.isFinite(d.decline_pct)&&d.match_level!=='none'){const line=ctx.aux(sp).find(x=>x.startsWith('어획량 변화'));
+    assert.ok(line.includes(`${ctx.change(d)} (KOSIS 어획량 통계)`),`${a.korean_name}: ${line}`);
+    if(Number.isFinite(d.reference_2025p?.coastal_t))assert.ok(line.includes(`2025년 잠정 ${d.reference_2025p.coastal_t.toLocaleString()}톤`),`${a.korean_name}: 2025p`);}}
+assert.ok(ctx.lead({label:'우뭇가사리',assessment:by('우뭇가사리')}).includes('어획량 감소 신호(80% 이상) 80.0점'),'우뭇가사리 lead');
+for(const f of ['dist/index.html','dist/expedition.html','dist/expedition.js','dist/app.js','dist/chatbot.js'])assert.ok(!read(f).includes('붕괴'),`${f}: no '붕괴'`);
 console.log('PASS: stock-decline re-check (30 species, 3 MCUI moves) · tampered years, decline, band, max, driver, cap, reasons and source refused · wording and detail');

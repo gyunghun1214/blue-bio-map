@@ -66,7 +66,7 @@ const by=l=>S.find(s=>s.label===l);
 assert.deepEqual(shown(by('미역')),{MFPI:'46.7',MBPI:'89',BBVI:'68',MCUI:'10.0'});
 assert.deepEqual(shown(by('참굴')),{MFPI:'71.6',MBPI:'72',BBVI:'72',MCUI:'10.0'});
 assert.deepEqual(shown(by('청각')),{MFPI:'36.7',MBPI:'1',BBVI:'19',MCUI:'10.0'});
-assert.equal(T.scoreText(by('살오징어'),'MCUI',60),'60.0 (LC + 자원 감소)','the MCUI keeps its category beside the number');
+assert.equal(T.scoreText(by('살오징어'),'MCUI',60),'60.0 (LC + 어획량 감소)','the MCUI keeps its category beside the number');
 // MBPI-Rx reads as MBPI does
 for(const s of S){const r=T.mbpiRxOf(s);if(r?.value!=null)assert.match(T.scoreValue(s,'MBPI',r.value),/^\d+$/,`${s.label} MBPI-Rx`);}
 // the slider steps where a BBVI keeps its decimal next to the line (해삼 0.75 → 49.8 and the like); none at the official weight

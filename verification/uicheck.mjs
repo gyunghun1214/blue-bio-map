@@ -308,7 +308,7 @@ try{
   // 2026-10-17 (LKH): the index report's lines only; the profile's older 미수집/미검토 stay in the profile
   {const sq=snapshot.profiles.find(p=>p.aphia_id===342067).evidence_summary;
   check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',sq.nutrition.status==='not_collected'&&sq.conservation.status==='not_reviewed'&&
-    /MFPI · 식량 가능성\s*46\.1 · 정식 산출/.test(t)&&/MBPI · 생리활성\s*57 · 정식 산출/.test(t)&&/MCUI · 보전 평가\s*60\.0 \(LC \+ 자원 감소\) · 정식 산출/.test(t)&&!/미수집|미검토|지표 보고서/.test(t)&&/별도 수집 기록\s*기록 수\s*2건/.test(t),t);}
+    /MFPI · 식량 가능성\s*46\.1 · 정식 산출/.test(t)&&/MBPI · 생리활성\s*57 · 정식 산출/.test(t)&&/MCUI · 보전 평가\s*60\.0 \(LC \+ 어획량 감소\) · 정식 산출/.test(t)&&!/미수집|미검토|지표 보고서/.test(t)&&/별도 수집 기록\s*기록 수\s*2건/.test(t),t);}
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
