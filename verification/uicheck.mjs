@@ -149,15 +149,17 @@ try{
     check('G-1 first open: entry screen over the map, map and chatbot inert, loader finished with the species total, counts read from the loaded data',
       g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step===`해양생물 ${total}종 자료를 불러왔어요`&&g.counts===`${total}종의 해양생물 · 공개 데이터 기반`&&!/운영 발행|조사 후보/.test(g.counts)&&g.note===''&&g.stored===null,JSON.stringify(g));
     check('G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen',g.focus==='gate-enter'&&g.enterBox.bottom<=g.vh&&g.enterBox.top>0,JSON.stringify(g));
-    // 2026-10-17 (#1): under the slogan three problem lines ('출처 N건' counted from license-matrix.json, never typed in) → the
-    // solution naming the species total → the buttons. The three example cards that followed were taken off the screen (2026-10-17).
+    // 2026-10-17 (#1): under the slogan the problem (one sentence since 2026-10-21; '근거 출처 N건', counted from
+    // license-matrix.json and never typed in, moved to the way into the source list) → the solution naming the species total → the buttons. The three example cards that followed were taken off the screen (2026-10-17).
     const why=await evaluate(`(()=>{const g=document.getElementById('site-gate'),box=s=>(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(g.querySelector(s).getBoundingClientRect());
       return {problems:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden).map(li=>li.textContent),solve:g.querySelector('.gate-why .gate-lead').textContent,
-        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,
+        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,num:getComputedStyle(g.querySelector('.gate-problems li'),'::before').content,
+        method:g.querySelector('.gate-method').textContent,
         cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.querySelector('.gate-center').textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
-    check('G-1b entry screen: the problem sentence and the source count line (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
-      JSON.stringify(why.problems)===JSON.stringify(['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.',`이 지도에 쓰인 근거 출처만 해도 ${evidenceSources}건입니다.`])
+    check('G-1b entry screen: the problem sentence alone, unnumbered → the solution naming the species total → the buttons, all in the first screen; 근거 출처 N (from license-matrix.json) heads the way into the source list',
+      JSON.stringify(why.problems)===JSON.stringify(['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.'])
+      &&why.num==='none'&&why.method===`근거 출처 ${evidenceSources}건 · 전체 출처·방법 보기→`
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
@@ -167,7 +169,7 @@ try{
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
       const added=vis('.gate-task,.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
-    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
+    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=5&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
     // 2026-10-17 (#3): '이렇게 쓸 수 있습니다' under the first screen (the first screen as above): three cards, each who → what
     // they look at → what they choose with its way in, then one line; the policy card's species are the conservation example's
@@ -1664,8 +1666,8 @@ try{
   const small=await evaluate(`(()=>{const g=document.getElementById('site-gate'),hero=g.querySelector('.gate-hero'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {problems:r('.gate-problems').top,solve:r('.gate-why .gate-lead').bottom,enter:r('#gate-enter').bottom,shown:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden&&li.getClientRects().length).length,
       vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
-  check('G-9 phone 375×667: the problem sentence and the source line, the solution and the button inside the first screen, no sideways scroll',
-    gs.on&&gs.ready&&small.shown===2&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
+  check('G-9 phone 375×667: the problem sentence, the solution and the button inside the first screen, no sideways scroll',
+    gs.on&&gs.ready&&small.shown===1&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
   await sleep(1200);await shot('gate-mobile-375',false);
   await viewport(1560,900,false);
   // 2026-10-17 (#9): '전체 출처·방법 보기' lands on the source list, which now sits in a fold: the way in opens it

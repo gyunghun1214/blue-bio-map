@@ -135,8 +135,8 @@ function gateNote(g){
 }
 // The design's "N종의 해양생물 · 공개 데이터 기반" (2026-10-17, LKH: one count, no published/candidate split). Empty until known.
 const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양생물 · 공개 데이터 기반`;
-// 2026-10-17 (#1) problem → solution under the slogan. The third problem line's '근거 출처 N건' (named so on 2026-10-19; the
-// method tab's '전체 출처 목록' says how it relates to that list) is the rows of license-matrix.json
+// 2026-10-17 (#1) problem → solution under the slogan. '근거 출처 N건' (named so on 2026-10-19; the method tab's '전체 출처
+// 목록' says how it relates to that list; since 2026-10-21 on the way into that list, no longer a problem line) is the rows of license-matrix.json
 // (app.js reads the file anyway and passes it on) that feed an indicator or the map's cells: counted on every load, never
 // typed in; null keeps the line out (no file, no rows).
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
@@ -557,8 +557,8 @@ void main(){
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
     const total=speciesTotal(gate.done);if(total)for(const b of el.querySelectorAll('.gate-total'))b.textContent=String(total); // the solution line and '다음 단계' (#4)
-    if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
-      if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
+    const src=q('.gate-src'),srcN=q('.gate-src-n'); // '근거 출처 N건 · ' on the way into the source list; absent markup is skipped
+    if(src&&srcN&&gate.sources!==undefined){if(gate.sources)srcN.textContent=String(gate.sources);src.hidden=!gate.sources;}
     renderUseSpecies();
   }
   // 2026-10-17 (#3): the policy card under the first screen names the species of the conservation example (app.js gateExamples)
