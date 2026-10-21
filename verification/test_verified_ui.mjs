@@ -26,7 +26,9 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.plain=plainWords;
   globalThis.scoreText=scoreText;
   globalThis.evText=evidenceProfileText;
-  globalThis.evDep=evidenceDependence;`,ctx);
+  globalThis.evDep=evidenceDependence;
+  globalThis.mbpiMaterial=mbpiMaterial;
+  globalThis.basisNote=basisNote;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -40,6 +42,14 @@ assert.equal(ctx.score(by(836033),'BBVI'),71.9,'4.11: the LQP replication is a z
 ctx.next=next;
 vm.runInContext('data=globalThis.next',ctx);
 
+// 2026-10-21 (사이트 v4 prompt 04): every MBPI number carries the substance its top item was measured on and the test kind,
+// read from that item (a peptide by its sequence, a ChEMBL compound by its name); species without an MBPI get none.
+{const want={'미역':'VW 펩타이드 · ACE 저해 IC50','해삼':'HDWWKER 펩타이드 · ACE 저해 IC50','멍게':'Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50',
+  '살오징어':'YALPHA 펩타이드 · ACE 저해 IC50','우뭇가사리':'Pheophorbide a · HIV-1 항바이러스 IC50','톳':'GKY 펩타이드 · ACE 저해 IC50',
+  '홍합(참담치)':'Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50','참굴':'LQP 펩타이드 · ACE 저해 IC50'};
+  const got=Object.fromEntries(next.species.filter(s=>ctx.mbpiMaterial(s)).map(s=>[s.label,ctx.mbpiMaterial(s)]));
+  assert.deepEqual(got,want,'MBPI material for the eight species with an MBPI');
+  for(const s of next.species)if(ctx.score(s,'MBPI')!==null)assert.ok(ctx.basisNote(s,'MBPI').startsWith(' · '+want[s.label]),`${s.label}: material beside MBPI`);}
 let html=ctx.renderScores(by(836033));
 for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','정식 산출 · 한국 국가 평가 기반','MFPI는 같은 비교집단 안에서 비교합니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
@@ -544,13 +554,13 @@ assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.
   // 2026-10-19 (LKH, 사이트 v3 3/10): the line opens with what was measured, N from the scored item's measured values
   const vw=by(145721).assessment.bioactivity_trace.find(i=>i.peptide_sequence==='VW'), n=vw.measurements.length;
   assert.ok(n===1&&vw.measurements.every(m=>m.endpoint==='IC50'),'VW: one IC50');
-  assert.ok(mbpi.includes(`<p class="fine mbpi-first"><b>근거: ACE 저해 IC50 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>`),'wakame first line');
+  assert.ok(mbpi.includes(`<p class="fine mbpi-first"><b>근거: VW 펩타이드 · ACE 저해 IC50 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>`),'wakame first line');
   assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('점수 근거'),'the first line sits above the scored items');
   assert.ok(mbpi.includes(MBPI_CHECK)&&mbpi.indexOf('mbpi-first')<mbpi.indexOf('mbpi-check'),'the MBPI check line under the first line');
   assert.ok(!/사후 검증|집계 방식에 따라/.test(mbpi)&&mbpi.split('기준 미충족').length===2&&original.method.posthoc.validation_sets.MBPI,'the aggregation range stays in the record');}
 assert.doesNotMatch(html,/미통과/);
 {const mbpi=ctx.renderScores(by(241776)).split('data-axis="MBPI"')[1].split('data-axis="MCUI"')[0];
-  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');
+  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>근거: HDWWKER 펩타이드 · ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');
   assert.ok(mbpi.includes(MBPI_CHECK),'sea cucumber MBPI check line');}
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 // 4.11 (prereg 2): that zein-derived row no longer counts, so LQP keeps the factor 0.75 (72.2) and the single-paper label.

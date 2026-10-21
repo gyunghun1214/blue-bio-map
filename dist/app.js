@@ -1213,8 +1213,22 @@ const extinctionMcui = s => pilotScore(s,'MCUI')===null?null:s.assessment?.mcui_
 // 2026-10-17 (LKH): one axis label for every basis; no check result, back-test or evidence label rides beside a value
 const axisLabel = (s,key,info) => pilotLabel(key,info);
 const mcuiBacktest = () => '';
+// 2026-10-21 (사이트 v4 prompt 04, evaluation C2·J2): beside every MBPI number, the substance its top item was measured on and
+// the kind of test, from the item itself: a peptide by its sequence ('VW 펩타이드 · ACE 저해 IC50'), a ChEMBL compound by its
+// name ('Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50'). Nothing is looked up or guessed: without a name or a test kind, ''.
+const MBPI_TARGET_KO={'Human immunodeficiency virus type 1 reverse transcriptase':'HIV-1 역전사효소 저해','Human immunodeficiency virus 1':'HIV-1 항바이러스'};
+const compoundName = n => {const t=String(n||'').trim();return t?t.charAt(0)+t.slice(1).toLowerCase():'';};
+function mbpiMaterial(s){
+  const st=mbpiStratumOf(s), x=st&&bestBio(s.assessment);if(!x)return '';
+  if(x.stratum_kind==='chembl'){
+    const name=compoundName(x.compound_name), test=MBPI_TARGET_KO[x.target_name];
+    return name&&test&&x.standard_type?`${name} · ${test} ${x.standard_type}`:'';
+  }
+  const seq=String(x.peptide_sequence||'').trim(), kind=MBPI_ASSAY_KIND[st.key], ends=[...new Set((x.measurements||[]).map(m=>m.endpoint))];
+  return seq&&kind&&ends.length&&ends.every(Boolean)?`${seq} 펩타이드 · ${kind} ${ends.join('·')}`:'';
+}
 const basisNote = (s,key) => key==='MCUI'&&separateMcui(s)?' · '+mcuiBasisShort(s):
-  key==='MBPI'&&pilotScore(s,'MBPI')!==null?(bestBio(s.assessment)?.stratum_kind==='xo'?' · XO 문헌 비교집단':bestBio(s.assessment)?.stratum_kind==='relaxed'?' · ChEMBL 표적 비교집단':''):'';
+  key==='MBPI'&&pilotScore(s,'MBPI')!==null?(mbpiMaterial(s)?' · '+mbpiMaterial(s):'')+(bestBio(s.assessment)?.stratum_kind==='xo'?' · XO 문헌 비교집단':bestBio(s.assessment)?.stratum_kind==='relaxed'?' · ChEMBL 표적 비교집단':''):'';
 const axisTag = (s,key,info) => axisLabel(s,key,info)+basisNote(s,key);
 const rawSubstituteMcui = s => SUBSTITUTE_BASES.includes(s?.assessment?.mcui_basis)&&pilotScore(s,'MCUI')!==null;
 const substituteMcui = s => rawSubstituteMcui(s)&&!earlyMcui(s);
@@ -1935,7 +1949,8 @@ function mbpiAssayLine(s){
   const ends=chembl?[x.standard_type]:[...new Set((x.measurements||[]).map(m=>m.endpoint))];
   const n=chembl?(x.activity_ids||[]).length:(x.measurements||[]).length;
   if(!kind||!n||!ends.every(Boolean))return '';
-  return `근거: ${kind}${st.key==='anticancer'&&x.cell_line?' '+x.cell_line:''} ${ends.join('·')} 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님`;
+  const material=chembl?compoundName(x.compound_name):String(x.peptide_sequence||'').trim()?`${x.peptide_sequence} 펩타이드`:'';
+  return `근거: ${material?material+' · ':''}${kind}${st.key==='anticancer'&&x.cell_line?' '+x.cell_line:''} ${ends.join('·')} 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님`;
 }
 function mbpiFirstLine(s){
   const st=mbpiStratumOf(s), k=mbpiKindOf(s), assay=mbpiAssayLine(s), r=validationResult('MBPI');
