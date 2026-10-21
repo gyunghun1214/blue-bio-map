@@ -91,7 +91,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-title{margin:0;font-size:clamp(38px,min(5.6vw,9.4vh),112px);line-height:1.12;font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 30px rgba(4,16,27,.5)}
 .gate-title span{display:block}
 .gate-lead{margin:clamp(12px,2.6vh,26px) 0 0;font-size:clamp(15px,min(1.32vw,2.35vh),22px);line-height:1.6;color:var(--g-ink2)}
-/* 2026-10-17 (#1) why the map exists, under the slogan: three problem lines, then the solution in the lead's type, then the
+/* 2026-10-17 (#1) why the map exists, under the slogan: the problem (one line since 2026-10-21), then the solution in the lead's type, then the
    ways in. The title is a size smaller to make room. The block stays inside the room the globe already left the copy (its
    left edge, or the buttons' row where that reaches further), so the globe stays where the design put it. */
 .gate-why{max-width:clamp(280px,max(calc(73vw - min(77.86vh,55vw) - var(--g-pad)),calc(clamp(190px,15.6vw,262px) + clamp(24px,2.6vw,44px) + 96px)),560px)}
@@ -104,8 +104,10 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-problems li{position:relative;padding-left:1.7em;counter-increment:gp}
 .gate-problems li:before{content:counter(gp,decimal-leading-zero);position:absolute;left:0;top:.2em;font-size:12px;font-weight:600;color:var(--g-ink3);font-variant-numeric:tabular-nums}
 .gate-problems b,.gate-why .gate-lead b{font-weight:700;color:var(--g-ink)}
-.gate-src.is-wait{visibility:hidden}
-.gate-src-n:empty{display:inline-block;min-width:3ch}
+/* 2026-10-21: one problem line keeps the list (a second can come back) but drops its number */
+.gate-problems li:only-child{padding-left:0}
+.gate-problems li:only-child:before{content:none}
+.gate-method b{font-weight:700}
 .gate-why .gate-lead{margin:0;font-size:clamp(15px,min(1.25vw,2.2vh),21px);color:var(--g-ink);text-wrap:balance}
 .gate-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px clamp(24px,2.6vw,44px);margin-top:clamp(16px,3vh,34px)}
 .gate-enter{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-width:clamp(190px,15.6vw,262px);height:clamp(50px,6.2vh,58px);padding:0 28px;
