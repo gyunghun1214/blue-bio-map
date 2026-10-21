@@ -859,7 +859,7 @@ try{
     releaseInfo=was;renderPopVersion();return {before,on,noted,after:v.textContent,file:was};})()`);
   check('Release stamp: 발표 기준판 2026-10-27 · 커밋 abc1234 once release.json has a commit; the method version while it is empty',
     stamp.on==='발표 기준판 2026-10-27 · 커밋 abc1234'&&stamp.noted==='발표 기준판 2026-10-27 · 커밋 abc1234 · 11-02 오탈자 수정'&&stamp.after===stamp.before&&
-    (stamp.file?.commit?stamp.before.startsWith('발표 기준판 '):stamp.before.includes(report.method_version)),JSON.stringify(stamp));
+    (stamp.file?.commit?stamp.before.startsWith('발표 기준판 '):stamp.before.includes(report.method_version.replace(/^verified-(\d+\.\d+)$/,'방법 $1판'))),JSON.stringify(stamp));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
   // verified-pilot-3.2 places real species, so the empty-matrix shortcut appears only when nothing is placed
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");

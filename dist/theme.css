@@ -1542,3 +1542,5 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sheet-summary .ss-name{font-size:17px}
   #explore .sheet-summary .type-chip{padding:2px 9px 2px 7px;border-radius:99px;background:rgba(255,255,255,.07)}
 }
+/* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
+.gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}

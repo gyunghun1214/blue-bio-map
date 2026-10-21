@@ -302,7 +302,7 @@ assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역�
 // '(LC + 자원 감소)' brackets carry it alone (no diamond mark beside the number, every matrix point a circle)
 assert.match(dom.comparison.innerHTML,/>80\.0 \(EN, A2bd\)<small>/);
 assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 어획량 감소\)<small>정식 산출 · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8%<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat">\(LC \+ 어획량 감소\)<\/small><\/span>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat" title="\(LC·관심대상 \+ 어획량 감소\)">\(LC \+ 어획량 감소\)<\/small><\/span>/,'the bracket keeps its short form; the title says LC in Korean (site v4 08)');
 assert.doesNotMatch(dom.comparison.innerHTML,/cv-stock|◆/);
 assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10\.0 · 어획량 감소 신호 60\.0 → 높은 값 60\.0<\/p>/);
 assert.match(dom.comparison.innerHTML,/기준 평균 121,486톤\(2015~17\) → 최근 평균 24,507톤\(2022~24\) <b>\(−79\.8%\)<\/b>/);
