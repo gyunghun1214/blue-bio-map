@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
+const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8').replace(/\r\n/g,'\n'); // a Windows checkout (CI) has CRLF
 const rel=JSON.parse(read('release.json'));
 assert.deepEqual(rel,{label:'발표 기준판',date:'2026-10-27',commit:''},'committed with the commit empty: the popover is as before');
 const app=read('app.js');

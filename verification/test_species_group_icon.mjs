@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const D=new URL('../dist/',import.meta.url), read=f=>fs.readFileSync(new URL(f,D),'utf8');
@@ -44,7 +45,7 @@ const oyster=data.species.find(s=>s.aphiaID===836033);
 assert.equal(oyster.group,'패류','참굴 shows the 패류 icon');
 
 // (3) the temporary asset and every reference to it are gone from the deployed folder (SOURCE.txt keeps the deletion note)
-const root=new URL('.',D).pathname, hits=[];
+const root=fileURLToPath(D), hits=[]; // URL.pathname is '/C:/…' on Windows, which fs cannot open
 assert.ok(!fs.existsSync(path.join(root,'vendor/species/magallana-gigas-temp.webp')),'temporary asset deleted');
 for(const f of fs.readdirSync(root,{recursive:true})){
   const p=path.join(root,f);if(!fs.statSync(p).isFile()||p.endsWith(path.join('vendor','species','SOURCE.txt')))continue;
