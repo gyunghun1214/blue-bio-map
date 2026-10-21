@@ -1134,7 +1134,7 @@ const matrixPlainNote=()=>{const r=matrixRule();return '연구 순서를 고르�
 // 4.14 (prereg-4.14-2026-10-14 7): visible words that keep '보전평가 미확인' apart from an official low-risk category
 const consShort=(s,long)=>{const c=s?.assessment?.conservation_status;if(!c||!data?.assessmentInfo?.method?.mcui_scope)return '';
   // 2026-10-17: a scored MCUI reads the same for every basis ('10.0 (LC)'); its source is named only in the species detail
-  if(c.state==='official_scored'||c.state==='preliminary_scored')return stockMcui(s)?'자원 감소':'';
+  if(c.state==='official_scored'||c.state==='preliminary_scored')return stockMcui(s)?'어획량 감소':'';
   if(c.mcui_role==='stock_decline_lower_bound')return long?c.mcui_role_label:'평가 미확인 · 자원 감소 하한';
   return c.state==='official_dd'?'공식 DD(정보 부족)':c.state==='official_ne'?'공식 NE(미평가)':c.state==='lookup_failed'?'조회 실패':long?c.label:'보전평가 미확인';};
 // the verdict word in a light type colour for the dark explore panels (theme.css .vd-*); null = '—' in grey
@@ -1161,6 +1161,10 @@ const preliminaryMcui = s => rawPreliminaryMcui(s)&&!earlyMcui(s);
 const stockMcui = s => s?.assessment?.mcui_driver==='stock_decline'&&pilotScore(s,'MCUI')!==null;
 // the catch change as people read it: a 79.8% fall is '−79.8%', a 28.6% rise '+28.6%'
 const stockChange = d => d?.decline_pct===null||d?.decline_pct===undefined?'':(d.decline_pct>0?'−':d.decline_pct<0?'+':'±')+Math.abs(d.decline_pct).toFixed(1)+'%';
+// 2026-10-21 (site v4 06): the decline bands are shown by what they measure, '어획량 감소 신호(80% 이상)', not by the report's
+// band words; the report, the scores and the bands stay as they are. Any other label (no signal, farming-led, …) as written
+const stockBandLabel = d => {const b=(data?.assessmentInfo?.method?.mcui_stock_decline?.bands||[]).find(x=>x.label===d?.label);
+  return b&&Number.isFinite(b.min_decline)?`어획량 감소 신호(${Math.round(b.min_decline*100)}% 이상)`:String(d?.label||'');};
 const stockLabel = s => '자원 감소 신호 · 어획량 '+stockChange(s.assessment.stock_decline);
 // 7/15 (2026-10-15): MCUI is the conservation category turned into a number (LC 10 · NT 35 · VU 60 · EN 80 · CR 100) plus the
 // stock-decline signal, so a number never stands alone: the category that set it rides beside it, '10.0 (LC)', '80.0 (EN, A2bd)',
@@ -1176,8 +1180,8 @@ const mcuiCriteria = s => s?.assessment?.mcui_basis==='iucn'&&s.assessment.conse
 function mcuiCatTag(s,short){
   if(pilotScore(s,'MCUI')===null)return '';
   const cat=mcuiCategory(s), crit=short?null:mcuiCriteria(s), stock=stockMcui(s);
-  if(!cat)return stock?'자원 감소':'';
-  return cat+(crit?', '+crit:'')+(rawPreliminaryMcui(s)?'·예비':'')+(stock?(short?'+감소':' + 자원 감소'):'');
+  if(!cat)return stock?'어획량 감소':'';
+  return cat+(crit?', '+crit:'')+(rawPreliminaryMcui(s)?'·예비':'')+(stock?(short?'+감소':' + 어획량 감소'):'');
 }
 // the published year of the category behind the MCUI; a Rapid LC check carries the report year
 function mcuiAssessYear(s){
@@ -1200,7 +1204,7 @@ function mcuiAuxParts(s){
   if(tr&&tr!=='Unknown')parts.push('개체군 추세 '+(TREND_KO[tr]||tr));
   const d=a.stock_decline;
   if(d&&d.match_level!=='none')parts.push(d.decline_pct===null||d.decline_pct===undefined?String(d.label||'').replace(/^자원 감소 신호: ?/,'자원 감소율 · '):
-    `어획량 변화 ${stockChange(d)}`+(Number.isFinite(d.score)?` · 자원 감소 ${scoreValue(s,'MCUI',d.score)}점`:` · ${String(d.label||'자원 감소 신호 없음').replace(/^자원 감소 신호: ?/,'').replace(/^(.+) · 해당 없음$/,'자원 감소 신호 해당 없음($1)')}`));
+    `어획량 변화 ${stockChange(d)} (KOSIS 어획량 통계)`+(Number.isFinite(d.reference_2025p?.coastal_t)?` · 2025년 잠정 ${Math.round(d.reference_2025p.coastal_t).toLocaleString()}톤`:'')+(Number.isFinite(d.score)?` · 어획량 감소 신호 ${scoreValue(s,'MCUI',d.score)}점`:` · ${String(d.label||'자원 감소 신호 없음').replace(/^자원 감소 신호: ?/,'').replace(/^(.+) · 해당 없음$/,'자원 감소 신호 해당 없음($1)')}`));
   return parts;
 }
 const mcuiAuxLine = s => {const p=mcuiAuxParts(s);return p.length?'보조 정보 · '+p.join(' · '):'';};
@@ -1748,12 +1752,12 @@ function stockCompare(s){
   const c=a.conservation_trace,basis=a.mcui_basis==='iucn'&&c?.category?'IUCN '+c.category:mcuiBasisShortOf(s);
   // 2026-10-17 (LKH): without an extinction-risk number the line names the decline value and the MCUI only
   const n=x=>x===null?'—':scoreValue(s,'MCUI',x);
-  if(ext===null)return `자원 감소 ${n(d.score)} → MCUI ${n(v)}`;
-  return `${basis} ${n(ext)} · 자원 감소 ${n(d.score)} → ${a.mcui_driver==='tie'?'같은 값':'높은 값'} ${n(v)}`;
+  if(ext===null)return `어획량 감소 신호 ${n(d.score)} → MCUI ${n(v)}`;
+  return `${basis} ${n(ext)} · 어획량 감소 신호 ${n(d.score)} → ${a.mcui_driver==='tie'?'같은 값':'높은 값'} ${n(v)}`;
 }
 const mcuiBasisShortOf = s => nationalMcui(s)?'한국 국가 평가':subNationalMcui(s)?'지방 목록 참고값':preliminaryMcui(s)?'분포 범위 계산':substituteMcui(s)?`${s.assessment.mcui_substitute?.record?.country_ko||''} 정부 평가`.trim():earlyMcui(s)?'멸종위험 평가':'IUCN';
 const stockLead = s => {const d=s.assessment.stock_decline,low=s.assessment.conservation_status?.mcui_role==='stock_decline_lower_bound';
-  return `KOSIS 연근해 어획량이 ${stockChange(d)} 변해 자원 감소 신호(${d.label}) ${scoreValue(s,'MCUI',d.score)}점이 ${low?'탐색용 기준선 이상이라 이 종의 MCUI가':'멸종위험 근거보다 높아 MCUI가'} 되었습니다(${stockCompare(s)}). 자원 감소 신호는 KOSIS 어획량 통계에서 온 값입니다.`;};
+  return `KOSIS 연근해 어획량이 ${stockChange(d)} 변해 ${stockBandLabel(d)} ${scoreValue(s,'MCUI',d.score)}점이 ${low?'탐색용 기준선 이상이라 이 종의 MCUI가':'멸종위험 근거보다 높아 MCUI가'} 되었습니다(${stockCompare(s)}). 자원 감소 신호는 KOSIS 어획량 통계에서 온 값입니다.`;};
 // the 2015–2024 coastal catch as a small line: the two averaged windows lightly shaded, 2025p dashed for reference only
 function stockSpark(d,rule){
   const ys=d.years,c=d.coastal_t.map(v=>v||0),ref=d.reference_2025p?.coastal_t,all=[...c,...(Number.isFinite(ref)?[ref]:[])];
@@ -1778,7 +1782,7 @@ function stockDeclineDetail(s,compact=false){
   const d=s.assessment?.stock_decline,rule=data.assessmentInfo?.method?.mcui_stock_decline;
   if(!d||!rule||s.assessment?.axis_errors?.MCUI||d.match_level==='none')return '';
   const t=n=>Math.round(n).toLocaleString(), level=rule.match_levels?.[d.match_level]||d.match_level;
-  const head=d.score===null?esc(d.label):`${esc(d.label)} · ${scoreValue(s,'MCUI',d.score)}점`;
+  const head=d.score===null?esc(stockBandLabel(d)):`${esc(stockBandLabel(d))} · ${scoreValue(s,'MCUI',d.score)}점`;
   const compare=d.score===null?'':stockCompare(s);
   const body=`<div class="sd-row">${stockSpark(d,rule)}<div><p class="sd-means">기준 평균 ${t(d.baseline_mean_t)}톤(${rule.baseline_years[0]}~${String(rule.baseline_years.at(-1)).slice(2)}) → 최근 평균 ${t(d.recent_mean_t)}톤(${rule.recent_years[0]}~${String(rule.recent_years.at(-1)).slice(2)}) <b>(${esc(stockChange(d))})</b></p>${stockLatestLine(d)}`+
     `<p class="fine">KOSIS 품종 ${esc(d.kosis_item)} · 연결 ${esc(level)}${d.capped_broader?' · 묶음 통계라 상한 '+esc(rule.broader_cap)+'점':''} · 최근 3년 양식 비중 ${esc(Number(d.aquaculture_share_recent_pct).toFixed(1))}%`+
@@ -2265,7 +2269,7 @@ const cardScores=s=>s.assessment?'<span class="card-scores">'+['MFPI','MBPI','MC
 // 2026-10-13 design 2 (card shape A): the use and conservation values and the verdict on one line, so the list compares at a
 // glance. Never summed; the same values as the four card scores. Screen readers hear the full names, the BBVI's paper label,
 // the MCUI basis and the formal type name (sr-only text, so the card's innerText keeps every word the checks read).
-// 2026-10-15: the MCUI category from scoreText ('80.0 (VU + 자원 감소)') sits beside the big number in small type and may wrap,
+// 2026-10-15: the MCUI category from scoreText ('80.0 (VU + 어획량 감소)') sits beside the big number in small type and may wrap,
 // so it never runs under the verdict on the 탐색 후보 card
 const cardNum=t=>{const m=/^(\S+) \((.+)\)$/.exec(t);return m?`<b>${m[1]}</b><small class="cl-cat"> (${esc(m[2])})</small>`:`<b>${t}</b>`;};
 // 2026-10-15 explore design match: a type mark always beside its words. 2026-10-18: one circle for every type, told apart by
@@ -3730,7 +3734,7 @@ function renderComparison(){
   };
   $('comparison').innerHTML=`<table><caption class="sr-only">탐색 후보 ${data.species.length}종의 지표와 유형 · 정렬: ${cmpSortLabel()}</caption>`+
     `<thead><tr>${sortTh('name','종')}<th scope="col" class="cmp-type-h">유형</th>${sortTh('MFPI','MFPI<small>식량</small>')}${sortTh('MBPI','MBPI<small>생리활성</small>')}${sortTh('MBPI_RX','MBPI-Rx<small>의약 표적 보조</small>')}`+
-    `${sortTh('BBVI',`BBVI<small>MFPI·MBPI 합성${cut.BBVI!=null?' · 기준선 '+cut.BBVI:''}</small>`)}${sortTh('MCUI',`MCUI<small title="${esc(MCUI_DEF)}">보전 등급 + 자원 감소${cut.MCUI!=null?' · 기준선 '+cut.MCUI:''}</small>`)}<th scope="col" class="cmp-x-h"><span class="sr-only">근거 자세히</span></th></tr></thead>`+
+    `${sortTh('BBVI',`BBVI<small>MFPI·MBPI 합성${cut.BBVI!=null?' · 기준선 '+cut.BBVI:''}</small>`)}${sortTh('MCUI',`MCUI<small title="${esc(MCUI_DEF)}">보전 등급 + 어획량 감소 신호${cut.MCUI!=null?' · 기준선 '+cut.MCUI:''}</small>`)}<th scope="col" class="cmp-x-h"><span class="sr-only">근거 자세히</span></th></tr></thead>`+
     `<tbody>${(d=>compared.map((s,i)=>d[i]+row(s)).join(''))(cmpDividers(compared,8))}</tbody></table>`;
   $('comparison').querySelectorAll('[data-score-aphia]').forEach(button=>button.addEventListener('click',()=>
     openEvidence(Number(button.dataset.scoreAphia),button.dataset.scoreAxis)));
@@ -3869,7 +3873,7 @@ function matrixBlockerText(s){
 function toggleSimulation(value){
   closeClusterPop(false);simulated=value;$('simulate').setAttribute('aria-pressed',String(value));$('simulate').textContent=value?'가상 예시 닫기':'가상 작동 예시 보기';$('matrix-note').classList.toggle('simulating',value);$('compare').classList.toggle('simulating',value);
   const assessed=data?.species.filter(assessedForMatrix)||[];
-  $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종.${matrixRule()?' 점 색은 그 종의 유형 색이고, 같은 높이에 몰린 점은 위아래로 조금 비켜 놓은 뒤 짧은 선으로 실제 높이를 가리킵니다. MCUI는 '+MCUI_DEF+'이고, 동점 규칙은 '+MCUI_TIE_RULE+'.':''}${assessed.some(separateMcui)?' MCUI 기반은 점 툴팁과 아래 유형별 목록에 적습니다.':''}${assessed.some(stockMcui)?' KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘자원 감소’로 적습니다.':''}`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
+  $('matrix-note').innerHTML=value?'가상 수치 · 실제 종과 무관한 A–D 사례입니다. 0–100의 임의 수치로 화면 동작만 설명합니다.':assessed.length?`${released()?'정식 산출':'시범 지표'} ${assessed.length}종.${matrixRule()?' 점 색은 그 종의 유형 색이고, 같은 높이에 몰린 점은 위아래로 조금 비켜 놓은 뒤 짧은 선으로 실제 높이를 가리킵니다. MCUI는 '+MCUI_DEF+'이고, 동점 규칙은 '+MCUI_TIE_RULE+'.':''}${assessed.some(separateMcui)?' MCUI 기반은 점 툴팁과 아래 유형별 목록에 적습니다.':''}${assessed.some(stockMcui)?' KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다.':''}`:'실제 종의 두 축을 산출하지 못해 배치하지 않았습니다. 아래에서 종별 보류 사유와 확인된 원문을 볼 수 있습니다. <button type="button" class="link-button" id="simulate-inline">가상 작동 예시 보기 →</button>';
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
   // every published species is placed; a species without the pair would be listed by name only (2026-10-17, LKH)
