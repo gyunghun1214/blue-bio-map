@@ -83,6 +83,13 @@ for(const s of next.species){
         else if(b.measurements?.length&&!/(MIC|IC50|원값) (=|&lt;|&gt;|≤|≥)? ?\d/.test(li))p.push(`MBPI item ${key} (${b.stratum_id}) without its value`);
       }
     }
+    // 2026-10-21 (site v4 08): the method version by its Korean name, and every abbreviation glossed where it first appears
+    const shown=h.replace(/<span class="gloss">/g,'\u0001').replace(/<[^>]+>/g,'');
+    if(/(?<![\w-])verified-\d+\.\d+(?![\w.])/.test(shown))p.push('method version shown as verified-…');
+    for(const term of ['IC50','EC50','Ki','MIC','[µμ]M','LC','NT','VU','EN','CR']){
+      const m=new RegExp(`(?<![A-Za-z0-9])${term}(?![A-Za-z0-9])`).exec(shown);
+      if(m&&!/^[\u0001(]/.test(shown.slice(m.index+m[0].length)))p.push(`${m[0]} without its plain-Korean note`);
+    }
     if(p.length){count[place]++;findings.push(`${s.label} ${place}: ${p.join(' · ')}`);}
   }
 }
@@ -103,4 +110,4 @@ assert.ok(cuttle.includes('MBPI'),'갑오징어 detail rendered');
 for(const gone of ['효능 재현','pKi 8.398 · 차이 0.218','독립 DOI로 셈','다른 기원의 측정이라 효능만 재현합니다','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'])
   assert.ok(!cuttle.includes(gone),`갑오징어 detail shows '${gone}' again (removed in PR #222)`);
 assert.doesNotMatch(cuttle,/쓰지 않음: [^<]*[가-힣]/,'갑오징어 detail shows the reason line of an uncounted replication again (removed in PR #222)');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean, potency replications kept off the screen (PR #222)`);
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: abbreviations glossed, method version named, no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean, potency replications kept off the screen (PR #222)`);
