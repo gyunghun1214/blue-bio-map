@@ -174,13 +174,14 @@ try{
     // (app.js gateExamples, the data the example cards above the buttons read before they were taken off on 2026-10-17)
     const uses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),u=g.querySelector('.gate-uses');
       return {top:u.getBoundingClientRect().top,vh:innerHeight,h:u.querySelector('.gate-uses-h').textContent,note:u.querySelector('.gate-uses-note').textContent,text:u.textContent,
-        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable)(li.querySelector('.gate-use-go'))})),
+        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable||b.dataset.goHash)(li.querySelector('.gate-use-go'))})),
         red:((typeof gateExamples==='function'?gateExamples():[]).find(x=>x?.kind==='conservation')?.species||[]).map(s=>s.name)};})()`);
-    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, three cards (who → what they look at → what they choose) with their ways in, the line under them',
+    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, four cards (who → what they look at → what they choose) with their ways in, the line under them',
       uses.top>=uses.vh-1&&uses.h==='이렇게 쓸 수 있습니다'&&uses.note==='무엇을 먼저 조사할지 순서를 제안합니다.'&&uses.red.length>0&&!/우뭇가사리|예시/.test(uses.text)&&JSON.stringify(uses.cards)===JSON.stringify([
-        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기'],go:'conservation_priority'},
-        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기'],go:'sustainable_use'},
-        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기'],go:'expedition.html'}]),JSON.stringify({...uses,text:undefined}));
+        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기','지금 쓸 수 있음'],go:'conservation_priority'},
+        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기','지금 쓸 수 있음'],go:'sustainable_use'},
+        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기','지금 쓸 수 있음'],go:'expedition.html'},
+        {use:'farm',lines:['어업인·양식업','양식 단계(상업 양식 중 · 시험·연구 양식)와 보전 지표','야생 채취보다 양식 쪽 근거가 있는 종 고르기','지금 쓸 수 있음 · 목표 2027 상반기 종·해역 확대'],go:'#u=farmed'}]),JSON.stringify({...uses,text:undefined}));
     // the pill on the source strip's line scrolls down to them (their heading focused); the globe rides up with the first screen
     await evaluate("document.querySelector('#site-gate .gate-down').click();1");await sleep(1500);
     const down=await evaluate(`(()=>{const g=document.getElementById('site-gate'),h=g.querySelector('.gate-hero'),u=g.querySelector('.gate-uses').getBoundingClientRect();
@@ -189,6 +190,8 @@ try{
       down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
     // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps;
     // 2026-10-19 (LKH, prompt 4/10): each step's tag gives its target in place of '계획'
+    // 2026-10-21 (site v4 07): with the fourth card the uses fill the screen, so 다음 단계 is measured at the end of the scroll
+    await evaluate("(h=>{h.scrollTop=h.scrollHeight;})(document.querySelector('#site-gate .gate-hero'));1");await sleep(800);
     const next=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=g.querySelector('.gate-next'),b=n.getBoundingClientRect(),u=g.querySelector('.gate-uses').getBoundingClientRect();
       return {h:n.querySelector('.gate-next-h').textContent,top:b.top,bottom:b.bottom,uses:u.bottom,vh:innerHeight,vw:innerWidth,
         steps:[...n.querySelectorAll('.gate-next-list li')].map(li=>({now:li.classList.contains('is-now'),k:li.querySelector('.gate-next-k').textContent,t:li.querySelector('.gate-next-t').textContent,tag:li.querySelector('.gate-next-tag')?.textContent||'',
@@ -1632,12 +1635,12 @@ try{
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
   await sleep(1200);await shot('gate-mobile',false);
-  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 sits in the column after the globe and its card, before the source strip
+  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 (four cards since site v4 07) sits in the column after the globe and its card, before the source strip
   const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
     return {after:Math.max(r('.gate-globe').bottom,g.querySelector('.gate-callout').getClientRects().length?r('.gate-callout').bottom:0),uses:[r('.gate-uses').top,r('.gate-uses').bottom],foot:r('.gate-foot').top,
       cards:[...g.querySelectorAll('.gate-uses-list li')].map(li=>(b=>[b.left,b.right])(li.getBoundingClientRect())),pill:getComputedStyle(g.querySelector('.gate-down')).display,vw:innerWidth,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
   check('G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways',
-    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===3&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
+    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===4&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
   // 2026-10-17 (#4): then 다음 단계, before the source strip, one step under another
   const phoneNext=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {uses:r('.gate-uses').bottom,next:[r('.gate-next').top,r('.gate-next').bottom],foot:r('.gate-foot').top,vw:innerWidth,

@@ -609,11 +609,21 @@ assert.ok(at('class="gate-foot"')>0&&at('class="gate-foot"')<at('<section class=
 assert.match(usesHtml,/^<section class="gate-uses" aria-labelledby="gate-uses-h">/);
 assert.match(usesHtml,/<h2 class="gate-uses-h" id="gate-uses-h" tabindex="-1">이렇게 쓸 수 있습니다<\/h2>/);
 const useCards=[...usesHtml.matchAll(/<li data-use="(\w+)">([\s\S]*?)<\/li>/g)].map(([,use,li])=>({use,lines:[...li.matchAll(/<p class="gate-use-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<[^>]+>/g,'')]),
-  go:(li.match(/<(?:button|a) class="gate-use-go"[^>]*?(?:data-go-table="(\w+)"|href="([^"]+)")/)||[]).slice(1).find(Boolean)}));
+  go:(li.match(/<(?:button|a) class="gate-use-go"[^>]*?(?:data-go-table="(\w+)"|data-go-hash="([^"]+)"|href="([^"]+)")/)||[]).slice(1).find(Boolean)}));
 assert.deepEqual(useCards,[
-  {use:'policy',lines:[['who','정책 담당자'],['see','‘보전 지표 높음’ 종'],['pick','보전 연구를 먼저 살필 종 고르기']],go:'conservation_priority'},
-  {use:'research',lines:[['who','연구자·기업'],['see','활용 지표가 높은 종'],['pick','다음 실험 대상 고르기']],go:'sustainable_use'},
-  {use:'public',lines:[['who','시민·교육'],['see','바다 탐험'],['pick','우리 바다 생물의 쓸모와 보전 필요성 배우기']],go:'expedition.html'}]);
+  {use:'policy',lines:[['who','정책 담당자'],['see','‘보전 지표 높음’ 종'],['pick','보전 연구를 먼저 살필 종 고르기'],['when','지금 쓸 수 있음']],go:'conservation_priority'},
+  {use:'research',lines:[['who','연구자·기업'],['see','활용 지표가 높은 종'],['pick','다음 실험 대상 고르기'],['when','지금 쓸 수 있음']],go:'sustainable_use'},
+  {use:'public',lines:[['who','시민·교육'],['see','바다 탐험'],['pick','우리 바다 생물의 쓸모와 보전 필요성 배우기'],['when','지금 쓸 수 있음']],go:'expedition.html'},
+  // 2026-10-21 (site v4 07): the fourth card opens 탐색 지도 with the '상업 양식' chip (app.js TRAITS 'farmed', link key u=)
+  {use:'farm',lines:[['who','어업인·양식업'],['see','양식 단계(상업 양식 중 · 시험·연구 양식)와 보전 지표'],['pick','야생 채취보다 양식 쪽 근거가 있는 종 고르기'],
+    ['when','지금 쓸 수 있음 · 목표 2027 상반기 종·해역 확대']],go:'#u=farmed'}]);
+assert.match(app,/\{id:'farmed',group:'식량',label:'상업 양식',tier:'commercial'\}/,'the chip the farming card turns on');
+assert.match(app,/if\(h\.u\)setUses\(h\.u\.split\(','\)\);/,'u= turns chips on through the app\'s own link handling');
+assert.ok(usesHtml.includes('‘상업 양식’ 종 보기'),'the button names the chip');
+// its timing is the '종·해역 확대' step's target under '다음 단계'
+assert.match(gateHtml,/<li data-stage="expand"><p class="gate-next-k">종·해역 확대<\/p>[^]*?<p class="gate-next-tag">목표 2027 상반기<\/p>/);
+assert.match(browser,/for\(const b of el\.querySelectorAll\('\[data-go-hash\]'\)\)b\.addEventListener\('click',\(\)=>enter\('explore',\{hash:b\.dataset\.goHash\}\)\);/);
+assert.match(read('intro.css'),/\.gate-uses-list\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\);/,'four cards a row side by side');
 assert.match(usesHtml,/<span class="gate-use-sp"><\/span>/,'the policy card\'s species: filled from the data, none typed in');
 assert.match(usesHtml,/<p class="gate-uses-note">무엇을 먼저 조사할지 순서를 제안합니다\.<\/p>/);
 for(const t of ['conservation_priority','sustainable_use'])assert.ok(app.includes(`'${t}'`)&&/data-mt-table="\$\{/.test(app),`${t} is a type the app's data table shows`);
