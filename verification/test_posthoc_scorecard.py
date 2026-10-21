@@ -102,13 +102,29 @@ class PosthocScorecard(unittest.TestCase):
         text = DEFAULT_CSV.read_text(encoding="utf-8")
         self.assertTrue(text.startswith("﻿"))
         rows = list(csv.reader(io.StringIO(text.lstrip("﻿"))))
-        self.assertEqual(len(rows), len(self.sets) + 1)
+        registered = self.out["registered"]
+        self.assertEqual(len(rows), len(self.sets) + len(registered) + 1)
         head = rows[0]
         for col in ("검증 이름", "무엇을 확인했나", "사전 등록", "outcome_class", "기록 수치", "실패 후 조치", "기록 파일"):
             self.assertIn(col, head)
         self.assertEqual(rows[1][head.index("기록 수치")], "verified-pilot-3.15 기록: 순위상관 0.873 · 11종")
         self.assertEqual([r[head.index("outcome_class")] for r in rows[1:]],
-                         [self.rows[k]["outcome_class"] for k in sorted(self.rows, key=lambda k: self.rows[k]["order"])])
+                         [self.rows[k]["outcome_class"] for k in sorted(self.rows, key=lambda k: self.rows[k]["order"])]
+                         + ["등록됨"] * len(registered))
+
+    def test_registered_checks(self):
+        # 2026-10-21 (site v4 09, LKH option A): the next check is registered before any result, in a commit of its own
+        reg = self.out["registered"]
+        self.assertEqual([r["key"] for r in reg], ["MBPI_origin_rerank"])
+        r = reg[0]
+        self.assertTrue((ROOT / r["prereg"]).is_file())
+        self.assertRegex(r["prereg_commit"], r"^[0-9a-f]{7}$")
+        self.assertEqual(r["results_due"], "2026-12")
+        self.assertNotIn(r["key"], self.rows)
+        self.assertEqual(self.out["total"], len(self.rows))
+        text = (ROOT / r["prereg"]).read_text(encoding="utf-8")
+        for part in ("이 파일 하나만 커밋한다", "4.11", "⌈n/3⌉", "5종 미만이면", "2026-12", "verified-4.19"):
+            self.assertIn(part, text)
 
     def test_figures_quote_their_record_files(self):
         # the numbers slide 21 cites, as the record files store them (0.873, not the slide's rounded 0.87)

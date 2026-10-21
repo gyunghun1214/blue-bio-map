@@ -646,23 +646,30 @@ try{
   // record files linked on GitHub (the file's repository value), the result in words and colour (the consistency checks dashed
   // and unfilled, never the filled 통과 pill), no text under 12px; the species detail's '검증 기록 보기' opens the tab, the fold
   // and that check's row
-  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr')];
+  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr:not([data-oc=registered])')],reg=[...d.querySelectorAll('#mt-ck-body tr[data-oc=registered]')];
     d.open=true;await wait(200);
     const pill=oc=>{const p=d.querySelector('.mt-ck-pill[data-oc='+oc+']');if(!p)return null;const st=getComputedStyle(p);return {text:p.textContent,border:st.borderTopStyle,bg:st.backgroundColor};};
     const order=[...sc.rows].sort((a,b)=>a.order-b.order);
     const r={after:d.previousElementSibling?.id,title:document.getElementById('mt-ck-title').textContent,sum:document.getElementById('mt-ck-sum').textContent,n:rows.length,
       keys:rows.map(t=>t.dataset.key).join()===order.map(x=>x.key).join(),links:rows.every((t,i)=>[...t.querySelectorAll('a')].map(a=>a.href).join()===order[i].records.map(p=>sc.repository+p).join()),
-      figs:[...d.querySelectorAll('.mt-ck-fig')].map(e=>e.textContent),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
+      figs:rows.flatMap(t=>[...t.querySelectorAll('.mt-ck-fig')]).map(e=>e.textContent),
+      reg:reg.map(t=>({key:t.dataset.key,text:t.textContent,links:[...t.querySelectorAll('a')].map(a=>a.getAttribute('href'))})),reglist:(sc.registered||[]).map(x=>x.key),
+      ledger:(a=>a?[a.parentElement.textContent,a.getAttribute('href')]:null)(document.querySelector('#mt-ck-ledger a')),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
       small:[...d.querySelectorAll('*')].filter(e=>e.childElementCount===0&&e.textContent.trim()&&parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.textContent.slice(0,30))};
     d.open=false;setView('explore',false);selectSpecies(145721);await wait(400);
     const b=document.querySelector('#detail [data-go-checks="MCUI_preliminary"]');b?.click();await wait(1400);
     const row=document.getElementById('mt-ck-MCUI_preliminary'),rr=row?.getBoundingClientRect();
     r.go={btn:!!b,view:currentView,open:d.open,inView:!!rr&&rr.top>=0&&rr.bottom<=innerHeight,flash:!!row?.classList.contains('flash')};
     setView(was,false);if(sel)selectSpecies(sel);return r})()`);
-  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look); the detail\'s 검증 기록 보기 opens the row',
+  // 2026-10-21 (site v4 09): one check registered before its result follows the 8 rows ('등록됨', its prereg file and commit
+  // linked), and one line under the table links the method changelog file
+  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look), then the registered check and the changelog line; the detail\'s 검증 기록 보기 opens the row',
     ck.after==='mt-acc-03'&&ck.title==='검증 기록 8건'&&ck.sum==='통과 1 · 기준 미충족 3 · 미충족 후 사용 중단 1 · 일관성 확인(독립 아님) 2 · 검증 불성립 1'&&ck.n===8&&ck.keys&&ck.links&&
     JSON.stringify(ck.figs)===JSON.stringify(['시범 3.15 기록: 순위상관 0.873 · 11종','4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1','시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)'])&&
     ck.pass?.text==='통과'&&ck.pass.bg!=='rgba(0, 0, 0, 0)'&&ck.consistent?.text==='일관성 확인(독립 아님)'&&ck.consistent.border==='dashed'&&ck.consistent.bg==='rgba(0, 0, 0, 0)'&&ck.fail?.text==='기준 미충족'&&
+    ck.reg.length===1&&ck.reg.map(x=>x.key).join()===ck.reglist.join()&&ck.reg[0].key==='MBPI_origin_rerank'&&ck.reg[0].text.includes('등록됨2026-12 공개 예정')&&
+    ck.reg[0].links.some(h=>h.endsWith('research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md'))&&ck.reg[0].links.some(h=>/\/commit\/6b06ca8$/.test(h))&&
+    ck.ledger?.[0]==='지표 규칙이 바뀐 이력 전체: method-changelog.json ↗'&&/research\/method-changelog\.json$/.test(ck.ledger[1])&&
     ck.small.length===0&&ck.go.btn&&ck.go.view==='method'&&ck.go.open&&ck.go.inView&&ck.go.flash,JSON.stringify(ck));
   const cucT=await pick(241776);
   // 2026-10-17 (LKH): the case is labelled by what it is ('원문 조사 사례 · 참고 자료')

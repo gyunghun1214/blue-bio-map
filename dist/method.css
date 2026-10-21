@@ -160,6 +160,9 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-ck{--oc-pass:#3dd6c3;--oc-consistent:#8fd3e8;--oc-fail:#e3b26a;--oc-stopped:#c99a6b;--oc-void:#a9bbc6;margin-top:20px}
 #method .mt-ck [data-oc=pass]{--oc:var(--oc-pass)}#method .mt-ck [data-oc=consistent]{--oc:var(--oc-consistent)}#method .mt-ck [data-oc=fail]{--oc:var(--oc-fail)}
 #method .mt-ck [data-oc=stopped]{--oc:var(--oc-stopped)}#method .mt-ck [data-oc=void]{--oc:var(--oc-void)}
+#method .mt-ck [data-oc=registered]{--oc:var(--oc-void)}
+#method .mt-ck-pill[data-oc=registered]{border-style:dashed;background:none}
+#method .mt-ck-ledger{margin-top:4px}
 #method .mt-ck-sum{color:var(--mt-ink);font-size:15px;font-weight:600;line-height:1.7}
 #method .mt-ck-sum span{white-space:nowrap}
 #method .mt-ck-sum span:before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;background:var(--oc);vertical-align:0}
