@@ -1,0 +1,20 @@
+{
+  "schema_version": "operations-1",
+  "about": "운영 정보 한 곳. 사람이 확인한 바깥 사실만 넣는다(지어 넣지 않는다). 값이 비면 사이트는 그 줄을 숨긴다. README '운영 파일' 참고.",
+  "feedback": {
+    "form_url": "",
+    "issue_url": "https://github.com/gyunghun1214/blue-bio-map/issues/new?template=feedback.md"
+  },
+  "usage": {
+    "as_of": "",
+    "users": null,
+    "feedback_count": null,
+    "fixed": ""
+  },
+  "effect": {
+    "as_of": "",
+    "species": [],
+    "manual_minutes": null,
+    "site_minutes": null
+  }
+}

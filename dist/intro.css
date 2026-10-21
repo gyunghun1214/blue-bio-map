@@ -192,6 +192,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-next-k{font-size:clamp(15px,1.1vw,17px);font-weight:700;color:var(--g-ink)}
 .is-now .gate-next-k{color:var(--g-teal)}
 .gate-next-t{margin-bottom:6px!important;font-size:clamp(14px,.96vw,15px);line-height:1.6;color:var(--g-ink2)}
+.gate-next-use{font-size:13px;line-height:1.55;color:var(--g-teal)}
 .gate-next-tag{margin-top:auto!important;padding:2px 9px;border:1px solid rgba(255,255,255,.26);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--g-ink2)}
 
 /* leaving: the copy lifts away, the globe leans in toward Korea, the screen fades and the map is there underneath */
