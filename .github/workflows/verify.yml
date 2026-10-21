@@ -59,6 +59,7 @@ jobs:
           node verification/test_score_format.mjs
           node verification/test_mbpi_kind.mjs
           node verification/test_species_group_icon.mjs
+          node verification/test_method_kickers.mjs
           node --check dist/chatbot.js
           node verification/test_chatbot_faq.mjs
           node verification/test_chatbot_drag.mjs
