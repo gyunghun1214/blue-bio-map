@@ -631,7 +631,7 @@ assert.ok(at('class="gate-foot"')<at('<div class="gate-below">')&&at('<div class
 const nextHtml=gateHtml.slice(at('<section class="gate-next"'),gateHtml.indexOf('</section>',at('<section class="gate-next"')));
 assert.match(nextHtml,/^<section class="gate-next" aria-labelledby="gate-next-h">/);
 assert.match(nextHtml,/<h2 class="gate-next-h" id="gate-next-h">다음 단계<\/h2>/);
-const steps=[...nextHtml.matchAll(/<li( class="is-now")?>([\s\S]*?)<\/li>/g)].map(([,now,li])=>({now:!!now,
+const steps=[...nextHtml.matchAll(/<li( class="is-now")?(?: data-stage="[a-z]+")?>([\s\S]*?)<\/li>/g)].map(([,now,li])=>({now:!!now,
   ...Object.fromEntries([...li.matchAll(/<p class="gate-next-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<b class="gate-total">\d+<\/b>/,'N').replace(/<[^>]+>/g,'')]))}));
 assert.deepEqual(steps,[
   {now:true,k:'지금',t:'한반도 주변 N종 공개'},

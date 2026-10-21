@@ -24,7 +24,18 @@
     return `근거 모으는 시간(${d}, ${sp.join('·')} ${sp.length}종): 원 출처에서 직접 ${by}분 → 이 지도에서 ${site}분`;
   };
   const feedback=f=>({form:https(f?.form_url),issue:https(f?.issue_url)});
-  globalThis.BBVM_OPS={usageLine,effectLine,feedback};
+  // Operations plan (2026-10-21, prompt 02, team decision): who runs the map after the contest and from when, and for each
+  // step on the entry screen the roles in charge and the running cost with who pays. Roles only, never a person's name.
+  const operatorLine=o=>{
+    const n=str(o?.name),d=day(o?.from),note=str(o?.note);
+    return n&&d?`운영: ${n}${note?`(${note})`:''} · 대회 뒤 ${d}부터도 계속 운영`:'';
+  };
+  const stageLines=st=>{
+    const roles=Array.isArray(st?.roles)?st.roles.map(str).filter(Boolean):[],cost=str(st?.cost),payer=str(st?.payer);
+    const who=roles.length?'담당 · '+(roles.every(r=>r.endsWith('팀'))?roles.join(', '):roles.join(', ')+' 담당'):'';
+    return {who,cost:cost&&payer?`운영비 · ${cost} · ${payer} 부담`:'',basis:str(st?.cost_basis)};
+  };
+  globalThis.BBVM_OPS={usageLine,effectLine,feedback,operatorLine,stageLines};
 
   const offline=()=>{
     if(globalThis.BBVM_OFFLINE===true)return true;
@@ -40,6 +51,17 @@
       for(const a of document.querySelectorAll('a[data-feedback]')){a.href=fb.form;if(a.dataset.feedback==='foot')a.textContent='의견 보내기(계정 없이)';}
       for(const el of document.querySelectorAll('[data-feedback-issue]')){
         const a=el.querySelector('a');if(a&&fb.issue)a.href=fb.issue;el.hidden=false;
+      }
+    }
+    show('[data-ops-operator]',operatorLine(ops.operator));
+    for(const st of Array.isArray(ops.stages)?ops.stages:[]){
+      const li=document.querySelector(`.gate-next-list li[data-stage="${str(st?.key).replace(/[^a-z]/g,'')}"]`);
+      if(!li)continue;
+      const {who,cost,basis}=stageLines(st),tag=li.querySelector('.gate-next-tag'),use=li.querySelector('[data-ops-usage]');
+      for(const [cls,text] of [['gate-next-who',who],['gate-next-cost',cost],...(st.key==='now'?[['gate-next-basis',basis]]:[])]){
+        if(!text)continue;
+        const p=document.createElement('p');p.className=cls;p.textContent=text;
+        li.insertBefore(p,tag||use||null);
       }
     }
     show('[data-ops-usage]',usageLine(ops.usage));
