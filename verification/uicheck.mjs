@@ -161,10 +161,11 @@ try{
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
+    // (2026-10-21, site v4 05: the problem is one sentence, and the contest line and the 'connect' line count as the block)
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
-      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead').map(tb);
+      const added=vis('.gate-task,.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
     check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
@@ -189,6 +190,8 @@ try{
       down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
     // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps;
     // 2026-10-19 (LKH, prompt 4/10): each step's tag gives its target in place of '계획'
+    // 2026-10-21 (site v4 07): with the fourth card the uses fill the screen, so 다음 단계 is measured at the end of the scroll
+    await evaluate("(h=>{h.scrollTop=h.scrollHeight;})(document.querySelector('#site-gate .gate-hero'));1");await sleep(800);
     const next=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=g.querySelector('.gate-next'),b=n.getBoundingClientRect(),u=g.querySelector('.gate-uses').getBoundingClientRect();
       return {h:n.querySelector('.gate-next-h').textContent,top:b.top,bottom:b.bottom,uses:u.bottom,vh:innerHeight,vw:innerWidth,
         steps:[...n.querySelectorAll('.gate-next-list li')].map(li=>({now:li.classList.contains('is-now'),k:li.querySelector('.gate-next-k').textContent,t:li.querySelector('.gate-next-t').textContent,tag:li.querySelector('.gate-next-tag')?.textContent||'',
@@ -234,10 +237,11 @@ try{
     eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
     // 2026-10-17 (LKH): the MCUI box names where the category comes from in one line; the basis stays 'preliminary' in the report
     // 2026-10-19 (LKH, 사이트 v3 2·3/10): the number reads '10.0 (LC·예비)' and the box opens with the preliminary line (PRELIM);
-    // the MBPI section says what was measured and the stored result of the MBPI check
-    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
-    !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
-    eckAxes.mbpi.includes('근거: 효소·수용체 등 단백질 표적 Ki 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
+    // the MBPI section says what was measured and the stored result of the MBPI check;
+    // 2026-10-21 (site v4 04): the material's name leads the evidence line; (site v4 08) the category and Ki read in Korean on first use
+    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·관심대상·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
+    !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·관심대상·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
+    eckAxes.mbpi.includes('근거: Dieckol · 효소·수용체 등 단백질 표적 Ki(결합 세기, 낮을수록 강함) 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형: 활용 연구 검토')&&!/예비|Rapid LC|역검증|56\.8/.test(eckAxes.map):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     /MBPI 57(?![.\d])/.test(eck)&&!eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
@@ -627,9 +631,11 @@ try{
   // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
   // in a new tab (the issue form is GitHub's: the site itself has no form that takes personal details; the one form on the page
   // is the guide's question box, a single text field answered from its fixed list, chatbot.js sends nothing)
-  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a');return {t:f?f.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
+  // since 2026-10-21 (site v4 02) the operator line also says from when the team keeps running it after the contest (operations.json)
+  // since 2026-10-21 (site v4 01) the GitHub issue link beside a form link stays hidden until operations.json has a form, so the text skips [hidden]
+  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a'),c=f&&f.cloneNode(true);c?.querySelectorAll('[hidden]').forEach(e=>e.remove());return {t:c?c.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
     forms:[...document.querySelectorAll('form,textarea')].filter(e=>!e.matches('form.bbc-form')).length,guide:[...document.querySelectorAll('form.bbc-form input')].map(i=>i.type).join()};})()`);
-  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
+  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영 · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
     foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
@@ -640,23 +646,30 @@ try{
   // record files linked on GitHub (the file's repository value), the result in words and colour (the consistency checks dashed
   // and unfilled, never the filled 통과 pill), no text under 12px; the species detail's '검증 기록 보기' opens the tab, the fold
   // and that check's row
-  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr')];
+  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr:not([data-oc=registered])')],reg=[...d.querySelectorAll('#mt-ck-body tr[data-oc=registered]')];
     d.open=true;await wait(200);
     const pill=oc=>{const p=d.querySelector('.mt-ck-pill[data-oc='+oc+']');if(!p)return null;const st=getComputedStyle(p);return {text:p.textContent,border:st.borderTopStyle,bg:st.backgroundColor};};
     const order=[...sc.rows].sort((a,b)=>a.order-b.order);
     const r={after:d.previousElementSibling?.id,title:document.getElementById('mt-ck-title').textContent,sum:document.getElementById('mt-ck-sum').textContent,n:rows.length,
       keys:rows.map(t=>t.dataset.key).join()===order.map(x=>x.key).join(),links:rows.every((t,i)=>[...t.querySelectorAll('a')].map(a=>a.href).join()===order[i].records.map(p=>sc.repository+p).join()),
-      figs:[...d.querySelectorAll('.mt-ck-fig')].map(e=>e.textContent),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
+      figs:rows.flatMap(t=>[...t.querySelectorAll('.mt-ck-fig')]).map(e=>e.textContent),
+      reg:reg.map(t=>({key:t.dataset.key,text:t.textContent,links:[...t.querySelectorAll('a')].map(a=>a.getAttribute('href'))})),reglist:(sc.registered||[]).map(x=>x.key),
+      ledger:(a=>a?[a.parentElement.textContent,a.getAttribute('href')]:null)(document.querySelector('#mt-ck-ledger a')),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
       small:[...d.querySelectorAll('*')].filter(e=>e.childElementCount===0&&e.textContent.trim()&&parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.textContent.slice(0,30))};
     d.open=false;setView('explore',false);selectSpecies(145721);await wait(400);
     const b=document.querySelector('#detail [data-go-checks="MCUI_preliminary"]');b?.click();await wait(1400);
     const row=document.getElementById('mt-ck-MCUI_preliminary'),rr=row?.getBoundingClientRect();
     r.go={btn:!!b,view:currentView,open:d.open,inView:!!rr&&rr.top>=0&&rr.bottom<=innerHeight,flash:!!row?.classList.contains('flash')};
     setView(was,false);if(sel)selectSpecies(sel);return r})()`);
-  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look); the detail\'s 검증 기록 보기 opens the row',
+  // 2026-10-21 (site v4 09): one check registered before its result follows the 8 rows ('등록됨', its prereg file and commit
+  // linked), and one line under the table links the method changelog file
+  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look), then the registered check and the changelog line; the detail\'s 검증 기록 보기 opens the row',
     ck.after==='mt-acc-03'&&ck.title==='검증 기록 8건'&&ck.sum==='통과 1 · 기준 미충족 3 · 미충족 후 사용 중단 1 · 일관성 확인(독립 아님) 2 · 검증 불성립 1'&&ck.n===8&&ck.keys&&ck.links&&
     JSON.stringify(ck.figs)===JSON.stringify(['시범 3.15 기록: 순위상관 0.873 · 11종','4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1','시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)'])&&
     ck.pass?.text==='통과'&&ck.pass.bg!=='rgba(0, 0, 0, 0)'&&ck.consistent?.text==='일관성 확인(독립 아님)'&&ck.consistent.border==='dashed'&&ck.consistent.bg==='rgba(0, 0, 0, 0)'&&ck.fail?.text==='기준 미충족'&&
+    ck.reg.length===1&&ck.reg.map(x=>x.key).join()===ck.reglist.join()&&ck.reg[0].key==='MBPI_origin_rerank'&&ck.reg[0].text.includes('등록됨2026-12 공개 예정')&&
+    ck.reg[0].links.some(h=>h.endsWith('research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md'))&&ck.reg[0].links.some(h=>/\/commit\/6b06ca8$/.test(h))&&
+    ck.ledger?.[0]==='지표 규칙이 바뀐 이력 전체: method-changelog.json ↗'&&/research\/method-changelog\.json$/.test(ck.ledger[1])&&
     ck.small.length===0&&ck.go.btn&&ck.go.view==='method'&&ck.go.open&&ck.go.inView&&ck.go.flash,JSON.stringify(ck));
   const cucT=await pick(241776);
   // 2026-10-17 (LKH): the case is labelled by what it is ('원문 조사 사례 · 참고 자료')
@@ -772,7 +785,7 @@ try{
     // posthoc-scorecard.json) and keeps the 19.6–89.2 aggregation range in its 민감도 line
     // 2026-10-19 (LKH, 사이트 v3 3/10): above the stratum, what was measured ('근거: … 시험 N건 · …'), and below it the stored
     // result of the MBPI check with its link to the method tab
-    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
+    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: VW 펩타이드 · ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     !/사후 검증|미충족/.test(strat.first)&&strat.check==='MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용 검증 기록 보기'&&strat.range&&
     readDist('posthoc-scorecard.json').rows.some(r=>r.indicator==='MBPI'&&r.result==='failed')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
@@ -850,7 +863,7 @@ try{
   check('Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033))&&oyPoint.list.includes('MCUI 국가 평가')&&oyPoint.box.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&!n.includes('보류')&&!n.includes('시범')})()"));
   // 2026-10-13 design 2: one status chip ('연구 프로토타입 · version · OCEAN 20') instead of three badges; the popover keeps the full text
-  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&(releaseText(releaseInfo)?document.getElementById('pop-version').textContent===releaseText(releaseInfo)&&document.getElementById('snapshot-date').textContent.includes(data.assessmentInfo.version):document.getElementById('pop-version').textContent.includes(data.assessmentInfo.version))&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
+  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&(releaseText(releaseInfo)?document.getElementById('pop-version').textContent===releaseText(releaseInfo)&&document.getElementById('snapshot-date').textContent.includes(methodName(data.assessmentInfo.version)):document.getElementById('pop-version').textContent.includes(methodName(data.assessmentInfo.version)))&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
   // 2026-10-19 (LKH, prompt 10/10): the popover names the presentation build once release.json has a commit; empty, as
   // committed, it keeps the method version. Filled in here for a moment, then put back.
   const stamp=await evaluate(`(()=>{const v=document.getElementById('pop-version'),was=releaseInfo,before=v.textContent;
@@ -1629,12 +1642,12 @@ try{
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
   await sleep(1200);await shot('gate-mobile',false);
-  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 sits in the column after the globe and its card, before the source strip
+  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 (four cards since site v4 07) sits in the column after the globe and its card, before the source strip
   const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
     return {after:Math.max(r('.gate-globe').bottom,g.querySelector('.gate-callout').getClientRects().length?r('.gate-callout').bottom:0),uses:[r('.gate-uses').top,r('.gate-uses').bottom],foot:r('.gate-foot').top,
       cards:[...g.querySelectorAll('.gate-uses-list li')].map(li=>(b=>[b.left,b.right])(li.getBoundingClientRect())),pill:getComputedStyle(g.querySelector('.gate-down')).display,vw:innerWidth,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
   check('G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways',
-    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===3&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
+    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===4&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
   // 2026-10-17 (#4): then 다음 단계, before the source strip, one step under another
   const phoneNext=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {uses:r('.gate-uses').bottom,next:[r('.gate-next').top,r('.gate-next').bottom],foot:r('.gate-foot').top,vw:innerWidth,
@@ -1651,8 +1664,8 @@ try{
   const small=await evaluate(`(()=>{const g=document.getElementById('site-gate'),hero=g.querySelector('.gate-hero'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {problems:r('.gate-problems').top,solve:r('.gate-why .gate-lead').bottom,enter:r('#gate-enter').bottom,shown:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden&&li.getClientRects().length).length,
       vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
-  check('G-9 phone 375×667: the three problem lines, the solution and the button inside the first screen, no sideways scroll',
-    gs.on&&gs.ready&&small.shown===3&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
+  check('G-9 phone 375×667: the problem sentence and the source line, the solution and the button inside the first screen, no sideways scroll',
+    gs.on&&gs.ready&&small.shown===2&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
   await sleep(1200);await shot('gate-mobile-375',false);
   await viewport(1560,900,false);
   // 2026-10-17 (#9): '전체 출처·방법 보기' lands on the source list, which now sits in a fold: the way in opens it
