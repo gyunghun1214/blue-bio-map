@@ -1047,6 +1047,8 @@ void main(){
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
+    // 2026-10-21 (site v4 07): the farming card opens 탐색 지도 with the '상업 양식' chip on, through the app's own link handling
+    for(const b of el.querySelectorAll('[data-go-hash]'))b.addEventListener('click',()=>enter('explore',{hash:b.dataset.goHash}));
     // the pill on the source strip's line: down to the uses, focus on their heading
     q('.gate-down').addEventListener('click',()=>{const h=q('.gate-hero');h.scrollTo({top:h.scrollTop+q('.gate-uses').getBoundingClientRect().top-h.getBoundingClientRect().top,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
     document.addEventListener('keydown',e=>{

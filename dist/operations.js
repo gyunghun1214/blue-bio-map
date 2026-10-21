@@ -35,7 +35,10 @@
     const who=roles.length?'담당 · '+(roles.every(r=>r.endsWith('팀'))?roles.join(', '):roles.join(', ')+' 담당'):'';
     return {who,cost:cost&&payer?`운영비 · ${cost} · ${payer} 부담`:'',basis:str(st?.cost_basis)};
   };
-  globalThis.BBVM_OPS={usageLine,effectLine,feedback,operatorLine,stageLines};
+  // One user's own words under the use cards (prompt 07): only with the words, who said them (a role, never a name) and the
+  // day they agreed to have them shown
+  const voiceLine=v=>{const t=str(v?.text).replace(/^[“"]|[”"]$/g,''),who=str(v?.who);return t&&who&&day(v?.agreed_on)?`“${t}” · ${who}`:'';};
+  globalThis.BBVM_OPS={usageLine,effectLine,feedback,operatorLine,stageLines,voiceLine};
 
   const offline=()=>{
     if(globalThis.BBVM_OFFLINE===true)return true;
@@ -66,5 +69,6 @@
     }
     show('[data-ops-usage]',usageLine(ops.usage));
     show('[data-ops-effect]',effectLine(ops.effect));
+    show('[data-ops-voice]',voiceLine(ops.voice));
   }).catch(()=>{});
 })();

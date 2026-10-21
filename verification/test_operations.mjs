@@ -23,13 +23,14 @@ const ROLES=new Set(['alt F4 팀','데이터·지도','지표·검증','활용·
 for(const s of committed.stages)for(const r of s.roles)assert.ok(ROLES.has(r),`stage ${s.key}: '${r}' is a role name`);
 assert.ok(!/연락|협력|아직|미정|연계 목표/.test(JSON.stringify(committed.stages)),'no contact, partnership or not-yet wording');
 for(const [k,v] of Object.entries(committed.usage))assert.ok(v===''||v===null,`usage.${k} is filled only by people`);
+for(const [k,v] of Object.entries(committed.voice))assert.equal(v,'',`voice.${k} is filled only by people`);
 for(const [k,v] of Object.entries(committed.effect))assert.ok(v===''||v===null||(Array.isArray(v)&&!v.length),`effect.${k} is filled only by people`);
 
 function el(attrs={}){return {hidden:true,textContent:'',href:'',dataset:{},...attrs,querySelector(){return this.child||null;}};}
 async function run(ops,{search='',offline}={}){
   const foot=el({href:'ISSUE',textContent:'의견 보내기',dataset:{feedback:'foot'}}),coord=el({href:'ISSUE',textContent:'의견 보내기',dataset:{feedback:'coord'}});
-  const issueWrap=el({child:el({href:'ISSUE'})}),usage=el(),effect=el(),operator=el({hidden:false,textContent:'운영: alt F4 팀(OCEAN 20 해커톤 출품)'}),fetched=[];
-  const sel={'a[data-feedback]':[foot,coord],'[data-feedback-issue]':[issueWrap],'[data-ops-usage]':[usage],'[data-ops-effect]':[effect],'[data-ops-operator]':[operator]};
+  const issueWrap=el({child:el({href:'ISSUE'})}),usage=el(),effect=el(),voice=el(),operator=el({hidden:false,textContent:'운영: alt F4 팀(OCEAN 20 해커톤 출품)'}),fetched=[];
+  const sel={'a[data-feedback]':[foot,coord],'[data-feedback-issue]':[issueWrap],'[data-ops-usage]':[usage],'[data-ops-effect]':[effect],'[data-ops-voice]':[voice],'[data-ops-operator]':[operator]};
   // the four steps of '다음 단계': children in order; tag = '목표 …' pill (not on '지금', which has the usage line instead)
   const stages={};
   for(const k of ['now','expand','link','service']){
@@ -44,7 +45,7 @@ async function run(ops,{search='',offline}={}){
   ctx.globalThis=ctx;if(offline!==undefined)ctx.BBVM_OFFLINE=offline;
   vm.createContext(ctx);vm.runInContext(code,ctx);
   await new Promise(r=>setTimeout(r,20));
-  return {foot,coord,issueWrap,usage,effect,operator,stages,fetched,ops:ctx.BBVM_OPS};
+  return {foot,coord,issueWrap,usage,effect,voice,operator,stages,fetched,ops:ctx.BBVM_OPS};
 }
 
 // (2) as committed: one fetch, nothing changes or shows
@@ -96,6 +97,16 @@ async function run(ops,{search='',offline}={}){
     {as_of:'2026-11-01',species:['전복'],manual_minutes:10,site_minutes:12},{as_of:'2026-11-01',species:['전복'],manual_minutes:10,site_minutes:null}])
     assert.equal(effectLine(e),'',JSON.stringify(e));
 }
+// (5b) one user's words under the use cards (prompt 07): words, a role and the day they agreed; otherwise hidden
+{
+  assert.equal((await run(committed)).voice.hidden,true);
+  const {voiceLine}=(await run(committed)).ops;
+  assert.equal(voiceLine({text:'“양식 종을 한 번에 봤어요”',who:'양식업 종사자',agreed_on:'2026-11-02'}),'“양식 종을 한 번에 봤어요” · 양식업 종사자');
+  for(const v of [{},{text:'a',who:'b'},{text:'a',agreed_on:'2026-11-02'},{who:'b',agreed_on:'2026-11-02'},{text:'a',who:'b',agreed_on:'11월'}])
+    assert.equal(voiceLine(v),'',JSON.stringify(v));
+  const r=await run({...committed,voice:{text:'양식 종을 한 번에 봤어요',who:'양식업 종사자',agreed_on:'2026-11-02'}});
+  assert.deepEqual([r.voice.hidden,r.voice.textContent],[false,'“양식 종을 한 번에 봤어요” · 양식업 종사자']);
+}
 // (6) the offline demo asks for nothing; a missing file or a failed fetch leaves the page as is
 {
   for(const o of [{offline:true},{search:'?offline=1'}]){const r=await run(committed,o);assert.equal(r.fetched.length,0);}
@@ -108,6 +119,7 @@ assert.match(html,new RegExp(`<a class="foot-link" data-feedback="foot" href="${
 assert.match(html,new RegExp(`<a class="coord-link" data-feedback="coord" href="${issue}"`));
 assert.match(html,/<li class="is-now" data-stage="now"><p class="gate-next-k">지금<\/p><p class="gate-next-t">[^]*?<\/p><p class="gate-next-use" data-ops-usage hidden><\/p><\/li>/);
 assert.match(html,/<p class="mt-made-note mt-effect" data-ops-effect hidden><\/p><\/section>/);
+assert.match(html,/<p class="gate-uses-note">[^<]*<\/p><p class="gate-uses-voice" data-ops-voice hidden><\/p>/);
 const v=crypto.createHash('sha256').update(code).digest('hex').slice(0,10);
 assert.match(html,new RegExp(`<script defer src="operations\\.js\\?v=${v}"></script><script defer src="analytics\\.js`));
 assert.match(read('intro.css'),/\.gate-next-use\{font-size:13px;/);

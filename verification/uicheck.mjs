@@ -173,13 +173,14 @@ try{
     // (app.js gateExamples, the data the example cards above the buttons read before they were taken off on 2026-10-17)
     const uses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),u=g.querySelector('.gate-uses');
       return {top:u.getBoundingClientRect().top,vh:innerHeight,h:u.querySelector('.gate-uses-h').textContent,note:u.querySelector('.gate-uses-note').textContent,text:u.textContent,
-        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable)(li.querySelector('.gate-use-go'))})),
+        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable||b.dataset.goHash)(li.querySelector('.gate-use-go'))})),
         red:((typeof gateExamples==='function'?gateExamples():[]).find(x=>x?.kind==='conservation')?.species||[]).map(s=>s.name)};})()`);
-    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, three cards (who → what they look at → what they choose) with their ways in, the line under them',
+    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, four cards (who → what they look at → what they choose) with their ways in, the line under them',
       uses.top>=uses.vh-1&&uses.h==='이렇게 쓸 수 있습니다'&&uses.note==='무엇을 먼저 조사할지 순서를 제안합니다.'&&uses.red.length>0&&!/우뭇가사리|예시/.test(uses.text)&&JSON.stringify(uses.cards)===JSON.stringify([
-        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기'],go:'conservation_priority'},
-        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기'],go:'sustainable_use'},
-        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기'],go:'expedition.html'}]),JSON.stringify({...uses,text:undefined}));
+        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기','지금 쓸 수 있음'],go:'conservation_priority'},
+        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기','지금 쓸 수 있음'],go:'sustainable_use'},
+        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기','지금 쓸 수 있음'],go:'expedition.html'},
+        {use:'farm',lines:['어업인·양식업','양식 단계(상업 양식 중 · 시험·연구 양식)와 보전 지표','야생 채취보다 양식 쪽 근거가 있는 종 고르기','지금 쓸 수 있음 · 목표 2027 상반기 종·해역 확대'],go:'#u=farmed'}]),JSON.stringify({...uses,text:undefined}));
     // the pill on the source strip's line scrolls down to them (their heading focused); the globe rides up with the first screen
     await evaluate("document.querySelector('#site-gate .gate-down').click();1");await sleep(1500);
     const down=await evaluate(`(()=>{const g=document.getElementById('site-gate'),h=g.querySelector('.gate-hero'),u=g.querySelector('.gate-uses').getBoundingClientRect();

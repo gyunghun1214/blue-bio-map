@@ -168,7 +168,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-uses-k:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
 .gate-uses-h{margin:0;font-size:clamp(26px,min(2.6vw,4.6vh),44px);font-weight:800;line-height:1.2;letter-spacing:-.02em}
 .gate-uses-h:focus{outline:none}
-.gate-uses-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,24px);margin:clamp(18px,3.4vh,36px) 0 0;padding:0;list-style:none}
+.gate-uses-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.4vw,24px);margin:clamp(18px,3.4vh,36px) 0 0;padding:0;list-style:none}
 .gate-uses-list li{display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2.4vh,28px) clamp(18px,1.7vw,28px);border:1px solid rgba(255,255,255,.14);
   border-radius:14px;background:rgba(10,32,50,.78)}
 .gate-uses-list p{margin:0}
@@ -181,6 +181,9 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-use-go{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding:16px 0 8px;border:0;border-bottom:1px solid rgba(244,243,238,.5);
   background:none;color:var(--g-ink);font-size:clamp(14px,.96vw,16px);font-weight:600;text-decoration:none;white-space:nowrap}
 .gate-use-go:hover{color:var(--g-teal);border-bottom-color:var(--g-teal)}
+.gate-use-when{font-size:13px;line-height:1.5;color:var(--g-teal)}
+.gate-uses-voice{margin:8px 0 0;font-size:clamp(14px,.96vw,16px);line-height:1.6;color:var(--g-ink)}
+@media (min-width:761px) and (max-width:1100px){.gate-uses-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .gate-uses-note{margin:clamp(14px,2.4vh,24px) 0 0;font-size:clamp(14px,.96vw,16px);color:var(--g-ink2)}
 /* 2026-10-17 (#4) '다음 단계': where the map stands now, then the planned steps, one line each, a dot on one line */
 .gate-next{padding:0 var(--g-pad) clamp(52px,9vh,92px)}
