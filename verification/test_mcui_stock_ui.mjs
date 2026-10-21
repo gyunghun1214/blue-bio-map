@@ -88,4 +88,13 @@ const kelp=ctx.detail({label:'감태',assessment:by('감태')});
 assert.ok(kelp===''&&by('감태').stock_decline.unscored_reason==='no_match','감태: no item, no line');
 const wakame=ctx.detail({label:'미역',assessment:by('미역')});
 assert.ok(wakame.includes('양식 위주 · 해당 없음')&&wakame.includes('감소율은 참고로 적습니다')&&!wakame.includes('sd-compare'),'미역: aquaculture, no compare line');
+// 2026-10-21 (site v4 05): a species farmed far more than caught shows the last year's farming and catch, from the same series
+const abalone=ctx.detail({label:'전복',assessment:by('전복(종 수준)')});
+assert.ok(abalone.includes('<p class="sd-latest">2024년 양식 23,491톤 · 연근해 어획 94톤 · 2025년 잠정 양식 27,376톤 (KOSIS 어업생산동향조사)</p>'),'전복: 2024 farming and catch');
+const ab=by('전복(종 수준)').stock_decline;
+assert.equal(ab.aquaculture_t.at(-1),23491);assert.equal(ab.coastal_t.at(-1),94);assert.equal(ab.reference_2025p.aquaculture_t,27376);
+for(const a of rows){const has=ctx.detail({label:a.korean_name,assessment:a}).includes('sd-latest');
+  assert.equal(has,a.stock_decline.unscored_reason==='aquaculture_dominant',`${a.korean_name}: latest-year line only for farming-led species`);}
+assert.ok(!html.includes('sd-latest'),'살오징어: no latest-year line');
+assert.ok(!ctx.detail({label:'전복',assessment:{...by('전복(종 수준)'),stock_decline:{...ab,aquaculture_t:[...ab.aquaculture_t.slice(0,-1),null]}}}).includes('sd-latest'),'a gap hides the line');
 console.log('PASS: stock-decline re-check (30 species, 3 MCUI moves) · tampered years, decline, band, max, driver, cap, reasons and source refused · wording and detail');

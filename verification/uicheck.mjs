@@ -156,8 +156,8 @@ try{
         p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,
         cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.querySelector('.gate-center').textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
-    check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
-      JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거 출처만 해도 ${evidenceSources}건입니다.`])
+    check('G-1b entry screen: the problem sentence and the source count line (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
+      JSON.stringify(why.problems)===JSON.stringify(['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.',`이 지도에 쓰인 근거 출처만 해도 ${evidenceSources}건입니다.`])
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
