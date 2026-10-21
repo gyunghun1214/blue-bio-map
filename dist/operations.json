@@ -1,6 +1,55 @@
 {
   "schema_version": "operations-1",
-  "about": "운영 정보 한 곳. 사람이 확인한 바깥 사실만 넣는다(지어 넣지 않는다). 값이 비면 사이트는 그 줄을 숨긴다. README '운영 파일' 참고.",
+  "about": "운영 정보 한 곳. 운영 주체·단계별 담당 역할·운영비는 팀 결정(2026-10-21). 사용 수·효과·설문 주소는 사람이 확인한 바깥 사실만 넣는다(지어 넣지 않는다). 값이 비면 사이트는 그 줄을 숨긴다. README '운영 파일' 참고.",
+  "operator": {
+    "name": "alt F4 팀",
+    "from": "2026-11-06",
+    "note": "OCEAN 20 해커톤 출품"
+  },
+  "stages": [
+    {
+      "key": "now",
+      "when": "2026-10",
+      "roles": [
+        "alt F4 팀"
+      ],
+      "cost": "월 0원",
+      "payer": "alt F4 팀",
+      "cost_basis": "Cloudflare 무료 요금제(정적 파일만 제공) · Supabase 무료 요금제 · GitHub 공개 저장소"
+    },
+    {
+      "key": "expand",
+      "when": "2027 상반기",
+      "roles": [
+        "데이터·지도",
+        "지표·검증"
+      ],
+      "cost": "월 0원",
+      "payer": "alt F4 팀",
+      "cost_basis": "정적 파일 요청은 Cloudflare 무료 요금제에서 제한 없음"
+    },
+    {
+      "key": "link",
+      "when": "2027 하반기",
+      "roles": [
+        "근거 계보",
+        "활용·운영"
+      ],
+      "cost": "월 0원",
+      "payer": "alt F4 팀",
+      "cost_basis": "같은 구성 유지"
+    },
+    {
+      "key": "service",
+      "when": "2028",
+      "roles": [
+        "활용·운영"
+      ],
+      "cost": "맞춤 분석 이용료로 충당(계획)",
+      "payer": "이용 기관",
+      "cost_basis": "상업 이용은 자료 제공 기관 승인 뒤"
+    }
+  ],
   "feedback": {
     "form_url": "",
     "issue_url": "https://github.com/gyunghun1214/blue-bio-map/issues/new?template=feedback.md"

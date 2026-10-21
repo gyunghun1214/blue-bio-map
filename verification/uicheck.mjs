@@ -626,10 +626,11 @@ try{
   // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
   // in a new tab (the issue form is GitHub's: the site itself has no form that takes personal details; the one form on the page
   // is the guide's question box, a single text field answered from its fixed list, chatbot.js sends nothing)
+  // since 2026-10-21 (site v4 02) the operator line also says from when the team keeps running it after the contest (operations.json)
   // since 2026-10-21 (site v4 01) the GitHub issue link beside a form link stays hidden until operations.json has a form, so the text skips [hidden]
   const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a'),c=f&&f.cloneNode(true);c?.querySelectorAll('[hidden]').forEach(e=>e.remove());return {t:c?c.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
     forms:[...document.querySelectorAll('form,textarea')].filter(e=>!e.matches('form.bbc-form')).length,guide:[...document.querySelectorAll('form.bbc-form input')].map(i=>i.type).join()};})()`);
-  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
+  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영 · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
     foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist

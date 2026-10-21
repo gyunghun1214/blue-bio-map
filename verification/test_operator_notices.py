@@ -20,7 +20,8 @@ class OperatorNoticeTest(unittest.TestCase):
 
     def test_footer_operator_line(self):
         foot = self.html[self.html.index("<footer>"):self.html.index("</footer>")]
-        self.assertIn('<p class="foot-ops">운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 '
+        # since 2026-10-21 (prompt 02) dist/operations.js adds the after-contest line from dist/operations.json to the span
+        self.assertIn('<p class="foot-ops"><span data-ops-operator>운영: alt F4 팀(OCEAN 20 해커톤 출품)</span> · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 '
                       '버전 번호와 함께 공개 · <a class="foot-link" data-feedback="foot" href="' + FEEDBACK_URL
                       + '" target="_blank" rel="noopener">의견 보내기</a><span data-feedback-issue hidden> · '
                       '<a class="foot-link" href="' + FEEDBACK_URL + '" target="_blank" rel="noopener">GitHub 이슈</a></span></p>', foot)
