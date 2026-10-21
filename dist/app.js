@@ -1766,6 +1766,13 @@ function stockSpark(d,rule){
     band(rule.baseline_years)+band(rule.recent_years)+`<polyline class="sd-line" points="${pts}"/>${p25}`+
     `<text x="${x(0).toFixed(1)}" y="${H-3}">${ys[0]}</text><text x="${x(n-1).toFixed(1)}" y="${H-3}" text-anchor="middle">${ys.at(-1)}</text></svg>`;
 }
+// 2026-10-21 (site v4 05): for a species farmed far more than caught, the last year's farming and coastal catch beside the
+// averages, read from the same KOSIS series (assessments.json, built from data/raw/kosis_DT_1EW0004_*); any gap hides the line
+function stockLatestLine(d){
+  const y=d.years?.at(-1),a=d.aquaculture_t?.at(-1),c=d.coastal_t?.at(-1),pa=d.reference_2025p?.aquaculture_t,whole=v=>Number.isInteger(v)&&v>=0;
+  if(d.unscored_reason!=='aquaculture_dominant'||!Number.isInteger(y)||!whole(a)||!whole(c))return '';
+  return `<p class="sd-latest">${y}년 양식 ${a.toLocaleString('ko-KR')}톤 · 연근해 어획 ${c.toLocaleString('ko-KR')}톤${whole(pa)?` · ${y+1}년 잠정 양식 ${pa.toLocaleString('ko-KR')}톤`:''} (KOSIS 어업생산동향조사)</p>`;
+}
 // 4.12 (prereg-4.12-2026-10-14): the stock-decline block for the species detail and the data table's expanded row
 function stockDeclineDetail(s,compact=false){
   const d=s.assessment?.stock_decline,rule=data.assessmentInfo?.method?.mcui_stock_decline;
@@ -1773,7 +1780,7 @@ function stockDeclineDetail(s,compact=false){
   const t=n=>Math.round(n).toLocaleString(), level=rule.match_levels?.[d.match_level]||d.match_level;
   const head=d.score===null?esc(d.label):`${esc(d.label)} · ${scoreValue(s,'MCUI',d.score)}점`;
   const compare=d.score===null?'':stockCompare(s);
-  const body=`<div class="sd-row">${stockSpark(d,rule)}<div><p class="sd-means">기준 평균 ${t(d.baseline_mean_t)}톤(${rule.baseline_years[0]}~${String(rule.baseline_years.at(-1)).slice(2)}) → 최근 평균 ${t(d.recent_mean_t)}톤(${rule.recent_years[0]}~${String(rule.recent_years.at(-1)).slice(2)}) <b>(${esc(stockChange(d))})</b></p>`+
+  const body=`<div class="sd-row">${stockSpark(d,rule)}<div><p class="sd-means">기준 평균 ${t(d.baseline_mean_t)}톤(${rule.baseline_years[0]}~${String(rule.baseline_years.at(-1)).slice(2)}) → 최근 평균 ${t(d.recent_mean_t)}톤(${rule.recent_years[0]}~${String(rule.recent_years.at(-1)).slice(2)}) <b>(${esc(stockChange(d))})</b></p>${stockLatestLine(d)}`+
     `<p class="fine">KOSIS 품종 ${esc(d.kosis_item)} · 연결 ${esc(level)}${d.capped_broader?' · 묶음 통계라 상한 '+esc(rule.broader_cap)+'점':''} · 최근 3년 양식 비중 ${esc(Number(d.aquaculture_share_recent_pct).toFixed(1))}%`+
     `${d.unscored_reason==='aquaculture_dominant'?' · 양식 비중이 커서 감소율은 참고로 적습니다':d.unscored_reason==='small_catch'?' · 어획 규모가 작아 감소율은 참고로 적습니다':''} · 2025년 잠정치 ${Number.isFinite(d.reference_2025p?.coastal_t)?t(d.reference_2025p.coastal_t)+'톤':'없음'}(점수 미사용)</p></div></div>`;
   return `<div class="stock-decline${d.score!==null?' scored':''}"><h4>자원 감소 신호 · KOSIS 어획량 추세 · <b>${head}</b></h4>`+

@@ -1005,6 +1005,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .stock-decline .sd-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
 .stock-decline .sd-row>div{flex:1 1 220px;min-width:0}
 .stock-decline .sd-means{margin:0 0 4px}
+.stock-decline .sd-latest{margin:0 0 4px;font-size:13px}
 .sd-spark{flex:none;width:264px;max-width:100%;height:auto;overflow:visible}
 .sd-spark .sd-win{fill:currentColor;opacity:.08}
 .sd-spark .sd-line{fill:none;stroke:#8a959c;stroke-width:2;stroke-linejoin:round}
