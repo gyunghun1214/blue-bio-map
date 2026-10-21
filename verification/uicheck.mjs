@@ -233,10 +233,11 @@ try{
     eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
     // 2026-10-17 (LKH): the MCUI box names where the category comes from in one line; the basis stays 'preliminary' in the report
     // 2026-10-19 (LKH, 사이트 v3 2·3/10): the number reads '10.0 (LC·예비)' and the box opens with the preliminary line (PRELIM);
-    // the MBPI section says what was measured and the stored result of the MBPI check
+    // the MBPI section says what was measured and the stored result of the MBPI check;
+    // 2026-10-21 (site v4 04): the material's name leads the evidence line
     eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
     !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
-    eckAxes.mbpi.includes('근거: 효소·수용체 등 단백질 표적 Ki 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
+    eckAxes.mbpi.includes('근거: Dieckol · 효소·수용체 등 단백질 표적 Ki 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형: 활용 연구 검토')&&!/예비|Rapid LC|역검증|56\.8/.test(eckAxes.map):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     /MBPI 57(?![.\d])/.test(eck)&&!eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
@@ -773,7 +774,7 @@ try{
     // posthoc-scorecard.json) and keeps the 19.6–89.2 aggregation range in its 민감도 line
     // 2026-10-19 (LKH, 사이트 v3 3/10): above the stratum, what was measured ('근거: … 시험 N건 · …'), and below it the stored
     // result of the MBPI check with its link to the method tab
-    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
+    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: VW 펩타이드 · ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     !/사후 검증|미충족/.test(strat.first)&&strat.check==='MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용 검증 기록 보기'&&strat.range&&
     readDist('posthoc-scorecard.json').rows.some(r=>r.indicator==='MBPI'&&r.result==='failed')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
