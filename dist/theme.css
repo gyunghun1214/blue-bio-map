@@ -1585,6 +1585,10 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   html.lang-en .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
   html.lang-en :is(.tabs button,.tabs button[data-short],.expedition-link){white-space:normal;text-align:center;line-height:1.1}
   html.lang-en #explore .map-mode button{max-width:104px;white-space:normal;line-height:1.15;text-align:center}
+  /* 2026-10-25 영어 화면 종 카드: 점수 칸(38px)에 Food·Bioactivity·Conservation·Use를 한 줄로 두면 'Bioactivity'(약 66px)와
+     'Conservation'(약 78px)이 옆 칸까지 넘쳐 서로 겹쳐 읽을 수 없었다(10.0 (LC)도 옆 칸 값과 겹침). 영어에서만 네 칸을 2×2로 놓는다
+     (칸 순서·값 그대로, 카드 높이 139→194px). 한국어 카드는 그대로. */
+  html.lang-en #explore .species-card .card-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   /* 2026-10-25 누르는 칸: 탐색 지도 첫 화면에서 누르는 것 36개 중 29개가 44px보다 작았다(분야 칩 26px, 지도 위 모드·기간·배경 버튼
      27~29px, 확대/축소 34px, 비교 담기 칸 20px, 머리글 EN 23px·상태 칩 29px). 칩과 지도 위 버튼은 보이는 높이를 40px로 키우고
      (칩 글자 12→13px), 머리글 버튼과 비교 담기 칸은 보이는 크기를 그대로 두고 누르는 범위만 넓힌다(::after). */
