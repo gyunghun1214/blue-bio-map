@@ -596,7 +596,7 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
   #compare #comparison{max-height:none;overflow:visible;border:0;border-radius:0;background:none}
   #compare #comparison table{display:block;width:100%;min-width:0}
   #compare #comparison :is(thead,tbody){display:block}
-  #compare #comparison thead tr{display:flex;gap:6px;margin:0 -2px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:thin}
+  #compare #comparison thead tr{display:flex;gap:6px;margin:0;padding:2px 2px 10px;overflow-x:auto;scrollbar-width:thin}
   #compare #comparison thead th,#compare #comparison thead th:first-child{position:static;display:block;flex:none;width:auto;min-width:0;padding:0;border:0;background:none}
   #compare #comparison thead th:is(.cmp-type-h,.cmp-x-h){display:none}
   #compare #comparison thead th:is(:nth-child(n)){width:auto}
