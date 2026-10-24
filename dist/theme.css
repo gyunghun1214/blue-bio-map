@@ -1578,6 +1578,13 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .ev-drawer.open :is(.evd-close,.evd-foot button):focus-visible{outline:2px solid #fff;outline-offset:2px}
   html:has(#explore.active #ev-drawer.open){overflow:hidden}
   body:has(#explore.active #ev-drawer.open) .bbc{display:none}
+  /* 2026-10-25 영어 화면(휴대폰): 아래 탭 이름(Compare & indices · Evidence & methods · Ocean expedition)이 칸보다 길어 줄을 넘지
+     못하고 옆 칸으로 밀려 겹쳤고(360px에서 'Evidence & methods' 칸이 바다 탐험 칸을 29px 덮음), 지도 위 'Occurrence records |
+     Use × conservation' 버튼이 위성/수심 버튼과 겹쳤다(360: 47px, 390: 17px). 영어에서만 칸을 고르게 나누고 이름을 두 줄까지
+     쓰게 한다(글자 크기 그대로). */
+  html.lang-en .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  html.lang-en :is(.tabs button,.tabs button[data-short],.expedition-link){white-space:normal;text-align:center;line-height:1.1}
+  html.lang-en #explore .map-mode button{max-width:104px;white-space:normal;line-height:1.15;text-align:center}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}

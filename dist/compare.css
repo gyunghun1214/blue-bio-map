@@ -1079,6 +1079,7 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare #cmp-wline:not(.off){display:none}
   #compare .cmp-status:not(:has(#cmp-wline.off)):has(#cmp-filter-note:empty){display:none}
   #compare .cmp-top{row-gap:8px}
+  #compare .cmp-top>*{min-width:0} /* 영어 분류 단추(All 30 · Seaweed 9 …)가 화면보다 넓어 비교 탭 전체가 옆으로 밀리던 것: 단추 줄 안에서만 밀린다 */
   #compare .cmp-bar{gap:6px}
   #compare .cmp-weight{padding-top:6px;padding-bottom:6px}
   #compare .cmp-weight,#compare .cmp-status{margin-top:0}
