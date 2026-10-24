@@ -16,9 +16,9 @@ const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Progra
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const q=u=>{const x=new URL(u,URL0);if(LANG!=='ko')x.searchParams.set('lang',LANG);return x.href;};
 
-// 페이지 안에서 도는 뽑기: 글자 마디와 화면 속성(aria-label·title·placeholder·alt·data-short)을 문서 순서대로 한 줄씩.
+// 페이지 안에서 도는 뽑기: 글자 마디와 화면 속성(aria-label·title·placeholder·alt·data-short·data-label 등)을 문서 순서대로 한 줄씩.
 // 숨은 접이식 안 글자도 뽑는다(번역이 빠진 곳을 찾으려고). 링크는 lang 매개변수를 뺀 href 목록.
-const EXTRACT=`(sel=>{const SKIP=new Set(['SCRIPT','STYLE','NOSCRIPT','TEMPLATE']),A=['aria-label','title','placeholder','alt','data-short','aria-valuetext'],out=[],hrefs=[];
+const EXTRACT=`(sel=>{const SKIP=new Set(['SCRIPT','STYLE','NOSCRIPT','TEMPLATE']),A=['aria-label','title','placeholder','alt','data-short','data-label','data-k','data-mt-more','aria-valuetext'],out=[],hrefs=[];
   const norm=s=>String(s).replace(/\\s+/g,' ').trim();
   const walk=n=>{if(n.nodeType===3){const t=norm(n.nodeValue);if(t)out.push(t);return;}if(n.nodeType!==1||SKIP.has(n.tagName)||n.classList.contains('lang-switch'))return;
     for(const a of A)if(n.hasAttribute(a)){const v=norm(n.getAttribute(a));if(v)out.push('@'+a+'='+v);}

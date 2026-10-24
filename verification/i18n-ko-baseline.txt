@@ -4217,13 +4217,17 @@ Magallana gigas
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=참굴 MFPI 71.6 · 수산동물 고정 비교집단 근거 보기
 71.6
+@data-k=MBPI
 @aria-label=참굴 MBPI 72 · LQP 펩타이드 · ACE 저해 IC50 근거 보기
 72
 63
+@data-k=BBVI
 @aria-label=참굴 BBVI 72 근거 보기
 72
+@data-k=MCUI
 @aria-label=참굴 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -4290,13 +4294,17 @@ Mytilus coruscus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=홍합(참담치) MFPI 60.9 · 수산동물 고정 비교집단 근거 보기
 60.9
+@data-k=MBPI
 @aria-label=홍합(참담치) MBPI 10 · Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50 근거 보기
 10
 10
+@data-k=BBVI
 @aria-label=홍합(참담치) BBVI 36 근거 보기
 36
+@data-k=MCUI
 @aria-label=홍합(참담치) MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -4363,13 +4371,17 @@ Sargassum fusiforme
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=톳 MFPI 63.3 · 해조류 고정 비교집단 근거 보기
 63.3
+@data-k=MBPI
 @aria-label=톳 MBPI 65 · GKY 펩타이드 · ACE 저해 IC50 근거 보기
 65
 45
+@data-k=BBVI
 @aria-label=톳 BBVI 64 근거 보기
 64
+@data-k=MCUI
 @aria-label=톳 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -4435,13 +4447,17 @@ Gelidium elegans
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=우뭇가사리 MFPI 76.7 · 해조류 고정 비교집단 근거 보기
 76.7
+@data-k=MBPI
 @aria-label=우뭇가사리 MBPI 14 · Pheophorbide a · HIV-1 항바이러스 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=우뭇가사리 BBVI 45 근거 보기
 45
+@data-k=MCUI
 @aria-label=우뭇가사리 MCUI 80.0 (VU + 어획량 감소) · 자원 감소 신호 · 어획량 −90.2% · 정식 산출 근거 보기
 80.0
 @title=(VU·취약 + 어획량 감소)
@@ -4508,13 +4524,17 @@ Todarodes pacificus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 높음
 활용·보전 병행 검토
+@data-k=MFPI
 @aria-label=살오징어 MFPI 46.1 · 수산동물 고정 비교집단 근거 보기
 46.1
+@data-k=MBPI
 @aria-label=살오징어 MBPI 57 · YALPHA 펩타이드 · ACE 저해 IC50 근거 보기
 57
 —
+@data-k=BBVI
 @aria-label=살오징어 BBVI 52 근거 보기
 52
+@data-k=MCUI
 @aria-label=살오징어 MCUI 60.0 (LC + 어획량 감소) · 자원 감소 신호 · 어획량 −79.8% · 정식 산출 근거 보기
 60.0
 @title=(LC·관심대상 + 어획량 감소)
@@ -4580,13 +4600,17 @@ Halocynthia roretzi
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=멍게 MFPI 52.8 · 수산동물 고정 비교집단 근거 보기
 52.8
+@data-k=MBPI
 @aria-label=멍게 MBPI 14 · Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=멍게 BBVI 33 근거 보기
 33
+@data-k=MCUI
 @aria-label=멍게 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -4652,13 +4676,17 @@ Apostichopus japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=해삼 MFPI 63.5 · 수산동물 고정 비교집단 근거 보기
 63.5
+@data-k=MBPI
 @aria-label=해삼 MBPI 9 · HDWWKER 펩타이드 · ACE 저해 IC50 근거 보기
 9
 —
+@data-k=BBVI
 @aria-label=해삼 BBVI 36 근거 보기
 36
+@data-k=MCUI
 @aria-label=해삼 MCUI 80.0 (EN, A2bd) 근거 보기
 80.0
 @title=(EN·위기, A2bd)
@@ -4722,13 +4750,17 @@ Undaria pinnatifida
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=미역 MFPI 46.7 · 해조류 고정 비교집단 근거 보기
 46.7
+@data-k=MBPI
 @aria-label=미역 MBPI 89 · VW 펩타이드 · ACE 저해 IC50 근거 보기
 89
 —
+@data-k=BBVI
 @aria-label=미역 BBVI 68 근거 보기
 68
+@data-k=MCUI
 @aria-label=미역 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -4793,13 +4825,17 @@ Saccharina japonica
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=다시마 MFPI 56.7 · 해조류 고정 비교집단 근거 보기
 56.7
+@data-k=MBPI
 @aria-label=다시마 MBPI 27 근거 보기
 27
 27
+@data-k=BBVI
 @aria-label=다시마 BBVI 42 근거 보기
 42
+@data-k=MCUI
 @aria-label=다시마 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -4865,13 +4901,17 @@ Ecklonia cava
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=감태 MFPI 62.5 · 수분 환산값(다른 시료) · 해조류 고정 비교집단 근거 보기
 62.5
+@data-k=MBPI
 @aria-label=감태 MBPI 57 근거 보기
 57
 57
+@data-k=BBVI
 @aria-label=감태 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=감태 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -4925,13 +4965,17 @@ Ulva prolifera
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=가시파래 MFPI 34.2 · 수분 환산값(다른 시료) · 해조류 고정 비교집단 근거 보기
 34.2
+@data-k=MBPI
 @aria-label=가시파래 MBPI 73 · KAF 펩타이드 · ACE 저해 IC50 근거 보기
 73
 2
+@data-k=BBVI
 @aria-label=가시파래 BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=가시파래 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -4997,13 +5041,17 @@ Sargassum horneri
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=괭생이모자반 MFPI 53.5 · 해조류 고정 비교집단 근거 보기
 53.5
+@data-k=MBPI
 @aria-label=괭생이모자반 MBPI 22 근거 보기
 22
 22
+@data-k=BBVI
 @aria-label=괭생이모자반 BBVI 38 근거 보기
 38
+@data-k=MCUI
 @aria-label=괭생이모자반 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -5057,13 +5105,17 @@ Gracilaria vermiculophylla
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=꼬시래기 MFPI 70.0 · 해조류 고정 비교집단 근거 보기
 70.0
+@data-k=MBPI
 @aria-label=꼬시래기 MBPI 49 근거 보기
 49
 49
+@data-k=BBVI
 @aria-label=꼬시래기 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=꼬시래기 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -5128,13 +5180,17 @@ Codium fragile
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=청각 MFPI 36.7 · 해조류 고정 비교집단 근거 보기
 36.7
+@data-k=MBPI
 @aria-label=청각 MBPI 1 근거 보기
 1
 1
+@data-k=BBVI
 @aria-label=청각 BBVI 19 근거 보기
 19
+@data-k=MCUI
 @aria-label=청각 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -5200,13 +5256,17 @@ Ruditapes philippinarum
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=바지락 MFPI 60.4 · 수산동물 고정 비교집단 근거 보기
 60.4
+@data-k=MBPI
 @aria-label=바지락 MBPI 59 · VISDEDGVTH 펩타이드 · ACE 저해 IC50 근거 보기
 59
 —
+@data-k=BBVI
 @aria-label=바지락 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=바지락 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5271,13 +5331,17 @@ Haliotis discus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=전복(종 수준) MFPI 54.7 · 수산동물 고정 비교집단 근거 보기
 54.7
+@data-k=MBPI
 @aria-label=전복(종 수준) MBPI 16 · AMN 펩타이드 · ACE 저해 IC50 근거 보기
 16
 —
+@data-k=BBVI
 @aria-label=전복(종 수준) BBVI 35 근거 보기
 35
+@data-k=MCUI
 @aria-label=전복(종 수준) MCUI 80.0 (EN, A2d) 근거 보기
 80.0
 @title=(EN·위기, A2d)
@@ -5342,13 +5406,17 @@ Mizuhopecten yessoensis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=큰가리비 MFPI 55.8 · 수산동물 고정 비교집단 근거 보기
 55.8
+@data-k=MBPI
 @aria-label=큰가리비 MBPI 27 · VW 펩타이드 · ACE 저해 IC50 근거 보기
 27
 —
+@data-k=BBVI
 @aria-label=큰가리비 BBVI 42 근거 보기
 42
+@data-k=MCUI
 @aria-label=큰가리비 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5414,13 +5482,17 @@ Magallana sikamea
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=시카메굴 MFPI 56.1 · 수산동물 고정 비교집단 근거 보기
 56.1
+@data-k=MBPI
 @aria-label=시카메굴 MBPI 14 · Flazine · HIV-1 항바이러스 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=시카메굴 BBVI 35 근거 보기
 35
+@data-k=MCUI
 @aria-label=시카메굴 MCUI 35.0 (NT) 근거 보기
 35.0
 @title=(NT·준위협)
@@ -5486,13 +5558,17 @@ Anadara broughtonii
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=피조개 MFPI 61.9 · 수산동물 고정 비교집단 근거 보기
 61.9
+@data-k=MBPI
 @aria-label=피조개 MBPI 75 · WYIRKIRRFFKWLKKKLKKK 펩타이드 · 암세포주 IC50 근거 보기
 75
 75
+@data-k=BBVI
 @aria-label=피조개 BBVI 69 근거 보기
 69
+@data-k=MCUI
 @aria-label=피조개 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5559,13 +5635,17 @@ Sinonovacula constricta
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=가리맛조개 MFPI 57.7 · 수산동물 고정 비교집단 근거 보기
 57.7
+@data-k=MBPI
 @aria-label=가리맛조개 MBPI 57 · VQY 펩타이드 · ACE 저해 IC50 근거 보기
 57
 3
+@data-k=BBVI
 @aria-label=가리맛조개 BBVI 57 근거 보기
 57
+@data-k=MCUI
 @aria-label=가리맛조개 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5631,13 +5711,17 @@ Scomber japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=고등어 MFPI 59.9 · 수산동물 고정 비교집단 근거 보기
 59.9
+@data-k=MBPI
 @aria-label=고등어 MBPI 35 · PLITT 펩타이드 · ACE 저해 IC50 근거 보기
 35
 —
+@data-k=BBVI
 @aria-label=고등어 BBVI 47 근거 보기
 47
+@data-k=MCUI
 @aria-label=고등어 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5701,13 +5785,17 @@ Engraulis japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=멸치 MFPI 74.1 · 수산동물 고정 비교집단 근거 보기
 74.1
+@data-k=MBPI
 @aria-label=멸치 MBPI 23 · DGGP 펩타이드 · ACE 저해 IC50 근거 보기
 23
 —
+@data-k=BBVI
 @aria-label=멸치 BBVI 48 근거 보기
 48
+@data-k=MCUI
 @aria-label=멸치 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5771,13 +5859,17 @@ Larimichthys polyactis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=참조기 MFPI 39.4 · 수산동물 고정 비교집단 근거 보기
 39.4
+@data-k=MBPI
 @aria-label=참조기 MBPI 54 · WDDMEKIW 펩타이드 · 잔틴 산화효소 억제 IC50 · XO 문헌 비교집단 근거 보기
 54
 —
+@data-k=BBVI
 @aria-label=참조기 BBVI 47 근거 보기
 47
+@data-k=MCUI
 @aria-label=참조기 MCUI 35.0 (LC + 어획량 감소) · 자원 감소 신호 · 어획량 −31.4% · 정식 산출 근거 보기
 35.0
 @title=(LC·관심대상 + 어획량 감소)
@@ -5843,13 +5935,17 @@ Paralichthys olivaceus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=넙치 MFPI 59.4 · 수산동물 고정 비교집단 근거 보기
 59.4
+@data-k=MBPI
 @aria-label=넙치 MBPI 43 · SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK 펩타이드 · 항균 MIC 근거 보기
 43
 43
+@data-k=BBVI
 @aria-label=넙치 BBVI 51 근거 보기
 51
+@data-k=MCUI
 @aria-label=넙치 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -5915,13 +6011,17 @@ Sebastes schlegelii
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=조피볼락 MFPI 48.5 · 수산동물 고정 비교집단 근거 보기
 48.5
+@data-k=MBPI
 @aria-label=조피볼락 MBPI 32 · FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA 펩타이드 · 항균 MIC 근거 보기
 32
 32
+@data-k=BBVI
 @aria-label=조피볼락 BBVI 40 근거 보기
 40
+@data-k=MCUI
 @aria-label=조피볼락 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -5987,13 +6087,17 @@ Seriola quinqueradiata
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=방어 MFPI 51.0 · 수산동물 고정 비교집단 근거 보기
 51.0
+@data-k=MBPI
 @aria-label=방어 MBPI 8 · QHWSYGLSPG 펩타이드 · ChEMBL 표적 IC50 · ChEMBL 표적 비교집단 근거 보기
 8
 8
+@data-k=BBVI
 @aria-label=방어 BBVI 29 근거 보기
 29
+@data-k=MCUI
 @aria-label=방어 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -6058,13 +6162,17 @@ Gadus macrocephalus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=대구 MFPI 38.3 · 수산동물 고정 비교집단 근거 보기
 38.3
+@data-k=MBPI
 @aria-label=대구 MBPI 60 · GASSGMPG 펩타이드 · ACE 저해 IC50 근거 보기
 60
 —
+@data-k=BBVI
 @aria-label=대구 BBVI 49 근거 보기
 49
+@data-k=MCUI
 @aria-label=대구 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -6128,13 +6236,17 @@ Portunus trituberculatus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=꽃게 MFPI 62.0 · 수산동물 고정 비교집단 근거 보기
 62.0
+@data-k=MBPI
 @aria-label=꽃게 MBPI 30 · MSMRRGWRFLRGGVGGWCR 펩타이드 · 항균 MIC 근거 보기
 30
 30
+@data-k=BBVI
 @aria-label=꽃게 BBVI 46 근거 보기
 46
+@data-k=MCUI
 @aria-label=꽃게 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -6199,13 +6311,17 @@ Octopus sinensis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=참문어(동아시아 종) MFPI 37.8 · 수산동물 고정 비교집단 근거 보기
 37.8
+@data-k=MBPI
 @aria-label=참문어(동아시아 종) MBPI 71 · CYFRNCPIG 펩타이드 · ChEMBL 표적 EC50 · ChEMBL 표적 비교집단 근거 보기
 71
 71
+@data-k=BBVI
 @aria-label=참문어(동아시아 종) BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=참문어(동아시아 종) MCUI 35.0 (NT) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 35.0
 @title=(NT·준위협)
@@ -6271,13 +6387,17 @@ Acanthosepion esculentum
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=갑오징어 MFPI 42.5 · 수산동물 고정 비교집단 근거 보기
 42.5
+@data-k=MBPI
 @aria-label=갑오징어 MBPI 66 · FMRF 펩타이드 · ChEMBL 표적 Ki · ChEMBL 표적 비교집단 근거 보기
 66
 66
+@data-k=BBVI
 @aria-label=갑오징어 BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=갑오징어 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -6398,6 +6518,7 @@ ChEMBL 표적(펩타이드) · MBPI·BBVI와 별도인 보조 지표
 · MCUI 국가 평가
 홍합(참담치)
 · MCUI 국가 평가
+@data-mt-more=외 11종
 외 11종
 @title=활용 연구 검토
 활용 지표 높음
@@ -6425,6 +6546,7 @@ ChEMBL 표적(펩타이드) · MBPI·BBVI와 별도인 보조 지표
 톳
 피조개
 · MCUI 국가 평가
+@data-mt-more=외 9종
 외 9종
 배치 현황
 30종 배치
@@ -6743,13 +6865,17 @@ Magallana gigas
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=참굴 MFPI 71.6 · 수산동물 고정 비교집단 근거 보기
 71.6
+@data-k=MBPI
 @aria-label=참굴 MBPI 72 · LQP 펩타이드 · ACE 저해 IC50 근거 보기
 72
 63
+@data-k=BBVI
 @aria-label=참굴 BBVI 72 근거 보기
 72
+@data-k=MCUI
 @aria-label=참굴 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -6816,13 +6942,17 @@ Mytilus coruscus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=홍합(참담치) MFPI 60.9 · 수산동물 고정 비교집단 근거 보기
 60.9
+@data-k=MBPI
 @aria-label=홍합(참담치) MBPI 10 · Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50 근거 보기
 10
 10
+@data-k=BBVI
 @aria-label=홍합(참담치) BBVI 36 근거 보기
 36
+@data-k=MCUI
 @aria-label=홍합(참담치) MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -6889,13 +7019,17 @@ Sargassum fusiforme
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=톳 MFPI 63.3 · 해조류 고정 비교집단 근거 보기
 63.3
+@data-k=MBPI
 @aria-label=톳 MBPI 65 · GKY 펩타이드 · ACE 저해 IC50 근거 보기
 65
 45
+@data-k=BBVI
 @aria-label=톳 BBVI 64 근거 보기
 64
+@data-k=MCUI
 @aria-label=톳 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -6961,13 +7095,17 @@ Gelidium elegans
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=우뭇가사리 MFPI 76.7 · 해조류 고정 비교집단 근거 보기
 76.7
+@data-k=MBPI
 @aria-label=우뭇가사리 MBPI 14 · Pheophorbide a · HIV-1 항바이러스 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=우뭇가사리 BBVI 45 근거 보기
 45
+@data-k=MCUI
 @aria-label=우뭇가사리 MCUI 80.0 (VU + 어획량 감소) · 자원 감소 신호 · 어획량 −90.2% · 정식 산출 근거 보기
 80.0
 @title=(VU·취약 + 어획량 감소)
@@ -7034,13 +7172,17 @@ Todarodes pacificus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 높음
 활용·보전 병행 검토
+@data-k=MFPI
 @aria-label=살오징어 MFPI 46.1 · 수산동물 고정 비교집단 근거 보기
 46.1
+@data-k=MBPI
 @aria-label=살오징어 MBPI 57 · YALPHA 펩타이드 · ACE 저해 IC50 근거 보기
 57
 —
+@data-k=BBVI
 @aria-label=살오징어 BBVI 52 근거 보기
 52
+@data-k=MCUI
 @aria-label=살오징어 MCUI 60.0 (LC + 어획량 감소) · 자원 감소 신호 · 어획량 −79.8% · 정식 산출 근거 보기
 60.0
 @title=(LC·관심대상 + 어획량 감소)
@@ -7106,13 +7248,17 @@ Halocynthia roretzi
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=멍게 MFPI 52.8 · 수산동물 고정 비교집단 근거 보기
 52.8
+@data-k=MBPI
 @aria-label=멍게 MBPI 14 · Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=멍게 BBVI 33 근거 보기
 33
+@data-k=MCUI
 @aria-label=멍게 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7178,13 +7324,17 @@ Apostichopus japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=해삼 MFPI 63.5 · 수산동물 고정 비교집단 근거 보기
 63.5
+@data-k=MBPI
 @aria-label=해삼 MBPI 9 · HDWWKER 펩타이드 · ACE 저해 IC50 근거 보기
 9
 —
+@data-k=BBVI
 @aria-label=해삼 BBVI 36 근거 보기
 36
+@data-k=MCUI
 @aria-label=해삼 MCUI 80.0 (EN, A2bd) 근거 보기
 80.0
 @title=(EN·위기, A2bd)
@@ -7248,13 +7398,17 @@ Undaria pinnatifida
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=미역 MFPI 46.7 · 해조류 고정 비교집단 근거 보기
 46.7
+@data-k=MBPI
 @aria-label=미역 MBPI 89 · VW 펩타이드 · ACE 저해 IC50 근거 보기
 89
 —
+@data-k=BBVI
 @aria-label=미역 BBVI 68 근거 보기
 68
+@data-k=MCUI
 @aria-label=미역 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7319,13 +7473,17 @@ Saccharina japonica
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=다시마 MFPI 56.7 · 해조류 고정 비교집단 근거 보기
 56.7
+@data-k=MBPI
 @aria-label=다시마 MBPI 27 근거 보기
 27
 27
+@data-k=BBVI
 @aria-label=다시마 BBVI 42 근거 보기
 42
+@data-k=MCUI
 @aria-label=다시마 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7391,13 +7549,17 @@ Ecklonia cava
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=감태 MFPI 62.5 · 수분 환산값(다른 시료) · 해조류 고정 비교집단 근거 보기
 62.5
+@data-k=MBPI
 @aria-label=감태 MBPI 57 근거 보기
 57
 57
+@data-k=BBVI
 @aria-label=감태 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=감태 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7451,13 +7613,17 @@ Ulva prolifera
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=가시파래 MFPI 34.2 · 수분 환산값(다른 시료) · 해조류 고정 비교집단 근거 보기
 34.2
+@data-k=MBPI
 @aria-label=가시파래 MBPI 73 · KAF 펩타이드 · ACE 저해 IC50 근거 보기
 73
 2
+@data-k=BBVI
 @aria-label=가시파래 BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=가시파래 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -7523,13 +7689,17 @@ Sargassum horneri
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=괭생이모자반 MFPI 53.5 · 해조류 고정 비교집단 근거 보기
 53.5
+@data-k=MBPI
 @aria-label=괭생이모자반 MBPI 22 근거 보기
 22
 22
+@data-k=BBVI
 @aria-label=괭생이모자반 BBVI 38 근거 보기
 38
+@data-k=MCUI
 @aria-label=괭생이모자반 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7583,13 +7753,17 @@ Gracilaria vermiculophylla
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=꼬시래기 MFPI 70.0 · 해조류 고정 비교집단 근거 보기
 70.0
+@data-k=MBPI
 @aria-label=꼬시래기 MBPI 49 근거 보기
 49
 49
+@data-k=BBVI
 @aria-label=꼬시래기 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=꼬시래기 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7654,13 +7828,17 @@ Codium fragile
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=청각 MFPI 36.7 · 해조류 고정 비교집단 근거 보기
 36.7
+@data-k=MBPI
 @aria-label=청각 MBPI 1 근거 보기
 1
 1
+@data-k=BBVI
 @aria-label=청각 BBVI 19 근거 보기
 19
+@data-k=MCUI
 @aria-label=청각 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -7726,13 +7904,17 @@ Ruditapes philippinarum
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=바지락 MFPI 60.4 · 수산동물 고정 비교집단 근거 보기
 60.4
+@data-k=MBPI
 @aria-label=바지락 MBPI 59 · VISDEDGVTH 펩타이드 · ACE 저해 IC50 근거 보기
 59
 —
+@data-k=BBVI
 @aria-label=바지락 BBVI 60 근거 보기
 60
+@data-k=MCUI
 @aria-label=바지락 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -7797,13 +7979,17 @@ Haliotis discus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 보전 지표 높음
 보전 연구 우선 검토
+@data-k=MFPI
 @aria-label=전복(종 수준) MFPI 54.7 · 수산동물 고정 비교집단 근거 보기
 54.7
+@data-k=MBPI
 @aria-label=전복(종 수준) MBPI 16 · AMN 펩타이드 · ACE 저해 IC50 근거 보기
 16
 —
+@data-k=BBVI
 @aria-label=전복(종 수준) BBVI 35 근거 보기
 35
+@data-k=MCUI
 @aria-label=전복(종 수준) MCUI 80.0 (EN, A2d) 근거 보기
 80.0
 @title=(EN·위기, A2d)
@@ -7868,13 +8054,17 @@ Mizuhopecten yessoensis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=큰가리비 MFPI 55.8 · 수산동물 고정 비교집단 근거 보기
 55.8
+@data-k=MBPI
 @aria-label=큰가리비 MBPI 27 · VW 펩타이드 · ACE 저해 IC50 근거 보기
 27
 —
+@data-k=BBVI
 @aria-label=큰가리비 BBVI 42 근거 보기
 42
+@data-k=MCUI
 @aria-label=큰가리비 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -7940,13 +8130,17 @@ Magallana sikamea
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=시카메굴 MFPI 56.1 · 수산동물 고정 비교집단 근거 보기
 56.1
+@data-k=MBPI
 @aria-label=시카메굴 MBPI 14 · Flazine · HIV-1 항바이러스 IC50 근거 보기
 14
 14
+@data-k=BBVI
 @aria-label=시카메굴 BBVI 35 근거 보기
 35
+@data-k=MCUI
 @aria-label=시카메굴 MCUI 35.0 (NT) 근거 보기
 35.0
 @title=(NT·준위협)
@@ -8012,13 +8206,17 @@ Anadara broughtonii
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=피조개 MFPI 61.9 · 수산동물 고정 비교집단 근거 보기
 61.9
+@data-k=MBPI
 @aria-label=피조개 MBPI 75 · WYIRKIRRFFKWLKKKLKKK 펩타이드 · 암세포주 IC50 근거 보기
 75
 75
+@data-k=BBVI
 @aria-label=피조개 BBVI 69 근거 보기
 69
+@data-k=MCUI
 @aria-label=피조개 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8085,13 +8283,17 @@ Sinonovacula constricta
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=가리맛조개 MFPI 57.7 · 수산동물 고정 비교집단 근거 보기
 57.7
+@data-k=MBPI
 @aria-label=가리맛조개 MBPI 57 · VQY 펩타이드 · ACE 저해 IC50 근거 보기
 57
 3
+@data-k=BBVI
 @aria-label=가리맛조개 BBVI 57 근거 보기
 57
+@data-k=MCUI
 @aria-label=가리맛조개 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8157,13 +8359,17 @@ Scomber japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=고등어 MFPI 59.9 · 수산동물 고정 비교집단 근거 보기
 59.9
+@data-k=MBPI
 @aria-label=고등어 MBPI 35 · PLITT 펩타이드 · ACE 저해 IC50 근거 보기
 35
 —
+@data-k=BBVI
 @aria-label=고등어 BBVI 47 근거 보기
 47
+@data-k=MCUI
 @aria-label=고등어 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8227,13 +8433,17 @@ Engraulis japonicus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=멸치 MFPI 74.1 · 수산동물 고정 비교집단 근거 보기
 74.1
+@data-k=MBPI
 @aria-label=멸치 MBPI 23 · DGGP 펩타이드 · ACE 저해 IC50 근거 보기
 23
 —
+@data-k=BBVI
 @aria-label=멸치 BBVI 48 근거 보기
 48
+@data-k=MCUI
 @aria-label=멸치 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8297,13 +8507,17 @@ Larimichthys polyactis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=참조기 MFPI 39.4 · 수산동물 고정 비교집단 근거 보기
 39.4
+@data-k=MBPI
 @aria-label=참조기 MBPI 54 · WDDMEKIW 펩타이드 · 잔틴 산화효소 억제 IC50 · XO 문헌 비교집단 근거 보기
 54
 —
+@data-k=BBVI
 @aria-label=참조기 BBVI 47 근거 보기
 47
+@data-k=MCUI
 @aria-label=참조기 MCUI 35.0 (LC + 어획량 감소) · 자원 감소 신호 · 어획량 −31.4% · 정식 산출 근거 보기
 35.0
 @title=(LC·관심대상 + 어획량 감소)
@@ -8369,13 +8583,17 @@ Paralichthys olivaceus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=넙치 MFPI 59.4 · 수산동물 고정 비교집단 근거 보기
 59.4
+@data-k=MBPI
 @aria-label=넙치 MBPI 43 · SKEKIDRLLNKACNGIKCKLIRQACNKIIGHFKRK 펩타이드 · 항균 MIC 근거 보기
 43
 43
+@data-k=BBVI
 @aria-label=넙치 BBVI 51 근거 보기
 51
+@data-k=MCUI
 @aria-label=넙치 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8441,13 +8659,17 @@ Sebastes schlegelii
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=조피볼락 MFPI 48.5 · 수산동물 고정 비교집단 근거 보기
 48.5
+@data-k=MBPI
 @aria-label=조피볼락 MBPI 32 · FVSRQSCMDVCAKGAKQHTSRGNVRRARRNRKNRITYLQA 펩타이드 · 항균 MIC 근거 보기
 32
 32
+@data-k=BBVI
 @aria-label=조피볼락 BBVI 40 근거 보기
 40
+@data-k=MCUI
 @aria-label=조피볼락 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -8513,13 +8735,17 @@ Seriola quinqueradiata
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=방어 MFPI 51.0 · 수산동물 고정 비교집단 근거 보기
 51.0
+@data-k=MBPI
 @aria-label=방어 MBPI 8 · QHWSYGLSPG 펩타이드 · ChEMBL 표적 IC50 · ChEMBL 표적 비교집단 근거 보기
 8
 8
+@data-k=BBVI
 @aria-label=방어 BBVI 29 근거 보기
 29
+@data-k=MCUI
 @aria-label=방어 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8584,13 +8810,17 @@ Gadus macrocephalus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=대구 MFPI 38.3 · 수산동물 고정 비교집단 근거 보기
 38.3
+@data-k=MBPI
 @aria-label=대구 MBPI 60 · GASSGMPG 펩타이드 · ACE 저해 IC50 근거 보기
 60
 —
+@data-k=BBVI
 @aria-label=대구 BBVI 49 근거 보기
 49
+@data-k=MCUI
 @aria-label=대구 MCUI 10.0 (LC) 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8654,13 +8884,17 @@ Portunus trituberculatus
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 두 지표 모두 낮음
 기초조사 검토
+@data-k=MFPI
 @aria-label=꽃게 MFPI 62.0 · 수산동물 고정 비교집단 근거 보기
 62.0
+@data-k=MBPI
 @aria-label=꽃게 MBPI 30 · MSMRRGWRFLRGGVGGWCR 펩타이드 · 항균 MIC 근거 보기
 30
 30
+@data-k=BBVI
 @aria-label=꽃게 BBVI 46 근거 보기
 46
+@data-k=MCUI
 @aria-label=꽃게 MCUI 10.0 (LC·예비) 근거 보기
 10.0
 @title=(LC·관심대상·예비)
@@ -8725,13 +8959,17 @@ Octopus sinensis
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=참문어(동아시아 종) MFPI 37.8 · 수산동물 고정 비교집단 근거 보기
 37.8
+@data-k=MBPI
 @aria-label=참문어(동아시아 종) MBPI 71 · CYFRNCPIG 펩타이드 · ChEMBL 표적 EC50 · ChEMBL 표적 비교집단 근거 보기
 71
 71
+@data-k=BBVI
 @aria-label=참문어(동아시아 종) BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=참문어(동아시아 종) MCUI 35.0 (NT) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 35.0
 @title=(NT·준위협)
@@ -8797,13 +9035,17 @@ Acanthosepion esculentum
 @title=연구 순서를 고르기 위한 분류 · 탐색용 기준선: BBVI 50 이상이면 활용 지표 높음, MCUI 50 이상이면 보전 지표 높음
 활용 지표 높음
 활용 연구 검토
+@data-k=MFPI
 @aria-label=갑오징어 MFPI 42.5 · 수산동물 고정 비교집단 근거 보기
 42.5
+@data-k=MBPI
 @aria-label=갑오징어 MBPI 66 · FMRF 펩타이드 · ChEMBL 표적 Ki · ChEMBL 표적 비교집단 근거 보기
 66
 66
+@data-k=BBVI
 @aria-label=갑오징어 BBVI 54 근거 보기
 54
+@data-k=MCUI
 @aria-label=갑오징어 MCUI 10.0 (LC) · 한국 국가 평가 기반 · 정식 산출 근거 보기
 10.0
 @title=(LC·관심대상)
@@ -8924,6 +9166,7 @@ ChEMBL 표적(펩타이드) · MBPI·BBVI와 별도인 보조 지표
 · MCUI 국가 평가
 홍합(참담치)
 · MCUI 국가 평가
+@data-mt-more=외 11종
 외 11종
 @title=활용 연구 검토
 활용 지표 높음
@@ -8951,6 +9194,7 @@ ChEMBL 표적(펩타이드) · MBPI·BBVI와 별도인 보조 지표
 톳
 피조개
 · MCUI 국가 평가
+@data-mt-more=외 9종
 외 9종
 배치 현황
 30종 배치
@@ -9076,23 +9320,35 @@ WoRMS 정명(AphiaID)으로 종과 출현 자료를 묶습니다.
 이 지도와의 관계
 MBRIS
 해양생명자원통합정보시스템
+@data-label=무엇을 주나
 국가 해양수산생물종 목록과 종별 통합종정보(표본 사진, 생태·형태 특징, 유전자 염기서열, 특허 정보)
+@data-label=단위
 종 하나의 기본 정보
+@data-label=이 지도와의 관계
 국가 목록을 출발점으로 학명과 종 번호(AphiaID)를 맞춥니다
 해양생물 공간정보시스템
 2021-12 공개
+@data-label=무엇을 주나
 종별 분포 정보와 일부 보호 해양생물의 위치 추적 자료를 위성·해양 배경 지도 위에
+@data-label=단위
 분포 지도
+@data-label=이 지도와의 관계
 공개 출현 기록(OBIS·GBIF)을 1°·4° 격자로 묶어, 분포와 함께 쓸모·보전 지표를 같은 화면에 놓습니다
 해양바이오뱅크
 소재 은행
+@data-label=무엇을 주나
 실물 소재 분양, 항생 소재의 내성균 6종 항균 효능 등급(A~C, 2023-11부터), 추출물 효능 활성도 등급(1~3등급) 제공 계획(2021 보도)
+@data-label=단위
 실물 소재·추출물
+@data-label=이 지도와의 관계
 공개 논문의 시험값과 식량 성분, 보전 평가를 종 번호 하나로 이어 어느 종을 먼저 살필지 고르는 단계에 씁니다
 이 지도
 Blue-bio Value Map
+@data-label=무엇을 주나
 한 종의 쓸모(식량 성분·생리활성 시험값)와 지켜야 할 정도(IUCN·국가 평가·어획량 추세)를 근거와 함께 나란히
+@data-label=단위
 종(AphiaID)
+@data-label=이 지도와의 관계
 세 시스템이 주는 종 정보·분포·소재와 함께 읽는 지도입니다
 출처: MBRIS 통합종정보
 해양수산부 보도(2024-03-26)
@@ -9263,22 +9519,30 @@ MFPI · 식품성분표 교차 확인
 기록
 @title=research/verified-indices/posthoc-validation-2026-10-02.json
 posthoc-validation-2026-10-02.json ↗
+@data-label=무엇을 확인했나
 한국 식품성분표 대신 일본 식품성분표 값으로 다시 계산해도 11종의 영양 순위가 유지되는지
+@data-label=사전 등록
 예
 실행 전 기준 고정(ρ ≥ 0.6, p < 0.05, 8종 이상)
+@data-label=결과
 통과
 시범 3.15 기록: 순위상관 0.873 · 11종
+@data-label=그 뒤 처리
 해당 없음
 점수에 사용
 MBPI · 신약 기원종 순위
 기록
 @title=research/verified-indices/posthoc-validation-mbpi-4.11-2026-10-13.json
 posthoc-validation-mbpi-4.11-2026-10-13.json ↗
+@data-label=무엇을 확인했나
 신약이 나온 해양생물 3종의 MBPI가 운영 종보다 높게 나오는지
+@data-label=사전 등록
 예
 기준 문장을 먼저 등록(수치 기준 없음)
+@data-label=결과
 기준 미충족
 4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1
+@data-label=그 뒤 처리
 유지
 BBVI에 그대로 쓰고, 종 상세의 MBPI 설명에 이 결과를 함께 적음
 MBPI-Rx · 신약 기원종 순위(탐색용)
@@ -9287,10 +9551,14 @@ MBPI-Rx · 신약 기원종 순위(탐색용)
 posthoc-validation-mbpi-rx-4.10-2026-10-12.json ↗
 @title=research/verified-indices/prereg-mbpi-rx-4.10-2026-10-12.md
 prereg-mbpi-rx-4.10-2026-10-12.md ↗
+@data-label=무엇을 확인했나
 ACE·잔틴 산화효소 펩타이드 층을 뺀 MBPI-Rx로 같은 질문을 다시 확인
+@data-label=사전 등록
 예
 사전 등록 후 실행 · 기존 결과를 본 뒤 제안한 탐색용 재검토
+@data-label=결과
 기준 미충족
+@data-label=그 뒤 처리
 참고로 내림
 점수에 쓰지 않고 종 상세와 데이터 표에 참고로만 표시
 MCUI · 위협 범주 순서
@@ -9298,31 +9566,43 @@ MCUI · 위협 범주 순서
 @title=config/verified-indices-v4.19.json
 verified-indices-v4.19.json ↗
 별도 기록 파일 없음 · 지표 설정 파일의 posthoc 항목
+@data-label=무엇을 확인했나
 어획으로 줄어든 위협종(해삼, IUCN EN)의 MCUI가 LC 종(살오징어)보다 높게 나오는지
+@data-label=사전 등록
 아니오
 사전 등록 기록 없음 · 2종만 비교
+@data-label=결과
 일관성 확인(독립 아님)
+@data-label=그 뒤 처리
 해당 없음
 점수에 사용
 MCUI · 자원 감소 신호
 기록
 @title=research/verified-indices/prereg-4.12-2026-10-14.md
 prereg-4.12-2026-10-14.md ↗
+@data-label=무엇을 확인했나
 어획량 급감이 보고된 종(살오징어)은 MCUI 상위에, 어획량이 유지된 종(고등어·대구)은 신호 없음으로 나오는지
+@data-label=사전 등록
 예
 사전 등록
+@data-label=결과
 일관성 확인(독립 아님)
+@data-label=그 뒤 처리
 해당 없음
 점수에 사용
 MCUI 예비 평가 · Rapid LC 역검증
 기록
 @title=research/verified-indices/posthoc-validation-2026-10-02.json
 posthoc-validation-2026-10-02.json ↗
+@data-label=무엇을 확인했나
 이미 평가가 있는 14종에 자체 예비평가(Rapid LC)를 적용했을 때 위협종을 LC로 판정하지 않는지
+@data-label=사전 등록
 예
 실행 전 기준 고정
+@data-label=결과
 기준 미충족
 시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)
+@data-label=그 뒤 처리
 유지
 공식 평가가 없는 10종의 MCUI에 예비 평가로 사용 · 종 상세에 '예비 평가(공식 평가 전)'로 표시 · IUCN 또는 해양생물자원관 결과가 나오면 교체
 2026-10-02 참고로 내림 → 4.3 점수에 사용 → 4.14 참고로 내림 → 4.17 예비 평가로 다시 사용(방법 결정 2026-10-15)
@@ -9332,10 +9612,14 @@ MCUI 예비 평가 · 기준 A(감소율) 역검증
 posthoc-validation-3.27-2026-10-03.json ↗
 @title=research/verified-indices/posthoc-3.27/mcui-criterion-a/01_method_fixed_before_data.md
 01_method_fixed_before_data.md ↗
+@data-label=무엇을 확인했나
 어획 통계로 IUCN 기준 A(감소율)를 판정하는 방법이 이미 평가된 14종의 결과와 맞는지
+@data-label=사전 등록
 예
 실행 전 기준 고정(01_method_fixed_before_data.md)
+@data-label=결과
 검증 불성립(표본 부족)
+@data-label=그 뒤 처리
 도입하지 않음
 통과할 때만 쓰기로 한 방법이라 점수에 넣지 않음(방법 결정 2026-10-03)
 MCUI 추세 보정 · OBIS 보고율
@@ -9344,21 +9628,29 @@ MCUI 추세 보정 · OBIS 보고율
 posthoc-validation-3.27-2026-10-03.json ↗
 @title=research/verified-indices/posthoc-3.27/mcui-obis-trend/01_method_fixed_before_data.md
 01_method_fixed_before_data.md ↗
+@data-label=무엇을 확인했나
 OBIS 보고율 감소 신호가 위협종에서 LC 종보다 자주 나오는지(지도 상자 안 229종)
+@data-label=사전 등록
 예
 실행 전 기준 고정(01_method_fixed_before_data.md)
+@data-label=결과
 기준 미충족 · 사용 중단
+@data-label=그 뒤 처리
 점수에서 뺌
 4.11부터 +10 보정을 멈춤 · 추세 분류는 참고로만 표시
 MBPI · 신약 기원종 순위 재검증(표본 확대)
 기록
 @title=research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md
 prereg-mbpi-origin-rerank-2026-10.md ↗
+@data-label=무엇을 확인했나
 4.11과 같은 질문을 사례를 늘려 다시 묻는다: 신약 기원종 MBPI 중앙값이 지도 30종 중앙값보다 크고, 절반 이상이 상위 3분의 1 경계 이상인지(계산되는 기원종 5종 미만이면 검증 불성립)
+@data-label=사전 등록
 예
 사전 등록 커밋 6b06ca8 ↗
+@data-label=결과
 등록됨
 2026-12 공개 예정
+@data-label=그 뒤 처리
 결과가 나오면 이 줄에 적음
 ‘일관성 확인(독립 아님)’은 점수를 만든 자료와 같은 자료로 보거나 2종만 비교한 확인이라 통과로 세지 않습니다. ‘검증 불성립’은 미리 정한 최소 표본 수에 못 미쳐 판정하지 못했다는 뜻입니다. 사전 등록 ‘예’ 7건은 결과를 보기 전에 기준을 정했습니다. 결과 칸의 숫자는 각 기록 파일에 저장된 그때 값이고, 기록 파일은 프로젝트 GitHub 저장소에 있습니다. 4.19 기준.
 지표 규칙이 바뀐 이력 전체:
