@@ -1597,7 +1597,8 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .use-chip b{font-size:12px}
   #explore .use-row{align-items:center}
   #explore :is(.map-mode,.basemap-switch,.period-filter) button{min-height:40px}
-  #explore .leaflet-control-zoom a{width:40px;height:40px;line-height:40px}
+  /* 확대/축소는 위 공통 규칙(.leaflet-bar a, 34px)이 !important라 같은 방법으로 덮는다(2026-10-25 보완: 처음엔 !important가 없어 34px 그대로였다) */
+  #explore .leaflet-control-zoom a{width:40px!important;height:40px!important;line-height:40px!important}
   #explore .map-ui-bl.legend-collapsed .legend-toggle{height:40px}
   #explore .sc-check::after{content:"";position:absolute;inset:-8px}
   :is(.lang-switch button,.status-chip){position:relative}
