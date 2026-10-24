@@ -52,7 +52,7 @@ for(const [ko,en,src] of all){numChecked++;const a=nums(ko),b=nums(en);if(a.join
 for(const k of numOk.keys())if(!Object.hasOwn(X.I18N_EN,k)&&!Object.hasOwn(data.by_text,k))fail(`(다) stale number exception: ${k.slice(0,60)}`);
 
 // (바) 용어 사전(docs/i18n-glossary.md 표): 원문에 한국어 용어가 있으면 영어에 지정 용어(여럿이면 그중 하나)가 있어야 한다.
-const gl=fs.readFileSync(path.join(HERE,'..','docs','i18n-glossary.md'),'utf8').split('\n').map(l=>l.match(/^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/)).filter(m=>m&&!/^(한국어|---)/.test(m[1])).map(m=>[m[1],m[2].split(' / ').map(s=>s.trim().toLowerCase())]);
+const gl=fs.readFileSync(path.join(HERE,'..','docs','i18n-glossary.md'),'utf8').split(/\r?\n/).map(l=>l.match(/^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/)).filter(m=>m&&!/^(한국어|---)/.test(m[1])).map(m=>[m[1],m[2].split(' / ').map(s=>s.trim().toLowerCase())]);
 assert.ok(gl.length>=30,`glossary rows: ${gl.length}`);
 const termOk=new Set(exceptions.terms.map(x=>x.ko+'\u0000'+x.term));
 let termChecked=0;
