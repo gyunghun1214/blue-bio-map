@@ -4964,6 +4964,17 @@ $('matrix-cluster-pop').addEventListener('click',e=>{const b=e.target.closest('b
   $('matrix-points').querySelector('.matrix-point[aria-current="true"]')?.focus({preventScroll:true});});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('matrix-cluster-pop').hidden)closeClusterPop(true);});
 document.addEventListener('click',e=>{if(!$('matrix-cluster-pop').hidden&&!e.target.closest('#matrix-cluster-pop,.matrix-cluster-btn'))closeClusterPop(false);});
+// 2026-10-25 휴대폰: 매트릭스 점의 누르는 범위(44px 원, compare.css ::after)는 이웃 점과 겹치고, 겹친 곳은 나중에 그린 점·선택된 점
+// (z-index 7)이 가져가 바로 옆 점의 보이는 점을 눌러도 다른 종이 골라졌다. 휴대폰에서 손가락으로 누르면(click.detail>0) 누른 자리에서
+// 가장 가까운 점을 고른다. 키보드(Enter·Space)와 넓은 화면은 그대로.
+$('matrix-points').addEventListener('click',e=>{
+  if(!phoneSheet()||e.detail===0)return;
+  const hit=e.target.closest?.('.matrix-point.pilot');if(!hit)return;
+  let best=hit,bd=Infinity;
+  for(const b of e.currentTarget.querySelectorAll('.matrix-point.pilot')){const r=b.getBoundingClientRect();if(!r.width)continue;
+    const d=Math.hypot(r.left+r.width/2-e.clientX,r.top+r.height/2-e.clientY);if(d<bd){bd=d;best=b;}}
+  if(best!==hit){e.stopPropagation();e.preventDefault();best.click();}
+},true);
 // one listener per region: the profile and the tray redraw their buttons
 // '정밀 좌표 이용 신청': explains the planned procedure only; no form, nothing is sent or stored
 let coordReturn=null;
