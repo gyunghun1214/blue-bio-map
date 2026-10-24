@@ -226,5 +226,9 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-lang button{padding:5px 10px;border:0;border-radius:99px;background:none;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
 .x-lang button[aria-pressed="true"]{background:var(--teal);color:#032024}
 .x-lang button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-@media(max-width:740px){.x-lang button{padding:4px 8px;font-size:var(--fs-min)}}
+@media(max-width:740px){.x-lang button{padding:4px 8px;font-size:var(--fs-min)}
+  /* 2026-10-25 영어 360px: 메뉴 이름(Survey stops · Card list · Search·full map)이 길어 머리글 메뉴가 세 줄로 늘었고 셋째 줄이 항로 진행
+     점(y=98–106)을 덮었다. 본 화면 휴대폰 머리글(theme.css)처럼 지금 언어 단추(EN)는 숨기고 다른 언어(한국어) 하나만 남긴다. 영어 화면만. */
+  html.lang-en .x-lang button[aria-pressed="true"]{display:none}
+}
 .i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;line-height:1.35;opacity:.7}
