@@ -1585,6 +1585,18 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   html.lang-en .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
   html.lang-en :is(.tabs button,.tabs button[data-short],.expedition-link){white-space:normal;text-align:center;line-height:1.1}
   html.lang-en #explore .map-mode button{max-width:104px;white-space:normal;line-height:1.15;text-align:center}
+  /* 2026-10-25 누르는 칸: 탐색 지도 첫 화면에서 누르는 것 36개 중 29개가 44px보다 작았다(분야 칩 26px, 지도 위 모드·기간·배경 버튼
+     27~29px, 확대/축소 34px, 비교 담기 칸 20px, 머리글 EN 23px·상태 칩 29px). 칩과 지도 위 버튼은 보이는 높이를 40px로 키우고
+     (칩 글자 12→13px), 머리글 버튼과 비교 담기 칸은 보이는 크기를 그대로 두고 누르는 범위만 넓힌다(::after). */
+  #explore .use-chip{min-height:40px;padding:0 12px;font-size:13px}
+  #explore .use-chip b{font-size:12px}
+  #explore .use-row{align-items:center}
+  #explore :is(.map-mode,.basemap-switch,.period-filter) button{min-height:40px}
+  #explore .leaflet-control-zoom a{width:40px;height:40px;line-height:40px}
+  #explore .map-ui-bl.legend-collapsed .legend-toggle{height:40px}
+  #explore .sc-check::after{content:"";position:absolute;inset:-8px}
+  :is(.lang-switch button,.status-chip){position:relative}
+  :is(.lang-switch button,.status-chip)::after{content:"";position:absolute;inset:-8px -3px}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}

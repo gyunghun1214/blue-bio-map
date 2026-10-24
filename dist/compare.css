@@ -1088,4 +1088,9 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   /* 매트릭스 점(9–20px)은 손가락으로 누르기 어려웠다: 보이는 점은 그대로 두고 누르는 범위만 44px 원으로 넓힌다
      (점이 몰린 곳의 흐린 점은 'N종' 단추로 고르므로 넓히지 않는다) */
   #compare .matrix-point.pilot:not([data-clustered])::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;border-radius:50%;transform:translate(-50%,-50%)}
+  /* 매트릭스/데이터 표(34px)·비교 기준(28px)·읽는 법(34px) 단추: 보이는 크기는 그대로, 누르는 범위만 44px 안팎으로 */
+  #compare :is(.cmp-mode button,.cw-name,#cmp-read-toggle){position:relative}
+  #compare .cmp-mode button::after{content:"";position:absolute;inset:-5px 0}
+  #compare .cw-name::after{content:"";position:absolute;inset:-8px -6px}
+  #compare #cmp-read-toggle::after{content:"";position:absolute;inset:-5px 0}
 }
