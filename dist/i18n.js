@@ -21,7 +21,7 @@ const LANG=(()=>{
 const I18N_EN={}, I18N_DATA={}, I18N_MISS=new Set();
 const I18N_HANGUL=/[ㄱ-ㆎ가-힣]/;
 const i18nKey=s=>String(s??'').replace(/\s+/g,' ').trim();
-const i18nFill=(s,v)=>v?s.replace(/\{(\w+)(?:\|([^|{}]*)\|([^|{}]*))?\}/g,(m,k,one,many)=>Object.hasOwn(v,k)?(one!==undefined?(Number(v[k])===1?one:many):String(v[k])):m):s;
+const i18nFill=(s,v)=>v?s.replace(/\{(\w+)(?:\|([^|{}]*)\|([^|{}]*))?\}/g,(m,k,one,many)=>Object.hasOwn(v,k)?(one!==undefined?(Number(String(v[k]).replace(/,/g,''))===1?one:many):String(v[k])):m):s;
 // 사전에 없는 문구는 개발용으로 한 번만 남긴다(화면에는 원문이 그대로 나온다).
 const i18nMiss=k=>{if(!I18N_MISS.has(k)){I18N_MISS.add(k);try{console.debug('[i18n] 사전에 없음:',k);}catch{}}};
 function T_(ko,vars){
@@ -41,11 +41,54 @@ const I18N_ATTRS=['placeholder','aria-label','title','alt','data-short','data-la
 // (앞뒤 빈칸은 그대로) ③ 화면 속성(placeholder·aria-label·title·alt·data-short·data-label·data-k). 사전에 없는 것은 그대로 둔다.
 // 한국어 화면에서는 아무것도 하지 않는다. index.html 등의 마크업은 한국어 그대로(언어 버튼만 더함)라 기존 마크업 검사도 그대로 통과한다.
 const I18N_SKIP='script,style,noscript,template,textarea,.lang-switch,[lang="ko"],[data-i18n-keep]';
+// 사전 찾기(영어 화면): ① 같은 문장(화면 사전 → 자료 사전) ② 숫자·이름이 들어가는 틀(화면 사전 키의 {0}·{1} 자리; 자리에 든 한국어도
+// 같은 방법으로 찾는다) ③ ' · '·괄호 등으로 나눈 조각마다 ①②. 못 찾은 조각은 한국어 그대로 두고 KO 표시가 붙는다.
+let I18N_PAT=null;const I18N_CACHE=new Map();
+const i18nRx=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function i18nPats(){
+  if(I18N_PAT)return I18N_PAT;
+  I18N_PAT=[];
+  for(const k of Object.keys(I18N_EN)){
+    if(!/\{\d+\}/.test(k))continue;
+    const parts=k.split(/\{(\d+)\}/),st=parts.filter((_,i)=>i%2===0),ids=parts.filter((_,i)=>i%2);
+    const ko=st.join('').replace(/[^ㄱ-ㆎ가-힣]/g,'').length;if(!ko)continue;
+    I18N_PAT.push({k,ids,ko,len:st.join('').length,anchor:st.reduce((a,b)=>b.length>a.length?b:a,''),re:new RegExp('^'+st.map(i18nRx).join('([\\s\\S]*?)')+'$')});
+  }
+  I18N_PAT.sort((a,b)=>b.len-a.len||b.ko-a.ko);return I18N_PAT;
+}
+const I18N_SEPS=[/( · | \/ | \| |; |, |: | \+ | = | → | — | – | - |\. )/,/([()（）［］\[\]]|·|：)/];
+function i18nTr(k,d=0){
+  if(Object.hasOwn(I18N_EN,k))return I18N_EN[k];
+  if(Object.hasOwn(I18N_DATA,k))return I18N_DATA[k];
+  if(!I18N_HANGUL.test(k)||d>4)return null;
+  const c=I18N_CACHE.get(k);if(c!==undefined)return c;
+  let r=null,part=null;
+  for(const p of i18nPats()){
+    if(p.anchor&&!k.includes(p.anchor))continue;
+    const m=p.re.exec(k);if(!m)continue;
+    const v={};let ok=true;
+    p.ids.forEach((id,i)=>{let x=m[i+1];if(I18N_HANGUL.test(x)){const w=x.match(/^(\s*)[\s\S]*?(\s*)$/),y=i18nTr(i18nKey(x),d+1);if(y==null)ok=false;else x=w[1]+y+w[2];}if(!Object.hasOwn(v,id))v[id]=x;});
+    if(ok){r=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');break;}
+    if(part==null&&p.ko>=2)part=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');
+  }
+  if(r==null)r=i18nSeg(k,d)??part;
+  I18N_CACHE.set(k,r);return r;
+}
+// 조각으로 나눠 찾기: 하나라도 옮기면 옮긴 조각만 바꾼 글자를, 하나도 못 옮기면 null
+function i18nSeg(k,d){
+  for(const sep of I18N_SEPS){
+    const bits=k.split(sep);if(bits.length<2)continue;
+    let hit=false;
+    const out=bits.map((b,i)=>{if(i%2||!I18N_HANGUL.test(b))return b;const m=b.match(/^(\s*)([\s\S]*?)(\s*)$/),y=i18nTr(m[2],d+1);if(y==null)return b;hit=true;return m[1]+y+m[3];});
+    if(hit)return out.join('');
+  }
+  return null;
+}
 function i18nText(n){
   const v=n.nodeValue;if(!I18N_HANGUL.test(v))return;
-  const k=i18nKey(v);if(Object.hasOwn(I18N_EN,k)){const m=v.match(/^(\s*)[\s\S]*?(\s*)$/);n.nodeValue=m[1]+I18N_EN[k]+m[2];}
+  const e=i18nTr(i18nKey(v));if(e!=null){const m=v.match(/^(\s*)[\s\S]*?(\s*)$/);n.nodeValue=m[1]+e+m[2];}
 }
-function i18nAttr(el,a){const v=el.getAttribute(a);if(v&&I18N_HANGUL.test(v)){const k=i18nKey(v);if(Object.hasOwn(I18N_EN,k))el.setAttribute(a,I18N_EN[k]);}}
+function i18nAttr(el,a){const v=el.getAttribute(a);if(v&&I18N_HANGUL.test(v)){const e=i18nTr(i18nKey(v));if(e!=null)el.setAttribute(a,e);}}
 function i18nEl(el){
   for(const a of I18N_ATTRS)if(el.hasAttribute(a))i18nAttr(el,a);
   let direct=false,kids=false;
@@ -63,7 +106,7 @@ function applyStaticI18n(root){
   walk(root);
 }
 // 한글이 남은 자료 문장인지(영어 화면의 KO 표시용)
-const i18nKo=s=>LANG==='en'&&typeof s==='string'&&I18N_HANGUL.test(s)&&TX_(s)===s;
+const i18nKo=s=>LANG==='en'&&typeof s==='string'&&I18N_HANGUL.test(s)&&i18nTr(i18nKey(s))==null;
 // 영어 화면에서 사전에 없어 한국어로 남은 글자 옆에 작은 KO 표시를 붙인다(지어서 채우지 않는다). 언어 버튼, lang="ko"로 표시한
 // 원어 그대로의 출처 제목, 입력칸·선택지·SVG 글자에는 붙이지 않는다.
 const I18N_KO_SKIP='script,style,noscript,template,textarea,option,select,svg,title,.lang-switch,[lang="ko"],[data-i18n-keep],.i18n-ko';
@@ -117,6 +160,6 @@ const I18N_DATA_READY=(()=>{
   // 파싱이 끝나 문서가 interactive가 되면(defer 스크립트 app.js·expedition.js보다 먼저) 정적 글자를 바꾼다.
   if(document.readyState==='loading')document.addEventListener('readystatechange',ready,{once:true});else ready();
   if(LANG!=='en')return Promise.resolve();
-  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=5a6fd6138f"><\/script>');
-  return fetch('i18n-data-en.json?v=791630c388').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text)Object.assign(I18N_DATA,d.by_text);}).catch(()=>{});
+  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=0fa5651dc6"><\/script>');
+  return fetch('i18n-data-en.json?v=791630c388').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text){Object.assign(I18N_DATA,d.by_text);I18N_CACHE.clear();}}).catch(()=>{});
 })();
