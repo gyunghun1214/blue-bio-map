@@ -1607,6 +1607,9 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sc-check::after{content:"";position:absolute;inset:-8px}
   :is(.lang-switch button,.status-chip){position:relative}
   :is(.lang-switch button,.status-chip)::after{content:"";position:absolute;inset:-8px -3px}
+  /* 시작 화면(지구본) 카드의 '지도에서 살펴보기 ↗'는 높이 20px: 보이는 크기는 그대로, 누르는 범위만 위아래 12px 넓힌다 */
+  #site-gate .gate-card button{position:relative}
+  #site-gate .gate-card button::after{content:"";position:absolute;inset:-12px -4px}
   /* 2026-10-25 종 상세의 '관찰 기록 보러가기 ↗'·'정밀 좌표 이용 신청': 아이콘 크기가 넓은 화면(1180px 이상)에만 있어 휴대폰에서는
      아이콘이 단추 높이만큼(약 38px) 커지고 글자가 두세 줄로 접혔다. 아이콘을 글자 크기에 맞추고, 단추가 낮아져도 손가락 크기(44px)는 지킨다. */
   #explore .act-ico{flex:none;width:18px;height:18px;margin-right:6px}
