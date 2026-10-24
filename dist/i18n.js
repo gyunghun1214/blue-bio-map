@@ -36,7 +36,7 @@ function TX_(s){
   const k=i18nKey(s);
   return Object.hasOwn(I18N_DATA,k)?I18N_DATA[k]:Object.hasOwn(I18N_EN,k)?I18N_EN[k]:s;
 }
-const I18N_ATTRS=['placeholder','aria-label','title','alt','data-short','data-label','data-k'];
+const I18N_ATTRS=['placeholder','aria-label','title','alt','data-short','data-label','data-k','data-mt-more'];
 // 정적 글자 바꾸기(표시 없이 사전으로): root 아래 요소마다 ① 링크·강조가 섞인 문장이면 innerHTML 전체를 키로 ② 아니면 바로 아래 글자 마디마다
 // (앞뒤 빈칸은 그대로) ③ 화면 속성(placeholder·aria-label·title·alt·data-short·data-label·data-k). 사전에 없는 것은 그대로 둔다.
 // 한국어 화면에서는 아무것도 하지 않는다. index.html 등의 마크업은 한국어 그대로(언어 버튼만 더함)라 기존 마크업 검사도 그대로 통과한다.
@@ -44,7 +44,6 @@ const I18N_SKIP='script,style,noscript,template,textarea,.lang-switch,[lang="ko"
 // 사전 찾기(영어 화면): ① 같은 문장(화면 사전 → 자료 사전) ② 숫자·이름이 들어가는 틀(화면 사전 키의 {0}·{1} 자리; 자리에 든 한국어도
 // 같은 방법으로 찾는다) ③ ' · '·괄호 등으로 나눈 조각마다 ①②. 못 찾은 조각은 한국어 그대로 두고 KO 표시가 붙는다.
 let I18N_PAT=null;const I18N_CACHE=new Map();
-const i18nRx=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function i18nPats(){
   if(I18N_PAT)return I18N_PAT;
   I18N_PAT=[];
@@ -52,30 +51,64 @@ function i18nPats(){
     if(!/\{\d+\}/.test(k))continue;
     const parts=k.split(/\{(\d+)\}/),st=parts.filter((_,i)=>i%2===0),ids=parts.filter((_,i)=>i%2);
     const ko=st.join('').replace(/[^ㄱ-ㆎ가-힣]/g,'').length;if(!ko)continue;
-    I18N_PAT.push({k,ids,ko,len:st.join('').length,anchor:st.reduce((a,b)=>b.length>a.length?b:a,''),re:new RegExp('^'+st.map(i18nRx).join('([\\s\\S]*?)')+'$')});
+    I18N_PAT.push({k,ids,st,ko,len:st.join('').length,anchor:st.reduce((a,b)=>b.length>a.length?b:a,'')});
   }
   I18N_PAT.sort((a,b)=>b.len-a.len||b.ko-a.ko);return I18N_PAT;
 }
 const I18N_SEPS=[/( · | \/ | \| |; |, |: | \+ | = | → | — | – | - |\. )/,/(\s*(?<![\w.])[-+−]?\d[\d,.:~–/-]*(?:%|°|‰)?(?![\w])\s*)/,/([()（）［］\[\]]|·|：)/];
+// 틀 맞추기: 자리마다 다음 고정 글자가 나오는 곳을 앞에서부터 차례로 시험한다(한국어가 든 자리는 다 옮겨져야 한다). 붙은 자리({3}{4})는 앞 자리를 비운다
+function i18nHole(x,d){if(!I18N_HANGUL.test(x))return x;const w=x.match(/^(\s*)[\s\S]*?(\s*)$/),y=i18nTr(i18nKey(x),d+1);return y==null||I18N_HANGUL.test(y)?null:w[1]+y+w[2];}
+function i18nMatch(k,st,d){
+  if(!k.startsWith(st[0]))return null;
+  const n=st.length-1,out=[];let tries=0;
+  const go=(i,pos)=>{
+    if(i===n)return pos===k.length;
+    const L=st[i+1],last=i===n-1;
+    if(last&&(!k.endsWith(L)||k.length-L.length<pos))return false;
+    for(let j=last?k.length-L.length:L?k.indexOf(L,pos):pos;j>=pos&&tries++<64;j=last||!L?-1:k.indexOf(L,j+1)){
+      const x=i18nHole(k.slice(pos,j),d);if(x==null)continue;
+      out[i]=x;if(go(i+1,j+L.length))return true;
+    }
+    return false;
+  };
+  return go(0,st[0].length)?out:null;
+}
 function i18nTr(k,d=0){
   if(Object.hasOwn(I18N_EN,k))return I18N_EN[k];
   if(Object.hasOwn(I18N_DATA,k))return I18N_DATA[k];
-  if(!I18N_HANGUL.test(k)||d>4)return null;
+  if(!I18N_HANGUL.test(k)||d>6)return null;
   const c=I18N_CACHE.get(k);if(c!==undefined)return c;
   let r=null;
   for(const p of i18nPats()){
     if(p.anchor&&!k.includes(p.anchor))continue;
-    const m=p.re.exec(k);if(!m)continue;
-    const v={};let ok=true;
-    p.ids.forEach((id,i)=>{let x=m[i+1];if(I18N_HANGUL.test(x)){const w=x.match(/^(\s*)[\s\S]*?(\s*)$/),y=i18nTr(i18nKey(x),d+1);if(y==null||I18N_HANGUL.test(y))ok=false;else x=w[1]+y+w[2];}if(!Object.hasOwn(v,id))v[id]=x;});
-    if(ok){r=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');break;}
+    const m=i18nMatch(k,p.st,d);if(!m)continue;
+    const v={};p.ids.forEach((id,i)=>{if(!Object.hasOwn(v,id))v[id]=m[i];});
+    r=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');break;
   }
+  if(r==null){const e=I18N_EN[k+'.']??I18N_DATA[k+'.'];if(typeof e==='string'&&!Object.hasOwn(Object.prototype,k+'.'))r=e.replace(/\.$/,'');}
+  if(r==null){const m=k.match(/^([·:;,]\s*)?([\s\S]*?)(\s*[·:;,])?$/);if(m[1]||m[3]){const y=i18nTr(m[2],d+1);if(y!=null&&!I18N_HANGUL.test(y))r=(m[1]||'')+y+(m[3]||'');}}
   if(r==null)r=i18nSeg(k,d);
   I18N_CACHE.set(k,r);return r;
 }
 // 조각으로 나눠 찾기: ' · '·쉼표 같은 목록 구분이면 옮긴 조각만 바꾸고(나머지는 한국어 그대로 → KO 표시), 숫자 앞뒤나 '·'·괄호로
 // 더 잘게 나눌 때는 조각이 모두 옮겨질 때만 쓴다(낱말 몇 개만 영어가 되는 것을 막는다). 하나도 못 옮기면 null
+// 문장 이어 찾기: 여러 문장이 한 글자 마디로 이어진 경우(코드에서 문장을 + 로 이은 것) 앞 문장부터 가장 길게 사전에 맞는 묶음을 찾는다
+const I18N_SENT=/(?<=[.!?。](?:['’”)])?)(\s+)(?=\S)/;
+function i18nSents(k,d){
+  const bits=k.split(I18N_SENT);if(bits.length<3||bits.length>41)return null;
+  const ss=bits.filter((_,i)=>i%2===0),sp=bits.filter((_,i)=>i%2);
+  let out='',hit=false;
+  for(let i=0;i<ss.length;){
+    let j=Math.min(ss.length,i+6),y=null;
+    for(;j>i+1;j--){const t=ss.slice(i,j).map((x,n)=>x+(n<j-i-1?sp[i+n]:'')).join('');y=i18nTr(i18nKey(t),d+1);if(y!=null&&!I18N_HANGUL.test(y))break;y=null;}
+    if(y==null){j=i+1;y=I18N_HANGUL.test(ss[i])?i18nTr(ss[i],d+1):null;}
+    if(y!=null)hit=true;
+    out+=(y??ss[i])+(j<ss.length?sp[j-1]:'');i=j;
+  }
+  return hit?out:null;
+}
 function i18nSeg(k,d){
+  const r=i18nSents(k,d);if(r!=null)return r;
   for(const [j,sep] of I18N_SEPS.entries()){
     const bits=k.split(sep);if(bits.length<2)continue;
     let hit=false,miss=false;
@@ -160,6 +193,6 @@ const I18N_DATA_READY=(()=>{
   // 파싱이 끝나 문서가 interactive가 되면(defer 스크립트 app.js·expedition.js보다 먼저) 정적 글자를 바꾼다.
   if(document.readyState==='loading')document.addEventListener('readystatechange',ready,{once:true});else ready();
   if(LANG!=='en')return Promise.resolve();
-  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=94a4a09f59"><\/script>');
-  return fetch('i18n-data-en.json?v=791630c388').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text){Object.assign(I18N_DATA,d.by_text);I18N_CACHE.clear();}}).catch(()=>{});
+  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=1c46b96c71"><\/script>');
+  return fetch('i18n-data-en.json?v=a116f993e6').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text){Object.assign(I18N_DATA,d.by_text);I18N_CACHE.clear();}}).catch(()=>{});
 })();

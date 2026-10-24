@@ -2064,7 +2064,8 @@ referenceCombination(s)};
 // LME names from the cell files, shown in Korean. Other values ('해역명 미확인', a bare LME number) pass through; the CSV
 // keeps the source names. Kept above setView: test_map_boundary.mjs loads only the code before it with the popup code.
 const SEA_KO={'Yellow Sea':'황해','East China Sea':'동중국해','Sea of Japan':'동해','Kuroshio Current':'쿠로시오 해류'};
-const seaName=x=>LANG==='en'?x:SEA_KO[x]||x; // 영어 화면: 자료의 해역(LME) 영어 이름 그대로
+const SEA_EN={'Sea of Japan':'East Sea'};
+const seaName=x=>LANG==='en'?SEA_EN[x]||x:SEA_KO[x]||x; // 영어 화면: 자료의 해역(LME) 영어 이름(동해는 East Sea)
 function setView(view,toTop=true) {
   if (!['explore','compare','method'].includes(view)) throw new Error('지원하지 않는 화면입니다.');
   const changed=view!==currentView;
