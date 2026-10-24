@@ -1541,11 +1541,23 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sheet-summary .card-scores i small{color:#A9BBC6}
   #explore .sheet-summary .ss-name{font-size:17px}
   #explore .sheet-summary .type-chip{padding:2px 9px 2px 7px;border-radius:99px;background:rgba(255,255,255,.07)}
-  /* 2026-10-25 지도 칸(셀) 팝업: 휴대폰 지도(화면 55%)에서는 팝업(최대 480px)이 위의 모드·기간·배경 버튼과 아래 범례·확대 버튼에
+  /* 2026-10-25 탐색 지도 첫 화면: 지도(55%)·선택 종 요약·검색·분류·칩이 화면을 채워 종 카드 줄이 탭바 아래에 숨어 있었다
+     (360px는 0px, 390px는 19px만 보임). 처음 온 사람이 '종을 골라 본다'는 것을 알 수 있게, 검색과 분류(전체 ▾)를 한 줄에 두고
+     지도를 화면의 50%로 줄여 카드 줄 윗부분(이름·학명·건수)이 첫 화면에 걸리게 한다. 지도·카드·문구는 그대로. */
+  #explore .map-stage{height:50vh;height:50svh}
+  #explore .species-pane{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px;align-items:center}
+  #explore .species-pane>*{grid-column:1/-1;min-width:0}
+  #explore .species-pane>.search{grid-column:1}
+  #explore #filter-fold{display:contents}
+  #explore .species-filters{grid-column:2;display:block;margin:0}
+  #explore .species-filters select{width:auto;max-width:42vw;height:42px;padding-right:30px;font-size:14px}
+  #explore #use-chips{grid-column:1/-1;margin-top:8px}
+  html.lang-en #explore .species-filters select{max-width:34vw}
+  /* 2026-10-25 지도 칸(셀) 팝업: 휴대폰 지도(화면 50~55%)에서는 팝업(최대 480px)이 위의 모드·기간·배경 버튼과 아래 범례·확대 버튼에
      가려 제목·숫자·닫기(×)가 보이지 않았고 아래쪽은 시트에 잘렸다. 팝업이 열린 동안에만 지도 위 버튼을 숨기고(닫으면 그대로),
      팝업은 지도 칸 안에 들어오는 높이에서 스크롤한다. 닫기 단추는 손가락 크기(40px). */
   #explore .map-stage:has(.leaflet-popup) :is(.map-ui,.leaflet-control-zoom,.leaflet-control-attribution){visibility:hidden}
-  #explore .leaflet-popup-content{max-width:calc(100vw - 78px);max-height:calc(55svh - 110px);margin:13px 40px 13px 16px;overscroll-behavior:contain}
+  #explore .leaflet-popup-content{max-width:calc(100vw - 78px);max-height:calc(50svh - 110px);margin:13px 40px 13px 16px;overscroll-behavior:contain}
   #explore .leaflet-container a.leaflet-popup-close-button{width:40px;height:40px;font-size:24px;line-height:40px}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
