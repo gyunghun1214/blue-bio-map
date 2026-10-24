@@ -1541,6 +1541,12 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sheet-summary .card-scores i small{color:#A9BBC6}
   #explore .sheet-summary .ss-name{font-size:17px}
   #explore .sheet-summary .type-chip{padding:2px 9px 2px 7px;border-radius:99px;background:rgba(255,255,255,.07)}
+  /* 2026-10-25 지도 칸(셀) 팝업: 휴대폰 지도(화면 55%)에서는 팝업(최대 480px)이 위의 모드·기간·배경 버튼과 아래 범례·확대 버튼에
+     가려 제목·숫자·닫기(×)가 보이지 않았고 아래쪽은 시트에 잘렸다. 팝업이 열린 동안에만 지도 위 버튼을 숨기고(닫으면 그대로),
+     팝업은 지도 칸 안에 들어오는 높이에서 스크롤한다. 닫기 단추는 손가락 크기(40px). */
+  #explore .map-stage:has(.leaflet-popup) :is(.map-ui,.leaflet-control-zoom,.leaflet-control-attribution){visibility:hidden}
+  #explore .leaflet-popup-content{max-width:calc(100vw - 78px);max-height:calc(55svh - 110px);margin:13px 40px 13px 16px;overscroll-behavior:contain}
+  #explore .leaflet-container a.leaflet-popup-close-button{width:40px;height:40px;font-size:24px;line-height:40px}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}

@@ -3573,7 +3573,8 @@ function renderMap() {
 
 function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43,136]],{paddingTopLeft:[8+i.left,8],paddingBottomRight:[8+i.right,8]});}
 // Evidence popups pan into the part of the map the floating panels leave free (read by Leaflet each time a popup opens).
-function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,10);}
+// 2026-10-25 휴대폰: 지도 아래 14px는 종 시트가 덮으므로(theme.css margin-top:-14px) 팝업을 그보다 위에 둔다. 넓은 화면은 그대로 10px.
+function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,phoneSheet()?24:10);}
 
 // Background maps: satellite (NASA GIBS Blue Marble with shaded relief and bathymetry, the default) and depth (GEBCO WMS).
 // 2026-10-11 design concept: the relief and the shelf/deep-sea shading of that Blue Marble read through the navy tint (theme.css).
