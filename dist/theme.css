@@ -1601,6 +1601,14 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
      아이콘이 단추 높이만큼(약 38px) 커지고 글자가 두세 줄로 접혔다. 아이콘을 글자 크기에 맞추고, 단추가 낮아져도 손가락 크기(44px)는 지킨다. */
   #explore .act-ico{flex:none;width:18px;height:18px;margin-right:6px}
   #explore .detail-act{min-height:44px}
+  /* 2026-10-25 머리글 상태 칩: 칩이 overflow:hidden이라 칸보다 긴 글자가 글자 중간에서 잘렸고(영어 'Research prototy', 오프라인 시연
+     '오프라인 시연 · 연구 프', 자료 연결이 안 돼 '저장 사본' 칩이 함께 뜨면 '연구 프로'·'⚠ 저장 사본 · 20'), 위에 넓힌 누르는 범위(::after)도
+     칩 밖은 잘려 눌리지 않았다. 칩은 잘라 내지 않고 글자만 '…'로 줄이며 ▾·⚠는 남긴다. 칩 묶음은 머리글의 55%까지는 줄지 않고
+     (로고 글자가 먼저 '…'로 줄어든다), 좌우 여백 10→8px로 한국어 기본 상태('연구 프로토타입 ▾')는 360·390·430px 모두 다 보인다. */
+  .status-chips{flex-shrink:0;max-width:55%}
+  .status-chip{min-width:0;overflow:visible;padding-left:8px;padding-right:8px}
+  .status-chip>[aria-hidden]{flex:none}
+  :is(#notice-chip-text,#alert-chip-text){min-width:0;overflow:hidden;text-overflow:ellipsis}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}
