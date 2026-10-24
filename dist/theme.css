@@ -1559,6 +1559,10 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .map-stage:has(.leaflet-popup) :is(.map-ui,.leaflet-control-zoom,.leaflet-control-attribution){visibility:hidden}
   #explore .leaflet-popup-content{max-width:calc(100vw - 78px);max-height:calc(50svh - 110px);margin:13px 40px 13px 16px;overscroll-behavior:contain}
   #explore .leaflet-container a.leaflet-popup-close-button{width:40px;height:40px;font-size:24px;line-height:40px}
+  /* 팝업 안 종 수 칸 세 개(확인 종 · 활용 지표 높은 종 · 보전 지표 높은 종)는 다섯 칸 격자(style.css)라 위 폭 제한 뒤 칸이 45px 남짓으로
+     좁아져 '활용 지/표 높은/종'처럼 낱말 중간에서 줄이 바뀌었다. 팝업에서는 세 칸으로 나누고 낱말 단위로 줄을 바꾼다. */
+  #explore .leaflet-popup-content .cell-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #explore .leaflet-popup-content .cell-summary span{word-break:keep-all}
   /* 2026-10-25 종 상세 시트: 종 상세가 긴 페이지 맨 아래(카드 줄에서 약 800px 아래, 길이 1,300px)에 붙어 있어 한참 내려가야 했다.
      선택 종 요약 전체를 '근거 자세히 보기' 단추로 두고(app.js sheetSummary, 글자는 시트 손잡이 줄 오른쪽 빈자리에), 누르면 근거 서랍(#ev-drawer)이 화면 전체를 덮는
      시트로 열린다: 위에 종 이름과 ✕, 안에서 스크롤하는 상세(맨 위에 두 축 카드: BBVI·MFPI·MBPI, MCUI), 아래에 '비교와 지표에서 보기'·
