@@ -216,6 +216,10 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
   :where(.x-card,.x-detail) small{font-size:max(var(--fs-min),.8333em)}
   /* 2026-10-25 지점 카드 그림 아래 '직접 그린 일러스트'가 84px 칸에서 낱말 중간('일러스/트')에서 줄이 바뀌었다. 낱말 단위로 바꾼다. */
   .x-art span{word-break:keep-all}
+  /* 2026-10-25 첫 화면 안내 네 줄 중 '스크롤 또는 ←→'·'Space'·'Esc'는 마우스·키보드 안내라 휴대폰에서는 쓸 데가 없다. 휴대폰에서는
+     '스와이프 휴대폰에서 이동'(.x-howto-touch)만 남긴다. 영어 360px에서는 이 세 줄만큼 첫 화면 글이 위로 넘쳐 작은 제목이 메뉴 밑에,
+     큰 제목 첫 줄이 '탐험 연출 항로' 밑에 가렸다. */
+  .x-howto li:not(.x-howto-touch){display:none}
 }
 /* 2026-10-24 언어 전환: 한국어 | EN(i18n.js), 메뉴 단추와 같은 알약 모양 */
 .x-lang{display:inline-flex;flex:none;gap:2px;padding:2px;border:1px solid var(--line);border-radius:99px;background:rgba(3,16,32,.55);backdrop-filter:blur(6px)}
