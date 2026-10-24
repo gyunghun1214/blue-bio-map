@@ -152,9 +152,13 @@ assert.equal(ctx.releaseMissing(loaded.species[0]),'새로고침(F5)으로 검�
 // (8) ?v= is the first 10 hex characters of sha256 over the LF-normalized file, so every change busts the
 // one-year immutable cache (dist/_headers) and the value is the same on Windows (CRLF checkout) and Linux.
 const html=read('index.html');
-for(const file of ['app.js','score-format.js','live-data.js','style.css','pilot.css','theme.css','intro.js','intro.css']){
+for(const file of ['app.js','score-format.js','live-data.js','style.css','pilot.css','theme.css','intro.js','intro.css','i18n.js']){
   const expected=crypto.createHash('sha256').update(read(file).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
   const found=[...html.matchAll(new RegExp(`["/]${file.replace('.','\\.')}\\?v=([^"]+)"`,'g'))].map(m=>m[1]);
   assert.deepEqual(found,[expected],`${file}?v= must be ${expected}`);
 }
+// 2026-10-24: the English dictionaries are asked for by i18n.js (only on ?lang=en) with the same ?v= rule
+{const i18n=read('i18n.js');for(const file of ['i18n-en.js','i18n-data-en.json']){
+  const expected=crypto.createHash('sha256').update(read(file).replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
+  assert.deepEqual([...i18n.matchAll(new RegExp(`${file.replace(/[.-]/g,'\\$&')}\\?v=([0-9a-f]+)`,'g'))].map(m=>m[1]),[expected],`i18n.js: ${file}?v= must be ${expected}`);}}
 console.log('PASS: newer data files reload once per file and version, then show 새 버전 있음; ?v= matches file hashes');

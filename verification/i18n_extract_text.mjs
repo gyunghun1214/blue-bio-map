@@ -18,13 +18,17 @@ const q=u=>{const x=new URL(u,URL0);if(LANG!=='ko')x.searchParams.set('lang',LAN
 
 // 페이지 안에서 도는 뽑기: 글자 마디와 화면 속성(aria-label·title·placeholder·alt·data-short·data-label 등)을 문서 순서대로 한 줄씩.
 // 숨은 접이식 안 글자도 뽑는다(번역이 빠진 곳을 찾으려고). 링크는 lang 매개변수를 뺀 href 목록.
-const EXTRACT=`(sel=>{const SKIP=new Set(['SCRIPT','STYLE','NOSCRIPT','TEMPLATE']),A=['aria-label','title','placeholder','alt','data-short','data-label','data-k','data-mt-more','aria-valuetext'],out=[],hrefs=[];
-  const norm=s=>String(s).replace(/\\s+/g,' ').trim();
-  const walk=n=>{if(n.nodeType===3){const t=norm(n.nodeValue);if(t)out.push(t);return;}if(n.nodeType!==1||SKIP.has(n.tagName)||n.classList.contains('lang-switch'))return;
-    for(const a of A)if(n.hasAttribute(a)){const v=norm(n.getAttribute(a));if(v)out.push('@'+a+'='+v);}
+// 영어 화면(--lang en)에서는 한글이 남은 곳도 따로 적는다: 사전에 없어 KO 표시가 붙은 글자(ko), 원어 그대로 둔 lang="ko" 글자(orig),
+// 표시 없이 남은 글자·속성(left)과 그 위치.
+const EXTRACT=`(sel=>{const SKIP=new Set(['SCRIPT','STYLE','NOSCRIPT','TEMPLATE']),A=['aria-label','title','placeholder','alt','data-short','data-label','data-k','data-mt-more','aria-valuetext'],out=[],hrefs=[],hangul=[];
+  const norm=s=>String(s).replace(/\\s+/g,' ').trim(),H=/[\\u3131-\\u318e\\uac00-\\ud7a3]/,en=document.documentElement.lang==='en';
+  const where=el=>{const p=[];for(let e=el;e&&e!==document.body&&p.length<4;e=e.parentElement)p.unshift(e.tagName.toLowerCase()+(e.id?'#'+e.id:e.classList[0]?'.'+e.classList[0]:''));return p.join(' > ');};
+  const kind=(n,el)=>el.closest('[lang="ko"]')?'orig':n&&n.nextSibling?.classList?.contains('i18n-ko')?'ko':'left';
+  const walk=n=>{if(n.nodeType===3){const t=norm(n.nodeValue);if(t){out.push(t);if(en&&H.test(t))hangul.push({kind:kind(n,n.parentElement),text:t.slice(0,160),at:where(n.parentElement)});}return;}if(n.nodeType!==1||SKIP.has(n.tagName)||n.classList.contains('lang-switch'))return;
+    for(const a of A)if(n.hasAttribute(a)){const v=norm(n.getAttribute(a));if(v){out.push('@'+a+'='+v);if(en&&H.test(v))hangul.push({kind:n.closest('[lang="ko"]')?'orig':'left',text:'@'+a+'='+v.slice(0,160),at:where(n)});}}
     if(n.tagName==='A'&&n.hasAttribute('href')){let h=n.getAttribute('href');try{const u=new URL(h,location.href);if(u.origin===location.origin){u.searchParams.delete('lang');h=u.pathname+u.search+u.hash;}}catch{}hrefs.push(h);}
     for(const c of n.childNodes)walk(c);};
-  for(const r of document.querySelectorAll(sel))walk(r);return {lines:out,hrefs};})`;
+  for(const r of document.querySelectorAll(sel))walk(r);return en?{lines:out,hrefs,hangul}:{lines:out,hrefs};})`;
 // 같은 종 상세의 점수(라): 화면 데이터에서 직접 읽는다(글자가 아니라 값).
 const SCORES=`(a=>{const s=data.species.find(x=>x.aphiaID===a);return {scores:Object.fromEntries(['BBVI','MCUI','MBPI','MFPI'].map(k=>[k,(v=>v===null?null:scoreValue(s,k,v))(pilotScore(s,k))])),cells:spatialCells(s).length,records:cellRecords(s)};})`;
 

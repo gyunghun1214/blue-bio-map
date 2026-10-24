@@ -33,6 +33,7 @@ const ctx={AbortSignal,structuredClone,console,URLSearchParams,document:{getElem
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fmt,ctx);
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={axisState,scoreValue,scoreText,matrixType,matrixRule,bbviRawAt,officialNote,officialBbvi,'+
   'mbpiRxOf,weightSensitivityLine,cellCsv,set w(v){bbviWeight=v}};',ctx);

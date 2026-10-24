@@ -211,3 +211,10 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 }
 /* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) */
 @media(max-width:740px){.x-art span{font-size:var(--fs-min)}}
+/* 2026-10-24 언어 전환: 한국어 | EN(i18n.js), 메뉴 단추와 같은 알약 모양 */
+.x-lang{display:inline-flex;flex:none;gap:2px;padding:2px;border:1px solid var(--line);border-radius:99px;background:rgba(3,16,32,.55);backdrop-filter:blur(6px)}
+.x-lang button{padding:5px 10px;border:0;border-radius:99px;background:none;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.x-lang button[aria-pressed="true"]{background:var(--teal);color:#032024}
+.x-lang button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+@media(max-width:740px){.x-lang button{padding:4px 8px;font-size:var(--fs-min)}}
+.i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;line-height:1.35;opacity:.7}

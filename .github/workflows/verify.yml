@@ -70,6 +70,9 @@ jobs:
           node verification/test_intro_ui.mjs
           node verification/test_shared_link.mjs
           node verification/test_screen_text_ko.mjs
+          node --check dist/i18n.js
+          node --check dist/i18n-en.js
+          node verification/test_i18n.mjs
           node --check verification/offline_check.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'

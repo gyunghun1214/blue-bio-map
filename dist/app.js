@@ -24,7 +24,9 @@ const SCREEN_FIX={'미확인(출판사 유료)':'출판사 저작권(구독 논�
   '부록 1(추가)·2(제외)·3(범주 변경) 전부 판독. 미역(Undaria pinnatifida)은 어느 부록에도 없어 2002년 범주(EN)가 바뀌지 않았다. 2026-10-05 포털 재검색에서 뒤이은 식물 목록 결정 없음.':'부록 1(추가)·2(제외)·3(범주 변경) 전부 판독. 미역(Undaria pinnatifida)은 2002년 범주(EN)가 유지된다(2026-10-05 포털 재검색 기준).',
   'Screening and preliminary analysis of antimicrobial peptide genes in Octopus sinensis (Zhou Y et al. 2025)':'Zhou Y et al. (2025), Fish & Shellfish Immunology 163: 110408',
   'Rapid Least Concern: towards automating Red List assessments (Bachman SP, Walker BE, Barrios S, Copeland A, Moat J), doi:10.3897/BDJ.8.e47018':'Bachman SP, Walker BE, Barrios S, Copeland A, Moat J (2020), Biodiversity Data Journal 8: e47018, doi:10.3897/BDJ.8.e47018'};
-const screenKo=t=>Object.hasOwn(screenTextKo,t)?screenTextKo[t]:Object.hasOwn(sourceTermsKo,t)?sourceTermsKo[t]:Object.hasOwn(SCREEN_FIX,t)?SCREEN_FIX[t]:t;
+// 2026-10-24 영어 화면(?lang=en): 영어로 적힌 기록은 원문 그대로, 한국어 기록 문장은 자료 사전(i18n-data-en.json)으로 옮긴다.
+// 사전에 없으면 한국어 화면과 같은 글자를 둔다(SCREEN_FIX).
+const screenKo=t=>LANG==='en'?(x=>x!==t?x:Object.hasOwn(SCREEN_FIX,t)?SCREEN_FIX[t]:t)(TX_(t)):Object.hasOwn(screenTextKo,t)?screenTextKo[t]:Object.hasOwn(sourceTermsKo,t)?sourceTermsKo[t]:Object.hasOwn(SCREEN_FIX,t)?SCREEN_FIX[t]:t;
 const escRaw = text => text.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const esc = value => escRaw(plainWords(screenKo(String(value ?? ''))));
 // 2026-10-21 (site v4 08): plain Korean for the abbreviations a panel shows, beside the first one of each kind in that panel,
@@ -4681,8 +4683,9 @@ async function start(){
   startHash=readHash();
   if(matchMedia('(max-width:740px)').matches)document.querySelector('.map-legend-more').open=false; // phones: keep the map near the first screen
   const seaReq=readData('cell-sea-geometry.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // land mask, read beside effort.json
-  const termsReq=readData('source-terms-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
-  const screenReq=readData('screen-text-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional too
+  // 영어 화면은 한국어 화면 사전 둘을 받지 않는다(영어 기록은 원문 그대로). 대신 자료 사전(i18n.js가 받는 중)을 첫 그림 전에 기다린다.
+  const termsReq=LANG==='en'?null:readData('source-terms-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional: English notes without it
+  const screenReq=LANG==='en'?I18N_DATA_READY:readData('screen-text-ko.json',FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null); // optional too
   const licReq=fetch('license-matrix.json').then(r=>r.ok?r.json():null).catch(()=>null); // optional: the section stays hidden without it; drawn below once the Korean notes are in
   licReq.then(m=>loadProgress('sources',{license:m})); // the entry screen counts its evidence sources (intro.js, 2026-10-17 #1)
   licReq.then(m=>{licenseRows=Array.isArray(m?.rows)?m.rows:null;renderSourceParts();}); // and the method tab says how that count relates to its list

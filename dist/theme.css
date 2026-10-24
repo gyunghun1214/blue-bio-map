@@ -1544,3 +1544,14 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}
+/* 2026-10-24 언어 전환: 머리글·시작 화면의 한국어 | EN(i18n.js). 상태 칩(.status-chip)과 같은 알약 모양으로 작게 둔다. */
+.lang-switch{display:inline-flex;flex:none;align-items:center;gap:2px;padding:2px;border:1px solid rgba(255,255,255,.28);border-radius:99px;background:rgba(255,255,255,.08)}
+.lang-switch button{padding:3px 9px;border:0;border-radius:99px;background:none;color:#cfe0e8;font:inherit;font-size:12px;font-weight:600;line-height:1.4;white-space:nowrap;cursor:pointer}
+.lang-switch button:hover{background:rgba(255,255,255,.12);color:#fff}
+.lang-switch button[aria-pressed=true]{background:rgba(255,255,255,.22);color:#fff}
+.lang-switch button:focus-visible{outline:2px solid #5fe3cf;outline-offset:1px}
+/* 좁은 화면: 지금 언어 버튼은 숨기고 다른 언어 하나만 남겨 머리글 한 줄(로고·상태 칩)을 밀어내지 않는다 */
+@media (max-width:740px){.lang-switch{padding:1px}.lang-switch button{padding:3px 8px}.lang-switch button[aria-pressed=true]{display:none}}
+/* 영어 화면에서 사전에 없어 한국어로 남은 글자 옆의 KO 표시 */
+.i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;font-weight:600;line-height:1.35;opacity:.7}
+@media (max-width:740px){html.lang-en .map-ui-bl.legend-collapsed .legend-toggle::after{content:"Legend"}}

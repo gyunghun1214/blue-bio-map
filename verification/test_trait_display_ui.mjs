@@ -7,6 +7,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'), report=JSON.parse(read('assessments.json')), traits=JSON.parse(read('trait-evidence.json')), tier=JSON.parse(read('aquaculture-tier.json'));
 const ctx={};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(app.split('function setView')[0]+';'+app.slice(app.indexOf('// ---------- 활용 특성으로 찾기'),app.indexOf('function traitChip'))+
   ';globalThis.ue=useEvidence;globalThis.count=useCount;globalThis.only=displayOnly;globalThis.rows=traitDisplayRows;'+
   'globalThis.setData=d=>{data=d};globalThis.setTraits=f=>{traitDisplay=traitDisplayRows(f,[])};globalThis.setTier=f=>{aquacultureTier=aquacultureTierRows(f,[])};'+

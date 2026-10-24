@@ -26,6 +26,7 @@ assert.ok(n>=250,`dictionary holds ${n} notes`);
 
 const app=read('app.js');
 const ctx={};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(app.slice(0,app.indexOf('const colors')).replace(/^const |^let /gm,'var ')+';globalThis.T={escL,esc};',ctx);
 ctx.screenTextKo={'Plain note.':'한국어 설명.'};
 assert.equal(ctx.T.esc('Plain note.'),'한국어 설명.');

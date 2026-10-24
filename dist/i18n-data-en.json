@@ -1,0 +1,5 @@
+{
+ "schema": "i18n-data-en-1",
+ "note": "영어 화면(?lang=en)의 자료 사전: dist 자료 파일(JSON) 안 한국어 문장 → 영어. 키는 정규화한 원문(앞뒤 공백 제거, 연속 공백 하나로), 자료 파일은 바꾸지 않는다. 관리: python scripts/i18n_data_strings.py. 번역은 Claude 초안이며 docs/i18n-review.csv로 팀 검토가 필요하다.",
+ "by_text": {}
+}

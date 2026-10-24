@@ -16,6 +16,7 @@ const app=read('app.js'), html=read('index.html'), report=JSON.parse(read('asses
 const els={};const el=id=>els[id]??={id,innerHTML:'',textContent:'',hidden:false,dataset:{},title:''};
 const badges=['MFPI','MBPI','MCUI'].map(k=>({dataset:{ind:k},hidden:true,textContent:'',title:''}));
 const ctx={document:{getElementById:el,querySelectorAll:sel=>sel.includes('mt-vbadge')?badges:[]}};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.file=scorecardFile;globalThis.render=renderVerifyBadges;globalThis.table=renderPosthocTable;globalThis.setSc=f=>{posthocScorecard=f};globalThis.setData=d=>{data=d};'+
