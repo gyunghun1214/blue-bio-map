@@ -1003,6 +1003,9 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare .cmp-tray.empty .ct-head{position:static;width:auto;height:auto;overflow:visible;clip:auto;grid-area:head;font-size:16px}
   #compare .cmp-tray.empty .ct-toggle{display:none}
   #compare .cmp-tray.empty .ct-list{display:none}
+  /* 2026-10-25 자료를 불러오지 못한 상태에서는 '선택한 생물' 상자(#cmp-tray)가 내용 없이 그려지지 않아, 빈 알약 모양 상자만 탭바 위에
+     떠 있었다(누를 것도 읽을 것도 없음). 내용이 없을 때는 숨긴다. 자료가 있으면(빈 담기 상태 포함) 전과 같다. */
+  #compare .cmp-tray:empty{display:none}
   #compare .ct-count{font-size:16px}
   #compare .ct-go-btn{min-width:0;min-height:40px;padding:0 12px;font-size:13.5px}
   #compare .matrix-types{grid-template-columns:1fr}
