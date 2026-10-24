@@ -1,9 +1,18 @@
 {
  "note": "verification/test_i18n.mjs의 정당한 예외. 항목마다 한국어 원문(정규화한 키)과 이유를 적는다. numbers: 숫자 묶음이 달라도 되는 문장(달 이름 등). terms: 용어 사전의 영어 용어 대신 다른 말을 쓴 문장. hedges: 단서어가 다른 꼴로 남은 문장. hangul_kept: 영어 값에 한글을 그대로 둔 문장(원어 고유 이름).",
  "numbers": [
-  {"ko": "(2004년 8월, 지형·수심)·", "reason": "8월 → August (달 이름)"}
+  {
+   "ko": "(2004년 8월, 지형·수심)·",
+   "reason": "8월 → August (달 이름)"
+  }
  ],
- "terms": [],
+ "terms": [
+  {
+   "ko": "미탐색 후보는 뭐예요",
+   "term": "탐색 후보",
+   "reason": "'미탐색 후보'(Unexplored candidate)의 일부라 '탐색 후보' 용어가 따로 없다"
+  }
+ ],
  "hedges": [],
  "hangul_kept": []
 }

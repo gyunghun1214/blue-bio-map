@@ -32,7 +32,7 @@ const hangulOk=new Set(exceptions.hangul_kept.map(x=>x.ko));
 for(const [ko,en,src] of all){
   if(X.i18nKey(ko)!==ko)fail(`${src} key not normalized: ${ko.slice(0,60)}`);
   if(typeof en!=='string'||!en.trim())fail(`${src} empty value: ${ko.slice(0,60)}`);
-  else if(H.test(en.replace(/<[^>]*>/g,''))&&!hangulOk.has(ko))fail(`${src} Hangul left in the English: ${ko.slice(0,50)} → ${en.slice(0,60)}`);
+  else if(H.test(en.replace(/<[^>]*>/g,'').replace(/\{\w+:[^}]*\}/g,''))&&!hangulOk.has(ko))fail(`${src} Hangul left in the English: ${ko.slice(0,50)} → ${en.slice(0,60)}`);
 }
 
 // 변수 이름: 원문의 {이름}이 영어에도 모두 있고, 영어에 없는 변수를 쓰지 않는다
@@ -40,7 +40,7 @@ const vars=s=>[...String(s).matchAll(/\{(\w+)(?:\|[^|{}]*\|[^|{}]*)?\}/g)].map(m
 for(const [ko,en,src] of all){const a=new Set(vars(ko)),b=new Set(vars(en));if([...a].some(v=>!b.has(v))||[...b].some(v=>!a.has(v)))fail(`${src} placeholders differ: ${ko.slice(0,60)} | ${en.slice(0,60)}`);}
 
 // (다) 숫자 같음: 정수·소수·% 묶음(다중집합)을 비교한다. 천 단위 쉼표를 지우고, 한국어 만·억·천은 숫자로 바꾼다. 태그 안(링크 주소)은 뺀다.
-const text=s=>String(s).replace(/<[^>]*>/g,' ').replace(/\{(\w+)(?:\|[^|{}]*\|[^|{}]*)?\}/g,' ');
+const text=s=>String(s).replace(/<[^>]*>/g,' ').replace(/\{\w+:[^}]*\}/g,' ').replace(/\{(\w+)(?:\|[^|{}]*\|[^|{}]*)?\}/g,' ');
 const nums=s=>{let t=text(s).replace(/(\d),(?=\d{3}\b)/g,'$1');
   t=t.replace(/(\d+(?:\.\d+)?)\s*억(?!제)\s*(?:(\d+(?:\.\d+)?)\s*만(?![큼족]))?/g,(m,a,b)=>String(Number(a)*1e8+(b?Number(b)*1e4:0)))
     .replace(/(\d+(?:\.\d+)?)\s*만(?![큼족])\s*(?:(\d+(?:\.\d+)?)\s*천(?!연))?/g,(m,a,b)=>String(Number(a)*1e4+(b?Number(b)*1e3:0)))
@@ -71,6 +71,21 @@ for(const [ko,en,src] of all){if(!/</.test(ko)&&!/</.test(en))continue;
   const hr=s=>[...s.matchAll(/href="([^"]*)"/g)].map(m=>m[1]).join(' ');if(hr(ko)!==hr(en))fail(`(사) ${src} href differs: ${ko.slice(0,60)}`);
   for(const m of en.matchAll(/<\/?([a-z0-9]+)/gi))if(!TAGS.has(m[1].toLowerCase()))fail(`(사) ${src} tag <${m[1]}> not allowed: ${ko.slice(0,60)}`);
   const ids=s=>[...s.matchAll(/\b(id|class|data-[\w-]+)="([^"]*)"/g)].map(m=>m[0]).sort().join(' ');if(ids(ko)!==ids(en))fail(`(사) ${src} ids/classes differ: ${ko.slice(0,60)}`);}
+
+// (아) 안내 도우미(chatbot.js) 영어: 질문 칩·답에 한글이 없고(자리표시 {..}는 빼고 봄), 영어 질문 예시·바꿔 말한 질문은 제 답으로,
+// 관계없는 말은 '모르겠어요'(null)로 간다. 한국어 화면의 FAQ 검사는 test_chatbot_faq.mjs.
+{const c={location:{search:'?lang=en'},URLSearchParams,console:{debug(){}}};vm.createContext(c);
+  vm.runInContext(read('i18n.js')+'\n'+read('i18n-en.js')+'\n'+read('chatbot.js')+';globalThis.Z={CHATBOT_FAQ,CHATBOT_STARTERS,CHATBOT_TAB_LINKS,chatbotMatch,chatbotFact};',c);
+  const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:st,CHATBOT_TAB_LINKS:tl,chatbotMatch:match,chatbotFact:fact}=c.Z,H=/[ㄱ-ㆎ가-힣]/;
+  for(const f of faq){if(H.test(f.a.replace(/\{[^}]*\}/g,''))||H.test(f.q[0]))fail(`(아) chatbot ${f.id}: Korean left in the English answer or chip`);
+    for(const q of f.q.slice(0,f.q.length/2))if(match(q)?.id!==f.id)fail(`(아) chatbot "${q}" -> ${match(q)?.id}, want ${f.id}`);}
+  for(const [,l] of [...st,...tl])if(H.test(l))fail(`(아) chatbot starter/tab link not English: ${l}`);
+  for(const [q,id] of [['what does the map show','overview'],['what do the colors mean','colors'],['find species for food','chips'],['how to compare species','compare'],
+    ['is mbpi 0 no effect','mbpi'],['2x2 icon','mini-grid'],['are red dots real locations','red-dots'],['can this sea be developed','sea-score'],['why is squid mcui 60','squid'],
+    ['who decided 50','threshold'],['how is bbvi calculated','bbvi'],['what is mcui','mcui'],['move the mascot','move-mascot'],['copy link','map-buttons'],
+    ['is it validated','validation'],['where is the data from','sources']])if(match(q)?.id!==id)fail(`(아) chatbot "${q}" -> ${match(q)?.id}, want ${id}`);
+  for(const q of ["what's the weather today",'recommend a lunch menu','hello','','?!'])if(match(q)!=null)fail(`(아) chatbot "${q}" should be unknown`);
+  for(const k of ['matrix','score','basis','mcuiwhy'])if(H.test(fact(k,'참굴:MCUI')))fail(`(아) chatbot fact ${k} fallback not English`);}
 
 console.log(`i18n dictionaries: ${ui.length} screen + ${dat.length} data entries · numbers ${numChecked} · glossary terms ${termChecked} (${gl.length} rows)`);
 
