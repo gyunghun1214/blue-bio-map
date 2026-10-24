@@ -487,7 +487,11 @@ if(typeof document!=='undefined')(function(){
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
-    place();input.focus();
+    place();
+    // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
+    // 추천 질문 묶음의 첫 단추(없으면 닫기)로 포커스를 옮기고, 입력칸은 사람이 누를 때 키보드가 뜬다. 넓은 화면은 그대로 입력칸.
+    if(matchMedia('(max-width:740px)').matches)([...panel.querySelectorAll('.bbc-chips')].at(-1)?.querySelector('button')||panel.querySelector('.bbc-close'))?.focus();
+    else input.focus();
   }
   function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
 
