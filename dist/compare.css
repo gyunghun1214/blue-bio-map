@@ -1073,4 +1073,18 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare .cmp-spread-note{display:none}
   #compare .cmp-tray{bottom:calc(10px + var(--bbc-bar,0px))}
   #compare{padding-bottom:calc(96px + var(--bbc-bar,0px))}
+  /* 2026-10-25 첫 화면에 매트릭스 전체: 360×780에서 매트릭스 아래 x축(활용가치 BBVI 0–100)이 탭바에 가렸다. 가중치가 공식값이면
+     '공식 가중치 · MBPI 0.50 · MFPI 0.50' 줄은 바로 위 '비교 기준' 줄과 같은 값이라 휴대폰에서만 숨기고(탐색 가중치로 바꾸면
+     '공식값으로' 단추와 함께 그대로 보임, 거르기 안내가 있으면 그 줄도 보임), 위 칸 사이 여백을 줄인다. */
+  #compare #cmp-wline:not(.off){display:none}
+  #compare .cmp-status:not(:has(#cmp-wline.off)):has(#cmp-filter-note:empty){display:none}
+  #compare .cmp-top{row-gap:8px}
+  #compare .cmp-bar{gap:6px}
+  #compare .cmp-weight{padding-top:6px;padding-bottom:6px}
+  #compare .cmp-weight,#compare .cmp-status{margin-top:0}
+  #compare .cmp-main{margin-top:8px}
+  #compare .cmp-matrix-panel{padding-top:10px}
+  /* 매트릭스 점(9–20px)은 손가락으로 누르기 어려웠다: 보이는 점은 그대로 두고 누르는 범위만 44px 원으로 넓힌다
+     (점이 몰린 곳의 흐린 점은 'N종' 단추로 고르므로 넓히지 않는다) */
+  #compare .matrix-point.pilot:not([data-clustered])::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;border-radius:50%;transform:translate(-50%,-50%)}
 }
