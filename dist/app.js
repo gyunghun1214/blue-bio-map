@@ -4020,10 +4020,12 @@ function declutterPointLabels(){
     if(far){const tx=pos==='left'?6:-6;l.style.setProperty('--ll',Math.hypot(tx,dy)+'px');l.style.setProperty('--la',Math.atan2(-dy,tx)+'rad');}};
   // the selected species places its name first, so its label is the one that stays (compare design, 2026-10-12)
   const sel=b=>b.getAttribute('aria-current')==='true';
-  const placeLabels=(pts,extra)=>{
+  // soft: rectangles only the unselected labels avoid (English screen: the quadrant names, since scientific names are long)
+  const placeLabels=(pts,extra,soft=[])=>{
     const taken=[...all.map(b=>b.getBoundingClientRect()),...extra];
-    const blocked=r=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
-      taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top);
+    const blocked=(r,b)=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
+      taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top)||
+      (!sel(b)&&soft.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top));
     // crowded points choose first, so the free space near a cluster goes to the cluster
     const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
     for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
@@ -4032,12 +4034,13 @@ function declutterPointLabels(){
       place(l,['right',0]);
       const h=l.getBoundingClientRect().height+2;
       const fit=[['right',0],['left',0],['above',0],['below',0],['right',-h],['right',h],['left',-h],['left',h],['above',-h],['below',h],['right',-2*h],['right',2*h],['left',-2*h],['left',2*h]]
-        .find(c=>{place(l,c);return !blocked(l.getBoundingClientRect());});
+        .find(c=>{place(l,c);return !blocked(l.getBoundingClientRect(),b);});
       if(fit)taken.push(l.getBoundingClientRect());
       else{place(l,[parseFloat(b.dataset.b)>=50?'left':'right',0]);l.classList.add('hidden-label');}
     }
   };
-  placeLabels(all,[]);
+  const qn=LANG==='en'?[...box.parentElement.querySelectorAll('.quadrant :is(strong,span)')].filter(e=>e.textContent.trim()).map(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();}):[];
+  placeLabels(all,[],qn);
   let groups=[];
   if(!simulated){
     const byId=new Map(all.map(b=>[Number(b.dataset.aphia),b])), loose=id=>{const l=byId.get(id)?.querySelector('.point-label');return !!l&&(l.classList.contains('hidden-label')||l.classList.contains('far'));};
@@ -4054,7 +4057,7 @@ function declutterPointLabels(){
       // the other labels then avoid
       let keep=[];
       const shapes=drawMatrixClusters(groups,byId,frame,boxes=>{const s=all.filter(sel);placeLabels(s,boxes);return keep=s.map(b=>b.querySelector('.point-label')?.getBoundingClientRect()).filter(Boolean);});
-      placeLabels(all.filter(b=>!sel(b)&&!b.hasAttribute('data-clustered')),[...shapes,...keep]);
+      placeLabels(all.filter(b=>!sel(b)&&!b.hasAttribute('data-clustered')),[...shapes,...keep],qn);
     }
   }
   syncClusterDims();
@@ -4160,7 +4163,7 @@ function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
     rect.style.cssText=`left:${L-frame.left}px;top:${T-frame.top}px;width:${R-L}px;height:${B-T}px`;box.prepend(rect);
     const btn=document.createElement('button');  // '· 펼치기' folds away on a phone; the aria-label keeps it
     btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');const warnN=g.ids.filter(id=>byId.get(id)?.classList?.contains('obis-warn')).length;  // ⚠ of a hidden member stays visible on its pill
-    btn.innerHTML=`${warnN?'<i class="mp-obis-pill" aria-hidden="true">⚠</i>':''}${g.ids.length}종<span class="mcb-act"> · 펼치기</span>`;
+    btn.innerHTML=`${warnN?'<i class="mp-obis-pill" aria-hidden="true">⚠</i>':''}${LANG==='en'?esc(T_('{0}종 묶음',{0:g.ids.length})):g.ids.length+'종'}<span class="mcb-act"> ${LANG==='en'?esc(T_('· 펼치기')):'· 펼치기'}</span>`;  // English is written here, not by the page translator, so the button is measured at its English width
     btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','matrix-cluster-pop');
     btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${clusterBbvi(g.ids[0])}–${clusterBbvi(g.ids.at(-1))} · MCUI ${scoreValue(null,'MCUI',g.m)}${warnN?` · OBIS 감소 신호 ${warnN}종(점수 미반영)`:''} · 종 목록 펼치기`);
     btn.addEventListener('click',()=>btn.getAttribute('aria-expanded')==='true'?closeClusterPop(true):openClusterPop(btn));
@@ -4176,7 +4179,13 @@ function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
       .sort((a,c)=>Math.abs(a-cx)-Math.abs(c-cx)).map(x=>({left:x,top:y,right:x+w,bottom:y+h}));
     const up=row(T-h-3), down=row(B+3), up2=row(T-2*h-3-gap), up3=row(T-3*h-3-2*gap);
     const ix=Math.min(Math.max((L+R-w)/2,frame.left+2),frame.right-w-2), iy=(T+B-h)/2;
-    const spot=[up[0],down[0],...up.slice(1),...down.slice(1),...up2,...up3].find(r=>r&&ok(r))||{left:ix,top:iy,right:ix+w,bottom:iy+h};
+    // English screen: the scientific-name labels and longer quadrant names leave less room, so before sitting inside its
+    // box a button also tries the box's ends and beside the earlier buttons, inside, below or above the box, never on an
+    // earlier button (spots clear of the points first)
+    const inBox=LANG==='en'?[ix,L+2,R-w-2,...pills.flatMap(o=>[o.right+gap,o.left-gap-w])].flatMap(x=>[iy,B+3,T-h-3].map(y=>({left:x,top:y,right:x+w,bottom:y+h})))
+      .filter(r=>r.left>=frame.left+2&&r.right<=frame.right-2&&r.top>=frame.top+2&&r.bottom<=frame.bottom-2&&!hit(r,pills))
+      .sort((a,c)=>hit(a,free)-hit(c,free)):[];
+    const spot=[up[0],down[0],...up.slice(1),...down.slice(1),...up2,...up3].find(r=>r&&ok(r))||inBox[0]||{left:ix,top:iy,right:ix+w,bottom:iy+h};
     btn.style.left=spot.left-frame.left+'px';btn.style.top=spot.top-frame.top+'px';
     pills.push(spot);shapes.push({left:L,top:T,right:R,bottom:B},spot);
   });

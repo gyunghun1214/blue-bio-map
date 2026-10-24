@@ -209,3 +209,18 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 - 서지·인용·데이터셋 이름·라이선스 원문과 측정 기록은 번역하지 않고 `lang="en"`(학명 목록은 `lang="la"`, 러시아어·일본어 게재명은 `ru`·`ja`)을 단다. 블록 전체가 원문이면 `enAttr()`/`orig()`, 한국어 줄 안의 영어 원문 구간은 `escL()`이 `<span lang="en">`으로 감싼다. 사전 검사는 `verification/test_screen_text_ko.mjs`(키가 자료에 있는 문구인지, 숫자가 그대로인지).
 - 가장 작은 글자는 CSS 토큰 `--fs-min`(12px). 점수 칸에는 약어 위에 한국어 이름(식량·생리활성·활용·보전)을 쓴다.
 - 확인: dist/를 8765로 띄운 뒤 `node verification/readability_check.mjs <출력폴더>`(Playwright, 375·768·1440px, 30종 상세·비교·방법·바다 탐험). 12px 미만 글자, lang 없는 영어 문장(한글 없이 4단어 이상), 한국어 이름 없는 첫 약어, 가로 넘침이 하나라도 있으면 실패한다. CI는 `uicheck.mjs`의 R-1(390·1440px, 세 탭)로 같은 기준을 본다. 기록: `verification/2026-10-15-readability/`.
+
+## 언어 전환: 한국어 / English (2026-10-24)
+
+상단(바다 탐험은 오른쪽 위)의 **한국어 | EN** 버튼이나 주소 끝 `?lang=en`으로 영어 화면을 연다(`?lang=ko`는 한국어). 해외 기관(OBIS·WoRMS·IUCN 등)이 사이트를 읽을 수 있게 하려는 것이다. 브라우저 언어로 저절로 바뀌지는 않는다.
+
+> **EN을 누른 PC는 다음 방문에도 영어로 열린다**(브라우저에 `lang`을 기억한다). 발표·심사 PC에서는 한국어로 되돌려 둘 것.
+
+- 번역은 화면을 여는 순간 기계 번역을 부르지 않고, 미리 만든 사전 파일만 쓴다. 한국어 화면은 `dist/i18n.js`(약 14KB) 하나만 더 받고 글자는 한 글자도 바뀌지 않는다(`node verification/test_i18n.mjs --browser`가 `verification/i18n-ko-baseline.txt`와 견준다).
+  - 화면 글자: `dist/i18n-en.js`(키 = 한국어 원문, 값 = 영어). `python scripts/i18n_ui_dict.py add <묶음> <파일.json>`으로 더하고 `stamp`로 `?v=`를 맞춘다.
+  - 자료 문장: `dist/i18n-data-en.json`(자료 파일 안의 한국어 문장 → 영어, 점수 파일은 그대로). `python scripts/i18n_data_strings.py`가 관리한다.
+  - 종 이름: 영어 화면은 학명을 쓴다. 영어 일반명은 WoRMS·FAO ASFIS에서 확인한 이름만 `dist/species-names-en.json`에 넣는다(`scripts/build_species_names_en.py`, 지어내지 않음). 2026-10-24에는 클라우드 세션에서 두 곳에 접속하지 못해 비어 있다(`research/i18n/species-names-notes.md`).
+- **자료 문장을 새로 만드는 파이프라인(scripts/build_*.py 등)을 고치면 자료 사전도 갱신한다**: `python scripts/i18n_data_strings.py --todo out.json`으로 빠진 문장을 뽑아 번역하고 `--add tr.json`으로 넣은 뒤 `python scripts/i18n_ui_dict.py stamp`. CI(unit)의 `--check`가 빠진 문장을 잡는다.
+- 사전에 없는 한국어는 영어 화면에서 원문 그대로 두고 옆에 작은 `KO` 표시를 붙인다(게재명·KOSIS 품종·식품 이름 같은 원어 이름 등).
+- 번역은 Claude 초안이며 팀 검토가 필요하다: `python scripts/i18n_data_strings.py --export-review`가 `docs/i18n-review.csv`(ko, en, file, status=draft)를 만든다. 용어는 `docs/i18n-glossary.md`를 따른다.
+- 확인: `node verification/test_i18n.mjs`(사전: 숫자 같음·용어·단서어·링크·안내 도우미 영어), dist를 8765로 띄운 뒤 `--browser`(한국어 화면 그대로 · 영어 화면에 표시 없이 남은 한글 0). CI의 `uicheck.mjs` L-1·L-2가 영어 화면 1440·1280×720·390px을 캡처하고 가로 넘침·12px 미만 글자를 본다.

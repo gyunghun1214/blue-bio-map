@@ -144,7 +144,7 @@ def main(argv):
         return 0
     if a.export_review:
         REVIEW.parent.mkdir(exist_ok=True)
-        with REVIEW.open("w", encoding="utf-8", newline="") as f:
+        with REVIEW.open("w", encoding="utf-8-sig", newline="") as f:  # BOM: Excel이 한글을 바로 읽게
             w = csv.writer(f, lineterminator="\n")
             w.writerow(["ko", "en", "file", "status"])
             for sec, k, v in ui_entries():

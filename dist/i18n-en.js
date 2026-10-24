@@ -87,9 +87,9 @@ Object.assign(I18N_EN,{
 "필터 더 보기":"More filters",
 "분류군":"Group",
 "전체":"All",
-"해조류":"Seaweeds",
+"해조류":"Seaweed",
 "패류":"Shellfish",
-"어류":"Fishes",
+"어류":"Fish",
 "기타 무척추동물":"Other invertebrates",
 "활용 특성으로 찾기 · 채택된 근거에서 자동 생성":"Find by use trait · built automatically from adopted evidence",
 "선택 종 비교하기 →":"Compare selected species →",
@@ -2019,7 +2019,8 @@ Object.assign(I18N_EN,{
 "WoRMS 이용조건 · CC BY 텍스트":"WoRMS terms of use · CC BY text",
 "변경: {0} {1} 접근.":"Changes: {0} Accessed {1}.",
 "데이터셋 원문 ↗":"Original dataset ↗",
-"종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.":"Species counts and periods summarized, accepted names linked, coordinates not published."
+"종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.":"Species counts and periods summarized, accepted names linked, coordinates not published.",
+"{0}종 묶음":"{0} spp."
 });
 // @section 근거와 방법(app.js)
 Object.assign(I18N_EN,{
@@ -2868,5 +2869,6 @@ Object.assign(I18N_EN,{
 "표적":"Target",
 "탐사 지점 자료를 불러오지 못했습니다. <a href=\"index.html\">탐색 지도</a>에서 같은 자료를 볼 수 있습니다.":"Could not load the survey stop data. The same data is on the <a href=\"index.html\">Explore map</a>.",
 "개 · 기록 합계 {0}건":" · {0} {0|record|records} in total",
-"팀 규칙 v{0}":"team rule v{0}"
+"팀 규칙 v{0}":"team rule v{0}",
+"탐사 지점 <b id=\"intro-count\">29</b>곳에 도착할 때마다 그 해역의 공개 관측 기록과 한 종의 식량·생리활성·보전 가치, 그리고 근거 논문을 차례로 확인합니다. <span id=\"intro-off\"></span>":"At each of the <b id=\"intro-count\">29</b> survey stops, we look in turn at the public observation records of that sea area, one species' food·bioactivity·conservation value, and the papers behind it. <span id=\"intro-off\"></span>"
 });
