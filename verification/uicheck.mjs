@@ -1215,6 +1215,8 @@ try{
   ms=await clickMode('occurrence');
   check(`Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, ${noCell?'no fake cell for candidate':'시카메굴 cells drawn once'}`,
     ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===emptyPlaces,JSON.stringify(ms));
+  // 2026-10-24 (teammate report): the all-taxa effort shading also shows under the 22 candidates
+  check('B-1 effort layer stays on for a candidate species in occurrence mode',!ms.effortDisabled&&ms.effort>100,JSON.stringify({effortDisabled:ms.effortDisabled,effort:ms.effort}));
   await pick(836033);await sleep(300);ms=await modeState();
   check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
   await pick(504357);await sleep(300);ms=await modeState();
