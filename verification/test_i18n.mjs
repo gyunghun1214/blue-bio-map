@@ -42,9 +42,9 @@ for(const [ko,en,src] of all){const a=new Set(vars(ko)),b=new Set(vars(en));if([
 // (다) 숫자 같음: 정수·소수·% 묶음(다중집합)을 비교한다. 천 단위 쉼표를 지우고, 한국어 만·억·천은 숫자로 바꾼다. 태그 안(링크 주소)은 뺀다.
 const text=s=>String(s).replace(/<[^>]*>/g,' ').replace(/\{(\w+)(?:\|[^|{}]*\|[^|{}]*)?\}/g,' ');
 const nums=s=>{let t=text(s).replace(/(\d),(?=\d{3}\b)/g,'$1');
-  t=t.replace(/(\d+(?:\.\d+)?)\s*억\s*(?:(\d+(?:\.\d+)?)\s*만)?/g,(m,a,b)=>String(Number(a)*1e8+(b?Number(b)*1e4:0)))
-    .replace(/(\d+(?:\.\d+)?)\s*만\s*(?:(\d+(?:\.\d+)?)\s*천)?/g,(m,a,b)=>String(Number(a)*1e4+(b?Number(b)*1e3:0)))
-    .replace(/(\d+(?:\.\d+)?)\s*천/g,(m,a)=>String(Number(a)*1e3));
+  t=t.replace(/(\d+(?:\.\d+)?)\s*억(?!제)\s*(?:(\d+(?:\.\d+)?)\s*만(?![큼족]))?/g,(m,a,b)=>String(Number(a)*1e8+(b?Number(b)*1e4:0)))
+    .replace(/(\d+(?:\.\d+)?)\s*만(?![큼족])\s*(?:(\d+(?:\.\d+)?)\s*천(?!연))?/g,(m,a,b)=>String(Number(a)*1e4+(b?Number(b)*1e3:0)))
+    .replace(/(\d+(?:\.\d+)?)\s*천(?!연)/g,(m,a)=>String(Number(a)*1e3));
   return (t.match(/\d+(?:\.\d+)?%?/g)||[]).map(n=>n.replace(/^0+(?=\d)/,'')).sort();};
 const numOk=new Map(exceptions.numbers.map(x=>[x.ko,x.reason]));
 let numChecked=0;

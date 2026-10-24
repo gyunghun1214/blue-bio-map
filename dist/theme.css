@@ -1555,3 +1555,12 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* 영어 화면에서 사전에 없어 한국어로 남은 글자 옆의 KO 표시 */
 .i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;font-weight:600;line-height:1.35;opacity:.7}
 @media (max-width:740px){html.lang-en .map-ui-bl.legend-collapsed .legend-toggle::after{content:"Legend"}}
+/* 2026-10-24 언어 버튼 자리: 1180~1439px 머리글은 칸 사이를 조금 좁히고(46→34px) 언어 버튼은 지금 언어를 숨겨 다른 언어 하나만 보인다.
+   영어 화면은 탭 이름이 길어 1600px 아래에서 짧은 이름(data-short, 휴대폰과 같은 방식)을 쓴다. 글자 크기는 줄이지 않는다. */
+@media (min-width:741px) and (max-width:1439px){.lang-switch button[aria-pressed=true]{display:none}}
+@media (min-width:1180px) and (max-width:1439px){.header{gap:34px}}
+@media (min-width:741px) and (max-width:1599px){
+  html.lang-en .tabs button[data-short]{font-size:0}
+  html.lang-en .tabs button[data-short]::before{content:attr(data-short);font-size:13.5px}
+}
+@media (min-width:1180px) and (max-width:1599px){html.lang-en .tabs button[data-short]::before{font-size:16px}}

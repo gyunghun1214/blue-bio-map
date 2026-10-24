@@ -56,26 +56,25 @@ function i18nPats(){
   }
   I18N_PAT.sort((a,b)=>b.len-a.len||b.ko-a.ko);return I18N_PAT;
 }
-const I18N_SEPS=[/( · | \/ | \| |; |, |: | \+ | = | → | — | – | - |\. )/,/([()（）［］\[\]]|·|：)/];
+const I18N_SEPS=[/( · | \/ | \| |; |, |: | \+ | = | → | — | – | - |\. )/,/(\s*(?<![\w.])[-+−]?\d[\d,.:~–/-]*(?:%|°|‰)?(?![\w])\s*)/,/([()（）［］\[\]]|·|：)/];
 function i18nTr(k,d=0){
   if(Object.hasOwn(I18N_EN,k))return I18N_EN[k];
   if(Object.hasOwn(I18N_DATA,k))return I18N_DATA[k];
   if(!I18N_HANGUL.test(k)||d>4)return null;
   const c=I18N_CACHE.get(k);if(c!==undefined)return c;
-  let r=null,part=null;
+  let r=null;
   for(const p of i18nPats()){
     if(p.anchor&&!k.includes(p.anchor))continue;
     const m=p.re.exec(k);if(!m)continue;
     const v={};let ok=true;
     p.ids.forEach((id,i)=>{let x=m[i+1];if(I18N_HANGUL.test(x)){const w=x.match(/^(\s*)[\s\S]*?(\s*)$/),y=i18nTr(i18nKey(x),d+1);if(y==null||I18N_HANGUL.test(y))ok=false;else x=w[1]+y+w[2];}if(!Object.hasOwn(v,id))v[id]=x;});
     if(ok){r=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');break;}
-    if(part==null&&p.ko>=2)part=i18nFill(I18N_EN[p.k],v).replace(/ {2,}/g,' ');
   }
-  if(r==null)r=i18nSeg(k,d)??part;
+  if(r==null)r=i18nSeg(k,d);
   I18N_CACHE.set(k,r);return r;
 }
-// 조각으로 나눠 찾기: ' · '·쉼표 같은 목록 구분이면 옮긴 조각만 바꾸고(나머지는 한국어 그대로 → KO 표시), '·'·괄호로 더 잘게
-//나눌 때는 조각이 모두 옮겨질 때만 쓴다(낱말 몇 개만 영어가 되는 것을 막는다). 하나도 못 옮기면 null
+// 조각으로 나눠 찾기: ' · '·쉼표 같은 목록 구분이면 옮긴 조각만 바꾸고(나머지는 한국어 그대로 → KO 표시), 숫자 앞뒤나 '·'·괄호로
+// 더 잘게 나눌 때는 조각이 모두 옮겨질 때만 쓴다(낱말 몇 개만 영어가 되는 것을 막는다). 하나도 못 옮기면 null
 function i18nSeg(k,d){
   for(const [j,sep] of I18N_SEPS.entries()){
     const bits=k.split(sep);if(bits.length<2)continue;
@@ -161,6 +160,6 @@ const I18N_DATA_READY=(()=>{
   // 파싱이 끝나 문서가 interactive가 되면(defer 스크립트 app.js·expedition.js보다 먼저) 정적 글자를 바꾼다.
   if(document.readyState==='loading')document.addEventListener('readystatechange',ready,{once:true});else ready();
   if(LANG!=='en')return Promise.resolve();
-  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=01273261e9"><\/script>');
+  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=94a4a09f59"><\/script>');
   return fetch('i18n-data-en.json?v=791630c388').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text){Object.assign(I18N_DATA,d.by_text);I18N_CACHE.clear();}}).catch(()=>{});
 })();
