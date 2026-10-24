@@ -3555,8 +3555,9 @@ function renderMap() {
   $('map-source').textContent=s.cells.length?`공개 기준 자료 · 공개 ${s.cells[0].sizeDeg}° 셀`:'공개 기준 자료 · 자료 조회 범위';
   setMapLegend(s);
   if(s.catalog&&!s.cells.length){$('map-symbol-label').textContent=s.review?'공개 기준 통과 기록 없음 · 셀 없음':releaseMissing(s)+' · 셀 없음';$('map-legend-note').textContent='빈 지도는 해당 종이 이 해역에 없다는 뜻이 아닙니다.';}
-  $('effort-toggle').disabled=!!s.catalog;
-  if(s.catalog)effortLayer?.clearLayers();else drawEffort();
+  // The effort shading counts every taxon in OBIS, so it reads the same under all 30 species (2026-10-24: was off for the 22 candidates).
+  $('effort-toggle').disabled=false;
+  drawEffort();
   if($('detail-map-summary'))$('detail-map-summary').innerHTML=mapSummaryHtml(periodView(s));
   if(s.cells.length)return renderCellMap(periodView(s),color);
   // verified-pilot-3.2: the type line replaces the old 'both withheld' wording, which no longer holds once a candidate is typed
