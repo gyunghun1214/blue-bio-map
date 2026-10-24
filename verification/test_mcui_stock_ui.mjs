@@ -11,6 +11,7 @@ const app=read('dist/app.js');
 const report=JSON.parse(read('dist/assessments.json'));
 const ctx={};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+';globalThis.valid=verifiedConservationValid;globalThis.detail=stockDeclineDetail;'+
   'globalThis.recheck=stockDeclineRecheck;globalThis.change=stockChange;globalThis.band=stockBandLabel;globalThis.aux=mcuiAuxParts;globalThis.lead=stockLead;',ctx);

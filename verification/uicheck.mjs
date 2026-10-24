@@ -1758,6 +1758,30 @@ try{
       check(`R-1 ${w}px ${v}: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean`,!r.small.length&&!bad.english.length&&!bad.abbr.length,JSON.stringify(bad));
     }
   }
+  // ---------- L English screen (2026-10-24, ?lang=en): captures at 1440·1280×720·390, no sideways scroll, 12px floor ----------
+  // The words come from dist/i18n-en.js·i18n-data-en.json (Claude draft; team review in docs/i18n-review.csv). R-1's English check
+  // is for the Korean screen, so it is not run here. A phone widens innerWidth to fit wide content, so innerWidth must stay at the set width. EN is remembered per browser, so the stored language goes back to Korean last.
+  for(const [w,h,mobile,tag] of [[1440,900,false,'1440'],[1280,720,false,'1280x720'],[390,844,true,'390']]){
+    await viewport(w,h,mobile);
+    await send('Page.navigate',{url:URL0+'?lang=en#v=explore'});
+    for(let i=0;i<120;i++){await sleep(250);if(await evaluate("typeof data!=='undefined'&&!!data?.species?.length&&document.readyState==='complete'").catch(()=>false))break;}
+    if(await evaluate("document.documentElement.classList.contains('gate-on')")){await gateReady();await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);}
+    for(const v of ['explore','compare','method']){
+      const r=await evaluate(`(async()=>{setView('${v}');await new Promise(r=>setTimeout(r,900));const p=(${collect})(['#${v}',12]);
+        return {lang:document.documentElement.lang,en:document.querySelector('.lang-switch [data-lang="en"]')?.getAttribute('aria-pressed'),doc:document.documentElement.scrollWidth,vw:innerWidth,small:p.small.slice(0,5)};})()`);
+      check(`L-1 ${tag} ${v}: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px`,r.lang==='en'&&r.en==='true'&&r.doc<=r.vw&&r.vw<=w&&!r.small.length,JSON.stringify(r));
+      await shot(`lang-en-${tag}-${v}`,false);
+    }
+  }
+  await viewport(1440,900,false);
+  await send('Page.navigate',{url:URL0+'expedition.html?lang=en'});
+  for(let i=0;i<120;i++){await sleep(250);if(await evaluate("document.readyState==='complete'&&!document.body.classList.contains('is-loading')").catch(()=>false))break;}
+  await sleep(2500);
+  const xr=await evaluate("({lang:document.documentElement.lang,doc:document.documentElement.scrollWidth,vw:innerWidth})");
+  check('L-2 1440 바다 탐험: English screen, no sideways scroll',xr.lang==='en'&&xr.doc<=xr.vw,JSON.stringify(xr));
+  await shot('lang-en-1440-expedition',false);
+  await evaluate("try{localStorage.removeItem('lang')}catch{};1");
+  await send('Page.navigate',{url:URL0});await loaded();
   await viewport(1560,900,false);await evaluate("setView('explore');1");
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}

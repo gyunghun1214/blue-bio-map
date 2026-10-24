@@ -1544,3 +1544,31 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}
+/* 2026-10-24 언어 전환: 머리글·시작 화면의 한국어 | EN(i18n.js). 상태 칩(.status-chip)과 같은 알약 모양으로 작게 둔다. */
+.lang-switch{display:inline-flex;flex:none;align-items:center;gap:2px;padding:2px;border:1px solid rgba(255,255,255,.28);border-radius:99px;background:rgba(255,255,255,.08)}
+.lang-switch button{padding:3px 9px;border:0;border-radius:99px;background:none;color:#cfe0e8;font:inherit;font-size:12px;font-weight:600;line-height:1.4;white-space:nowrap;cursor:pointer}
+.lang-switch button:hover{background:rgba(255,255,255,.12);color:#fff}
+.lang-switch button[aria-pressed=true]{background:rgba(255,255,255,.22);color:#fff}
+.lang-switch button:focus-visible{outline:2px solid #5fe3cf;outline-offset:1px}
+/* 좁은 화면: 지금 언어 버튼은 숨기고 다른 언어 하나만 남겨 머리글 한 줄(로고·상태 칩)을 밀어내지 않는다 */
+@media (max-width:740px){.lang-switch{padding:1px}.lang-switch button{padding:3px 8px}.lang-switch button[aria-pressed=true]{display:none}}
+/* 영어 화면에서 사전에 없어 한국어로 남은 글자 옆의 KO 표시 */
+.i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;font-weight:600;line-height:1.35;opacity:.7}
+@media (max-width:740px){html.lang-en .map-ui-bl.legend-collapsed .legend-toggle::after{content:"Legend"}}
+/* 영어 화면: 학명 이름표가 국명보다 길어, 자리가 없어 숨긴 이름표가 휴대폰 화면 밖으로 폭을 늘리지 않게 한다(가리키거나 초점이 오면 보임) */
+html.lang-en .matrix-point .point-label.hidden-label{display:none}
+html.lang-en .matrix-point:hover .point-label.hidden-label,html.lang-en .matrix-point:focus-visible .point-label.hidden-label{display:block}
+/* 영어 화면: 종 이름 자리에 긴 학명이 오므로, 그림이 없는 종의 분류 아이콘 칸은 아이콘 폭만 쓰고, 그래도 긴 한 단어는 칸 안에서 줄을 바꾼다 */
+html.lang-en #explore .sp-art.sp-art-icon{width:auto;margin-right:0}
+html.lang-en #explore #sp-name{overflow-wrap:anywhere}
+/* 영어 화면 휴대폰: 비교 탭 분류 버튼 다섯 개가 화면 여백 안에 들도록 버튼 안쪽 여백만 좁힌다(글자 크기는 그대로) */
+@media (max-width:740px){html.lang-en #compare .cmp-groups button{padding:0 10px}}
+/* 2026-10-24 언어 버튼 자리: 1180~1439px 머리글은 칸 사이를 조금 좁히고(46→34px) 언어 버튼은 지금 언어를 숨겨 다른 언어 하나만 보인다.
+   영어 화면은 탭 이름이 길어 1600px 아래에서 짧은 이름(data-short, 휴대폰과 같은 방식)을 쓴다. 글자 크기는 줄이지 않는다. */
+@media (min-width:741px) and (max-width:1439px){.lang-switch button[aria-pressed=true]{display:none}}
+@media (min-width:1180px) and (max-width:1439px){.header{gap:34px}}
+@media (min-width:741px) and (max-width:1599px){
+  html.lang-en .tabs button[data-short]{font-size:0}
+  html.lang-en .tabs button[data-short]::before{content:attr(data-short);font-size:13.5px}
+}
+@media (min-width:1180px) and (max-width:1599px){html.lang-en .tabs button[data-short]::before{font-size:16px}}

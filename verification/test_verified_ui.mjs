@@ -12,6 +12,7 @@ const sp=(aphiaID,name,label)=>({aphiaID,name,label,live:true});
 const all=()=>original.species.map(s=>sp(s.aphia_id,s.scientific_name,s.korean_name));
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>report()})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.attach=attachPilotAssessments;

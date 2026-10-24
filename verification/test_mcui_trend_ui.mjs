@@ -10,6 +10,7 @@ const app=read('dist/app.js');
 const report=JSON.parse(read('dist/assessments.json'));
 const ctx={};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(app.split('function setView')[0]+';globalThis.valid=verifiedConservationValid;globalThis.trendDetail=occurrenceTrendDetail;'+
   'globalThis.reasons=surveyReasonText;',ctx);
 ctx.info={method:report.method,sources:report.sources,version:report.method_version};

@@ -8,6 +8,7 @@ const app=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
 const original=JSON.parse(fs.readFileSync(new URL('../dist/assessments.json',import.meta.url),'utf8'));
 const ctx={};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.valid=verifiedBioValid;
   globalThis.trace=verifiedBioTrace;

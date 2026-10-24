@@ -1079,7 +1079,7 @@ void main(){
   // As soon as the screen's markup is all in (the element after it exists), not at DOMContentLoaded: that waits for the
   // deferred app scripts (seconds on a slow network) while the loader already shows, and the piece runs from its paint.
   let begun=false,watch=null;
-  const start=()=>{if(begun)return;begun=true;watch?.disconnect();try{setup();}catch{fail();}};
+  const start=()=>{if(begun)return;begun=true;watch?.disconnect();try{applyStaticI18n(document.getElementById('site-gate'));}catch{}try{setup();}catch{fail();}}; // 영어 화면: 시작 화면 정적 글자부터(i18n.js)
   const parsed=()=>document.readyState!=='loading'||!!document.getElementById('site-gate')?.nextElementSibling;
   if(parsed())start();
   else{watch=new MutationObserver(()=>{if(parsed())start();});watch.observe(document.documentElement,{childList:true,subtree:true});
