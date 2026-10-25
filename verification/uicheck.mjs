@@ -1392,6 +1392,22 @@ try{
     await evaluate("setView('explore');1");
   }
 
+  // ---------- 2026-10-25 휴대폰 글 양 줄이기 (mobile-compact.css · .js, verification/2026-10-25-mobile-compact-text): 넓은 화면은 전과 같다 ----------
+  // Folds are open with no 더 보기 / 접기 button, the map notes sit where they were, and '읽는 법 ⓘ' still opens its small popup (no sheet).
+  {
+    await viewport(1440,900,false);await load();
+    const pc=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const vis=e=>!!e&&e.getClientRects().length>0;
+      const folds=[...document.querySelectorAll('details.mc-more')];
+      const r={folds:folds.length,open:folds.filter(d=>d.open).length,summaries:folds.filter(d=>vis(d.querySelector(':scope>summary'))).length,
+        buttons:[...document.querySelectorAll('.mc-more-btn')].filter(vis).length,shut:document.querySelectorAll('.mc-rest.mc-shut').length,
+        notes:!!document.querySelector('.map-below>.map-notes'),more:!!document.querySelector('#occurrence-legend .map-legend-more'),why:!!document.querySelector('#value-legend .legend-why')};
+      setView('explore');setMapMode('value');await wait(600);document.getElementById('value-info').click();await wait(300);
+      r.popup=!document.getElementById('value-legend').hidden;r.sheet=!document.getElementById('map-guide').hidden;
+      document.getElementById('value-info').click();await wait(200);setMapMode('occurrence');await wait(400);return r})()`);
+    check('Wide 1440px (mobile-compact): every fold open with no 더 보기 button, map notes in place, 읽는 법 ⓘ opens its popup and no sheet',
+      pc.folds>=11&&pc.open===pc.folds&&pc.summaries===0&&pc.buttons===0&&pc.shut===0&&pc.notes&&pc.more&&pc.why&&pc.popup&&!pc.sheet,JSON.stringify(pc));
+  }
+
   // ---------- Mobile 390px first screen and stability ----------
   await viewport(390,844,true);
   await load();
@@ -1498,6 +1514,68 @@ try{
       setCompareMode('matrix');setView('explore');await wait(300);return r})()`);
     check('Mobile 390px data table: one card per species, no cell outside the screen, no sideways scroll in its box or the page',
       dt.rows>0&&dt.box<=1&&dt.outside===0&&dt.doc<=0,JSON.stringify(dt));
+  }
+
+  // ---------- 2026-10-25 휴대폰 글 양 줄이기 (mobile-compact.css · .js, verification/2026-10-25-mobile-compact-text) ----------
+  // (1) 지도 설명 네 덩어리는 지도 아래 흐름에 없고 '읽는 법 ⓘ'(활용 × 보전) · 'ⓘ 범례'(출현 기록)로 여는 시트에서 읽는다. 시트는 대화상자,
+  // 제목 = '지도 읽는 법', Esc · ✕ · 뒤 배경으로 닫히고 포커스는 연 단추로, 닫으면 네 덩어리는 제자리(탐색 지도 글이 열기 전과 같다).
+  // (2) 비교와 지표 · 근거와 방법의 접는 칸은 닫힌 채 시작하고 이름은 '더 보기', 누르면 펼쳐진다.
+  {
+    const keyPress=async(k,code,vk)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk});await sleep(200);};
+    const state=`(()=>{const g=document.getElementById('map-guide'),b=g.querySelector('.mg-body'),q=s=>document.querySelector(s),a=document.activeElement;
+      return {open:!g.hidden,inSheet:['.map-notes','.map-legend-more','.map-info','.legend-why'].filter(s=>b.contains(q(s))),value:b.contains(q('#value-legend')),
+        home:!!q('.map-below>.map-notes')&&!!q('#occurrence-legend .map-legend-more')&&!!q('#value-legend .legend-why'),lock:document.documentElement.classList.contains('mg-lock'),
+        focus:a?.id||(a?.matches?.('.map-legend-more>summary')?'legend-more':a?.tagName),text:document.getElementById('explore').textContent}})()`;
+    await evaluate("setView('explore');setMapMode('occurrence');window.scrollTo(0,0);1");await sleep(500);
+    const t0=(await evaluate(state)).text;
+    const g1=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const vis=e=>!!e&&e.getClientRects().length>0;
+      const flow={notes:vis(document.querySelector('.map-notes')),moreText:vis(document.querySelector('.map-legend-more>span')),info:vis(document.querySelector('.map-info')),why:vis(document.querySelector('.legend-why'))};
+      const t=document.getElementById('legend-toggle');if(t.getAttribute('aria-expanded')!=='true')t.click();await wait(300);
+      const chips=vis(document.getElementById('effort-toggle'))&&vis(document.getElementById('map-symbol-label'));
+      const s=document.querySelector('.map-legend-more>summary');s.click();await wait(500);
+      const g=document.getElementById('map-guide'),p=g.querySelector('.mg-panel').getBoundingClientRect(),c=g.querySelector('.mg-close'),cr=c.getBoundingClientRect(),hit=document.elementFromPoint(cr.left+cr.width/2,cr.top+cr.height/2);
+      return {flow,chips,role:g.getAttribute('role'),modal:g.getAttribute('aria-modal'),title:document.getElementById(g.getAttribute('aria-labelledby'))?.textContent,
+        allShown:['.map-notes','.map-legend-more>span','.map-info li','.legend-why p'].every(q=>vis(document.querySelector('#map-guide '+q))),
+        panel:{bottom:Math.round(p.bottom),h:Math.round(p.height),vh:innerHeight},close:{name:c.getAttribute('aria-label'),w:Math.round(cr.width),hit:hit===c},expanded:s.getAttribute('aria-expanded'),controls:s.getAttribute('aria-controls')}})()`);
+    const o1=await evaluate(state);
+    await keyPress('Escape','Escape',27);await sleep(300);
+    const c1=await evaluate(state);
+    check('Mobile 390px map guide: the four notes are out of the flow under the map; ⓘ 범례 opens the 지도 읽는 법 sheet (dialog, ≤75% high, ✕ ≥44px) with all four shown',
+      !g1.flow.notes&&!g1.flow.moreText&&!g1.flow.info&&!g1.flow.why&&g1.chips&&g1.role==='dialog'&&g1.modal==='true'&&g1.title==='지도 읽는 법'&&g1.allShown&&
+      Math.abs(g1.panel.bottom-g1.panel.vh)<=1&&g1.panel.h<=Math.ceil(g1.panel.vh*.75)+1&&g1.close.name==='닫기'&&g1.close.w>=44&&g1.close.hit&&g1.expanded==='true'&&g1.controls==='map-guide'&&
+      o1.open&&o1.inSheet.length===4&&!o1.value&&o1.lock&&o1.focus==='map-guide-title',JSON.stringify({g1,o1:{...o1,text:o1.text.length}}));
+    check('Mobile 390px map guide: Esc closes it, the notes go back where they were (explore text as before), focus returns to ⓘ 범례',
+      !c1.open&&c1.inSheet.length===0&&c1.home&&!c1.lock&&c1.focus==='legend-more'&&c1.text===t0,JSON.stringify({...c1,text:c1.text.length,t0:t0.length}));
+    await evaluate("setMapMode('value');1");await sleep(800);
+    await evaluate("document.getElementById('value-info').click();1");await sleep(500);
+    const o2=await evaluate(state),v2=await evaluate(`({expanded:document.getElementById('value-info').getAttribute('aria-expanded'),popup:!document.getElementById('value-legend').hidden,grid:[...document.querySelectorAll('#map-guide #value-legend .value-grid [data-key]')].filter(e=>e.getClientRects().length).length})`);
+    // Tab stays inside the sheet
+    for(let i=0;i<8;i++)await keyPress('Tab','Tab',9);
+    const inside=await evaluate("document.getElementById('map-guide').contains(document.activeElement)");
+    await evaluate("document.querySelector('#map-guide .mg-close').click();1");await sleep(300);
+    const c2=await evaluate(state);
+    await evaluate("document.getElementById('value-info').click();1");await sleep(400);
+    await evaluate("document.querySelector('#map-guide .mg-back').click();1");await sleep(300);
+    const c3=await evaluate(state);
+    check('Mobile 390px map guide (활용 × 보전): 읽는 법 ⓘ opens the sheet with the type key, Tab stays inside, ✕ and the backdrop close it with focus back on ⓘ',
+      o2.open&&o2.value&&o2.inSheet.length===4&&v2.expanded==='true'&&v2.grid===4&&inside&&!c2.open&&c2.home&&c2.focus==='value-info'&&!c3.open&&c3.home&&c3.focus==='value-info'&&
+      c3.text===c2.text,JSON.stringify({o2:{...o2,text:0},v2,inside,c2:{...c2,text:0},c3:{...c3,text:0}}));
+    await evaluate("setMapMode('occurrence');1");await sleep(400);
+    // (2) folds
+    const f=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('method');await wait(300);
+      const acc=[...document.querySelectorAll('#method details.mt-acc')],was=acc.map(d=>d.open);acc.forEach(d=>d.open=true);setView('compare');await wait(200);
+      const pop=document.getElementById('cmp-read-pop');pop.hidden=false;await wait(200);
+      const folds=[...document.querySelectorAll('details.mc-more')],sums=folds.map(d=>d.querySelector(':scope>summary'));
+      const r={folds:folds.length,shut:folds.filter(d=>!d.open).length,names:[...new Set(sums.map(x=>x.getAttribute('aria-label')))],empty:sums.every(x=>x.textContent===''),
+        tall:sums.filter(x=>x.getClientRects().length).every(x=>x.getBoundingClientRect().height>=44),label:getComputedStyle(sums[0],'::before').content};
+      sums[0].click();await wait(200);r.opened=folds[0].open;r.label2=getComputedStyle(sums[0],'::before').content;sums[0].click();
+      const b=document.querySelector('.mc-more-btn'),rest=document.getElementById(b.getAttribute('aria-controls'));setView('method');await wait(200);
+      r.btn={name:b.getAttribute('aria-label'),expanded:b.getAttribute('aria-expanded'),restShown:rest.getClientRects().length>0};b.click();await wait(100);
+      r.btn.after=b.getAttribute('aria-expanded');r.btn.restAfter=rest.getClientRects().length>0;b.click();
+      pop.hidden=true;acc.forEach((d,i)=>d.open=was[i]);setView('explore');await wait(200);return r})()`);
+    check('Mobile 390px folds (비교와 지표 · 근거와 방법): all closed at first, named 더 보기 with no text of their own, ≥44px, tap opens (더 보기 → 접기)',
+      f.folds>=11&&f.shut===f.folds&&f.names.length===1&&f.names[0]==='더 보기'&&f.empty&&f.tall&&f.label==='"더 보기"'&&f.opened&&f.label2==='"접기"'&&
+      f.btn.name==='더 보기'&&f.btn.expanded==='false'&&!f.btn.restShown&&f.btn.after==='true'&&f.btn.restAfter,JSON.stringify(f));
   }
 
   // ---------- 멍이 버튼 옮기기 (chatbot.js): drag vs click, remembered and clamped, reset, phone touch ----------
@@ -1711,6 +1789,10 @@ try{
   await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
+  // 2026-10-25 (mobile-compact): on a phone the two contest lines are hidden; their words stay in the page (근거와 방법 keeps the source)
+  const gc=await evaluate(`(()=>{const g=document.getElementById('site-gate'),q=s=>g.querySelector(s);return {task:q('.gate-task').getClientRects().length,connect:q('.gate-connect').getClientRects().length,
+    words:/Ocean 20 Challenge/.test(q('.gate-task').textContent)&&/세계해양포럼/.test(q('.gate-connect').textContent),kicker:getComputedStyle(q('.gate-kicker')).display}})()`);
+  check('G-5e phone 390px: the contest lines (Ocean 20 Challenge · 세계해양포럼) are hidden, their words still in the page',gc.task===0&&gc.connect===0&&gc.words,JSON.stringify(gc));
   await sleep(1200);await shot('gate-mobile',false);
   // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 (four cards since site v4 07) sits in the column after the globe and its card, before the source strip
   const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
