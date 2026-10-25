@@ -11400,18 +11400,6 @@ Black Marble 2016
 (도시 불빛, 육지만) — NASA 제공 영상을 가공한 배경 그림입니다. 지도 도구: Leaflet (BSD-2-Clause). 글꼴:
 Pretendard
 (SIL OFL 1.1).
-만든 방법
-Claude Code(Anthropic)
-사이트 코드, 자료 수집·지표 계산 스크립트, 자동 검사 작성
-Claude(Anthropic)
-기획 정리, 자료 점검, 발표 자료·대본 초안
-ChatGPT(OpenAI)
-화면 디자인 시안
-Codex·Sites(OpenAI)
-초기 시험판 일부 코드와 시험 배포(2026-09, 지금 공개 주소와 별도)
-안내 챗봇
-2026-10-15까지 일부 답에 Cloudflare Workers AI(Google Gemma 모델) 사용, 지금은 고정 답만
-자료 선택, 지표 규칙, 최종 판단은 팀이 했습니다. 서비스 안에는 AI가 없습니다(안내 챗봇은 고정 질문·답).
 방문 수를 셉니다. 쿠키와 개인정보는 모으지 않습니다(
 Cloudflare Web Analytics
 ).

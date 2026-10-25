@@ -2,7 +2,7 @@
 
 휴대폰(740px 이하, 첫 화면은 760px 이하)에서만 설명 글을 지우지 않고 시트·접기로 옮겼다. 문구(한국어 textContent)·PC 화면·데이터는 그대로다.
 
-- 기준 커밋: main `46afd7a` (PR #262 병합).
+- 기준 커밋: main `46afd7a` (PR #262 병합). 작업 중 main에 PR #263(`9eb519c`, '만든 방법' 칸 지우기)이 들어와 병합했다. 충돌은 `index.html` · `expedition.html` · `i18n.js`의 `?v=` 값뿐이라 main 쪽 내용을 받고 `python scripts/i18n_ui_dict.py stamp`으로 다시 계산했다. 병합 뒤 CI 단위 검사 54개 통과, `i18n-ko-baseline.txt`는 다시 뽑아도 같다.
 - 지침: 원본 [`prompt-original.md`](prompt-original.md) (LKH가 보낸 `prompts/mobile-compact-text-claude-code.md`, 저장소에는 `prompts/` 폴더가 없다).
 - 다른 스레드의 `dist/mobile-type.css`(휴대폰 글자 크기)는 이 브랜치를 만들 때 main에 없었다. 들어오면 `mobile-compact.css`가 그 뒤에 오도록 `test_mobile_compact.mjs`가 검사한다.
 
