@@ -295,3 +295,20 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 /* a short landscape screen: the loader's words higher and closer, clear of where the drop lands */
 @media (min-width:761px) and (max-height:560px){.gate-loader-body{top:14%}.gate-motto{margin-top:18px}.gate-step{margin-top:20px}}
 @media (min-width:761px) and (max-height:560px){.gate-why,.gate-callout,.gate-sources{display:none}}
+/* 2026-10-25 English screen (html.lang-en): the English copy runs longer than the Korean, so on a desktop screen the left
+   column grew into the source row (1280×720: the two buttons sat on 'Public data read together') and the source row's
+   second line ran under the 'How it can be used ↓' chip. Here only: a smaller title and tighter gaps keep the column above
+   the row, and the row starts under the chip. Korean screen unchanged; no text under 12px. */
+@media (min-width:761px){
+  html.lang-en .gate-title{font-size:clamp(36px,min(4.8vw,7.6vh),96px)}
+  html.lang-en .gate-kicker{margin-bottom:clamp(8px,1.4vh,18px)}
+  html.lang-en .gate-task{margin-bottom:clamp(8px,1.4vh,16px)}
+  html.lang-en .gate-why{row-gap:clamp(6px,1vh,12px);margin-top:clamp(10px,1.6vh,20px)}
+  html.lang-en .gate-problems{line-height:1.42}
+  html.lang-en .gate-why .gate-lead{line-height:1.45}
+  html.lang-en .gate-connect{line-height:1.45}
+  html.lang-en .gate-actions{margin-top:clamp(12px,2vh,28px)}
+  html.lang-en .gate-foot{padding-top:24px}
+  /* the globe's credit line is longer in English and ran past the right edge (1440): it wraps inside the card's width */
+  html.lang-en .gate-legend .gate-credit{white-space:normal}
+}
