@@ -1097,3 +1097,17 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare .cw-name::after{content:"";position:absolute;inset:-8px -6px}
   #compare #cmp-read-toggle::after{content:"";position:absolute;inset:-5px 0}
 }
+
+/* English matrix (2026-10-25): the longer English names sat on the crowded MCUI 10 row and the 50 tick. On a wide
+   screen the lower two quadrant names move to the top of their quadrants (as on a phone), and the y-axis name sits
+   between the 100 and 75 ticks */
+@media (min-width:741px){
+  html.lang-en #compare .matrix .q3,html.lang-en #compare .matrix .q4{justify-content:flex-start;padding-top:12px;padding-bottom:12px}
+  html.lang-en #compare .matrix .axis-y{top:12.5%;font-size:14px;line-height:1.35}
+  html.lang-en #compare .matrix .q1 span{max-width:14em} /* 'Consider conservation / research first' stays left of the high points */
+  /* the group buttons read '4 spp.' as on a phone (the aria-label still says it opens the list), so they fit beside
+     their box instead of on its points */
+  html.lang-en #compare .mcb-act{display:none}
+  html.lang-en #compare .mt-top{flex-wrap:wrap} /* 'Species N' goes under a long type name (as at 1280) */
+  html.lang-en #compare .cw-ends span{white-space:nowrap}
+}

@@ -1,1 +1,255 @@
-{}
+{
+ "1061762": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Gazami crab",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "127022": {
+  "alt": [
+   "Atlantic chub mackerel",
+   "Chub mackerel",
+   "Spanish mackerel"
+  ],
+  "checked": "2026-10-25",
+  "en": "Pacific chub mackerel",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "145086": {
+  "alt": [
+   "Felt-alga",
+   "Forked felt alga",
+   "Sponge seaweed"
+  ],
+  "checked": "2026-10-25",
+  "en": "Fragile codium",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "145721": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Wakame",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "1666974": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Golden cuttlefish",
+  "kind": "common",
+  "source": "WoRMS (synonym Sepia esculenta)"
+ },
+ "219984": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Japanese anchovy",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "231750": {
+  "alt": [
+   "Japanese carpet shell",
+   "Japanese clam",
+   "Japanese littleneck",
+   "Japanese littleneck clam",
+   "Manilla clam",
+   "Short-necked clam"
+  ],
+  "checked": "2026-10-25",
+  "en": "Manila clam",
+  "kind": "common",
+  "source": "WoRMS"
+ },
+ "234476": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Dark green nori",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "236157": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": null,
+  "kind": "scientific",
+  "source": ""
+ },
+ "241776": {
+  "alt": [
+   "Japanese spiky sea cucumber"
+  ],
+  "checked": "2026-10-25",
+  "en": "Japanese sea cucumber",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "250680": {
+  "alt": [
+   "Korean common sea squirt",
+   "Red oyas"
+  ],
+  "checked": "2026-10-25",
+  "en": "Sea pineapple",
+  "kind": "common",
+  "source": "WoRMS"
+ },
+ "254538": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Pacific cod",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "274849": {
+  "alt": [
+   "Schlegel’s rockfish"
+  ],
+  "checked": "2026-10-25",
+  "en": "Korean rockfish",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "275816": {
+  "alt": [
+   "Bastard halibut",
+   "Summer flounder"
+  ],
+  "checked": "2026-10-25",
+  "en": "Olive flounder",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "276651": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Japanese amberjack",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "281273": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Yellow croaker",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "342067": {
+  "alt": [
+   "Common flying squid"
+  ],
+  "checked": "2026-10-25",
+  "en": "Japanese flying squid",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "371986": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": null,
+  "kind": "scientific",
+  "source": ""
+ },
+ "372119": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": null,
+  "kind": "scientific",
+  "source": ""
+ },
+ "377084": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Japanese kelp",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "393716": {
+  "alt": [
+   "Ezo giant scallop",
+   "Giant Ezo scallop",
+   "Japanese weathervane scallop",
+   "Large weathervane scallop"
+  ],
+  "checked": "2026-10-25",
+  "en": "Yesso scallop",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "397082": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Japanese abalone",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "413600": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Constricted tagelus",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "494853": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": null,
+  "kind": "scientific",
+  "source": ""
+ },
+ "494972": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Fusiform sargassum",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "504357": {
+  "alt": [
+   "Blood clam"
+  ],
+  "checked": "2026-10-25",
+  "en": "Inflated ark",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ },
+ "506159": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Korean mussel",
+  "kind": "common",
+  "source": "WoRMS (synonym Mytilus crassitesta)"
+ },
+ "534443": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": null,
+  "kind": "scientific",
+  "source": ""
+ },
+ "836033": {
+  "alt": [
+   "Giant cupped oyster",
+   "Giant oyster",
+   "Giant pacific oyster",
+   "Immigrant oyster",
+   "Japanese oyster",
+   "Pacific cupped oyster",
+   "Pacific giant oyster",
+   "Portuguese oyster"
+  ],
+  "checked": "2026-10-25",
+  "en": "Pacific oyster",
+  "kind": "common",
+  "source": "WoRMS (synonym Crassostrea gigas)"
+ },
+ "836041": {
+  "alt": [],
+  "checked": "2026-10-25",
+  "en": "Kumamoto oyster",
+  "kind": "common",
+  "source": "FAO ASFIS"
+ }
+}
