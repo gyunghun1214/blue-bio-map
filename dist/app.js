@@ -3626,7 +3626,7 @@ function initMap(geography){
   prepareLandMask(geography);
   const still=!!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches; // no zoom or fade animation then
   map=L.map('map',{zoomControl:false,minZoom:3,maxZoom:8,scrollWheelZoom:false,maxBounds:[[20,105],[53,150]],maxBoundsViscosity:.7,zoomAnimation:!still,fadeAnimation:!still,markerZoomAnimation:!still});L.control.zoom({position:'bottomright'}).addTo(map);fitMap();
-  initWheelZoom();
+  initWheelZoom();addMapFullControl();
   syncPopupPad();map.on('resize',syncPopupPad);
   initBasemaps(geography);
   const labels=[['대한민국',36.4,127.4],['북한',40.1,126.6],['일본',35.5,136.8],['중국',39,119.5]];
@@ -4648,6 +4648,7 @@ function sheetSummary(s){
   // 단추 안에는 문단(p)을 둘 수 없어 같은 class의 span을 쓴다. 넓은 화면은 그대로 문단 두 줄.
   box.innerHTML=phoneSheet()?`<button type="button" class="ss-open" aria-haspopup="dialog" aria-controls="ev-drawer" aria-expanded="${drawerIsOpen()}"><span class="ss-name"><b>${esc(s.label)}</b> ${chip} <span class="ss-more">근거 자세히 보기</span></span><span class="ss-scores card-scores">${scores}</span></button>`
     :`<p class="ss-name"><b>${esc(s.label)}</b> ${chip}</p><p class="ss-scores card-scores">${scores}</p>`;
+  if(mapFull)setMapFull(true,false); // 이름 줄 높이가 바뀌면 크게 본 지도 높이도
 }
 // 2026-10-25 휴대폰 상세 시트: 근거 서랍(#ev-drawer, 넓은 화면에서는 오른쪽 서랍)을 740px 이하에서는 화면 전체를 덮는 시트로 연다.
 // 닫으면(✕·닫기·Esc) 시트가 내려가고 목록·지도·스크롤 위치는 연 때 그대로다. 닫기는 closeDrawer()를 같이 쓴다.
@@ -4663,8 +4664,73 @@ function openPhoneSheet(target,from){
 }
 function sheetSync(){
   const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
-  const open=h.getBoundingClientRect().top<stage.getBoundingClientRect().bottom-40;
-  if(b.getAttribute('aria-expanded')!==String(open)){b.setAttribute('aria-expanded',String(open));b.setAttribute('aria-label',open?'종 목록·상세 접고 지도 보기':'종 목록·상세 펼치기');}
+  const open=h.getBoundingClientRect().top<stage.getBoundingClientRect().bottom-40,state=open?'open':mapFull?'full':'closed';
+  if(b.dataset.sheet!==state){b.dataset.sheet=state;b.setAttribute('aria-expanded',String(open));
+    b.setAttribute('aria-label',open?'종 목록·상세 접고 지도 보기':mapFull?'종 목록·상세 다시 올리기':'종 목록·상세 펼치기');}
+}
+// 2026-10-25 (LKH) 휴대폰 지도 크게 보기: 시트 손잡이(또는 선택 종 요약)를 아래로 끌면 시트가 내려가 손잡이와 종 이름 줄만 탭바 위에
+// 남고 지도가 그만큼 커진다. 위로 끌면 원래(지도 50%)대로. 끄는 동안 지도 아래 끝이 손가락을 따라가고, 놓으면 MAP_FULL_SNAP을 넘었는지로
+// 한쪽에 맞춘다. 끌기 대신: 지도 오른쪽 아래 '지도 크게 보기' 단추(누름 상태), 손잡이에서 ↓·↑ 키, 크게 본 상태에서 손잡이 누르기.
+// 넓은 화면(741px~)에는 이 상태가 없다. 지도 위치·확대는 그대로 두고(pan:false) 보이는 범위만 아래로 넓힌다.
+const MAP_FULL_SNAP=48;
+let mapFull=false,mapFrame=0;
+const mapStage=()=>document.querySelector('#explore .map-stage');
+const mapFollow=()=>{if(!mapFrame)mapFrame=requestAnimationFrame(()=>{mapFrame=0;map?.invalidateSize({pan:false,debounceMoveend:true});});};
+function mapHeights(){ // [평소 높이, 크게 본 높이]
+  const box=mapStage()?.closest('.explorer'),stage=mapStage(),head=$('sheet-head');if(!box||!stage||!head)return [0,0];
+  const was=box.classList.contains('map-full'),inline=stage.style.height;
+  box.classList.remove('map-full');stage.style.height='';const base=stage.offsetHeight;if(was)box.classList.add('map-full');stage.style.height=inline;
+  const tabs=document.querySelector('.tabs'),bottom=tabs&&getComputedStyle(tabs).position==='fixed'?tabs.getBoundingClientRect().top:innerHeight;
+  const name=head.querySelector('.ss-name'),peek=name?Math.ceil(name.getBoundingClientRect().bottom-head.getBoundingClientRect().top)+10:40;
+  // 지도는 휴대폰에서 .explorer 맨 위에 붙는다(.map-pane 상자는 위치가 달라 쓰지 않는다). 14 = 시트 머리가 지도 아래 끝에 겹치는 높이(theme.css .sheet-head margin-top:-14px)
+  return [base,Math.max(base+MAP_FULL_SNAP,Math.round(bottom-(box.getBoundingClientRect().top+scrollY)-Math.max(peek,40)+14))];
+}
+function snapMap(apply){
+  const box=mapStage()?.closest('.explorer');if(!box)return;
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches,end=performance.now()+(still?0:300);
+  if(!still)box.classList.add('map-snap');
+  apply(box);
+  const step=()=>{mapFollow();if(performance.now()<end)requestAnimationFrame(step);else{box.classList.remove('map-snap');map?.invalidateSize({pan:false});sheetSync();}};
+  requestAnimationFrame(step);
+}
+function setMapFull(on,scrollUp=true){
+  const stage=mapStage();if(!stage)return;
+  on=!!on&&phoneSheet();
+  const changed=on!==mapFull;mapFull=on;
+  if(on)stage.closest('.explorer').style.setProperty('--map-full-h',mapHeights()[1]+'px');
+  if(changed||stage.style.height)snapMap(box=>{stage.style.height='';box.classList.toggle('map-full',on);});
+  if(on&&scrollUp&&scrollY>0)scrollTo({top:0,behavior:smoothScroll()});
+  const b=document.querySelector('.map-full-btn');if(b)b.setAttribute('aria-pressed',String(on));
+  sheetSync();
+}
+// 지도 크게 보기 단추: 확대/축소 바로 위(Leaflet은 아래 모서리에서 나중 것을 위에 쌓는다). theme.css가 휴대폰에서만 보인다.
+function addMapFullControl(){
+  const Ctl=L.Control.extend({options:{position:'bottomright'},onAdd(){
+    const box=L.DomUtil.create('div','leaflet-bar map-full-ctl'),b=L.DomUtil.create('button','map-full-btn',box);
+    b.type='button';b.setAttribute('aria-pressed',String(mapFull));b.setAttribute('aria-label','지도 크게 보기');
+    b.innerHTML='<svg class="ico-grow" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
+      +'<svg class="ico-shrink" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+    L.DomEvent.disableClickPropagation(box);
+    b.addEventListener('click',()=>setMapFull(!mapFull));
+    return box;}});
+  new Ctl().addTo(map);
+}
+// 끌기: v = 페이지 스크롤 − 지도가 커진 만큼. 아래로 끌면 v가 줄어 먼저 시트가 내려오고(스크롤 0까지) 그다음 지도가 커진다.
+let sheetDrag=null,sheetDragEnd=-1e9;
+function sheetDragBegin(y){
+  const stage=mapStage(),[base,full]=mapHeights();if(!stage||!base)return;
+  sheetDrag={y0:y,base,full,from:mapFull,v0:scrollY-(mapFull?full-base:0),extra:mapFull?full-base:0,stage};
+}
+function sheetDragMove(y){
+  const d=sheetDrag;if(!d)return;
+  const max=document.documentElement.scrollHeight-innerHeight,v=Math.min(Math.max(d.v0-(y-d.y0),d.base-d.full),Math.max(max,0));
+  d.extra=v<0?-v:0;
+  if(Math.round(scrollY)!==Math.max(Math.round(v),0))scrollTo(0,Math.max(v,0));
+  d.stage.style.height=d.base+d.extra+'px';mapFollow();
+}
+function sheetDragDone(){
+  const d=sheetDrag;sheetDrag=null;if(!d)return;sheetDragEnd=performance.now();
+  setMapFull(d.from?d.full-d.base-d.extra<MAP_FULL_SNAP:d.extra>=MAP_FULL_SNAP,false);
 }
 let requestNumber=0;
 async function loadCollection(){
@@ -4741,16 +4807,52 @@ async function start(){
 }
 // ↻ reloads the data but keeps species, chip and map: writeHash already holds them, so they are re-applied like a shared
 // link. The tab is left out: loading never changes it, and one picked while a slow reload runs must not be undone.
-$('sheet-handle').addEventListener('click',()=>{
-  const open=$('sheet-handle').getAttribute('aria-expanded')==='true', smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
-  scrollTo({top:open?0:scrollY+$('sheet-head').getBoundingClientRect().top,behavior:smooth});
+function sheetScroll(open){
+  const smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+  scrollTo({top:open?scrollY+$('sheet-head').getBoundingClientRect().top:0,behavior:smooth});
   setTimeout(sheetSync,smooth==='auto'?0:450);
+}
+$('sheet-handle').addEventListener('click',()=>{
+  if(performance.now()-sheetDragEnd<400)return; // 끌기를 마친 손가락·마우스가 남긴 click
+  const open=$('sheet-handle').getAttribute('aria-expanded')==='true';
+  if(!open&&mapFull)setMapFull(false);else sheetScroll(!open);
 });
+// 손잡이 키보드: ↓ = 시트 내리기(펼쳐 있으면 접고, 접혀 있으면 지도 크게), ↑ = 거꾸로
+$('sheet-handle').addEventListener('keydown',e=>{
+  if(!['ArrowDown','ArrowUp'].includes(e.key)||!phoneSheet())return;
+  e.preventDefault();const open=$('sheet-handle').getAttribute('aria-expanded')==='true';
+  if(e.key==='ArrowDown'){if(open)sheetScroll(false);else if(!mapFull)setMapFull(true);}
+  else if(mapFull)setMapFull(false);else if(!open)sheetScroll(true);
+});
+$('sheet-handle').setAttribute('aria-keyshortcuts','ArrowDown ArrowUp');
+// 손가락: 시트 머리(손잡이 + 선택 종 요약)에서 첫 움직임이 아래쪽이고 페이지가 맨 위이면(크게 본 상태에서는 위쪽도) 이 끌기가 받는다.
+// 그 밖에는 브라우저의 페이지 스크롤 그대로(시트를 위로 올리는 손가락은 전처럼 관성 스크롤). 맨 위에서 아래로 당겨 새로고침도 여기서는 막힌다.
+{let t=null;const head=$('sheet-head');
+  head.addEventListener('touchstart',e=>{t=phoneSheet()&&e.touches.length===1&&!drawerIsOpen()?{x:e.touches[0].clientX,y:e.touches[0].clientY,mine:false}:null;},{passive:true});
+  head.addEventListener('touchmove',e=>{
+    if(!t)return;const p=e.touches[0];
+    if(!t.mine){const dx=p.clientX-t.x,dy=p.clientY-t.y;if(Math.abs(dx)<4&&Math.abs(dy)<4)return;
+      if(!e.cancelable||Math.abs(dy)<=Math.abs(dx)||scrollY>0||!(dy>0||mapFull)){t=null;return;}
+      t.mine=true;sheetDragBegin(t.y);}
+    e.preventDefault();sheetDragMove(p.clientY);
+  },{passive:false});
+  const done=()=>{if(t?.mine)sheetDragDone();t=null;};
+  head.addEventListener('touchend',done);head.addEventListener('touchcancel',done);}
+// 마우스·펜: 손잡이를 잡고 위아래로(페이지 스크롤도 같은 손으로)
+{let p=null;const b=$('sheet-handle');
+  b.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0||!phoneSheet())return;p={id:e.pointerId,y:e.clientY,mine:false};});
+  b.addEventListener('pointermove',e=>{if(!p||e.pointerId!==p.id)return;
+    if(!p.mine){if(Math.abs(e.clientY-p.y)<6)return;p.mine=true;b.setPointerCapture?.(e.pointerId);sheetDragBegin(p.y);}
+    sheetDragMove(e.clientY);});
+  const done=e=>{if(!p||e.pointerId!==p.id)return;if(p.mine)sheetDragDone();p=null;};
+  b.addEventListener('pointerup',done);b.addEventListener('pointercancel',done);}
+// 주소창이 숨거나 나타나 화면 높이가 바뀌면 크게 본 지도 높이를 다시 맞춘다
+addEventListener('resize',()=>{if(mapFull&&document.querySelector('#explore.active')){mapStage().closest('.explorer').style.setProperty('--map-full-h',mapHeights()[1]+'px');snapMap(()=>{});}});
 addEventListener('scroll',()=>{if(!sheetSync.f)sheetSync.f=requestAnimationFrame(()=>{sheetSync.f=0;sheetSync();});},{passive:true});
 // the map's height changes across the 740px line: tell Leaflet
-globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();
+globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{if(mapFull)setMapFull(false,false);map?.invalidateSize();sheetSync();
   if(selected)sheetSummary(selected);if(!phoneSheet()&&!wideLayout())closeDrawer(false);}); // 2026-10-25: 요약 단추·상세 시트는 휴대폰에만
-$('sheet-summary').addEventListener('click',e=>{const b=e.target.closest('.ss-open');if(b)openPhoneSheet(null,b);});
+$('sheet-summary').addEventListener('click',e=>{const b=e.target.closest('.ss-open');if(b&&performance.now()-sheetDragEnd>=400)openPhoneSheet(null,b);});
 // the filter fold, the right panel and the evidence drawer apply from 1180px only: re-sync when the window crosses that line
 function syncWide(){
   syncFolds();
