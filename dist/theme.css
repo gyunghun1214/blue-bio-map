@@ -1688,3 +1688,15 @@ html.lang-en #explore #sp-name{overflow-wrap:anywhere}
 /* the '0–100 scale' note beside a long English score name stays on one line (it broke into '0– / 100 / scale') */
 html.lang-en #explore .sp-range{white-space:nowrap}
 html.lang-en .gloss-paren{margin-left:.3em} /* 'LC (Least Concern)': English puts a space before the bracket */
+/* 2026-10-25 휴대폰(조원 심사 B13): 머리글 브랜드는 두 언어 모두 'Blue-bio'만, 줄이지 않는다(전체 이름은 링크 aria-label; 'Blue-bio …'로
+   잘려 보이던 것). 상태 알약이 대신 줄어든다. 영어 화면의 아래 탭은 짧은 이름(Map · Compare · Methods · Expedition)으로 한 줄. 버튼 본문 글자는 전체 이름 그대로 둔다(안내 도우미·화면 읽기 프로그램이 읽는다) */
+@media (max-width:740px){
+  .brand strong{display:none}
+  .brand{flex:none}
+  .brand>span:last-child{overflow:visible}
+  html.lang-en .tabs button[data-short],html.lang-en .expedition-link{font-size:0}
+  html.lang-en .tabs button[data-short]::after{content:attr(data-short);font-size:14px}
+  html.lang-en .expedition-link::after{content:"Expedition";font-size:13px}
+}
+/* 영어 화면 상세 머리: 일반명 출처 줄(Common name: …)은 아이콘 칸이 아니라 머리 전체 폭에 */
+html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}

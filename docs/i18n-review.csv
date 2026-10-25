@@ -31,11 +31,11 @@ MBRIS 국가 해양수산생물종 목록,MBRIS National List of Marine Species,
 ‘보전 지표 높음’ 종,Species with ‘Conservation index high’,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 보전 연구를 먼저 살필 종 고르기,Choose species whose conservation research to look at first,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 지금 쓸 수 있음,Available now,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-‘보전 연구 우선 검토’ 표 보기,View the ‘Consider conservation research first’ table,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+‘보전 연구 우선 검토’ 표 보기,View the ‘Conservation research first’ table,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 연구자·기업,Researchers·companies,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 활용 지표가 높은 종,Species with a high use index,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 다음 실험 대상 고르기,Choose the next experimental target,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-‘활용 연구 검토’ 표 보기,View the ‘Consider use research’ table,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+‘활용 연구 검토’ 표 보기,View the ‘Research on uses’ table,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 시민·교육,Citizens·education,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 바다 탐험,Ocean expedition,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 우리 바다 생물의 쓸모와 보전 필요성 배우기,Learn the usefulness and conservation needs of our marine species,i18n-en.js · 정적 화면(index.html·expedition.html),draft
@@ -128,13 +128,13 @@ BBVI × MCUI 조합 유형 범례,BBVI × MCUI combined type legend,i18n-en.js �
 BBVI × MCUI 유형 · 출현 기록 셀,BBVI × MCUI type · occurrence record cells,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 두 지수는 따로 봅니다. 셀 색은 그 칸에 기록된 종의 유형입니다.,The two indices are read separately. Cell colour is the type of the species recorded in that cell.,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 MCUI(보전 시급성) →,MCUI (Conservation urgency) →,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-보전 연구 우선 검토,Consider conservation research first,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+보전 연구 우선 검토,Conservation research first,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 BBVI 낮음 · MCUI 높음,BBVI low · MCUI high,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-활용·보전 병행 검토,Consider use and conservation together,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+활용·보전 병행 검토,Use and conservation together,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 BBVI·MCUI 모두 높음,BBVI·MCUI both high,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-기초조사 검토,Consider baseline survey,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+기초조사 검토,Baseline survey,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 BBVI·MCUI 모두 낮음,BBVI·MCUI both low,i18n-en.js · 정적 화면(index.html·expedition.html),draft
-활용 연구 검토,Consider use research,i18n-en.js · 정적 화면(index.html·expedition.html),draft
+활용 연구 검토,Research on uses,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 BBVI 높음 · MCUI 낮음,BBVI high · MCUI low,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 BBVI(활용가치) →,BBVI (Use value) →,i18n-en.js · 정적 화면(index.html·expedition.html),draft
 4° 공개 셀 · 민감종 보호로 넓게 공개 (테두리만),4° public cell · published broadly to protect sensitive species (outline only),i18n-en.js · 정적 화면(index.html·expedition.html),draft
@@ -1824,6 +1824,9 @@ Ctrl + 스크롤로 지도를 확대합니다,Ctrl + scroll to zoom the map,i18n
 {0}칸,{0} {0|cell|cells},i18n-en.js · 탐색 지도(app.js),draft
 지도 크게 보기,Enlarge the map,i18n-en.js · 탐색 지도(app.js),draft
 종 목록·상세 다시 올리기,Bring the species list and details back up,i18n-en.js · 탐색 지도(app.js),draft
+보전 상태 등급(국가) + 자원 감소 신호,Conservation status category (national) + stock decline signal,i18n-en.js · 탐색 지도(app.js),draft
+보전 상태 등급(IUCN) + 자원 감소 신호,Conservation status category (IUCN) + stock decline signal,i18n-en.js · 탐색 지도(app.js),draft
+보전 상태 등급 + 자원 감소 신호,Conservation status category + stock decline signal,i18n-en.js · 탐색 지도(app.js),draft
 {0} {1} {2} 설명 보기,View explanation: {0} {1} {2},i18n-en.js · 비교와 지표(app.js),draft
 산출 보류 아님 · 보기,Not withheld · View,i18n-en.js · 비교와 지표(app.js),draft
 수산동물,Aquatic animals,i18n-en.js · 비교와 지표(app.js),draft
@@ -2403,7 +2406,7 @@ XO 문헌 비교집단),XO literature comparison set),i18n-en.js · 남은 화�
 개방 이용조건 데이터셋 {0}개,{0} open-terms {0|dataset|datasets},i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
 GBIF 지침의 가장 엄격한 공개 수준 {0}°,Strictest public level in GBIF guidance {0}°,i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
 "점이 몰린 {0}곳({1}종)은 상자로 묶었습니다. ‘펼치기’를 누르면 종 목록이 열리고, 상자 안 점도 누를 수 있습니다. 이름표가 겹치는 점 {2}개는 이름을 숨겼습니다. 점에 마우스를 올리거나 키보드로 고르면 이름이 보이고, 누르면 종 상세가 열립니다.",{0} {0|cluster|clusters} of crowded points ({1} species) are grouped in boxes. Press ‘Expand’ to open the species list; points inside a box can also be selected. Labels are hidden for {2} overlapping points. Hover over a point or select it with the keyboard to see its name; click to open species details.,i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
-보전 병행 검토,consider conservation alongside,i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
+보전 병행 검토,conservation alongside,i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
 Sargassum fusiforme 활용 지표 {0} 보전 지표 {1} (LC·예비),"Sargassum fusiforme use index {0}, conservation index {1} (LC·prelim.)",i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
 BBVI {0} MCUI {1} (LC·예비),"BBVI {0}, MCUI {1} (LC·prelim.)",i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
 Halocynthia roretzi 활용 지표 {0} 보전 지표 {1} (LC·예비),"Halocynthia roretzi use index {0}, conservation index {1} (LC·prelim.)",i18n-en.js · 남은 화면 글자(정적 그림·속성·숫자 섞인 문장),draft
@@ -3320,7 +3323,7 @@ verified-4.19 · 2026-10-15 동결,verified-4.19 · frozen 2026-10-15,i18n-data-
 기질(FAPGG)과 단위(mg/mL)가 점수 층의 ACE 비교집단(HHL·µM)과 달라 같은 잣대로 비교하지 않습니다.,"The substrate (FAPGG) and unit (mg/mL) differ from the scoring stratum's ACE comparison set (HHL·µM), so they are not compared on the same scale.",i18n-data-en.json · supplementary-literature.json,draft
 기질(HHL 여부)·효소 출처 미확인,Substrate (whether HHL) and enzyme source not checked,i18n-data-en.json · assessments.json,draft
 기질(HHL 여부)·효소 출처·합성 여부·시료 산지가 초록에 없음,"Substrate (whether HHL), enzyme source, whether synthetic, and sample origin are not in the abstract",i18n-data-en.json · assessments.json,draft
-기초조사 검토,Consider baseline survey,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
+기초조사 검토,Baseline survey,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
 기초조사·관찰 대상,Baseline survey·observation target,i18n-data-en.json · matrix-readiness.json,draft
 기타 무척추동물,Other invertebrates,i18n-data-en.json · candidate-catalog.json,draft
 "기획서 확인 방식: 어획량 급감이 보고된 종이 MCUI 상위에 오는지, 어획량이 유지된 종은 신호가 없는지.","How the proposal checks it: whether species reported to have a sharp catch decline rank high on MCUI, and whether species whose catch held up show no signal.",i18n-data-en.json · assessments.json,draft
@@ -3456,7 +3459,7 @@ verified-4.19 · 2026-10-15 동결,verified-4.19 · frozen 2026-10-15,i18n-data-
 보고서 기록이 Liu et al. 2021(Front Physiol 12:713736)을 들어 중국 저장성 샹산만에서 이 종이 주 양식 굴로 상업 양식된다고 적음,"The report record cites Liu et al. 2021 (Front Physiol 12:713736) as stating that this species is commercially farmed as the main cultured oyster in Xiangshan Bay, Zhejiang, China",i18n-data-en.json · aquaculture-tier.json,draft
 보고율 감소 없음,No decline in reporting rate,i18n-data-en.json · assessments.json,draft
 보전 근거를 검토하지 않았습니다.,Conservation evidence was not reviewed.,i18n-data-en.json · live-snapshot.json,draft
-보전 연구 우선 검토,Consider conservation research first,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
+보전 연구 우선 검토,Conservation research first,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
 보전 우선·모니터링,Conservation priority·monitoring,i18n-data-en.json · matrix-readiness.json,draft
 보전 지표 높음,Conservation index high,i18n-data-en.json · assessments.json matrix-readiness.json,draft
 보전 평가 범주,Conservation assessment category,i18n-data-en.json · expedition-stops.json,draft
@@ -3834,9 +3837,9 @@ verified-4.19 · 2026-10-15 동결,verified-4.19 · frozen 2026-10-15,i18n-data-
 화합물 자료를 수집하지 않았습니다.,Compound data were not collected.,i18n-data-en.json · live-snapshot.json,draft
 확인 전,Not yet checked,i18n-data-en.json · assessments.json,draft
 확인 필요,Needs checking,i18n-data-en.json · license-matrix.json,draft
-활용 연구 검토,Consider use research,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
+활용 연구 검토,Research on uses,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
 활용 지표 높음,Use index high,i18n-data-en.json · assessments.json matrix-readiness.json,draft
-활용·보전 병행 검토,Consider use and conservation together,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
+활용·보전 병행 검토,Use and conservation together,i18n-data-en.json · assessments.json expedition-stops.json matrix-readiness.json,draft
 활용·운영,Use · operations,i18n-data-en.json · operations.json,draft
 회피 잠복기 증가,Increased withdrawal latency,i18n-data-en.json · trait-evidence.json,draft
 효고현,Hyogo Prefecture,i18n-data-en.json · assessments.json,draft

@@ -18,10 +18,10 @@
 | 식량 잠재력 | Food potential |
 | 활용 × 보전 매트릭스 | Use × conservation matrix |
 | 활용 × 보전 | Use × conservation |
-| 활용 연구 검토 | Consider use research |
-| 활용·보전 병행 검토 | Consider use and conservation together |
-| 보전 연구 우선 검토 | Consider conservation research first |
-| 기초조사 검토 | Consider baseline survey |
+| 활용 연구 검토 | Research on uses |
+| 활용·보전 병행 검토 | Use and conservation together |
+| 보전 연구 우선 검토 | Conservation research first |
+| 기초조사 검토 | Baseline survey |
 | 활용 지표 높음 | Use index high |
 | 보전 지표 높음 | Conservation index high |
 | 두 지표 모두 높음 | Both indices high |
