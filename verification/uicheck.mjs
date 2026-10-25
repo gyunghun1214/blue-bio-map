@@ -1409,6 +1409,21 @@ try{
       pc.folds>=11&&pc.open===pc.folds&&pc.summaries===0&&pc.buttons===0&&pc.shut===0&&pc.notes&&pc.more&&pc.why&&pc.popup&&!pc.sheet,JSON.stringify(pc));
   }
 
+  // ---------- 2026-10-25 휴대폰 영어 눈썹 글 · 반복 설명 (mobile-dedupe): 넓은 화면은 전과 같다 ----------
+  // 단추(.see-also)가 없고, 영어 눈썹 글과 숨기는 문장(.dup-m · .dup-sheet)은 모두 그려진다.
+  {
+    await viewport(1440,900,false);await load();
+    const pc=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const vis=e=>!!e&&e.getClientRects().length>0;
+      setView('method');await wait(300);const r={see:[...document.querySelectorAll('.see-also')].map(b=>getComputedStyle(b).display),
+        mtk:[...document.querySelectorAll('#method .mt-k,#method .mt-eyebrow')].filter(vis).map(e=>e.textContent),
+        dup:[...document.querySelectorAll('.dup-m,.dup-sheet')].map(e=>getComputedStyle(e).display)};
+      setView('compare');await wait(300);const pop=document.getElementById('cmp-read-pop');pop.hidden=false;await wait(200);
+      r.howto=vis(document.querySelector('#cmp-read-pop .matrix-explanation>.eyebrow'));r.why=vis(document.querySelector('#cmp-read-pop .matrix-explanation>p'));pop.hidden=true;
+      setView('explore');await wait(200);return r})()`);
+    check('Wide 1440px (mobile-dedupe): no 자세히 보기 button, the nine English eyebrow labels and every repeated sentence drawn as before',
+      pc.see.length===4&&pc.see.every(d=>d==='none')&&pc.mtk.length===9&&pc.dup.length>=9&&pc.dup.every(d=>d!=='none')&&pc.howto&&pc.why,JSON.stringify(pc));
+  }
+
   // ---------- Mobile 390px first screen and stability ----------
   await viewport(390,844,true);
   await load();
@@ -1577,6 +1592,74 @@ try{
     check('Mobile 390px folds (비교와 지표 · 근거와 방법): all closed at first, named 더 보기 with no text of their own, ≥44px, tap opens (더 보기 → 접기)',
       f.folds>=11&&f.shut===f.folds&&f.names.length===1&&f.names[0]==='더 보기'&&f.empty&&f.tall&&f.label==='"더 보기"'&&f.opened&&f.label2==='"접기"'&&
       f.btn.name==='더 보기'&&f.btn.expanded==='false'&&!f.btn.restShown&&f.btn.after==='true'&&f.btn.restAfter,JSON.stringify(f));
+  }
+
+  // ---------- 2026-10-25 휴대폰 영어 눈썹 글 · 반복 설명 (mobile-dedupe.css · .js, verification/2026-10-25-mobile-labels-dedupe) ----------
+  // (1) 390px 한국어 화면: 대문자 영어 라벨 중 지표·자료 이름 · 번호 밖의 것이 보이지 않고, 지표 이름 칩과 단계 번호는 보인다.
+  // (2) dedupe-groups.json의 묶음마다: 화면(지도 · 지도 시트 두 보기 · 비교와 지표 팝업을 연 채 · 근거와 방법을 다 연 채)에 숨긴 문장은 0번,
+  //     한 화면 안 반복은 1번, 기준 위치의 문장은 보인다.
+  // (3) 기준 위치로 가는 단추(.see-also) 넷: 이름이 있고 44px 이상, 누르면 대상 탭이 열리고 대상이 화면 안에 보이며, 접힌 곳은 펴지고,
+  //     지도 대상이면 '지도 읽는 법' 시트가 열린다.
+  {
+    const DD=JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)),'2026-10-25-mobile-labels-dedupe','dedupe-groups.json'),'utf8')).groups;
+    await viewport(390,844,true);await load();
+    const caps=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const vis=e=>{if(!e.getClientRects().length)return false;for(let n=e;n;n=n.parentElement){const s=getComputedStyle(n);if(s.display==='none'||s.visibility==='hidden')return false;}return true;};
+      const ALLOW=/^(MBPI|MFPI|BBVI|MCUI|RX|IUCN|KOSIS|OBIS|GBIF|WORMS|CHEMBL\\d*|CMNPD|EEZ|BBNJ|APHIAID|MBRIS|AFCD|CC|BY|NC|SA|NASA|GIBS|GEBCO|WMS|\\d+)$/;
+      const out=[];const scan=root=>{for(const e of root.querySelectorAll('*')){if(e.children.length||e.closest('svg')||!vis(e))continue;const t=(e.innerText||'').trim();
+        if(/^[A-Z0-9 &·\\-]{3,}$/.test(t)&&!t.split(/[\\s&·\\-]+/).filter(Boolean).every(w=>ALLOW.test(w)))out.push(t);}};
+      setView('method');await wait(300);const acc=[...document.querySelectorAll('#method details.mt-acc')],was=acc.map(d=>d.open);acc.forEach(d=>d.open=true);await wait(300);
+      scan(document.getElementById('method'));
+      const kept={tags:[...document.querySelectorAll('#method .mt-tag')].filter(vis).map(e=>e.textContent),n:[...document.querySelectorAll('#method .mt-n')].filter(vis).map(e=>e.textContent),
+        acc:[...document.querySelectorAll('#method .mt-acc-n')].filter(vis).map(e=>e.textContent),steps:[...document.querySelectorAll('#method .mt-step')].filter(vis).length};
+      acc.forEach((d,i)=>d.open=was[i]);
+      setView('compare');await wait(300);const pop=document.getElementById('cmp-read-pop');pop.hidden=false;await wait(300);scan(document.getElementById('compare'));pop.hidden=true;
+      setView('explore');await wait(300);scan(document.getElementById('explore'));
+      return {left:out,kept}})()`);
+    check('Mobile 390px Korean (mobile-dedupe): no English eyebrow label left (only index/source names and numbers), MFPI·MBPI·MCUI chips and step numbers 01–03 still shown',
+      caps.left.length===0&&['MFPI','MBPI','MCUI'].every(k=>caps.kept.tags.includes(k))&&caps.kept.n.join()==='01,02,03'&&caps.kept.acc.join()==='01,02,03,04'&&caps.kept.steps>=3,JSON.stringify(caps));
+    // (2) 화면마다 보이는 글
+    const screens=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const T=e=>e.innerText.replace(/\\s+/g,' ');const r={};
+      setView('explore');setMapMode('occurrence');window.scrollTo(0,0);await wait(500);r.explore=T(document.getElementById('explore'));
+      const lt=document.getElementById('legend-toggle');if(lt.getAttribute('aria-expanded')!=='true')lt.click();await wait(300);
+      document.querySelector('.map-legend-more>summary').click();await wait(500);r['sheet-occ']=T(document.querySelector('#map-guide .mg-body'));document.querySelector('#map-guide .mg-close').click();await wait(300);
+      setMapMode('value');await wait(800);document.getElementById('value-info').click();await wait(500);r['sheet-value']=T(document.querySelector('#map-guide .mg-body'));document.querySelector('#map-guide .mg-close').click();await wait(300);
+      setMapMode('occurrence');await wait(400);
+      setView('compare');await wait(300);const pop=document.getElementById('cmp-read-pop'),bp=document.getElementById('cmp-basis-pop');pop.hidden=false;bp.hidden=false;await wait(300);
+      r.compare=T(document.getElementById('compare'));pop.hidden=true;bp.hidden=true;
+      setView('method');await wait(300);const acc=[...document.querySelectorAll('#method details.mt-acc')],was=acc.map(d=>d.open);acc.forEach(d=>d.open=true);
+      const folds=[...document.querySelectorAll('#method details.mc-more')],fw=folds.map(d=>d.open);folds.forEach(d=>d.open=true);
+      const btn=document.querySelector('#method .mc-more-btn');const bw=btn?.getAttribute('aria-expanded');if(bw==='false')btn.click();await wait(300);
+      r.method=T(document.getElementById('method'));acc.forEach((d,i)=>d.open=was[i]);folds.forEach((d,i)=>d.open=fw[i]);if(bw==='false')btn.click();
+      setView('explore');await wait(300);return r})()`);
+    const count=(t,p)=>t.split(p.replace(/\s+/g,' ')).length-1;
+    const bad=DD.flatMap(g=>g.checks.filter(c=>{const n=count(screens[c.screen]||'',c.phrase);return c.n==='>=1'?n<1:n!==c.n;}).map(c=>({group:g.id,...c,found:count(screens[c.screen]||'',c.phrase)})));
+    check('Mobile 390px Korean (mobile-dedupe): every dedupe group shows its sentence at most once per screen, hidden copies 0, the base place still shows it',
+      DD.length>=8&&DD.some(g=>g.checks.length)&&bad.length===0&&Object.values(screens).every(t=>t.length>200),JSON.stringify({bad,len:Object.fromEntries(Object.entries(screens).map(([k,v])=>[k,v.length]))}));
+    // (3) 단추 넷
+    const prep={'mt-quad-card':"setView('compare');document.getElementById('cmp-read-pop').hidden=false",'mt-types-note':"setView('compare');document.getElementById('cmp-read-pop').hidden=false",
+      'method-03':"setView('compare');document.getElementById('cmp-basis-pop').hidden=false",'map-guide':"setView('method');document.getElementById('mt-acc-03').open=true"};
+    const links=[];
+    for(const [key,how] of Object.entries(prep)){
+      // 접힌 칸은 처음처럼 닫아 둔다(펴지는지 본다)
+      await evaluate(`(()=>{const b=document.querySelector('.mc-more-btn[aria-controls="mc-rest-types"]');if(b?.getAttribute('aria-expanded')==='true')b.click();
+        const d=document.querySelector('#method-03 li details.mc-more');if(d)d.open=false;document.getElementById('mt-acc-03').open=false;window.scrollTo(0,0);${how};return 1})()`);await sleep(400);
+      const a=await evaluate(`(()=>{const b=document.querySelector('.see-also[data-see="${key}"]'),r=b.getBoundingClientRect();b.scrollIntoView({block:'center'});
+        return {name:b.getAttribute('aria-label'),text:b.textContent,h:Math.round(r.height),label:getComputedStyle(b,'::before').content,shown:b.getClientRects().length>0}})()`);
+      await evaluate(`document.querySelector('.see-also[data-see="${key}"]').click();1`);await sleep(1500);
+      const z=await evaluate(`(()=>{const view=document.querySelector('.view.active')?.id,g=document.getElementById('map-guide');
+        const t=${key==='map-guide'?"null":`document.getElementById('${key}')`},r=t?.getBoundingClientRect();
+        return {view,sheet:!g.hidden,inView:t?r.bottom>0&&r.top<innerHeight&&t.getClientRects().length>0:null,
+          rest:document.getElementById('mc-rest-types').getClientRects().length>0,w03:document.querySelector('#method-03 li details.mc-more')?.open,
+          flash:!!t?.classList.contains('flash'),hash:location.hash}})()`);
+      links.push({key,a,z});
+      if(z.sheet){await evaluate("document.querySelector('#map-guide .mg-close').click();1");await sleep(300);}
+      await evaluate("document.getElementById('cmp-read-pop').hidden=true;document.getElementById('cmp-basis-pop').hidden=true;1");
+    }
+    const okLink=({key,a,z})=>a.shown&&!!a.name&&a.text===''&&a.h>=44&&/자세히 보기|지도 읽는 법 보기/.test(a.label)&&!/see-also|mt-|method-/.test(z.hash)&&
+      (key==='map-guide'?z.view==='explore'&&z.sheet:z.view==='method'&&z.inView&&z.flash&&(key!=='mt-types-note'||z.rest)&&(key!=='method-03'||z.w03));
+    check('Mobile 390px Korean (mobile-dedupe): the four 자세히 보기 buttons have a name and ≥44px, open the target tab with the target in view (folded text opened, flash), the map one opens the 지도 읽는 법 sheet; no URL hash',
+      links.length===4&&links.every(okLink),JSON.stringify(links));
+    await evaluate("setView('explore');window.scrollTo(0,0);1");
   }
 
   // ---------- 멍이 버튼 옮기기 (chatbot.js): drag vs click, remembered and clamped, reset, phone touch ----------
@@ -1950,6 +2033,9 @@ try{
       const r=await evaluate(`(async()=>{setView('${v}');await new Promise(r=>setTimeout(r,900));const p=(${collect})(['#${v}',12]);
         return {lang:document.documentElement.lang,en:document.querySelector('.lang-switch [data-lang="en"]')?.getAttribute('aria-pressed'),doc:document.documentElement.scrollWidth,vw:innerWidth,small:p.small.slice(0,5)};})()`);
       check(`L-1 ${tag} ${v}: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px`,r.lang==='en'&&r.en==='true'&&r.doc<=r.vw&&r.vw<=w&&!r.small.length,JSON.stringify(r));
+      // 2026-10-25 (mobile-dedupe): the English screen hides nothing on a phone either: eyebrow labels and repeated sentences drawn, no 자세히 보기 button
+      if(mobile&&v==='method'){const e=await evaluate(`({mtk:[...document.querySelectorAll('#method .mt-k,#method .mt-eyebrow')].filter(e=>e.getClientRects().length).length,see:[...document.querySelectorAll('.see-also')].filter(b=>getComputedStyle(b).display!=='none').length,dup:[...document.querySelectorAll('.dup-m,.dup-sheet')].filter(e=>getComputedStyle(e).display==='none').length})`);
+        check('L-1 390 English (mobile-dedupe): nine eyebrow labels shown, no 자세히 보기 button, no repeated sentence hidden',e.mtk===9&&e.see===0&&e.dup===0,JSON.stringify(e));}
       await shot(`lang-en-${tag}-${v}`,false);
     }
   }
