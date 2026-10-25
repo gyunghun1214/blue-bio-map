@@ -387,10 +387,19 @@ if(typeof document!=='undefined')(function(){
     root.classList.add('bbc-moved');
     root.style.setProperty('--bbc-x',pos.x+'px');root.style.setProperty('--bbc-y',pos.y+'px');
     const v=view(),size=fabSize(),right=pos.x+size/2>v.w/2;
+    root.classList.toggle('bbc-left',!right);  // 접을 때 밀어 넣는 쪽(chatbotFabAnchor의 h와 같은 기준)
     if(!hint.hidden){
-      const room=Math.max(120,right?pos.x-18:v.w-pos.x-size-18);hint.style.maxWidth=room+'px';
-      const hw=hint.offsetWidth,hh=hint.offsetHeight;
-      Object.assign(hint.style,{right:'auto',bottom:'auto',left:Math.max(8,right?pos.x-10-hw:pos.x+size+10)+'px',top:Math.max(8,Math.round(pos.y+(size-hh)/2))+'px'});
+      const side=right?pos.x-18:v.w-pos.x-size-18;
+      // 휴대폰(740px 이하)에서 옆 자리가 120px보다 좁으면 버튼 위(아래쪽 절반) 또는 아래(위쪽 절반)로, 버튼과 같은 쪽 끝에 맞춰 띄운다.
+      if(phone()&&side<120){
+        hint.style.maxWidth=(v.w-32)+'px';
+        const hw=hint.offsetWidth,hh=hint.offsetHeight,below=pos.y+size/2<=v.h/2;
+        Object.assign(hint.style,{right:'auto',bottom:'auto',left:Math.max(8,Math.min(v.w-8-hw,right?pos.x+size-hw:pos.x))+'px',top:Math.max(8,below?pos.y+size+8:pos.y-8-hh)+'px'});
+      }else{
+        const room=Math.max(120,side);hint.style.maxWidth=room+'px';
+        const hw=hint.offsetWidth,hh=hint.offsetHeight;
+        Object.assign(hint.style,{right:'auto',bottom:'auto',left:Math.max(8,right?pos.x-10-hw:pos.x+size+10)+'px',top:Math.max(8,Math.round(pos.y+(size-hh)/2))+'px'});
+      }
     }
     if(panel.hidden)return;
     if(mobile()){clearStyle(panel,['left','top','right','bottom','maxHeight']);return;}
@@ -403,7 +412,7 @@ if(typeof document!=='undefined')(function(){
     reset.hidden=!posCache[posMode()];
     const pos=movedPos();
     if(pos)return placeMoved(pos);
-    root.classList.remove('bbc-moved');
+    root.classList.remove('bbc-moved','bbc-left');hookMap();
     clearStyle(hint,['left','top','right','bottom','maxWidth']);clearStyle(panel,['left','top','right','bottom']);
     let right=16;const z=document.querySelector('.leaflet-control-zoom');
     if(!mobile()&&document.querySelector('#explore.active')&&visible(z))right=Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12);
@@ -428,6 +437,8 @@ if(typeof document!=='undefined')(function(){
     hintTimer=setTimeout(dismissHint,HINT_MS);
     const once={once:true,passive:true};
     addEventListener('scroll',dismissHint,once);
+    // 종 카드 줄(#species-list)을 옆으로 넘겨도 바로 접는다(2026-10-25: 휴대폰에서 말풍선이 카드 줄 위에 뜬다). 카드 누르기는 아래 pointerdown이 접는다.
+    document.addEventListener('scroll',e=>{if(e.target.id==='species-list')dismissHint();},{capture:true,passive:true});
     document.addEventListener('pointerdown',e=>{if(!root.contains(e.target))dismissHint();},once);
   }
   function hintWhenGateGone(){
@@ -485,7 +496,7 @@ if(typeof document!=='undefined')(function(){
   }
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
-    dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
+    dismissHint();untuck();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();
     // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
@@ -517,6 +528,34 @@ if(typeof document!=='undefined')(function(){
     },0);
   }
 
+  // 2026-10-25 휴대폰(740px 이하, 아래 탭바가 있는 폭): 페이지·각 탭의 스크롤 상자·종 카드 줄 가로 스크롤·지도 끌기 동안 버튼을 화면 가장자리로
+  // 반쯤 밀어 넣고 흐리게(.bbc-tucked, chatbot.css) 했다가, 멈추고 TUCK_MS 뒤 되돌린다. 크기는 그대로라 누르는 영역(48px)은 같다.
+  // 대화창이 열렸거나 끄는 중이거나 키보드 포커스(:focus-visible)가 있으면 접지 않는다. 스크롤마다 레이아웃은 읽지 않는다(한 프레임에 한 번, 클래스만).
+  const TUCK_MS=700,phone=()=>matchMedia('(max-width:740px)').matches;
+  const still=()=>{try{if(localStorage.getItem('bbvm-reduce-motion')==='1')return true;}catch{}return reduced();};  // '움직임 줄이기'(intro.js)
+  let tuckTimer=0,tuckFrame=0,mapMoving=false,pressTucked=false,hookedMap=null;
+  const tucked=()=>root.classList.contains('bbc-tucked');
+  function untuck(){clearTimeout(tuckTimer);tuckTimer=0;root.classList.remove('bbc-tucked');}
+  function tuck(){
+    if(tuckFrame)return;
+    tuckFrame=requestAnimationFrame(()=>{
+      tuckFrame=0;
+      if(!phone()||!panel.hidden||opening||drag?.moving||fab.matches(':focus-visible'))return;
+      root.classList.toggle('bbc-still',still());root.classList.add('bbc-tucked');
+      clearTimeout(tuckTimer);tuckTimer=mapMoving?0:setTimeout(untuck,TUCK_MS);
+    });
+  }
+  // 지도(app.js의 map, 자료를 받은 뒤 생긴다): 끄는 동안 접어 두고, 멈추면(moveend) TUCK_MS 뒤 되돌린다.
+  function hookMap(){
+    if(typeof map==='undefined'||!map?.on||hookedMap===map)return;
+    hookedMap=map;
+    map.on('movestart',()=>{mapMoving=true;tuck();});
+    map.on('moveend',()=>{mapMoving=false;tuck();});
+  }
+  document.addEventListener('scroll',e=>{if(!root.contains(e.target))tuck();},{capture:true,passive:true});
+  document.addEventListener('pointerdown',hookMap,{capture:true,passive:true});
+  fab.addEventListener('focus',()=>{if(fab.matches(':focus-visible'))untuck();});
+
   // 끌기: Pointer Events로 마우스·손가락·펜을 함께 처리한다. 문턱값(chatbotDragStarted)을 넘기 전에 떼면 보통 누르기.
   // 끌어다 놓은 직후 브라우저가 보내는 click 한 번은 무시한다(키보드 Enter/Space의 click은 detail 0이라 막지 않음, 다음 누르기가 시작되면 해제).
   // Esc나 pointercancel이면 처음 자리로 돌아간다.
@@ -530,14 +569,16 @@ if(typeof document!=='undefined')(function(){
   fab.addEventListener('pointerdown',e=>{
     if(e.button!==0||!e.isPrimary||opening)return;
     dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
-    const r=fab.getBoundingClientRect();
-    drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,moving:false,cancelled:false,pos:null};
+    pressTucked=tucked();
+    // 접혀 있으면 밀어 넣은 만큼(transform)을 빼서 원래 자리에서 끌기를 시작한다
+    const r=fab.getBoundingClientRect(),t=pressTucked?new DOMMatrixReadOnly(getComputedStyle(fab).transform):null;
+    drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left-(t?.m41||0),oy:r.top-(t?.m42||0),moving:false,cancelled:false,pos:null};
     try{fab.setPointerCapture(e.pointerId);}catch{}
   });
   fab.addEventListener('pointermove',e=>{
     if(!drag||e.pointerId!==drag.id||drag.cancelled)return;
     const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
-    if(!drag.moving){if(!chatbotDragStarted(dx,dy,drag.type))return;drag.moving=true;dragging(true);dismissHint();}
+    if(!drag.moving){if(!chatbotDragStarted(dx,dy,drag.type))return;drag.moving=true;untuck();dragging(true);dismissHint();}
     const v=view();drag.pos=chatbotClampFab({x:drag.ox+dx,y:drag.oy+dy},fabSize(),v);
     if(!frame)frame=requestAnimationFrame(()=>{frame=0;if(drag?.pos&&!drag.cancelled)placeMoved(drag.pos);});
   });
@@ -559,6 +600,9 @@ if(typeof document!=='undefined')(function(){
   fab.addEventListener('click',e=>{
     if(e.detail!==0&&performance.now()-dragEnd<700){dragEnd=-1e9;return;}
     if(opening)return;
+    // 접힌 버튼을 누르면 먼저 펼치기만 한다. 펼친 뒤 다시 누르면 연다.
+    const wasTucked=pressTucked||tucked();pressTucked=false;
+    if(wasTucked)return untuck();
     if(!panel.hidden)return close();
     if(reduced())return open();
     fab.innerHTML=chatbotMascot('answer',44,true,'smile');mascotOnce(fab.firstElementChild,'bbc-m-hop',720);
