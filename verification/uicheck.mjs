@@ -686,13 +686,17 @@ try{
   // 2026-10-17 (LKH): labelled '별도 수집 기록' (and '별도 수집 기록(따로 표시)' among the exclusions)
   check('Oyster details: separate OBIS 26건 2008–2014 labelled as a separate collection; no removed OBIS demo comparison',/별도 수집 기록\s*기록 수\s*26건/.test(t)&&/관측 기간\s*2008–2014/.test(t)&&!t.includes('추가 수집')&&!t.includes('지도 셀에 쓰지 않음'),t.slice(t.indexOf('수집·선별'),t.indexOf('수집·선별')+900));
   check('Counts agree: footer, list card and panel show the same map record total',await evaluate("(()=>{const n=cellRecords(selected);const card=document.querySelector('[data-species=\"836033\"]').innerText.replace(/\\s+/g,' ');return document.getElementById('map-count').textContent===n.toLocaleString()&&card.includes(n+'건 · '+spatialCells(selected).length+'셀')&&document.querySelector('#detail-map-summary').innerText.includes(n+'건')})()"));
-  const unplaced=await evaluate("toggleSimulation(false);document.getElementById('matrix-unplaced').innerText+' | '+document.querySelectorAll('#matrix-unplaced button').length");
-  const unplacedN=expPub+expCand-placedInMatrix-placedCandidates;
-  // verified-pilot-3.2: renamed so it is not confused with the information-sufficiency label '우선 조사 대상'
-  // 4.3: every species is placed, so the unplaced box is empty and hidden
-  check('Matrix: unplaced species listed apart as unranked follow-up targets, published and candidates counted separately',unplacedN===0?unplaced===' | 0':unplaced.includes(`매트릭스 미배치 ${unplacedN}종 (운영 발행 ${expPub-placedInMatrix}종 · 조사 후보 ${expCand-placedCandidates}종) (BBVI·MCUI 한 쌍 없음)`)&&unplaced.includes('우선 조사 대상’과는 다른 목록')&&unplaced.includes('네 유형과 별개')&&unplaced.includes('기존 카탈로그 순서')&&unplaced.endsWith(' '+unplacedN),unplaced.slice(0,200));
-  const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').innerHTML==='';toggleSimulation(false);x");
-  check('Matrix: priority-survey list hidden in the simulated A–D example',simHidden);
+  // 2026-10-25 (LKH A안): the '배치 현황' fold always holds a summary counted from the data: published vs placed, the four
+  // types for every placed species (the cards' numbers with no search or group filter) and the MCUI basis; unplaced names
+  // keep their buttons. In the simulated A–D example it holds one line instead.
+  const placement=await evaluate("(()=>{toggleSimulation(false);const box=document.getElementById('matrix-unplaced'),g=[...box.querySelectorAll('.cmp-pl-group')].map(x=>[...x.querySelectorAll('li b')].map(b=>parseInt(b.textContent)));const placed=data.species.filter(assessedForMatrix).length;return {text:box.textContent,buttons:box.querySelectorAll('button').length,g,placed,total:data.species.length,cards:[...document.querySelectorAll('#matrix-types .mt-n b')].map(b=>+b.textContent),filtered:cmpFiltered()}})()");
+  const unplacedN=placement.total-placement.placed, sum=a=>(a||[]).reduce((x,y)=>x+y,0);
+  check('Matrix: 배치 현황 summarises published vs placed, the four types and the MCUI basis, all counted from the data',
+    placement.text.includes(`공개 ${placement.total}종 중 ${placement.placed}종을 지도에 배치했습니다. `+(unplacedN?`배치하지 못한 종 ${unplacedN}종:`:'배치하지 못한 종은 없습니다.'))&&placement.buttons===unplacedN
+    &&placement.text.includes('검색·분류 조건과 관계없이 전체 기준')&&placement.g.length===2&&placement.g[0].length===4&&sum(placement.g[0])===placement.placed&&sum(placement.g[1])===placement.placed
+    &&(placement.filtered||JSON.stringify(placement.g[0])===JSON.stringify(placement.cards)),JSON.stringify(placement));
+  const simHidden=await evaluate("toggleSimulation(true);const x=document.getElementById('matrix-unplaced').textContent==='가상 예시를 보는 동안에는 배치 현황을 표시하지 않습니다.';toggleSimulation(false);x");
+  check('Matrix: 배치 현황 shows one line instead of the summary in the simulated A–D example',simHidden);
   const pairsGone=await evaluate("document.getElementById('axis-pairs')===null&&typeof axisPairsHtml==='undefined'");
   const refN=await evaluate("({assessed:data.species.filter(s=>s.assessment).length,shown:data.species.filter(s=>s.assessment&&referenceCombination(s)).map(s=>s.aphiaID).sort()})");
   // verified-pilot-2.3: 참굴 has a real BBVI, so only 미역 (single-paper MBPI) keeps the reference value beside a withheld BBVI.
