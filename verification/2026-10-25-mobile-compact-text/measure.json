@@ -1,0 +1,136 @@
+{
+ "sameText": {
+  "390-gate": true,
+  "390-explore": true,
+  "390-compare": true,
+  "390-method": true,
+  "1440-gate": true,
+  "1440-explore": true,
+  "1440-compare": true,
+  "1440-method": true
+ },
+ "chars": {
+  "A-390-gate": {
+   "inner": 1471,
+   "enterBottom": 452
+  },
+  "A-390-explore": {
+   "inner": 4765,
+   "innerAllOpen": 4765
+  },
+  "A-390-compare": {
+   "inner": 881,
+   "innerAllOpen": 2262
+  },
+  "A-390-method": {
+   "inner": 3171,
+   "innerAllOpen": 11042
+  },
+  "A-1440-gate": {
+   "inner": 1542,
+   "enterBottom": 728
+  },
+  "A-1440-explore": {
+   "inner": 7428,
+   "innerAllOpen": 7428
+  },
+  "A-1440-compare": {
+   "inner": 1059,
+   "innerAllOpen": 2367
+  },
+  "A-1440-method": {
+   "inner": 3171,
+   "innerAllOpen": 11159
+  },
+  "B-390-gate": {
+   "inner": 1341,
+   "enterBottom": 369
+  },
+  "B-390-explore": {
+   "inner": 4757,
+   "innerAllOpen": 4757
+  },
+  "B-390-compare": {
+   "inner": 881,
+   "innerAllOpen": 2007
+  },
+  "B-390-method": {
+   "inner": 3171,
+   "innerAllOpen": 8266
+  },
+  "B-1440-gate": {
+   "inner": 1542,
+   "enterBottom": 728
+  },
+  "B-1440-explore": {
+   "inner": 7428,
+   "innerAllOpen": 7428
+  },
+  "B-1440-compare": {
+   "inner": 1059,
+   "innerAllOpen": 2367
+  },
+  "B-1440-method": {
+   "inner": 3171,
+   "innerAllOpen": 11159
+  }
+ },
+ "overflow": {
+  "A-390-explore": 0,
+  "A-390-compare": 0,
+  "A-390-method": 0,
+  "A-1440-explore": 0,
+  "A-1440-compare": 0,
+  "A-1440-method": 0,
+  "A-360-explore": 0,
+  "A-360-compare": 0,
+  "A-360-method": 0,
+  "A-768-explore": 0,
+  "A-768-compare": 0,
+  "A-768-method": 0,
+  "A-1100-explore": 0,
+  "A-1100-compare": 0,
+  "A-1100-method": 0,
+  "B-390-explore": 0,
+  "B-390-compare": 0,
+  "B-390-method": 0,
+  "B-1440-explore": 0,
+  "B-1440-compare": 0,
+  "B-1440-method": 0,
+  "B-360-explore": 0,
+  "B-360-compare": 0,
+  "B-360-method": 0,
+  "B-768-explore": 0,
+  "B-768-compare": 0,
+  "B-768-method": 0,
+  "B-1100-explore": 0,
+  "B-1100-compare": 0,
+  "B-1100-method": 0
+ },
+ "pc": {
+  "method-open": {
+   "size": "1440x7879",
+   "raw": 240,
+   "noise": 0,
+   "fixed": 240
+  },
+  "compare-read": {
+   "size": "1440x1189",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "explore-legend-more": {
+   "size": "1440x900",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "explore-value-info": {
+   "size": "1440x900",
+   "raw": 18,
+   "noise": 18,
+   "fixed": 0
+  }
+ }
+}

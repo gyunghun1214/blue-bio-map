@@ -1,0 +1,108 @@
+/* ==========================================================================================================================
+   2026-10-25 휴대폰 글 양 줄이기 (LKH, prompts/mobile-compact-text-claude-code.md · verification/2026-10-25-mobile-compact-text)
+   휴대폰(740px 이하, 첫 화면은 760px 이하)에서만 글을 지우지 않고 접거나 숨긴다. 문구는 한 글자도 그대로(DOM에 남는다),
+   새로 보이는 '더 보기' · '접기' 글자는 이 파일의 content로만 그린다(textContent에 들어가지 않는다).
+   1) 첫 화면: 대회 연결 두 줄(.gate-task · .gate-connect)을 숨긴다. 출처 문단('근거와 방법' 맨 아래 .mt-context)은 그대로.
+   2) 탐색 지도: 지도 설명 네 덩어리(.map-notes · .map-legend-more · 그 안의 .map-info · .legend-why)를 '읽는 법 ⓘ'로 여는
+      아래 시트(#map-guide)에서 읽는다. 시트에 옮겨 담는 일과 열고 닫기는 mobile-compact.js가 한다(닫으면 제자리로 돌아간다).
+   3) 비교와 지표 · 근거와 방법: 긴 항목은 첫 문장 뒤를 <details class="mc-more" open>(문단 안은 .mc-rest + .mc-more-btn)로
+      접는다. HTML은 열린 채로 두고 휴대폰에서만 스크립트가 닫는다(스크립트가 없어도 글은 보인다).
+   넓은 화면(741px 이상)은 접힌 칸이 늘 펼쳐져 있고 단추가 없어 전과 같은 모양이다(접는 칸이 문단 안에서 줄바꿈 없이 이어진다).
+   기존 CSS 파일은 고치지 않는다. index.html에서 다른 모든 CSS 다음에 불러온다.
+   ========================================================================================================================== */
+
+/* ---- 넓은 화면: 접는 칸이 없는 것처럼 ---- */
+@media (min-width:741px){
+  details.mc-more{display:contents}
+  details.mc-more::details-content{display:contents}
+  .mc-more>summary,.mc-more-btn{display:none}
+  /* 접은 뒤 목록은 앞 목록에 바로 이어진다(method.css · compare.css의 목록 위 여백 10px을 이 칸에서는 0으로) */
+  details.mc-more>ul,#method .method-bottom details.mc-more>.large-list,#compare .cmp-read-pop details.mc-more>.cmp-read-more{margin-top:0}
+}
+
+/* ---- 휴대폰: 접는 칸 ---- */
+@media (max-width:740px){
+  details.mc-more{display:inline;margin:0;padding:0;border:0} /* style.css의 details 밑줄·여백은 이 칸에 쓰지 않는다 */
+  details.mc-more>summary{display:inline-flex;align-items:center;min-height:44px;margin:-12px 0;padding:0 6px;list-style:none;
+    color:var(--mt-accent,var(--cs-accent,#3dd6c3));font-size:13px;font-weight:700;line-height:1;vertical-align:middle;cursor:pointer;border-radius:6px}
+  details.mc-more>summary::-webkit-details-marker{display:none}
+  details.mc-more>summary::before{content:"더 보기"}
+  details.mc-more[open]>summary::before{content:"접기"}
+  /* 펼치면 나머지 글이 첫 문장 아래로 이어지고, '접기'는 그 끝에 */
+  details.mc-more[open]{display:flex;flex-direction:column;align-items:flex-start}
+  details.mc-more[open]>summary{order:1;margin:0}
+  /* 목록·표를 통째로 접는 칸: 닫힌 채로는 목록 바로 아래 한 줄 */
+  details.mc-more:has(>ul,>div,>p){display:block}
+  details.mc-more:has(>ul,>div,>p)>summary{margin:2px 0 0}
+  details.mc-more:has(>ul,>div,>p)[open]{display:flex}
+  details.mc-more>ul,#method .method-bottom details.mc-more>.large-list,#compare .cmp-read-pop details.mc-more>.cmp-read-more{margin-top:0}
+  details.mc-more>:is(ul,div,p){align-self:stretch}
+  /* 문단 안(.mc-rest): 단추가 나머지 문장 뒤에 */
+  .mc-rest.mc-shut{display:none}
+  .mc-more-btn{display:inline-flex;align-items:center;min-height:44px;margin:-12px 0;padding:0 6px;border:0;background:none;
+    color:var(--mt-accent,#3dd6c3);font:inherit;font-size:13px;font-weight:700;line-height:1;vertical-align:middle;cursor:pointer;border-radius:6px}
+  .mc-more-btn::before{content:"접기"}
+  .mc-more-btn[aria-expanded=false]::before{content:"더 보기"}
+  :is(details.mc-more>summary,.mc-more-btn):focus-visible{outline:2px solid var(--mt-accent-hi,var(--cs-accent-hi,#44d7c0));outline-offset:2px}
+  html.lang-en details.mc-more>summary::before,html.lang-en .mc-more-btn[aria-expanded=false]::before{content:"More"}
+  html.lang-en details.mc-more[open]>summary::before,html.lang-en .mc-more-btn::before{content:"Collapse"}
+}
+
+/* ---- 첫 화면: 대회 연결 두 줄 (intro.css와 같은 760px) ---- */
+@media (max-width:760px){
+  .gate-task,.gate-connect{display:none}
+}
+
+/* ---- 탐색 지도: 지도 읽는 법 시트 ---- */
+.map-guide[hidden]{display:none}
+@media (max-width:740px){
+  /* 지도 아래 흐름에서 빼는 것: '지도 읽는 법'(시트 안에서 읽는다). 범례 칩·조사량 막대·선택 종 칩은 그대로 */
+  #explore .map-below>.map-notes{display:none}
+  .map-guide{position:fixed;inset:0;z-index:1300;display:flex;flex-direction:column;justify-content:flex-end}
+  .mg-back{position:absolute;inset:0;background:rgba(2,10,18,.6)}
+  .mg-panel{position:relative;display:flex;flex-direction:column;max-height:75vh;max-height:75dvh;
+    border:1px solid var(--nv-edge,rgba(156,178,194,.22));border-bottom:0;border-radius:16px 16px 0 0;background:var(--nv-panel,#0b1f2d);
+    box-shadow:0 -10px 30px rgba(0,0,0,.45);color:#d7e3ea}
+  .mg-close{position:absolute;top:8px;right:8px;z-index:5;display:grid;place-items:center;width:44px;height:44px;padding:0;
+    border:1px solid var(--nv-line2,#2a4659);border-radius:10px;background:var(--nv-panel,#0b1f2d);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+  .mg-close::before{content:"✕"}
+  .mg-close:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .mg-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    padding:0 16px calc(16px + env(safe-area-inset-bottom,0px))}
+  .mg-body:focus-visible{outline:none}
+  /* 옮겨 담은 덩어리: 모두 펼친 채, 각 summary는 작은 제목(누르지 않는다) */
+  .mg-body details.mg-in{display:block;margin:0;padding:0;border:0;background:none;max-height:none;overflow:visible}
+  .mg-body details.mg-in>summary{display:block;list-style:none;pointer-events:none;cursor:default}
+  .mg-body details.mg-in>summary::-webkit-details-marker{display:none}
+  .mg-body details.mg-in>summary::after{content:none}
+  .mg-body>.map-notes{position:static;z-index:auto;display:block;order:0;margin:0;padding:0}
+  /* 머리 줄(60px): 시트 제목 = 기존 '지도 읽는 법' 제목을 그 자리에 고정해 보이고, 글은 그 아래에서만 스크롤한다 */
+  .mg-panel::before{content:"";position:absolute;top:0;left:0;right:0;z-index:3;height:60px;border-bottom:1px solid var(--nv-line2,#2a4659);
+    border-radius:16px 16px 0 0;background:var(--nv-panel,#0b1f2d)}
+  .mg-body{margin-top:60px}
+  .mg-body>.map-notes.mg-in>summary{position:absolute;top:0;left:0;right:60px;z-index:4;display:flex;align-items:center;height:60px;margin:0;padding:0 16px;
+    color:#fff;font-size:16px;font-weight:800}
+  .mg-body>.map-notes.mg-in>summary:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+  .mg-body>.map-notes>p{margin:14px 0 0;color:#c7d4dc;font-size:14px;line-height:1.6}
+  .mg-body>:not(.map-notes){margin-top:18px;padding-top:14px;border-top:1px solid var(--nv-line2,#2a4659)}
+  .mg-body>details>summary,.mg-body .map-info>summary{margin:0 0 6px;color:var(--teal-ink,#7fe6d6);font-size:14px;font-weight:700}
+  .mg-body>.map-legend-more>summary:before{content:"ⓘ";margin-right:4px}
+  .mg-body>.map-legend-more>span{display:block;max-width:none;margin-top:8px;color:#c7d4dc;font-size:14px;line-height:1.6}
+  .mg-body>.map-legend-more .key-row{display:flex;align-items:center;gap:8px}
+  .mg-body>.map-legend-more .key-row b{color:#e5edf1;font-size:14px}
+  .mg-body .map-info{margin-top:14px}
+  .mg-body .map-info ul{margin:6px 0 0;padding-left:18px;color:#c7d4dc;font-size:14px;line-height:1.6}
+  .mg-body .map-info li{margin:4px 0}
+  .mg-body .map-info li b{margin-right:4px;color:#e5edf1}
+  .mg-body>.legend-why p,.mg-body .legend-why p{margin:6px 0 0;color:#c7d4dc;font-size:14px;line-height:1.6}
+  /* 활용 × 보전 보기에서 '읽는 법 ⓘ'로 연 때: 유형 범례(#value-legend)도 시트 안에서 다 보인다 */
+  .mg-body>#value-legend,.mg-body>#value-legend[hidden]{position:static;display:flex!important;flex-direction:column;align-items:stretch;gap:8px;width:auto;max-width:none;max-height:none;
+    margin-top:18px;padding:14px 0 0;overflow:visible;border:0;border-top:1px solid var(--nv-line2,#2a4659);border-radius:0;background:none;box-shadow:none;color:#d7e3ea;font-size:14px}
+  .mg-body>#value-legend .value-lead,.mg-body>#value-legend .value-key{font-size:14px}
+  .mg-body>#value-legend .legend-why{margin-top:6px}
+  .map-guide:not(.mg-still) .mg-panel{animation:mg-up .22s ease-out}
+  html.mg-lock,html.mg-lock body{overflow:hidden}
+  html.mg-lock .bbc{display:none}
+}
+@keyframes mg-up{from{transform:translateY(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.map-guide .mg-panel{animation:none}}
