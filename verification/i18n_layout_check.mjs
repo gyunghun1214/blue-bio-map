@@ -78,6 +78,14 @@ const collect=`((roots,scrollers)=>{
       for(const r of rs){const v=clipOf(el,r);if(!v)continue;boxes.push({...v,k:nodes.length-1});
         if((v.r<r.right-2||v.l>r.left+2)&&!inScroller(el))cut=Math.max(cut,Math.round(r.right-v.r+v.l-r.left));
         if(v.r>vw+1&&!inScroller(el))out.off.push({sel:sel(el),text:t.slice(0,80),over:Math.round(v.r-vw)});}
+      // covered: an opaque box that is not part of this text lies over the start, middle or end of a line
+      // (a panel over map buttons, a chip over a line); scrolled under a fixed bar or panned under a panel is (가′)
+      const v0=clipOf(el,rs[0]);if(v0&&!onMap(el)&&getComputedStyle(el).pointerEvents!=='none'){
+        for(const x of [v0.l+3,(v0.l+v0.r)/2,v0.r-3]){const y=(v0.t+v0.b)/2;if(x<0||y<0||x>vw||y>innerHeight)continue;
+          const top=document.elementFromPoint(x,y);if(!top||top===el||el.contains(top)||top.contains(el))continue;
+          const bg=getComputedStyle(top).backgroundColor.split(/[(),]/).filter(x=>x.trim()).map(Number).filter(n=>!isNaN(n)),a=bg.length>3?bg[3]:bg.length?1:0;
+          if(a<.5&&!top.textContent.trim())continue;
+          (pinned(top)!==pinned(el)?out.under:out.overlap).push({sel:sel(el)+'  ⊂  '+sel(top),text:t.slice(0,50)+'  (covered)',px:Math.round(x)+','+Math.round(y)});break;}}
       // cut sideways by a box or the page edge it sits in (the box itself has no ellipsis)
       if(cut&&!el.closest(scrollers.join(',')))out.clip.push({sel:sel(el),text:t.slice(0,80),title:!!el.closest('[title]'),cut});
       // original citations and titles keep their own spelling; a corner quote around a KO-marked original stays

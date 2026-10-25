@@ -309,6 +309,7 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   html.lang-en .gate-connect{line-height:1.45}
   html.lang-en .gate-actions{margin-top:clamp(12px,2vh,28px)}
   html.lang-en .gate-foot{padding-top:24px}
+  html.lang-en .gate-callout{width:clamp(300px,21vw,340px)} /* English title and line stay on one line, so the card ends above the foot */
   /* the globe's credit line is longer in English and ran past the right edge (1440): it wraps inside the card's width */
   html.lang-en .gate-legend .gate-credit{white-space:normal}
 }

@@ -50,7 +50,7 @@ function glossHtml(html){
     let t=methodName(part);if(svg)return t;
     for(const [re,ko,cat] of GLOSS){if(seen.has(re))continue;const m=re.exec(t);if(!m)continue;seen.add(re);
       const at=m.index+m[0].length,inside=cat&&t[m.index-1]==='(';
-      t=t.slice(0,at)+`<span class="gloss">${inside?'·'+ko:'('+ko+')'}</span>`+t.slice(at);}
+      t=t.slice(0,at)+`<span class="gloss${inside?'':' gloss-paren'}">${inside?'·'+ko:'('+ko+')'}</span>`+t.slice(at);}
     return t;}).join('');
 }
 // esc() for a Korean line that keeps English original wording (a title with its Korean name, a quoted phrase): each
