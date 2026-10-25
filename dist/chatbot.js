@@ -409,6 +409,7 @@ if(typeof document!=='undefined')(function(){
   // 탐색 지도 탭(폭 768px 이상)에서는 버튼과 대화창을 지도 확대/축소 컨트롤 왼쪽에 둔다: 근거 패널과 확대/축소를 가리지 않게.
   // 사용자가 멍이를 옮겼으면 그 자리가 이긴다.
   function place(){
+    if(!phone())untuck();  // 창이 넓어지면(741px 이상) 접힘을 바로 푼다: 넓은 화면의 누르기가 펼치기로 먹히지 않게
     reset.hidden=!posCache[posMode()];
     const pos=movedPos();
     if(pos)return placeMoved(pos);
@@ -569,7 +570,7 @@ if(typeof document!=='undefined')(function(){
   fab.addEventListener('pointerdown',e=>{
     if(e.button!==0||!e.isPrimary||opening)return;
     dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
-    pressTucked=tucked();
+    pressTucked=tucked()&&phone();
     // 접혀 있으면 밀어 넣은 만큼(transform)을 빼서 원래 자리에서 끌기를 시작한다
     const r=fab.getBoundingClientRect(),t=pressTucked?new DOMMatrixReadOnly(getComputedStyle(fab).transform):null;
     drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left-(t?.m41||0),oy:r.top-(t?.m42||0),moving:false,cancelled:false,pos:null};
