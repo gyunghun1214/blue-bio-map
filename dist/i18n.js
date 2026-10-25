@@ -193,6 +193,6 @@ const I18N_DATA_READY=(()=>{
   // 파싱이 끝나 문서가 interactive가 되면(defer 스크립트 app.js·expedition.js보다 먼저) 정적 글자를 바꾼다.
   if(document.readyState==='loading')document.addEventListener('readystatechange',ready,{once:true});else ready();
   if(LANG!=='en')return Promise.resolve();
-  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=fa987e6877"><\/script>');
+  if(document.readyState==='loading')document.write('<script src="i18n-en.js?v=89c9002179"><\/script>');
   return fetch('i18n-data-en.json?v=d0e348880a').then(r=>r.ok?r.json():null).then(d=>{if(d?.schema==='i18n-data-en-1'&&d.by_text){Object.assign(I18N_DATA,d.by_text);I18N_CACHE.clear();}}).catch(()=>{});
 })();

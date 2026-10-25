@@ -52,7 +52,8 @@ assert.ok(app.includes("${rest?p('cp-rest',rest):''}${cmnpdLine(s)}</section>"))
 assert.ok(!app.includes('${cpEvidence(s)}${cmnpdLine(s)}'));
 
 // method tab: the why-ChEMBL card and the counts from the file
-assert.match(html,/<article class="method-card" id="method-chembl">.*왜 MBPI의 주 소스가 ChEMBL인가요\?.*pChEMBL.*CC BY-NC-SA 4\.0.*<p class="fine" id="mt-cmnpd"><\/p><\/article>/);
+// 2026-10-25 (mobile-compact): the CMNPD note and the #mt-cmnpd line sit in a <details class="mc-more" open> that phones fold
+assert.match(html,/<article class="method-card" id="method-chembl">.*왜 MBPI의 주 소스가 ChEMBL인가요\?.*pChEMBL.*<details class="mc-more" open><summary aria-label="더 보기"><\/summary><p class="fine">.*CC BY-NC-SA 4\.0.*<p class="fine" id="mt-cmnpd"><\/p><\/details><\/article>/);
 const t=ctx.method(), T=file.totals;
 assert.ok(t.startsWith(`${file.source.accessed} 조회 기준, 30종 중 ${T.species_with_compounds}종에서 CMNPD 보고 화합물 ${T.pairs}개를 찾았습니다.`),t);
 assert.ok(!t.includes('ChEMBL 분자까지 이어진 화합물은')&&!t.includes('종 연결이 없는 화합물은'),t);
