@@ -1041,6 +1041,10 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 .detail-act{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
 .detail-act:hover{border-color:var(--teal);color:var(--teal-ink)}
 #explore .detail-act{border-color:var(--nv-line2)}
+/* 2026-10-25 종 상세 '이 생물이 사는 바다 지키기': 바깥 활동 링크 아래에 한 줄 설명. 탐색 카드의 2열 단추 줄에서는 세 번째 단추가 한 줄을 다 쓴다 */
+.sea-care-links li{margin:.4em 0}
+.sea-care-note{display:block;opacity:.85}
+#explore .sp-actions .detail-act[data-sea-care]{grid-column:1/-1}
 .alt-production{margin:14px 0 4px;padding:12px 14px;border:1px solid var(--line);border-left:4px solid #f2b233;border-radius:10px;background:var(--surface)}
 #explore .alt-production{background:var(--nv-surface);border-color:var(--nv-line2);border-left-color:#f2b233}
 #detail .alt-row{grid-template-columns:1fr;gap:2px}
