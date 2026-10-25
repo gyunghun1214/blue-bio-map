@@ -1,0 +1,146 @@
+{
+ "sameText": {
+  "ko-390-gate": true,
+  "ko-390-explore": true,
+  "ko-390-compare": true,
+  "ko-390-method": true,
+  "ko-1440-gate": true,
+  "ko-1440-explore": true,
+  "ko-1440-compare": true,
+  "ko-1440-method": true,
+  "en-390-gate": true,
+  "en-390-explore": true,
+  "en-390-compare": true,
+  "en-390-method": true,
+  "en-1440-gate": true,
+  "en-1440-explore": true,
+  "en-1440-compare": true,
+  "en-1440-method": true
+ },
+ "chars": {
+  "A-390-gate": {
+   "inner": 1341
+  },
+  "A-390-explore": {
+   "inner": 4757,
+   "innerAllOpen": 4757
+  },
+  "A-390-compare": {
+   "inner": 841,
+   "innerAllOpen": 1967
+  },
+  "A-390-method": {
+   "inner": 2830,
+   "innerAllOpen": 7925
+  },
+  "A-1440-gate": {
+   "inner": 1542
+  },
+  "A-1440-explore": {
+   "inner": 7428,
+   "innerAllOpen": 7428
+  },
+  "A-1440-compare": {
+   "inner": 1059,
+   "innerAllOpen": 2367
+  },
+  "A-1440-method": {
+   "inner": 2830,
+   "innerAllOpen": 10818
+  },
+  "B-390-gate": {
+   "inner": 1341
+  },
+  "B-390-explore": {
+   "inner": 4757,
+   "innerAllOpen": 4757
+  },
+  "B-390-compare": {
+   "inner": 841,
+   "innerAllOpen": 1830
+  },
+  "B-390-method": {
+   "inner": 2661,
+   "innerAllOpen": 7656
+  },
+  "B-1440-gate": {
+   "inner": 1542
+  },
+  "B-1440-explore": {
+   "inner": 7428,
+   "innerAllOpen": 7428
+  },
+  "B-1440-compare": {
+   "inner": 1059,
+   "innerAllOpen": 2367
+  },
+  "B-1440-method": {
+   "inner": 2830,
+   "innerAllOpen": 10818
+  }
+ },
+ "overflow": {
+  "A-390-explore": 0,
+  "A-390-compare": 0,
+  "A-390-method": 0,
+  "A-1440-explore": 0,
+  "A-1440-compare": 0,
+  "A-1440-method": 0,
+  "A-360-explore": 0,
+  "A-360-compare": 0,
+  "A-360-method": 0,
+  "A-768-explore": 0,
+  "A-768-compare": 0,
+  "A-768-method": 0,
+  "A-1100-explore": 0,
+  "A-1100-compare": 0,
+  "A-1100-method": 0,
+  "B-390-explore": 0,
+  "B-390-compare": 0,
+  "B-390-method": 0,
+  "B-1440-explore": 0,
+  "B-1440-compare": 0,
+  "B-1440-method": 0,
+  "B-360-explore": 0,
+  "B-360-compare": 0,
+  "B-360-method": 0,
+  "B-768-explore": 0,
+  "B-768-compare": 0,
+  "B-768-method": 0,
+  "B-1100-explore": 0,
+  "B-1100-compare": 0,
+  "B-1100-method": 0
+ },
+ "pc": {
+  "explore": {
+   "size": "1440x900",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "compare": {
+   "size": "1440x1189",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "method": {
+   "size": "1440x2616",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "method-open": {
+   "size": "1440x7655",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  },
+  "compare-read": {
+   "size": "1440x1189",
+   "raw": 0,
+   "noise": 0,
+   "fixed": 0
+  }
+ }
+}
