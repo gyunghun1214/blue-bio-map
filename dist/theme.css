@@ -1672,3 +1672,15 @@ html.lang-en #explore #sp-name{overflow-wrap:anywhere}
   #explore .map-stage:has(.leaflet-popup) .map-full-ctl{visibility:hidden}
 }
 @media (max-width:740px) and (prefers-reduced-motion:reduce){#explore .explorer.map-snap .map-stage{transition:none}}
+/* 2026-10-25 English screen, three-column map (1180–1599px): the map-content buttons and the period button ran wider than
+   the free part of the map (1280: 'Occurrence records' slid under the species list). Here each label may take two lines,
+   and the period button gets back the right padding its arrow needs ('All' sat under the arrow). Korean screen unchanged. */
+@media (min-width:1180px) and (max-width:1599px){
+  html.lang-en #explore .map-ui-tl{gap:8px}
+  html.lang-en #explore .map-mode button,html.lang-en #explore .map-mode button[aria-pressed]{max-width:112px;padding:0 12px;font-size:14px;line-height:1.15;white-space:normal;text-align:center}
+  html.lang-en #explore .pf-toggle{padding-right:32px;font-size:14px;line-height:1.15;white-space:normal;text-align:left}
+  html.lang-en #explore .pf-toggle .pf-k{max-width:132px}
+}
+/* the '0–100 scale' note beside a long English score name stays on one line (it broke into '0– / 100 / scale') */
+html.lang-en #explore .sp-range{white-space:nowrap}
+html.lang-en .gloss-paren{margin-left:.3em} /* 'LC (Least Concern)': English puts a space before the bracket */
