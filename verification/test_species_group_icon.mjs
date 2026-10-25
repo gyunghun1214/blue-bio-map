@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const D=new URL('../dist/',import.meta.url), read=f=>fs.readFileSync(new URL(f,D),'utf8');
@@ -20,6 +21,7 @@ const ctx={AbortSignal,structuredClone,console,URLSearchParams,document:{getElem
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';globalThis.T={SPECIES_ART,renderSidePanel,renderCompareProfile,set sel(v){selected=v}};',ctx);
 const T=ctx.T;
@@ -44,7 +46,7 @@ const oyster=data.species.find(s=>s.aphiaID===836033);
 assert.equal(oyster.group,'패류','참굴 shows the 패류 icon');
 
 // (3) the temporary asset and every reference to it are gone from the deployed folder (SOURCE.txt keeps the deletion note)
-const root=new URL('.',D).pathname, hits=[];
+const root=fileURLToPath(D), hits=[]; // URL.pathname is '/C:/…' on Windows, which fs cannot open
 assert.ok(!fs.existsSync(path.join(root,'vendor/species/magallana-gigas-temp.webp')),'temporary asset deleted');
 for(const f of fs.readdirSync(root,{recursive:true})){
   const p=path.join(root,f);if(!fs.statSync(p).isFile()||p.endsWith(path.join('vendor','species','SOURCE.txt')))continue;

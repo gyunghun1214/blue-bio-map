@@ -8,6 +8,7 @@ import vm from 'node:vm';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const app=read('app.js'), report=JSON.parse(read('assessments.json')), file=JSON.parse(read('replication-search.json'));
 const ctx={};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.rows=replicationSearchRows;globalThis.text=replicationSearchText;globalThis.block=evidenceProfileBlock;'+

@@ -184,8 +184,11 @@ const around=(re,t)=>[...t.matchAll(new RegExp(re.source,'g'))].map(m=>t.slice(M
 // cited works keep their own titles (a 2025 paper on octopus peptide genes is titled 'Screening and preliminary analysis ...')
 const ownTitles=[...new Set(data.stops.flatMap(st=>st.sources.map(s=>s.title)).filter(t=>/preliminary/i.test(t)))];
 assert.equal(ownTitles.length,1);
+// 2026-10-20 (LKH): the one mark kept from the weakness words, as on the main map (PR #240): '예비' beside the number of a
+// category from the range calculation ('10.0 (LC·예비)'). It is checked per stop below and taken out before the word check.
+const MARK=/·예비\)/g;
 for(const [where,h] of drawn){
-  const t=said(h);
+  const t=said(h).replace(MARK,')');
   assert.deepEqual(around(WEAK,t),[],`${where}: weakness wording`);
   assert.deepEqual(around(NEGATIVE,t),[],`${where}: negative guidance`);
   assert.deepEqual(around(/연출용/,t),[],`${where}: the route and the shared-cell positions are 탐험 연출`);
@@ -214,12 +217,14 @@ data.stops.forEach((st,i)=>{
     :m.basis==='iucn'?`IUCN ${m.category} (${m.assessment_year} 평가)`:m.basis==='national'?`한국 국가 평가 ${m.category}`:`보전 상태 범주 ${m.category}`;
   assert.ok(front.includes(tag),`${st.korean_name}: card tag ${tag}`);
   assert.ok(front.includes(`${Number(st.scores.MCUI).toFixed(1)} /100 (${m.category}`),`${st.korean_name}: MCUI value and category`);
+  assert.equal(front.includes(`(${m.category}${m.criteria?', '+m.criteria:''}·예비)`),m.basis==='preliminary',`${st.korean_name} (${m.basis}): the 예비 mark`);
+  assert.equal(front.split('예비').length,m.basis==='preliminary'?2:1,`${st.korean_name}: '예비' only in the mark`);
   if(m.driver==='stock_decline')assert.ok(cons.includes(tag),`${st.korean_name}: the catch trend in the detail`);
   if(m.basis==='preliminary'||m.basis==='range_state'){
     const line='범주 출처: '+(m.basis==='preliminary'?'분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)':RANGE[st.aphia_id]);
     assert.ok(cons.includes(line),`${st.korean_name}: ${line}`);
     assert.equal(cons.split('출처').length,2,`${st.korean_name}: one source line`);
-    assert.doesNotMatch(cons,/공식|팀 규칙|IUCN 점수|Rapid|예비|서식국|자체|역검증|범위:/,st.korean_name);
+    assert.doesNotMatch(cons.replace(MARK,')'),/공식|팀 규칙|IUCN 점수|Rapid|예비|서식국|자체|역검증|범위:/,st.korean_name);
     assert.ok(cons.includes(`보전 상태 범주 ${m.category}`)&&cons.includes(`점수 환산: ${m.mapping}`),st.korean_name);
   }else{
     assert.ok(cons.includes(ctx.sourceTitle(m.source))&&cons.includes(`점수 환산: ${ctx.mappingText(m.mapping)}`),st.korean_name);

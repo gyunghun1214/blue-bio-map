@@ -135,8 +135,8 @@ function gateNote(g){
 }
 // The design's "N종의 해양생물 · 공개 데이터 기반" (2026-10-17, LKH: one count, no published/candidate split). Empty until known.
 const countsLine=d=>speciesTotal(d)===null?'':`${speciesTotal(d)}종의 해양생물 · 공개 데이터 기반`;
-// 2026-10-17 (#1) problem → solution under the slogan. The third problem line's '근거 출처 N건' (named so on 2026-10-19; the
-// method tab's '전체 출처 목록' says how it relates to that list) is the rows of license-matrix.json
+// 2026-10-17 (#1) problem → solution under the slogan. '근거 출처 N건' (named so on 2026-10-19; the method tab's '전체 출처
+// 목록' says how it relates to that list; since 2026-10-21 on the way into that list, no longer a problem line) is the rows of license-matrix.json
 // (app.js reads the file anyway and passes it on) that feed an indicator or the map's cells: counted on every load, never
 // typed in; null keeps the line out (no file, no rows).
 const EVIDENCE_USES=['MFPI','MBPI','MCUI','출현 지도 셀'];
@@ -557,8 +557,8 @@ void main(){
     const note=gateNote(gate);q('.gate-note').textContent=note;q('.gate-note').hidden=!note;
     q('.gate-counts').textContent=countsLine(gate.done);
     const total=speciesTotal(gate.done);if(total)for(const b of el.querySelectorAll('.gate-total'))b.textContent=String(total); // the solution line and '다음 단계' (#4)
-    if(gate.sources!==undefined){const li=q('.gate-src');li.classList.remove('is-wait');li.hidden=gate.sources===null;
-      if(gate.sources)q('.gate-src-n').textContent=String(gate.sources);}
+    const src=q('.gate-src'),srcN=q('.gate-src-n'); // '근거 출처 N건 · ' on the way into the source list; absent markup is skipped
+    if(src&&srcN&&gate.sources!==undefined){if(gate.sources)srcN.textContent=String(gate.sources);src.hidden=!gate.sources;}
     renderUseSpecies();
   }
   // 2026-10-17 (#3): the policy card under the first screen names the species of the conservation example (app.js gateExamples)
@@ -1047,6 +1047,8 @@ void main(){
     q('#gate-enter').addEventListener('click',()=>enter('explore'));
     for(const b of el.querySelectorAll('[data-go]'))b.addEventListener('click',()=>enter(b.dataset.go));
     for(const b of el.querySelectorAll('[data-go-table]'))b.addEventListener('click',()=>enter('compare',{table:b.dataset.goTable}));
+    // 2026-10-21 (site v4 07): the farming card opens 탐색 지도 with the '상업 양식' chip on, through the app's own link handling
+    for(const b of el.querySelectorAll('[data-go-hash]'))b.addEventListener('click',()=>enter('explore',{hash:b.dataset.goHash}));
     // the pill on the source strip's line: down to the uses, focus on their heading
     q('.gate-down').addEventListener('click',()=>{const h=q('.gate-hero');h.scrollTo({top:h.scrollTop+q('.gate-uses').getBoundingClientRect().top-h.getBoundingClientRect().top,behavior:reduce?'auto':'smooth'});q('.gate-uses-h').focus({preventScroll:true});});
     document.addEventListener('keydown',e=>{
@@ -1077,7 +1079,7 @@ void main(){
   // As soon as the screen's markup is all in (the element after it exists), not at DOMContentLoaded: that waits for the
   // deferred app scripts (seconds on a slow network) while the loader already shows, and the piece runs from its paint.
   let begun=false,watch=null;
-  const start=()=>{if(begun)return;begun=true;watch?.disconnect();try{setup();}catch{fail();}};
+  const start=()=>{if(begun)return;begun=true;watch?.disconnect();try{applyStaticI18n(document.getElementById('site-gate'));}catch{}try{setup();}catch{fail();}}; // 영어 화면: 시작 화면 정적 글자부터(i18n.js)
   const parsed=()=>document.readyState!=='loading'||!!document.getElementById('site-gate')?.nextElementSibling;
   if(parsed())start();
   else{watch=new MutationObserver(()=>{if(parsed())start();});watch.observe(document.documentElement,{childList:true,subtree:true});

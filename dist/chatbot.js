@@ -124,10 +124,22 @@ const CHATBOT_STARTERS=[['overview','이 지도는 뭘 보여주나요?'],['colo
   ['select-species','종을 골라서 지도에서 보기'],['compare','종끼리 비교하기'],['indices','BBVI·MCUI가 뭔가요?']];
 // 답이 없을 때 보여 줄 세 탭과 그 탭에서 볼 수 있는 것.
 const CHATBOT_TAB_LINKS=[['explore','종별 지도와 근거'],['compare','매트릭스와 데이터 표'],['method','산출 방법과 출처']];
+// 영어 화면(i18n.js의 LANG·T_가 있을 때): 질문 칩·답·키워드를 화면 사전(i18n-en.js, '안내 도우미' 묶음)에서 읽는다.
+// 키워드 사전 값은 쉼표로 나눈 영어 낱말·구(구는 정규화하면 붙어서 한 덩어리로 맞춘다).
+// 한국어 화면과 vm 검사(i18n.js 없음)에서는 원문 그대로다. 영어 질문 예시를 앞에 두고(칩은 q[0]) 한국어 예시·키워드도 남겨 둔다.
+const chatbotEn=()=>typeof LANG!=='undefined'&&LANG==='en';
+const chatbotT=(ko,v)=>typeof T_==='function'?T_(ko,v):ko.replace(/\{(\w+)\}/g,(m,k)=>v&&Object.hasOwn(v,k)?String(v[k]):m);
+const chatbotTr=s=>chatbotEn()&&typeof i18nTr==='function'&&s?i18nTr(i18nKey(s))??s:s; // 앱이 만든 한국어 낱말(유형 이름 등)
+if(chatbotEn()){
+  for(const f of CHATBOT_FAQ){f.q=[...f.q.map(x=>chatbotT(x)),...f.q];f.k=[...chatbotT(f.k.join(' ')).split(/\s*,\s*/),...f.k];f.a=chatbotT(f.a);}
+  for(const x of [...CHATBOT_STARTERS,...CHATBOT_TAB_LINKS])x[1]=chatbotT(x[1]);
+}
 const CHATBOT_PARTICLES=['으로','에서','이랑','하고','까지','부터','한테','은','는','이','가','을','를','의','에','로','도','요','와','과','만'];
 // 소문자 → 낱말마다 끝 조사 하나 제거(조사보다 2글자 이상 긴 낱말만) → 공백·문장부호 없이 이어 붙임.
+// 영어 화면에서는 뜻이 적은 영어 낱말(what·the·is 등)도 뺀다. 바이그램 비교가 이런 낱말에 끌려가지 않게.
+const CHATBOT_STOP_EN=new Set(['what','whats','is','are','was','the','a','an','do','does','did','how','i','im','to','of','in','on','for','it','its','this','that','these','me','my','can','be','with','and','or','there','about','want','see','mean','means','s','you','your','why','which','when']);
 function chatbotNormalize(text){
-  return String(text||'').toLowerCase().split(/[^\p{L}\p{N}×]+/u).filter(Boolean).map(w=>{
+  return String(text||'').toLowerCase().split(/[^\p{L}\p{N}×]+/u).filter(w=>w&&!(chatbotEn()&&CHATBOT_STOP_EN.has(w))).map(w=>{
     const p=CHATBOT_PARTICLES.find(p=>w.length>=p.length+2&&w.endsWith(p));return p?w.slice(0,-p.length):w;}).join('');
 }
 const chatbotBigrams=s=>{const out=new Set();for(let i=0;i<s.length-1;i++)out.add(s.slice(i,i+2));return out;};
@@ -138,10 +150,11 @@ function chatbotSimilar(a,b){
 // 점수 = 가장 비슷한 질문 예시(바이그램 Dice) + 들어 있는 키워드 수 × 0.3. 기준 미달이면 null(모르겠어요).
 // ponytail: 단순 바이그램·키워드 일치. 항목이 수백 개로 늘거나 오답이 잦으면 가중치 학습이나 AI 연결을 검토.
 const CHATBOT_MIN_SCORE=.45;
+const CHATBOT_MIN_SCORE_EN=.55; // 영어는 짧은 낱말끼리 바이그램이 쉽게 겹쳐(hello ↔ cell colour) 기준을 조금 높인다
 // {plain:<사분면 키>}: 판단문(유형 앞의 짧은 말)은 app.js의 matrixTypePlain 한 곳에서 읽는다. 읽을 수 없으면 카드를 보라고 안내.
 function chatbotPlain(key){
   try{const id=typeof matrixRule==='function'?matrixRule()?.types?.[key]?.id:null;if(id&&typeof matrixTypePlain==='function')return matrixTypePlain(id);}catch{}
-  return '종 카드에 적힌 판단문';
+  return chatbotT('종 카드에 적힌 판단문');
 }
 // {matrix}·{score:종:지표}·{basis:종}·{mcuiwhy:종}: 종의 값과 근거를 app.js가 화면에 쓰는 함수로 읽는다(숫자 하드코딩 없음).
 // 자료가 아직 없거나 종을 못 찾으면 화면을 보라는 말로 바꾼다. MCUI 근거 낱말은 app.js의 mcuiBasisShortOf가 화면과 같은 말로 정한다.
@@ -150,23 +163,24 @@ function chatbotFact(kind,arg){
   try{
     const list=typeof data!=='undefined'&&Array.isArray(data?.species)?data.species:null;
     if(kind==='matrix'){
-      if(!list||typeof assessedForMatrix!=='function')return '몇 종이 놓였는지는 매트릭스 아래 ‘유형별 종 목록’에서 볼 수 있어요.';
+      if(!list||typeof assessedForMatrix!=='function')return chatbotT('몇 종이 놓였는지는 매트릭스 아래 ‘유형별 종 목록’에서 볼 수 있어요.');
       const n=list.filter(s=>assessedForMatrix(s)).length;
-      return n===list.length?`지금은 ${list.length}종 모두 매트릭스에 놓여 있어요.`:`지금은 매트릭스에 ${n}종이 놓여 있어요.`;
+      return n===list.length?chatbotT('지금은 {0}종 모두 매트릭스에 놓여 있어요.',{0:list.length}):chatbotT('지금은 매트릭스에 {0}종이 놓여 있어요.',{0:n});
     }
-    const [name,key]=String(arg).split(':'),s=list?.find(x=>x.label===name);
+    // 자리표시의 종 이름은 한국어(영어 화면의 label은 학명이라 koLabel로도 찾는다). 답에 쓰는 이름은 화면의 label.
+    const [name,key]=String(arg).split(':'),s=list?.find(x=>x.label===name||x.koLabel===name),nm=s?.label||name;
     const score=k=>{const v=s&&pilotScore(s,k);return Number.isFinite(v)?scoreText(s,k,v):null;};
-    if(kind==='score'&&score(key)!==null)return score(key)+'점';
-    if(kind==='basis'&&s&&typeof mcuiBasisShortOf==='function'){const b=mcuiBasisShortOf(s);return b==='IUCN'?'IUCN 전 지구 평가':b;}
+    if(kind==='score'&&score(key)!==null)return score(key)+(chatbotEn()?'':'점');
+    if(kind==='basis'&&s&&typeof mcuiBasisShortOf==='function'){const b=mcuiBasisShortOf(s);return chatbotTr(b==='IUCN'?'IUCN 전 지구 평가':b);}
     if(kind==='mcuiwhy'&&score('MCUI')!==null){
-      if(!stockMcui(s))return `${name}의 MCUI는 지금 ${score('MCUI')}점이고 ${chatbotFact('basis',name)}에서 왔어요.`;
+      if(!stockMcui(s))return chatbotT('{0}의 MCUI는 지금 {1}점이고 {2}에서 왔어요.',{0:nm,1:score('MCUI'),2:chatbotFact('basis',name)});
       const c=s.assessment?.conservation_status?.category,risk=extinctionMcui(s),ch=stockChange(s.assessment.stock_decline);
-      const signal=`자원 감소 신호${ch?`(어획량 ${ch})`:''}`;
-      return Number.isFinite(risk)?`${name}의 멸종위험 범주${c?`(${c})`:''}만 보면 MCUI는 ${scoreValue(s,'MCUI',risk)}점이지만, ${signal}로 ${score('MCUI')}점이 됐어요.`
-        :`${name}의 MCUI는 ${signal}로 ${score('MCUI')}점이 됐어요.`;
+      const signal=ch?chatbotT('자원 감소 신호(어획량 {0})',{0:ch}):chatbotT('자원 감소 신호');
+      return Number.isFinite(risk)?chatbotT('{0}의 멸종위험 범주{1}만 보면 MCUI는 {2}점이지만, {3}로 {4}점이 됐어요.',{0:nm,1:c?(chatbotEn()?' ':'')+`(${c})`:'',2:scoreValue(s,'MCUI',risk),3:signal,4:score('MCUI')})
+        :chatbotT('{0}의 MCUI는 {1}로 {2}점이 됐어요.',{0:nm,1:signal,2:score('MCUI')});
     }
   }catch{}
-  return kind==='score'?'(값은 종 상세 참고)':kind==='basis'?'종 상세에 적힌 근거':kind==='mcuiwhy'?'값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.':'';
+  return chatbotT(kind==='score'?'(값은 종 상세 참고)':kind==='basis'?'종 상세에 적힌 근거':kind==='mcuiwhy'?'값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.':'');
 }
 function chatbotMatch(text){
   const q=chatbotNormalize(text);if(q.length<2)return null;
@@ -178,7 +192,7 @@ function chatbotMatch(text){
     const score=sim+.3*hits;
     if(score>top){top=score;best=f;}
   }
-  return top>=CHATBOT_MIN_SCORE?best:null;
+  return top>=(chatbotEn()?CHATBOT_MIN_SCORE_EN:CHATBOT_MIN_SCORE)?best:null;
 }
 
 // 안내 캐릭터 '멍이'(멍게 연구원) SVG. 상태: welcome·answer·think·ai·point·unknown·rest. crop이면 바위 없이 몸·입출수공만(아바타용).
@@ -286,17 +300,17 @@ if(typeof document!=='undefined')(function(){
   function rule(){try{return typeof matrixRule==='function'?matrixRule():null;}catch{return null;}}
   function typeLabel(key){
     const t=rule()?.types?.[key];
-    if(t){try{if(typeof matrixTypeLabel==='function'){const l=matrixTypeLabel(t.id);if(l&&l!==t.id)return l;}}catch{}if(t.label)return t.label;}
-    return document.querySelector(`.value-grid [data-key="${key}"] b`)?.textContent.trim()||'범례 ⓘ의 유형';
+    if(t){try{if(typeof matrixTypeLabel==='function'){const l=matrixTypeLabel(t.id);if(l&&l!==t.id)return chatbotTr(l);}}catch{}if(t.label)return chatbotTr(t.label);}
+    return document.querySelector(`.value-grid [data-key="${key}"] b`)?.textContent.trim()||chatbotT('범례 ⓘ의 유형');
   }
   function fill(text){
     return text.replace(/\{tab:(\w+)\}/g,(_,v)=>q(document.querySelector(`.tabs button[data-view="${v}"]`)?.textContent.trim()||v))
       .replace(/\{type:(\w+)\}/g,(_,k)=>q(typeLabel(k)))
-      .replace(/\{plain:(\w+)\}/g,(_,k)=>q(chatbotPlain(k)))
+      .replace(/\{plain:(\w+)\}/g,(_,k)=>q(chatbotTr(chatbotPlain(k))))
       .replace(/\{(matrix|score|basis|mcuiwhy)(?::([^}]+))?\}/g,(_,k,a)=>chatbotFact(k,a))
       .replace(/\{rule\}/g,()=>{const r=rule(),b=r?.bbvi_threshold,m=r?.mcui_threshold;
-        return Number.isFinite(b)&&Number.isFinite(m)?(b===m?`BBVI(활용가치)와 MCUI(보전 시급성)가 각각 ${b} 이상이면 ‘높음’으로 봐요.`:`BBVI(활용가치) ${b}, MCUI(보전 시급성) ${m} 이상이면 ‘높음’으로 봐요.`)
-          :'‘높음’의 기준은 범례 ⓘ에서 확인하세요.';});
+        return Number.isFinite(b)&&Number.isFinite(m)?(b===m?chatbotT('BBVI(활용가치)와 MCUI(보전 시급성)가 각각 {0} 이상이면 ‘높음’으로 봐요.',{0:b}):chatbotT('BBVI(활용가치) {0}, MCUI(보전 시급성) {1} 이상이면 ‘높음’으로 봐요.',{0:b,1:m}))
+          :chatbotT('‘높음’의 기준은 범례 ⓘ에서 확인하세요.');});
   }
 
   const root=document.createElement('div');root.className='bbc';
@@ -456,7 +470,7 @@ if(typeof document!=='undefined')(function(){
     const box=document.createElement('div');box.className='bbc-chips bbc-tabs';
     for(const [id,what] of CHATBOT_TAB_LINKS){
       const b=document.createElement('button');b.type='button';b.dataset.tab=id;
-      b.textContent=`${document.querySelector(`.tabs button[data-view="${id}"]`)?.textContent.trim()||id} 탭 · ${what}`;box.append(b);
+      b.textContent=chatbotT('{0} 탭 · {1}',{0:document.querySelector(`.tabs button[data-view="${id}"]`)?.textContent.trim()||id,1:what});box.append(b);
     }
     log.append(box);log.scrollTop=log.scrollHeight;
   }
@@ -473,7 +487,11 @@ if(typeof document!=='undefined')(function(){
   function open(){
     dismissHint();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
-    place();input.focus();
+    place();
+    // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
+    // 추천 질문 묶음의 첫 단추(없으면 닫기)로 포커스를 옮기고, 입력칸은 사람이 누를 때 키보드가 뜬다. 넓은 화면은 그대로 입력칸.
+    if(matchMedia('(max-width:740px)').matches)([...panel.querySelectorAll('.bbc-chips')].at(-1)?.querySelector('button')||panel.querySelector('.bbc-close'))?.focus();
+    else input.focus();
   }
   function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
 

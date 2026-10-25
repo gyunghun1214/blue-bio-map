@@ -63,7 +63,8 @@ const cardName="(document.querySelector('#stop-card:not([hidden]) .x-name')?.tex
 // Screen wording (team-lead decision 2026-10-17): no word that shows a weakness of the data or the method, no blank marker,
 // no check result and no negative guidance on the page (same list as verification/test_expedition_ui.mjs)
 const WEAK=String.raw`미충족|미통과|실패|불성립|사용 중단|제한적 확인|예비|공식 평가 전|공식 평가 아님|자체 평가|자체 예비|Rapid|역검증|서식국|다른 나라|재현 확인 중|독립 재현|근거 논문 1편|단일 논문|조사 필요|확인 필요|미확인|미산출|점수 없음|정보충분도|공백|사후 검증|사전 등록|결과를 본 뒤|결과 확인 후|검증|상업 이용 불가|조사 후보|운영 발행|판정 아님|우선 조사|탐색적 재검토|하한|자료 없음|링크 없음|인용 없음|미배정|아님|아닙니다|아니에요|아니라|않음|않습니다|않아요|뜻하지|연출용`;
-const weakIn=text=>`((${text}).match(new RegExp(${JSON.stringify(`.{0,20}(${WEAK}).{0,20}`)},'g'))||[]).join(' | ')`;
+// the mark '(LC·예비)' beside the MCUI number is the one kept (2026-10-20, as on the main map); test_expedition_ui checks it per stop
+const weakIn=text=>`((${text}).replace(/·예비\\)/g,')').match(new RegExp(${JSON.stringify(`.{0,20}(${WEAK}).{0,20}`)},'g'))||[]).join(' | ')`;
 const level="(Number(document.querySelector('#stop-card:not([hidden]) .x-card')?.dataset.level||0))";
 const key=async(s,k,code)=>{for(const type of ['keyDown','keyUp'])await s.send('Input.dispatchKeyEvent',{type,key:k,code:code||k,windowsVirtualKeyCode:{ArrowRight:39,ArrowLeft:37,Escape:27,Enter:13,' ':32,End:35}[k],...(type==='keyDown'&&(k==='Enter'||k===' ')?{text:k==='Enter'?String.fromCharCode(13):' '}:{})});};
 

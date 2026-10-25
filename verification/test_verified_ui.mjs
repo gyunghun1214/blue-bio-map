@@ -12,6 +12,7 @@ const sp=(aphiaID,name,label)=>({aphiaID,name,label,live:true});
 const all=()=>original.species.map(s=>sp(s.aphia_id,s.scientific_name,s.korean_name));
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>report()})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+`;
   globalThis.attach=attachPilotAssessments;
@@ -26,7 +27,9 @@ vm.runInContext(app.split('function setView')[0]+`;
   globalThis.plain=plainWords;
   globalThis.scoreText=scoreText;
   globalThis.evText=evidenceProfileText;
-  globalThis.evDep=evidenceDependence;`,ctx);
+  globalThis.evDep=evidenceDependence;
+  globalThis.mbpiMaterial=mbpiMaterial;
+  globalThis.basisNote=basisNote;`,ctx);
 
 let next={live:true,species:all()};
 await ctx.attach(next);
@@ -40,6 +43,14 @@ assert.equal(ctx.score(by(836033),'BBVI'),71.9,'4.11: the LQP replication is a z
 ctx.next=next;
 vm.runInContext('data=globalThis.next',ctx);
 
+// 2026-10-21 (사이트 v4 prompt 04): every MBPI number carries the substance its top item was measured on and the test kind,
+// read from that item (a peptide by its sequence, a ChEMBL compound by its name); species without an MBPI get none.
+{const want={'미역':'VW 펩타이드 · ACE 저해 IC50','해삼':'HDWWKER 펩타이드 · ACE 저해 IC50','멍게':'Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50',
+  '살오징어':'YALPHA 펩타이드 · ACE 저해 IC50','우뭇가사리':'Pheophorbide a · HIV-1 항바이러스 IC50','톳':'GKY 펩타이드 · ACE 저해 IC50',
+  '홍합(참담치)':'Halocynthiaxanthin · HIV-1 역전사효소 저해 IC50','참굴':'LQP 펩타이드 · ACE 저해 IC50'};
+  const got=Object.fromEntries(next.species.filter(s=>ctx.mbpiMaterial(s)).map(s=>[s.label,ctx.mbpiMaterial(s)]));
+  assert.deepEqual(got,want,'MBPI material for the eight species with an MBPI');
+  for(const s of next.species)if(ctx.score(s,'MBPI')!==null)assert.ok(ctx.basisNote(s,'MBPI').startsWith(' · '+want[s.label]),`${s.label}: material beside MBPI`);}
 let html=ctx.renderScores(by(836033));
 for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-marine-animals','25개 식품','자료 신뢰도 감점','가식부 16.0%','428 mg','칼슘','정식 산출 · 한국 국가 평가 기반','MFPI는 같은 비교집단 안에서 비교합니다'])
   assert.ok(html.includes(text),`missing visible trace: ${text}`);
@@ -285,16 +296,16 @@ for(const s of next.species){const cell=dom.comparison.innerHTML.match(new RegEx
   const rec=[...original.species,...original.candidate_species].find(x=>x.aphia_id===s.aphiaID);
   assert.equal(cell.includes('·예비)'),rec.mcui_basis==='preliminary',`${s.label} (${rec.mcui_basis}): the 예비 mark`);}
 assert.ok(next.species.some(s=>[...original.species,...original.candidate_species].find(x=>x.aphia_id===s.aphiaID).mcui_basis==='range_state'),'a range-state species is in the table');
-assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0 \(VU \+ 자원 감소\)<small>/,'우뭇가사리 keeps its stock-decline lower bound');
+assert.match(dom.comparison.innerHTML,/data-more-aphia="372119" data-more-axis="MCUI"[^>]*>80\.0 \(VU \+ 어획량 감소\)<small>/,'우뭇가사리 keeps its stock-decline lower bound');
 assert.doesNotMatch(dom.comparison.innerHTML,/>10\.0<small>정식 산출 · 역검증 기준 미충족/);
 // 3.4: 살오징어 MCUI 10.0 -> 20.0 (OBIS reporting-rate decline signal adds 10); 4.11 suspends the +10, so 10.0; 해삼 stays 80.0.
 // 4.12: the KOSIS catch fell 79.8% (2015-17 -> 2022-24), so the stock-decline signal 60 is the higher value; since 2026-10-18 the
 // '(LC + 자원 감소)' brackets carry it alone (no diamond mark beside the number, every matrix point a circle)
 assert.match(dom.comparison.innerHTML,/>80\.0 \(EN, A2bd\)<small>/);
-assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 자원 감소\)<small>정식 산출 · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8%<\/small>/);
-assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat">\(LC \+ 자원 감소\)<\/small><\/span>/);
+assert.match(dom.comparison.innerHTML,/data-more-aphia="342067" data-more-axis="MCUI"[^>]*>60\.0 \(LC \+ 어획량 감소\)<small>정식 산출 · 근거 보기<\/small><small>자원 감소 신호 · 어획량 −79\.8%<\/small>/);
+assert.match(dom.comparison.innerHTML,/data-score-aphia="342067" data-score-axis="MCUI"[^>]*><span class="cv-num">60\.0<small class="cv-cat" title="\(LC·관심대상 \+ 어획량 감소\)">\(LC \+ 어획량 감소\)<\/small><\/span>/,'the bracket keeps its short form; the title says LC in Korean (site v4 08)');
 assert.doesNotMatch(dom.comparison.innerHTML,/cv-stock|◆/);
-assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10\.0 · 자원 감소 60\.0 → 높은 값 60\.0<\/p>/);
+assert.match(dom.comparison.innerHTML,/<p class="sd-compare">IUCN LC 10\.0 · 어획량 감소 신호 60\.0 → 높은 값 60\.0<\/p>/);
 assert.match(dom.comparison.innerHTML,/기준 평균 121,486톤\(2015~17\) → 최근 평균 24,507톤\(2022~24\) <b>\(−79\.8%\)<\/b>/);
 assert.equal((dom.comparison.innerHTML.match(/class="stock-decline/g)||[]).length,next.species.length,'every species shows its stock-decline line');
 for(const s of next.species)assert.match(dom.comparison.innerHTML,new RegExp(`data-score-aphia="${s.aphiaID}" data-score-axis="OCC"`),`${s.label} occurrence button`);
@@ -544,13 +555,13 @@ assert.equal(ctx.score(by(145721),'BBVI'),67.9);  // 4.14: unrounded inputs (68.
   // 2026-10-19 (LKH, 사이트 v3 3/10): the line opens with what was measured, N from the scored item's measured values
   const vw=by(145721).assessment.bioactivity_trace.find(i=>i.peptide_sequence==='VW'), n=vw.measurements.length;
   assert.ok(n===1&&vw.measurements.every(m=>m.endpoint==='IC50'),'VW: one IC50');
-  assert.ok(mbpi.includes(`<p class="fine mbpi-first"><b>근거: ACE 저해 IC50 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>`),'wakame first line');
+  assert.ok(mbpi.includes(`<p class="fine mbpi-first"><b>근거: VW 펩타이드 · ACE 저해 IC50 시험 ${n}건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위 · 식품 단백질 유래가 주를 이루는 항고혈압 펩타이드 모음)<br>근거 종류: 기능성 펩타이드(ACE·XO) · ACE·XO 항목 8/8(100%)</p>`),'wakame first line');
   assert.ok(mbpi.indexOf('mbpi-first')<mbpi.indexOf('점수 근거'),'the first line sits above the scored items');
   assert.ok(mbpi.includes(MBPI_CHECK)&&mbpi.indexOf('mbpi-first')<mbpi.indexOf('mbpi-check'),'the MBPI check line under the first line');
   assert.ok(!/사후 검증|집계 방식에 따라/.test(mbpi)&&mbpi.split('기준 미충족').length===2&&original.method.posthoc.validation_sets.MBPI,'the aggregation range stays in the record');}
 assert.doesNotMatch(html,/미통과/);
 {const mbpi=ctx.renderScores(by(241776)).split('data-axis="MBPI"')[1].split('data-axis="MCUI"')[0];
-  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');
+  assert.ok(mbpi.includes('<p class="fine mbpi-first"><b>근거: HDWWKER 펩타이드 · ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님</b><br>근거 층: ACE 저해 펩타이드'),'sea cucumber first line');
   assert.ok(mbpi.includes(MBPI_CHECK),'sea cucumber MBPI check line');}
 // verified-pilot-2.3: oyster LQP potency replicated by a synthetic peptide from another origin; the origin claim is still one paper.
 // 4.11 (prereg 2): that zein-derived row no longer counts, so LQP keeps the factor 0.75 (72.2) and the single-paper label.

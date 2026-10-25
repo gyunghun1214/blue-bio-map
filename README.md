@@ -69,6 +69,12 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
   3. Manage site에 보이는 JS 코드에서 `"token": "…"`의 따옴표 안 값만 복사해 `dist/analytics.json`의 `cf_beacon_token`에 넣는다(공개돼도 되는 값이다).
   4. PR로 병합하면 자동 배포된다. 집계는 몇 분 뒤부터 대시보드에 보인다.
   - 세는 범위: 페이지(경로)별 방문·조회 수. 바다 탐험은 `expedition.html`을 연 횟수까지 센다. 마지막 지점 도달은 주소의 `#stop=N`만 바뀌고 Web Analytics에 사용자 정의 이벤트가 없어 이 비콘만으로는 셀 수 없다.
+- 운영 파일(2026-10-21): `dist/operations.json` 한 곳에 의견 창구와 사람이 확인한 바깥 사실을 둔다. `dist/operations.js`가 읽고, 값이 하나라도 비면 그 줄을 숨긴다(빈 값이 '0명'이나 '아직'으로 보이지 않는다). 파일이 없거나 오프라인 시연이면 화면은 마크업 그대로다. **지어 넣지 않는다.**
+  - `operator`, `stages`(팀 결정 2026-10-21): 대회 뒤 운영 주체와 시작일, 첫 화면 '다음 단계' 네 칸(`now`·`expand`·`link`·`service`, 마크업 `data-stage`)마다 담당 역할·운영비·낼 곳. 담당은 역할 이름(데이터·지도, 지표·검증, 활용·운영, 근거 계보)만 쓰고 사람 이름은 넣지 않는다. 운영비 '월 0원'의 근거: `wrangler.jsonc`는 정적 파일(`assets`)만 내보내고 Worker 코드가 없다(Cloudflare 요금표: 정적 파일 요청은 무료·무제한), Supabase 조직 요금제는 free(2026-10-21 확인), 저장소는 GitHub 공개. 서버 기능이나 유료 요금제를 더하면 이 줄을 먼저 고친다.
+  - `feedback.form_url`: 계정 없이 쓰는 구글 설문 주소(https). 넣으면 바닥글이 "의견 보내기(계정 없이) · GitHub 이슈" 두 갈래가 되고, 관할 확인 창의 '의견 보내기'도 설문으로 간다. 설문 문항은 이슈 양식(`.github/ISSUE_TEMPLATE/feedback.md`)과 같게 하고 이름·연락처·이메일은 모으지 않는다. 비우면 GitHub 이슈 하나.
+  - `usage`: 날짜(`as_of`, YYYY-MM-DD), 써 본 사람 수(`users`), 받은 의견 수(`feedback_count`), 의견으로 고친 것 한 줄(`fixed`). 날짜와 사람 수(1 이상)가 있어야 첫 화면 '다음 단계'의 '지금' 아래에 "날짜 기준 N명 사용 · 의견 N건 · 의견으로 고친 것: …"이 보인다. 의견 수와 고친 것은 있을 때만 붙는다. 팀이 링크를 보내 써 보게 한 사람 수와 설문·이슈로 받은 의견 수만 센다(방문 수와 섞지 않는다).
+  - `effect`: 잰 날짜, 잰 종 이름 목록, 원 출처에서 식량·생리활성·보전 근거를 손으로 모은 시간(`manual_minutes`)과 이 지도에서 확인한 시간(`site_minutes`). 모두 있고 지도가 더 짧을 때 '만든 방법' 아래에 한 줄이 보인다.
+  - `voice`(2026-10-21, 프롬프트 07): 사용자 한마디(`text`), 말한 사람의 역할(`who`, 이름은 쓰지 않는다), 화면에 싣는 데 동의한 날(`agreed_on`, YYYY-MM-DD). 셋이 다 있어야 첫 화면 '이렇게 쓸 수 있습니다' 카드 아래에 "“한마디” · 역할"이 보인다. 동의를 받지 않은 말은 넣지 않는다.
 - 기존 OpenAI Sites(chatgpt.site, 제한 공유)는 별도이며 Codex/ChatGPT의 Sites 도구로만 갱신된다(초기 시험판, 지금은 쓰지 않음).
 
 ## 발표 기준판과 제출 뒤 동결 (2026-10-19)
@@ -84,6 +90,8 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 1. 2에서 병합한 커밋에 태그를 단다: `git tag final-2026-10-27 <병합 커밋> && git push origin final-2026-10-27` (태그는 팀이 정할 때 만든다. 여기에는 절차만 적는다).
 2. 그 뒤로는 main에 병합하지 않는다. main 병합은 곧바로 공개 주소에 배포된다.
 3. 꼭 고쳐야 하면 고친 내용을 병합한 다음, `dist/release.json`만 바꾸는 PR로 `commit`을 새 main 커밋으로 바꾸고 `"note": "11-02 오탈자 수정"`처럼 무엇을 바꿨는지 적는다. 화면에는 "발표 기준판 2026-10-27 · 커밋 def5678 · 11-02 오탈자 수정"으로 보인다.
+
+날짜순 할 일과 제출 뒤 병합 전 확인은 `docs/제출판_고정.md`, 발표에 나오는 바깥 숫자의 출처는 `docs/발표_숫자_출처.md`에 있다.
 
 ## 자료 사용
 
@@ -201,3 +209,18 @@ MBPI 점수 계보(종→화합물→시험→기여값)와 자료원 변경 기
 - 서지·인용·데이터셋 이름·라이선스 원문과 측정 기록은 번역하지 않고 `lang="en"`(학명 목록은 `lang="la"`, 러시아어·일본어 게재명은 `ru`·`ja`)을 단다. 블록 전체가 원문이면 `enAttr()`/`orig()`, 한국어 줄 안의 영어 원문 구간은 `escL()`이 `<span lang="en">`으로 감싼다. 사전 검사는 `verification/test_screen_text_ko.mjs`(키가 자료에 있는 문구인지, 숫자가 그대로인지).
 - 가장 작은 글자는 CSS 토큰 `--fs-min`(12px). 점수 칸에는 약어 위에 한국어 이름(식량·생리활성·활용·보전)을 쓴다.
 - 확인: dist/를 8765로 띄운 뒤 `node verification/readability_check.mjs <출력폴더>`(Playwright, 375·768·1440px, 30종 상세·비교·방법·바다 탐험). 12px 미만 글자, lang 없는 영어 문장(한글 없이 4단어 이상), 한국어 이름 없는 첫 약어, 가로 넘침이 하나라도 있으면 실패한다. CI는 `uicheck.mjs`의 R-1(390·1440px, 세 탭)로 같은 기준을 본다. 기록: `verification/2026-10-15-readability/`.
+
+## 언어 전환: 한국어 / English (2026-10-24)
+
+상단(바다 탐험은 오른쪽 위)의 **한국어 | EN** 버튼이나 주소 끝 `?lang=en`으로 영어 화면을 연다(`?lang=ko`는 한국어). 해외 기관(OBIS·WoRMS·IUCN 등)이 사이트를 읽을 수 있게 하려는 것이다. 브라우저 언어로 저절로 바뀌지는 않는다.
+
+> **EN을 누른 PC는 다음 방문에도 영어로 열린다**(브라우저에 `lang`을 기억한다). 발표·심사 PC에서는 한국어로 되돌려 둘 것.
+
+- 번역은 화면을 여는 순간 기계 번역을 부르지 않고, 미리 만든 사전 파일만 쓴다. 한국어 화면은 `dist/i18n.js`(약 14KB) 하나만 더 받고 글자는 한 글자도 바뀌지 않는다(`node verification/test_i18n.mjs --browser`가 `verification/i18n-ko-baseline.txt`와 견준다).
+  - 화면 글자: `dist/i18n-en.js`(키 = 한국어 원문, 값 = 영어). `python scripts/i18n_ui_dict.py add <묶음> <파일.json>`으로 더하고 `stamp`로 `?v=`를 맞춘다.
+  - 자료 문장: `dist/i18n-data-en.json`(자료 파일 안의 한국어 문장 → 영어, 점수 파일은 그대로). `python scripts/i18n_data_strings.py`가 관리한다.
+  - 종 이름: 영어 화면은 학명을 쓴다. 영어 일반명은 WoRMS·FAO ASFIS에서 확인한 이름만 `dist/species-names-en.json`에 넣는다(`scripts/build_species_names_en.py`, 지어내지 않음). 2026-10-24에는 클라우드 세션에서 두 곳에 접속하지 못해 비어 있다(`research/i18n/species-names-notes.md`).
+- **자료 문장을 새로 만드는 파이프라인(scripts/build_*.py 등)을 고치면 자료 사전도 갱신한다**: `python scripts/i18n_data_strings.py --todo out.json`으로 빠진 문장을 뽑아 번역하고 `--add tr.json`으로 넣은 뒤 `python scripts/i18n_ui_dict.py stamp`. CI(unit)의 `--check`가 빠진 문장을 잡는다.
+- 사전에 없는 한국어는 영어 화면에서 원문 그대로 두고 옆에 작은 `KO` 표시를 붙인다(게재명·KOSIS 품종·식품 이름 같은 원어 이름 등).
+- 번역은 Claude 초안이며 팀 검토가 필요하다: `python scripts/i18n_data_strings.py --export-review`가 `docs/i18n-review.csv`(ko, en, file, status=draft)를 만든다. 용어는 `docs/i18n-glossary.md`를 따른다.
+- 확인: `node verification/test_i18n.mjs`(사전: 숫자 같음·용어·단서어·링크·안내 도우미 영어), dist를 8765로 띄운 뒤 `--browser`(한국어 화면 그대로 · 영어 화면에 표시 없이 남은 한글 0). CI의 `uicheck.mjs` L-1·L-2가 영어 화면 1440·1280×720·390px을 캡처하고 가로 넘침·12px 미만 글자를 본다.

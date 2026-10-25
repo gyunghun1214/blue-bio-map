@@ -174,7 +174,8 @@ const has=v=>v!==null&&v!==undefined&&v!=='';
 // MCUI: an IUCN or Korean national category by its name; an MCUI set by the KOSIS catch trend by that trend (with the
 // extinction-risk basis it was compared with, when there is one). The 15 stops whose category comes from a range
 // calculation (basis 'preliminary') or from another government's list ('range_state') read like any other category here,
-// and their detail names the category's source in one line (mcuiSource).
+// and their detail names the category's source in one line (mcuiSource). 2026-10-20 (LKH): beside the number, a category
+// from the range calculation adds '예비' ('10.0 (LC·예비)'), judged on the basis alone, as on the main map (PR #240).
 const stockText=m=>m?.driver==='stock_decline'&&has(m.stock_decline?.decline_pct)
   ?`자원 감소 신호 · 어획량 −${Number(m.stock_decline.decline_pct)}% (KOSIS 어획량 통계)${has(m.extinction_risk)?` · 멸종위험 근거 ${globalThis.scoreNumber('MCUI',Number(m.extinction_risk))}점`:''}`:'';
 function mcuiTag(stop){
@@ -213,6 +214,9 @@ const methodNote=t=>String(t??'').replace(/; [^;()]*\bnot described\b[^;()]*\)/g
 
 // ---- browser ----
 const $=id=>document.getElementById(id);
+// 영어 화면(i18n.js의 LANG): 종 이름은 영어 일반명(species-names-en.json, 확인된 이름만)이 있으면 그것, 없으면 학명. 한국어 화면은 국명 그대로.
+const X_EN=()=>typeof LANG!=='undefined'&&LANG==='en';
+const nameOf=st=>X_EN()?st.en_name||st.scientific_name||st.korean_name:st.korean_name;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
 // Sources whose publisher moved the file for good (reports/link-check, 2026-10-15); same list as app.js.
@@ -255,14 +259,15 @@ const TAXON={377084:['seaweed','#7a6a3a','#c9b47a'],371986:['seaweed','#6b5a2e',
   274849:['fish','#5c5f66','#b3b7bf'],276651:['fish','#4f7fa0','#e6d27a'],254538:['fish','#8a7c62','#d6c9ae'],534443:['cephalopod','#b9655a','#eab0a6'],
   1666974:['cephalopod','#a68a72','#e0cdb9'],1061762:['crab','#5f7286','#c2d2e2']};
 const art=stop=>{
-  if(ART[stop.aphia_id])return ART[stop.aphia_id];
+  if(ART[stop.aphia_id])return X_EN()?ART[stop.aphia_id].replace(/aria-label="[^"]*"/,`aria-label="${esc(T_('{0} 일러스트',{0:nameOf(stop)}))}"`):ART[stop.aphia_id];
   const t=TAXON[stop.aphia_id];
-  return `<svg viewBox="0 0 120 90" role="img" aria-label="${esc(stop.korean_name)} 일러스트">${t?TAXON_ART[t[0]](t[1],t[2]):'<circle cx="60" cy="45" r="28" fill="none" stroke="#9fd6d0" stroke-width="2"/>'}</svg>`;
+  return `<svg viewBox="0 0 120 90" role="img" aria-label="${esc(X_EN()?T_('{0} 일러스트',{0:nameOf(stop)}):stop.korean_name+' 일러스트')}">${t?TAXON_ART[t[0]](t[1],t[2]):'<circle cx="60" cy="45" r="28" fill="none" stroke="#9fd6d0" stroke-width="2"/>'}</svg>`;
 };
 // A stop that shares its published cell: the anchor is a presentation position inside that cell.
 function sharedNote(stop){
   if(!stop.shared_with?.length)return '';
-  const names=stop.shared_with.map(a=>DATA.stops.find(s=>s.aphia_id===a)?.korean_name).filter(Boolean).join('·');
+  const names=stop.shared_with.map(a=>DATA.stops.find(s=>s.aphia_id===a)).filter(Boolean).map(nameOf).join('·');
+  if(X_EN())return (anchor(stop)!==stop.cell.center?T_('탐험 연출 위치')+' · ':'')+T_('{0}와 같은 공개 셀',{0:names});
   return `${anchor(stop)!==stop.cell.center?'탐험 연출 위치 · ':''}${names}${wa(names)} 같은 공개 셀`;
 }
 
@@ -271,9 +276,9 @@ function seaNames(cell){return (cell.sea_areas||[]).map(n=>SEA_KO[n]||n).join(' 
 function cellExtent(c){
   const s=c.size_deg;return `${s}° 셀 · 북위 ${c.lat0}–${c.lat0+s}° · 동경 ${c.lon0}–${c.lon0+s}°`;
 }
-function yearsText(c){return c.year_start===c.year_end?`${c.year_start}년`:`${c.year_start}–${c.year_end}년`;}
-// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 자원 감소'); never the word IUCN
-const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.driver==='stock_decline'?' + 자원 감소':''}`:'';};
+function yearsText(c){const y=X_EN()?'':'년';return c.year_start===c.year_end?`${c.year_start}${y}`:`${c.year_start}–${c.year_end}${y}`;}
+// 7/15 (2026-10-15): the category that set the MCUI, beside its number ('LC', 'EN, A2bd', 'LC + 어획량 감소'); never the word IUCN
+const mcuiCat=stop=>{const m=stop.mcui||{};return m.category?`${m.category}${m.criteria?', '+m.criteria:''}${m.basis==='preliminary'?'·예비':''}${m.driver==='stock_decline'?' + 어획량 감소':''}`:'';};
 // The small line under a score (plain text): what the number is
 const axisTag=(stop,k)=>k==='MCUI'?mcuiTag(stop):k==='MBPI'?NOTES.mbpi:k==='BBVI'?NOTES.score:'';
 function scoreHtml(stop,k,big){
@@ -296,7 +301,7 @@ function cardHtml(stop,i,level,mode){
   <p class="x-step-label">${onRoute(i)?`탐사 지점 ${i+1} / ${STATE.n}`:'항로 밖 지점'}</p>
   <div class="x-r" data-r="1">${where}</div>
   <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트</span></div>
-    <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(stop.korean_name)}</h2><p class="x-sci"><i>${esc(stop.scientific_name)}</i> · AphiaID ${esc(stop.aphia_id)}</p>
+    <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(nameOf(stop))}</h2><p class="x-sci">${nameOf(stop)===stop.scientific_name?'':`<i>${esc(stop.scientific_name)}</i> · `}AphiaID ${esc(stop.aphia_id)}</p>
     ${type?`<p class="x-type">${esc(type)}</p>`:''}</div></div>
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
@@ -344,7 +349,7 @@ function detailHtml(stop,i){
   const c=stop.cell, sea=c?seaNames(c):'', type=stop.matrix_type?.label;
   const cites=(c?.citations||[]).map(x=>{const l=(x.licenses||[]).join(' · ');return `<li>${link(x.url,x.title)}${l?` <small>${esc(l)}</small>`:''}</li>`;}).join('');
   const sources=stop.sources.map(s=>{const l=licenseNote(s.license);return `<li>${link(s.url,sourceTitle(s))}${l?` <small>${esc(l)}</small>`:''}</li>`;}).join('');
-  const nextBtn=i<STATE.n-1?`<button type="button" class="x-primary" data-go="${i+1}">다음 지점: ${esc(DATA.stops[i+1].korean_name)}</button>`:'';
+  const nextBtn=i<STATE.n-1?`<button type="button" class="x-primary" data-go="${i+1}">다음 지점: ${esc(nameOf(DATA.stops[i+1]))}</button>`:'';
   const snapshot=stop.group==='candidate'?DATA.candidate_cells_reviewed:DATA.cells_snapshot;
   const chips=(c?[sea,`${c.size_deg}° 셀`,yearsText(c)]:['항로 밖']).filter(Boolean).map(t=>`<span>${esc(t)}</span>`).join('');
   const obs=c?`<p>${esc([cellExtent(c),`${c.period} 기간`,`${yearsText(c)} 기록 ${c.records}건(지점 ${c.sites}곳)`,sea].filter(Boolean).join(' · '))}</p>
@@ -355,7 +360,7 @@ function detailHtml(stop,i){
     <p class="x-fine">이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>`;
   const version=String(DATA.method_version||'').replace(/^verified-/,'');
   return `<header class="x-detail-head"><p class="x-chips">${chips}</p>
-    ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${esc(stop.korean_name)} <i>${esc(stop.scientific_name)}</i></h2>
+    ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${nameOf(stop)===stop.scientific_name?'':esc(nameOf(stop))+' '}<i>${esc(stop.scientific_name)}</i></h2>
     ${type?`<p class="x-type">${esc(type)}</p>`:''}</header>
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtAxis(stop,'MFPI')??'—'}</small></h3>${foodHtml(stop.food)}</section>
@@ -371,7 +376,7 @@ function detailHtml(stop,i){
 /* ---------- DOM ---------- */
 function renderProgress(){
   const s=STATE;
-  $('progress').innerHTML=DATA.stops.slice(0,s.n).map((st,i)=>`<li class="${i===s.arrived?'is-here':''}${s.reveal[i]>0?' is-seen':''}"><button type="button" data-go="${i}" aria-label="지점 ${i+1} ${esc(st.korean_name)}${i===s.arrived?' (현재)':''}"><span>${i+1}</span></button></li>`).join('');
+  $('progress').innerHTML=DATA.stops.slice(0,s.n).map((st,i)=>`<li class="${i===s.arrived?'is-here':''}${s.reveal[i]>0?' is-seen':''}"><button type="button" data-go="${i}" aria-label="지점 ${i+1} ${esc(nameOf(st))}${i===s.arrived?' (현재)':''}"><span>${i+1}</span></button></li>`).join('');
   $('progress').style.setProperty('--t',s.t.toFixed(4));
   $('stop-list-items').innerHTML=stopListHtml(s.arrived);
 }
@@ -379,7 +384,7 @@ function renderProgress(){
 function stopListHtml(arrived){
   return DATA.stops.map((st,i)=>{
     const sub=[st.cell?seaNames(st.cell):'',st.matrix_type?.label].filter(Boolean).join(' · ');
-    return `<li><button type="button" ${onRoute(i)?`data-go="${i}"`:`data-detail="${i}"`}${i===arrived?' aria-current="true"':''}><b>${onRoute(i)?`${i+1}. `:''}${esc(st.korean_name)}</b>${st.cell?'':' <em class="x-badge is-off">항로 밖</em>'}${sub?` <span>${esc(sub)}</span>`:''}</button></li>`;
+    return `<li><button type="button" ${onRoute(i)?`data-go="${i}"`:`data-detail="${i}"`}${i===arrived?' aria-current="true"':''}><b>${onRoute(i)?`${i+1}. `:''}${esc(nameOf(st))}</b>${st.cell?'':' <em class="x-badge is-off">항로 밖</em>'}${sub?` <span>${esc(sub)}</span>`:''}</button></li>`;
   }).join('');
 }
 const introOffText=(all,route)=>all>route?`항로 밖 지점 ${all-route}종은 지점 목록 끝 '항로 밖' 카드로 봅니다.`:'';
@@ -388,7 +393,7 @@ function renderCard(){
   const show=s.phase==='arrived'&&s.arrived>=0&&!document.body.classList.contains('is-cards');
   steer.hidden=s.phase==='intro'||document.body.classList.contains('is-cards');
   $('prev').disabled=s.stop<=0;$('next').disabled=s.stop>=s.n-1;
-  $('steer-label').textContent=s.phase==='sailing'?`${s.departed>=0?DATA.stops[s.departed].korean_name:'출발'} → ${DATA.stops[s.stop].korean_name} 항해 중`:s.arrived>=0?`지점 ${s.arrived+1} / ${s.n}`:'';
+  $('steer-label').textContent=s.phase==='sailing'?`${s.departed>=0?nameOf(DATA.stops[s.departed]):'출발'} → ${nameOf(DATA.stops[s.stop])} 항해 중`:s.arrived>=0?`지점 ${s.arrived+1} / ${s.n}`:'';
   $('skip').hidden=s.phase!=='sailing'||reduceMotion.matches;
   if(!show){card.hidden=true;card.dataset.stop='';return;}
   const i=s.arrived;
@@ -411,7 +416,7 @@ function scheduleReveal(){
   if(reduceMotion.matches){while(advanceReveal(STATE));render();save();return;}
   revealTimer=setTimeout(()=>{if(advanceReveal(STATE)){render();save();scheduleReveal();}},750);
 }
-function onArrive(){render();save();scheduleReveal();announce(`${DATA.stops[STATE.arrived].korean_name} 지점에 도착했습니다.`);}
+function onArrive(){render();save();scheduleReveal();announce(`${nameOf(DATA.stops[STATE.arrived])} 지점에 도착했습니다.`);}
 function announce(t){$('steer-label').textContent=t;}
 function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,6000);}
 
@@ -760,6 +765,7 @@ function buildSea(THREE,geo){
 async function boot(){
   const res=await fetch('expedition-stops.json').catch(()=>null);
   DATA=res?.ok?await res.json().catch(()=>null):null;
+  if(X_EN()&&Array.isArray(DATA?.stops)){const n=await fetch('species-names-en.json').then(r=>r.ok?r.json():{}).catch(()=>({}));for(const st of DATA.stops)st.en_name=n?.[st.aphia_id]?.en||'';}
   const route=Array.isArray(DATA?.stops)?routeStops(DATA.stops):[];
   // stops off the route must follow the route stops, so one index works for both (build_expedition_stops.py checks it)
   if(DATA?.schema_version!=='expedition-stops-2'||!route.length||DATA.stops.slice(0,route.length).some((s,i)=>s!==route[i])){
@@ -783,7 +789,7 @@ async function boot(){
   if(!scene){setCards(true,reason||'카드 목록으로 보고 있습니다.');if(fromHash>=0)doGo(fromHash);return;}
   document.body.classList.add('is-intro');
   if(fromHash>=0){leaveIntro();placeAt(STATE,fromHash);scene.snap();onArrive();}
-  else if(saved?.stop>=0&&saved.stop<STATE.n){$('resume').hidden=false;$('resume').textContent=`이어서 항해 (지점 ${saved.stop+1} ${DATA.stops[saved.stop].korean_name})`;}
+  else if(saved?.stop>=0&&saved.stop<STATE.n){$('resume').hidden=false;$('resume').textContent=`이어서 항해 (지점 ${saved.stop+1} ${nameOf(DATA.stops[saved.stop])})`;}
   render();
   if(!$('intro').hidden)$('start').focus({preventScroll:true});
 }

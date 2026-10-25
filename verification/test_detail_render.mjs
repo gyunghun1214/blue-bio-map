@@ -19,6 +19,7 @@ const ctx={AbortSignal,structuredClone,console,document:{getElementById:$,queryS
   fetch:async u=>{u=String(u);if(u.startsWith('https://'))throw TypeError('offline');
     const f=new URL(u.split('?')[0],D), ok=fs.existsSync(f);return {ok,status:ok?200:404,json:async()=>JSON.parse(fs.readFileSync(f,'utf8'))};}};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(read('live-data.js')+'\n'+app.slice(0,cut)+';map={fitBounds(){},getZoom(){return 7}};overlay={eachLayer(){},removeLayer(){},hasLayer(){return true}};'+
   'globalThis.T={esc,renderCandidateDetail,renderLiveDetail,showDecision,renderCellTable,renderCellMap};',ctx);
@@ -68,10 +69,11 @@ for(const s of next.species){
     if((at>=0)!==own)p.push(own?'감태 caption missing':'감태 caption');
     else if(own){const rows=(h.slice(at,h.indexOf('</table>',at)).match(/<tr>\s*<td/g)||[]).length;if(rows!==N)p.push(`감태 table ${rows} rows, expected ${N}`);}
     if(h.includes('github.com/gyunghun1214'))p.push('private repo link');
-    // 3.24: a candidate whose top MBPI item rests on a used potency replication names it beside the origin papers
-    const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null), used=(top?.potency_replications||[]).filter(r=>r.used).length;
-    // an operating species names it in the score-basis independence line instead (4.11: 미역's purified VW)
-    if(place==='detail'&&used){replicatedSpecies++;if(!h.includes(s.catalog?`효능 재현 ${used}편`:`효능 재현 ${used})`))p.push('potency replication missing from the MBPI summary');}
+    // PR #222 (2026-10-17) took potency replications off the screen (MBPI summary count, score-basis independence line,
+    // replication rows); they stay in assessments.json, so no rendered place may show them again.
+    const top=(traces.get(s.aphiaID)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null);
+    if(place==='detail'&&top?.potency_replications?.length)replicatedSpecies++;
+    if(h.includes('효능 재현'))p.push('potency replication shown again (removed in PR #222)');
     if(place==='decision'){
       // Every MBPI item is named, with its stratum and, when it has measurements, a number. A field the shared helper
       // misses prints '' rather than 'undefined', so a stratum without its own branch shows up only here.
@@ -82,6 +84,13 @@ for(const s of next.species){
         else if(b.measurements?.length&&!/(MIC|IC50|원값) (=|&lt;|&gt;|≤|≥)? ?\d/.test(li))p.push(`MBPI item ${key} (${b.stratum_id}) without its value`);
       }
     }
+    // 2026-10-21 (site v4 08): the method version by its Korean name, and every abbreviation glossed where it first appears
+    const shown=h.replace(/<span class="gloss">/g,'\u0001').replace(/<[^>]+>/g,'');
+    if(/(?<![\w-])verified-\d+\.\d+(?![\w.])/.test(shown))p.push('method version shown as verified-…');
+    for(const term of ['IC50','EC50','Ki','MIC','[µμ]M','LC','NT','VU','EN','CR']){
+      const m=new RegExp(`(?<![A-Za-z0-9])${term}(?![A-Za-z0-9])`).exec(shown);
+      if(m&&!/^[\u0001(]/.test(shown.slice(m.index+m[0].length)))p.push(`${m[0]} without its plain-Korean note`);
+    }
     if(p.length){count[place]++;findings.push(`${s.label} ${place}: ${p.join(' · ')}`);}
   }
 }
@@ -89,18 +98,17 @@ console.log(`findings ${findings.length} (detail ${count.detail} · decision ${c
 findings.forEach(x=>console.log('  '+x));
 assert.equal(next.species.length,30,'8 operating + 22 candidate species rendered');
 assert.ok(cellSpecies>0&&popupSpecies===cellSpecies,'popups collected for every species with cells');
-assert.ok(replicatedSpecies>0,'a species with a counted replication of its top item (미역 purified VW, 4.11) was rendered');
+assert.ok(replicatedSpecies>0,'species whose top MBPI item has replication records (5 at 4.16: 미역, 톳, 참굴, 큰가리비, 갑오징어) were rendered, so the absence check runs on data the removed rows used to show; drop this guard once the data has none');
 assert.equal(findings.length,0,'rendered species HTML has the problems listed above');
 
-// 4.9: a relaxed item's replication is ranked on its own endpoint, so the row names its own scale and never says pIC50
-const CUTTLEFISH=1666974;
+// PR #222 (2026-10-17) also removed 갑오징어's replication rows (pKi scale and gap, counted or not and why); its top item
+// keeps both replications in assessments.json, so the removed wording must stay off its detail.
+const CUTTLEFISH=1666974, cuttleTop=(traces.get(CUTTLEFISH)||[]).reduce((a,x)=>!a||x.adjusted>a.adjusted?x:a,null);
+assert.ok(cuttleTop?.potency_replications?.length>0,'갑오징어 top item keeps its replications in assessments.json');
 $('detail').innerHTML='';T.renderCandidateDetail(next.species.find(s=>s.aphiaID===CUTTLEFISH));
-const reps=$('detail').innerHTML.slice($('detail').innerHTML.indexOf('효능 재현'));
-assert.ok(reps.includes('pKi 8.398 · 차이 0.218'),'갑오징어 replication row names its own pKi scale and gap');
-assert.ok(!reps.includes('pIC50'),'a Ki replication is never labelled pIC50');
-// 4.11 (prereg 2): the commercial synthetic FMRFamide is another origin, so the row is shown and not counted
-assert.ok(!reps.includes('독립 DOI로 셈'),'a cross-origin replication is not counted from 4.11');
-assert.ok(reps.includes('다른 기원의 측정이라 효능만 재현합니다'),'the row says why it is not counted');
-assert.match(reps,/쓰지 않음: [^<]*[가-힣]/,'the candidate that is not counted says why, in Korean');
-assert.ok(reps.includes('효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'),'the row says it is not an origin or a score');
-console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean`);
+const cuttle=$('detail').innerHTML;
+assert.ok(cuttle.includes('MBPI'),'갑오징어 detail rendered');
+for(const gone of ['효능 재현','pKi 8.398 · 차이 0.218','독립 DOI로 셈','다른 기원의 측정이라 효능만 재현합니다','효능만 재현하며 기원 근거나 점수 값이 되지 않습니다'])
+  assert.ok(!cuttle.includes(gone),`갑오징어 detail shows '${gone}' again (removed in PR #222)`);
+assert.doesNotMatch(cuttle,/쓰지 않음: [^<]*[가-힣]/,'갑오징어 detail shows the reason line of an uncounted replication again (removed in PR #222)');
+console.log(`PASS: ${next.species.length} species detail·comparison·${cellSpecies} cell tables/popups: abbreviations glossed, method version named, no undefined, Korean sea names, 감태 table (${N} rows) only for 감태, no private link, every MBPI item named with its value, no double period, reasons in Korean, potency replications kept off the screen (PR #222)`);

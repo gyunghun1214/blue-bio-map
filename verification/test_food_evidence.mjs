@@ -29,6 +29,7 @@ const make=()=>({live:true,species:[{aphiaID:123,name:'Synthetic species',info:{
   production:{aquaculture_evidence_count:500}},sources:[]}]});
 const ctx={fetch:async()=>({status:200,ok:true,json:async()=>report()})};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.attach=attachPilotAssessments;globalThis.score=pilotScore;globalThis.panel=foodEvidencePanel;globalThis.gate=foodTraceValid;',ctx);
 vm.runInContext(app.slice(app.indexOf('const count ='),app.indexOf('function renderLiveDetail')),ctx);

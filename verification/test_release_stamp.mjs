@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
+const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8').replace(/\r\n/g,'\n'); // a Windows checkout (CI) has CRLF
 const rel=JSON.parse(read('release.json'));
 assert.deepEqual(rel,{label:'발표 기준판',date:'2026-10-27',commit:''},'committed with the commit empty: the popover is as before');
 const app=read('app.js');
@@ -18,7 +18,7 @@ assert.equal(t({...rel,commit:'abc1234'}),'발표 기준판 2026-10-27 · 커밋
 assert.equal(t({...rel,commit:' ABC1234DEF5678 '}),'발표 기준판 2026-10-27 · 커밋 abc1234','seven characters, lower case');
 assert.equal(t({...rel,commit:'def5678',note:'11-02 오탈자 수정'}),'발표 기준판 2026-10-27 · 커밋 def5678 · 11-02 오탈자 수정');
 // the popover: the stamp when set, else the method version as before; the file is read once at start and is optional
-assert.match(app,/function renderPopVersion\(\)\{\n  const info=data\?\.assessmentInfo;\n  \$\('pop-version'\)\.textContent=releaseText\(releaseInfo\)\|\|\(data&&info\?\.version\?`\$\{released\(info\)\?'':'시범 '\}\$\{info\.version\}/);
+assert.match(app,/function renderPopVersion\(\)\{\n  const info=data\?\.assessmentInfo;\n  \$\('pop-version'\)\.textContent=releaseText\(releaseInfo\)\|\|\(data&&info\?\.version\?`\$\{released\(info\)\?'':'시범 '\}\$\{methodName\(info\.version\)\}/,'the method version by its Korean name (site v4 08)');
 assert.match(app,/fetch\('release\.json'\)\.then\(r=>r\.ok\?r\.json\(\):null\)\.then\(r=>\{releaseInfo=r;renderPopVersion\(\);\},\(\)=>\{\}\);/);
 assert.equal((app.match(/renderPopVersion\(\);/g)||[]).length,2,'drawn with the status chips and when the file arrives');
 // README: the steps before submission (one file) and the freeze after it; the tag is the team's to make
