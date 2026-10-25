@@ -397,10 +397,10 @@ Object.assign(I18N_EN,{
 "사용한 자료 출처 목록 · 스크롤":"List of data sources used · scroll",
 "배경 지도:":"Base map:",
 "· 1:10m 경계, public domain. 위성:":" · 1:10m boundaries, public domain. Satellite:",
-"Blue Marble — 이용 고지 원문 「":"Blue Marble — original usage notice 「",
-"」(NASA 지구과학 자료체계(ESDIS)의 GIBS 영상을 썼다는 표시). 수심:":"」 (an acknowledgement that GIBS imagery from NASA's Earth Science Data and Information System (ESDIS) was used). Depth:",
-"— 이용 고지 원문 「":"— original usage notice 「",
-"」(GEBCO 편집 그룹의 GEBCO_2026 격자로 만든 영상이라는 표시). 항해·해상 안전 목적에 쓰지 마세요. 첫 화면 지구 영상: NASA Earth Observatory":"」 (an acknowledgement that the imagery was made from the GEBCO_2026 grid of the GEBCO compilation group). Do not use for navigation or maritime safety. First-screen globe imagery: NASA Earth Observatory",
+"Blue Marble — 이용 고지 원문 「":"Blue Marble — original usage notice “",
+"」(NASA 지구과학 자료체계(ESDIS)의 GIBS 영상을 썼다는 표시). 수심:":"” (an acknowledgement that GIBS imagery from NASA's Earth Science Data and Information System (ESDIS) was used). Depth:",
+"— 이용 고지 원문 「":"— original usage notice “",
+"」(GEBCO 편집 그룹의 GEBCO_2026 격자로 만든 영상이라는 표시). 항해·해상 안전 목적에 쓰지 마세요. 첫 화면 지구 영상: NASA Earth Observatory":"” (an acknowledgement that the imagery was made from the GEBCO_2026 grid of the GEBCO compilation group). Do not use for navigation or maritime safety. First-screen globe imagery: NASA Earth Observatory",
 "(2004년 8월, 지형·수심)·":"(August 2004, topography·bathymetry)·",
 "(도시 불빛, 육지만) — NASA 제공 영상을 가공한 배경 그림입니다. 지도 도구: Leaflet (BSD-2-Clause). 글꼴:":"(city lights, land only) — background pictures processed from imagery provided by NASA. Map tool: Leaflet (BSD-2-Clause). Font:",
 "방문 수를 셉니다. 쿠키와 개인정보는 모으지 않습니다(":"Visits are counted. No cookies or personal information are collected (",
@@ -2178,7 +2178,8 @@ Object.assign(I18N_EN,{
 "날짜 미기재":"Date not stated",
 "{0}모든 종의 지표는 같은 지표 보고서(assessments.json)에서 불러오며, 영양·생리활성·보전 근거는 같은 규칙으로 검수했습니다. 출현 기록 조회 범위는 124–132°E · 33–38.7°N입니다. 원좌표는 비공개로 둡니다.":"{0} The indices of all species are loaded from the same index report (assessments.json), and the nutrition·bioactivity·conservation evidence was reviewed by the same rules. The occurrence record query area is 124–132°E · 33–38.7°N. Original coordinates are kept private.",
 "{0}종의 GBIF·OBIS 공개 기록을 학명·연도·좌표 품질·중복·이용조건·민감도 기준으로 정리해 1°(채취 민감 종 4°) 셀로 발행했습니다. 2000년 이전 기록과 한국·북한 EEZ 밖 기록은 따로 표시합니다.":"Public GBIF·OBIS records of {0} species were cleaned by scientific name·year·coordinate quality·duplicates·terms of use·sensitivity and published as 1° cells (4° for harvest-sensitive species). Records before 2000 and records outside the South·North Korean EEZs are marked separately.",
-"출현 셀 파일이 이 화면 코드보다 새 버전입니다. 새로고침(F5)하면 모든 종의 셀이 보입니다.":"The occurrence cell file is a newer version than this screen's code. Refresh (F5) to see the cells of all species."
+"출현 셀 파일이 이 화면 코드보다 새 버전입니다. 새로고침(F5)하면 모든 종의 셀이 보입니다.":"The occurrence cell file is a newer version than this screen's code. Refresh (F5) to see the cells of all species.",
+"운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영":"Operator: Team alt F4 (Entry to the OCEAN 20 hackathon) · keeps running after the contest, from 2026-11-06 on"
 });
 // @section 남은 화면 글자(정적 그림·속성·숫자 섞인 문장)
 Object.assign(I18N_EN,{
