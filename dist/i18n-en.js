@@ -2073,7 +2073,15 @@ Object.assign(I18N_EN,{
 "변경: {0} {1} 접근.":"Changes: {0} Accessed {1}.",
 "데이터셋 원문 ↗":"Original dataset ↗",
 "종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.":"Species counts and periods summarized, accepted names linked, coordinates not published.",
-"{0}종 묶음":"{0} spp."
+"{0}종 묶음":"{0} spp.",
+"공개 {0}종 중 {1}종을 지도에 배치했습니다.":"{1} of {0} published species are placed on the map.",
+"배치하지 못한 종은 없습니다.":"No species left unplaced.",
+"배치하지 못한 종 {0}종:":"{0} species not placed:",
+"유형별 종 수":"Species by type",
+"검색·분류 조건과 관계없이 전체 기준":"All placed species, ignoring search/filters",
+"MCUI(보전 지표) 근거":"MCUI (conservation index) basis",
+"공식 평가 전 예비 판정(속 빈 원)":"Preliminary, before official assessment (hollow)",
+"가상 예시를 보는 동안에는 배치 현황을 표시하지 않습니다.":"Placement status is not shown while viewing the hypothetical example."
 });
 // @section 근거와 방법(app.js)
 Object.assign(I18N_EN,{
