@@ -174,7 +174,7 @@ Object.assign(I18N_EN,{
 "보기":"View",
 "매트릭스":"Matrix",
 "데이터 표":"Data table",
-"생물 이름 또는 학명으로 검색":"Name or scientific name",
+"생물 이름 또는 학명으로 검색":"Search species",
 "생물 이름·학명으로 검색":"Search by species name·scientific name",
 "분류":"Group",
 "기타":"Other",
