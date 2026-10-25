@@ -4,13 +4,13 @@
 
 - 기준 커밋: main `46afd7a` (PR #262 병합). 작업 중 main에 PR #263(`9eb519c`, '만든 방법' 칸 지우기)이 들어와 병합했다. 충돌은 `index.html` · `expedition.html` · `i18n.js`의 `?v=` 값뿐이라 main 쪽 내용을 받고 `python scripts/i18n_ui_dict.py stamp`으로 다시 계산했다. 병합 뒤 CI 단위 검사 54개 통과, `i18n-ko-baseline.txt`는 다시 뽑아도 같다.
 - 지침: 원본 [`prompt-original.md`](prompt-original.md) (LKH가 보낸 `prompts/mobile-compact-text-claude-code.md`, 저장소에는 `prompts/` 폴더가 없다).
-- 다른 스레드의 `dist/mobile-type.css`(휴대폰 글자 크기)는 이 브랜치를 만들 때 main에 없었다. 들어오면 `mobile-compact.css`가 그 뒤에 오도록 `test_mobile_compact.mjs`가 검사한다.
+- 다른 스레드의 `dist/mobile-type.css`(휴대폰 글자 크기, PR #266)가 병합 직전에 main에 들어왔다. 그 파일은 본문 맨 아래(`chatbot.css` 뒤)에서 불러오므로 `mobile-compact.css`를 머리글에서 그 바로 뒤로 옮겼고, `test_mobile_compact.mjs`가 이 순서를 검사한다. `_headers` · `test_client_outdated.mjs` · `app.js` 다음 `<script>` 줄의 충돌은 양쪽을 모두 살렸다.
 
 ## 바뀐 파일
 
 | 파일 | 내용 |
 |---|---|
-| `dist/mobile-compact.css` (새 파일) | 휴대폰 접기 · 첫 화면 두 줄 숨김 · 지도 읽는 법 시트. 머리글의 다른 모든 스타일시트 다음(`intro.css` 뒤)에 불러온다 |
+| `dist/mobile-compact.css` (새 파일) | 휴대폰 접기 · 첫 화면 두 줄 숨김 · 지도 읽는 법 시트. 문서의 다른 모든 스타일시트 다음, 맨 아래 `mobile-type.css` 바로 뒤에 불러온다 |
 | `dist/mobile-compact.js` (새 파일) | 휴대폰에서 접는 칸을 처음에 닫기, 문단 안 '더 보기' 단추, 시트 열고 닫기(포커스 가둠·복귀, 스크롤 잠금). `app.js` 바로 뒤 `defer` |
 | `dist/index.html` | 접는 칸 11곳(`<details class="mc-more" open>`) · 문단 단추 1곳(`.mc-rest` + `.mc-more-btn`) · 시트 껍데기 `#map-guide` · `<summary id="map-guide-title">`(id만 더함) · 두 파일 `<link>`/`<script>` · `?v=` |
 | `dist/_headers` | `/mobile-compact.css` · `/mobile-compact.js` 1년 캐시(`immutable`) |

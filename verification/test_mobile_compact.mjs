@@ -6,12 +6,13 @@ import fs from 'node:fs';
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8').replace(/\r\n/g,'\n');
 const html=read('index.html'),css=read('mobile-compact.css'),js=read('mobile-compact.js'),headers=read('_headers');
 
-// (1) 불러오기: CSS는 머리글의 다른 모든 스타일시트 다음, 스크립트는 app.js 다음(defer). 둘 다 1년 캐시 목록에.
-const head=html.slice(0,html.indexOf('</head>')).replace(/<noscript>[^]*?<\/noscript>/g,'');
-const sheets=[...head.matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]);
-assert.equal(sheets.at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet in <head>: ${sheets}`);
+// (1) 불러오기: CSS는 문서의 다른 모든 스타일시트 다음(휴대폰 글자 크기 mobile-type.css가 맨 아래에 있어 그 바로 뒤),
+// 스크립트는 app.js 다음(defer). 둘 다 1년 캐시 목록에.
+const head=html.slice(0,html.indexOf('</head>'));
+const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]);
+assert.equal(sheets.at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet: ${sheets}`);
 assert.ok(sheets.indexOf('mobile-compact.css')>sheets.indexOf('intro.css'));
-if(sheets.includes('mobile-type.css'))assert.ok(sheets.indexOf('mobile-compact.css')>sheets.indexOf('mobile-type.css'),'after mobile-type.css');
+if(sheets.includes('mobile-type.css'))assert.match(html,/<link rel="stylesheet" href="mobile-type\.css\?v=[0-9a-f]{10}"><link rel="stylesheet" href="mobile-compact\.css\?v=[0-9a-f]{10}">/,'right after mobile-type.css');
 assert.match(head,/<script defer src="app\.js\?v=[0-9a-f]{10}"><\/script><script defer src="mobile-compact\.js\?v=[0-9a-f]{10}"><\/script>/);
 for(const f of ['/mobile-compact.css','/mobile-compact.js'])assert.match(headers,new RegExp(`\\n${f.replace('.','\\.')}\\n  Cache-Control: public, max-age=31536000, immutable\\n`),f);
 
