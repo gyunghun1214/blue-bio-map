@@ -3954,7 +3954,8 @@ function toggleSimulation(value){
   $('simulate-inline')?.addEventListener('click',()=>toggleSimulation(true));
   const unplaced=value?[]:(data?.species||[]).filter(s=>!assessedForMatrix(s));
   // every published species is placed; a species without the pair would be listed by name only (2026-10-17, LKH)
-  $('matrix-unplaced').innerHTML=unplaced.length?`<div>${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)}</button>`).join('')}</div>`:'';
+  // 2026-10-25 (LKH, A안): the '배치 현황' fold always has content: the placed count, the four types and the MCUI basis
+  $('matrix-unplaced').innerHTML=value?'<div class="cmp-placement"><p class="cmp-pl-sum">가상 예시를 보는 동안에는 배치 현황을 표시하지 않습니다.</p></div>':data?placementSummary(assessed,unplaced):'';
   $('matrix-unplaced').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>pickCompare(Number(b.dataset.aphia))));
   const count=$('cmp-types-count');if(count)count.textContent=value?'가상 예시를 보는 동안 비워 둡니다':`${assessed.length}종 배치${unplaced.length?` · 나머지 ${unplaced.length}종`:''}`;
   const points=[['A',24,74,'보전 연구 우선 검토'],['B',77,76,'활용·보전 병행 검토'],['C',25,25,'기초조사 검토'],['D',77,25,'활용 연구 검토']];
@@ -3987,6 +3988,20 @@ function renderMatrixTypes(assessed){
   }
   if($('cmp-read-plain'))$('cmp-read-plain').textContent=matrixPlainNote();
   mtAssessed=assessed;renderTypeGrid();
+}
+// '배치 현황' fold (2026-10-25, LKH A안): published vs placed, then every placed species by type (MT_ORDER, the cards' names and
+// colours, the slider weight like the cards but never the search or group filter) and by MCUI basis (mcui_basis; a Rapid LC value
+// in the legend's words beside a hollow circle). Unplaced names keep their buttons in the sand box. Every number is counted here.
+const PLACEMENT_BASIS=[['iucn','IUCN 평가'],['national','한국 국가 평가'],['range_state','서식국 국가 평가'],['sub_national','지방 목록 참고값'],['preliminary','공식 평가 전 예비 판정(속 빈 원)']];
+function placementSummary(assessed,unplaced){
+  const rule=matrixRule(), li=(dot,name,n)=>`<li>${dot}<span>${esc(name)}</span> <b>${n}종</b></li>`;
+  const types=rule?MT_ORDER.map(k=>rule.types[k]).filter(Boolean).map(t=>li(`<i class="cmp-pl-dot" style="--mp:${matrixTypeColour[t.id]}" aria-hidden="true"></i>`,matrixTypePlain(t.id),assessed.filter(s=>matrixType(s)===t.id).length)).join(''):'';
+  const basis=PLACEMENT_BASIS.map(([b,name])=>[b,name,assessed.filter(s=>b==='preliminary'?rawPreliminaryMcui(s):s.assessment?.mcui_basis===b).length]).filter(([,,n])=>n)
+    .map(([b,name,n])=>li(`<i class="cmp-pl-dot basis${b==='preliminary'?' hollow':''}" aria-hidden="true"></i>`,name,n)).join('');
+  return `<div class="cmp-placement"><p class="cmp-pl-sum">공개 ${data.species.length}종 중 ${assessed.length}종을 지도에 배치했습니다. ${unplaced.length?`배치하지 못한 종 ${unplaced.length}종:`:'배치하지 못한 종은 없습니다.'}</p>`+
+    (unplaced.length?`<div class="cmp-pl-left">${unplaced.map(s=>`<button type="button" data-aphia="${s.aphiaID}">${esc(s.label)}</button>`).join('')}</div>`:'')+
+    (assessed.length&&types?`<section class="cmp-pl-group"><h3>유형별 종 수 <small>검색·분류 조건과 관계없이 전체 기준</small></h3><ul class="cmp-pl-list">${types}</ul></section>`:'')+
+    (basis?`<section class="cmp-pl-group"><h3>MCUI(보전 지표) 근거</h3><ul class="cmp-pl-list">${basis}</ul></section>`:'')+'</div>';
 }
 // 2026-10-15 final design: four type cards in a row (a circle in each type colour), each with its species count and name chips for the current
 // weight, group and search (dimmed points are left out of the count). '외 N종' opens the remaining names in place and

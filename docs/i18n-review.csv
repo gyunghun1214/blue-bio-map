@@ -2020,6 +2020,14 @@ WoRMS 이용조건 · CC BY 텍스트,WoRMS terms of use · CC BY text,i18n-en.j
 데이터셋 원문 ↗,Original dataset ↗,i18n-en.js · 비교와 지표(app.js),draft
 "종별 건수·기간 요약, 승인학명 연결, 좌표 미공개.","Species counts and periods summarized, accepted names linked, coordinates not published.",i18n-en.js · 비교와 지표(app.js),draft
 {0}종 묶음,{0} spp.,i18n-en.js · 비교와 지표(app.js),draft
+공개 {0}종 중 {1}종을 지도에 배치했습니다.,{1} of {0} published species are placed on the map.,i18n-en.js · 비교와 지표(app.js),draft
+배치하지 못한 종은 없습니다.,No species left unplaced.,i18n-en.js · 비교와 지표(app.js),draft
+배치하지 못한 종 {0}종:,{0} species not placed:,i18n-en.js · 비교와 지표(app.js),draft
+유형별 종 수,Species by type,i18n-en.js · 비교와 지표(app.js),draft
+검색·분류 조건과 관계없이 전체 기준,"All placed species, ignoring search/filters",i18n-en.js · 비교와 지표(app.js),draft
+MCUI(보전 지표) 근거,MCUI (conservation index) basis,i18n-en.js · 비교와 지표(app.js),draft
+공식 평가 전 예비 판정(속 빈 원),"Preliminary, before official assessment (hollow)",i18n-en.js · 비교와 지표(app.js),draft
+가상 예시를 보는 동안에는 배치 현황을 표시하지 않습니다.,Placement status is not shown while viewing the hypothetical example.,i18n-en.js · 비교와 지표(app.js),draft
 지표 근거 {0}건 · 데이터셋 인용 {1}건 · 종별 학명 {2}건.,Index evidence {0} · dataset citations {1} · scientific names per species {2}.,i18n-en.js · 근거와 방법(app.js),draft
 첫 화면의 근거 출처 {0}건은 지표 근거 {1}건과 지도 셀에 쓴 데이터셋 {2}건(이용조건별로 셈)입니다.,The {0} evidence sources on the first screen are {1} index evidence sources and {2} datasets used in map cells (counted by terms of use).,i18n-en.js · 근거와 방법(app.js),draft
 이용조건 미기재,Terms of use not stated,i18n-en.js · 근거와 방법(app.js),draft
