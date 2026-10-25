@@ -289,6 +289,8 @@ function scoreHtml(stop,k,big){
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
 const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
 const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
+// 2026-10-25 (LKH, 팀원 제안): 항로 마지막 지점과 카드 모아 보기 끝에, 지도로 만난 바다를 돌보는 활동 링크 한 줄(바깥 사이트로는 링크만).
+const careLine=()=>`<p class="x-fine x-care"><span>지도로 만난 바다를 직접 돌보고 싶다면</span> · <a href="https://www.caresea.kr/" target="_blank" rel="noopener">반려해변 ↗</a> · <a href="https://www.1365.go.kr/" target="_blank" rel="noopener">1365 자원봉사포털 ↗</a></p>`;
 function cardHtml(stop,i,level,mode){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
   const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
@@ -306,6 +308,7 @@ function cardHtml(stop,i,level,mode){
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
     <div class="x-actions"><button type="button" class="x-primary" data-detail="${i}">자세히 보기</button><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a></div>
+    ${mode!=='cards'&&i===STATE.n-1?careLine():''}
     ${level>=REVEAL_DETAIL?'<p class="x-fine x-seen">근거 열람함</p>':''}</div>
 </article>`;
 }
@@ -403,7 +406,7 @@ function renderCard(){
   card.hidden=false;
 }
 function renderCards(){
-  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('');
+  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('')+careLine();
 }
 function render(){renderProgress();renderCard();}
 function save(){

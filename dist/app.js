@@ -2580,6 +2580,7 @@ function renderCandidateDetail(s){
         (pilot?'':row('MFPI / MBPI / MCUI / BBVI','모두 산출 보류 · 원자료 발견은 점수가 아닙니다','pending')+
         '<p class="fine">정보충분도: 출현 조회·식품명 후보·체크리스트 연결 상태만 표시합니다. 검증된 지표 점수와 구분합니다.</p>'))+
       more('활용 전 확인할 제도',institutionChecks(s))+
+      seaCareFold(more,s)+
       more('수집·선별 기준',(r?sourceRow('GBIF',r.gbif)+sourceRow('OBIS',r.obis)+(r.gbif.nibrPoints?row('국립생물자원관 표본',`표본 ${r.gbif.nibrPoints.specimens.toLocaleString()}건(생물지리정보 채집 지점) · 조회 범위 안 ${r.gbif.nibrPoints.pointsInBox.toLocaleString()}건(GBIF 조회 수에 포함) · 통과 ${r.gbif.nibrPoints.accepted.toLocaleString()}건`):'')+
           row('통과 기록의 원자료 학명',r.names.join(', ')||'—','','la')+row('공개 해상도',String(s.sensitivity||'—').replace(/^민감도 미평가: ?/,''))+
           '<p class="fine">검수 기준: WoRMS 학명 확인 · CC0·CC BY 4.0·CC BY-NC 4.0 기록만(비상업 연구용, 2026-10-01부터 BY-NC 포함) · 연도 1개(여러 해 범위 제외) · GBIF 좌표 경고·불확실성 10 km 초과·원자료 일반화 제외 · OBIS 해안선에서 1 km보다 안쪽 육상 좌표 제외(조간대 기록 보존) · 화석·사육·시장 구입 표본 제외 · GBIF와 OBIS에 함께 게시된 같은 기록은 한 번만 셉니다. 국립생물자원관 표본은 같은 표본번호의 국립생물자원관 생물지리정보 채집 지점·일자를 씁니다(2026-10-01). 2000년 이전 기록은 과거 기간으로, 모든 기록이 한국·북한 EEZ(OBIS 해역 정보) 밖인 셀은 따로 표시합니다.</p>'
@@ -2609,6 +2610,7 @@ function renderCandidateDetail(s){
       details.map(([label,status])=>row(label,status,'pending')).join('')+
       '<p class="fine">정보충분도: 학명 연결만 확인 · 그 밖의 근거 미수집. 보류 항목은 0점이 아닙니다.</p>')+
     more('활용 전 확인할 제도',institutionChecks(s))+
+      seaCareFold(more,s)+
     more('수집·선별 기준','<p>한국 주변 출현 여부, 식품 적합성 및 보전 필요성은 아직 평가하지 않았습니다. 분포를 발행하려면 종 식별·이용조건·좌표 품질·민감도 검수 후 공개 격자만 게시해야 합니다.</p>')+
     more('출처와 이용조건','<p>'+sourceLink(s.wormsUrl,'WoRMS 승인 학명 원문 ↗')+' · '+esc(s.wormsCitation)+'</p>')+
     '</div>');
@@ -2643,6 +2645,7 @@ function renderLiveDetail(s) {
     `<div class="detail-more-list">`+
     more('근거 자세히 보기',`${pilotRows}${evidence}${foodEvidencePanel(s)}${pilot?(s.v2?'':`<p class="fine">${score}</p>`):`<div class="withheld"><b>통합점수 산출 보류</b>${withheld}</div>`}`)+
     more('활용 전 확인할 제도',institutionChecks(s))+
+      seaCareFold(more,s)+
     more('수집·선별 기준',`${row('AphiaID',s.aphiaID)}${row('원자료 학명',(i.original_names||[]).join(', ')||'—','','la')}<p class="fine">국명은 탐색용 표시명입니다. 자료 연결은 학명과 AphiaID를 기준으로 합니다.</p>${mapSection({...s,cells})}${separate}`)+
     more('출처와 이용조건',`<div class="source-area">${sourceLink(s.wormsUrl,'WoRMS · 학명 원문 ↗')}${s.sources.map(x=>`<p>${sourceLink(x.url,x.title+' ↗')}</p>`).join('')}${pilot?pilot.source_ids.map(id=>{const src=data.assessmentInfo.sources[id];return `<p>${sourceLink(src.url,((mcuiReference(s)?.source_ids||[]).includes(id)?'참고 정보 출처 ':'지표 근거 ')+id+' ↗')} · ${orig(src.license)}${src.notice?`<br><span class="fine">${escL(src.notice)}</span>`:''}</p>`;}).join(''):''}<button class="text-button" id="detail-sources">인용문과 이용조건 보기 →</button><p class="fine">발행 ${esc(s.publishedAt?.slice(0,10))} · 근거 보고서는 별도 스냅샷입니다.</p></div>`)+
     `</div>`);
@@ -2704,6 +2707,37 @@ function recordJurisdiction(s){
   return {kind:'country',total,inside:by.KR||0,out:other,untagged:by['국가 표기 없음']||0,
     text:parts.map(([k,n])=>`${k.split('·').map(x=>name[x]||x).join('·')} ${n.toLocaleString()}건(${sharePct(n,total)})`).join(' · ')};
 }
+// 2026-10-25 (LKH, 팀원 제안): 종 상세에서 그 종이 사는 바다를 돌보는 활동으로 잇는다. 바깥 사이트로는 링크만 건다(CSP 그대로).
+// 금어기·금지체장은 수산자원관리법 시행령 별표 1·2(해양수산부 '전체 수산자원의 금어기·금지체장 기준', 2025-01-01 시행본 게시)에
+// 이름이 있는 우리 종만 넣는다. 전복은 별표의 '전복류', 참문어는 '참문어'로 맞췄다. 꽃게 기간은 주 해역 값(2026년 8월 21일 해제 보도와 같음).
+const SEA_RULES_URL='https://www.mof.go.kr/doc/ko/selectDoc.do?docSeq=59773&menuSeq=1009&bbsSeq=22', SEA_RULES_CHECKED='2026-10-25';
+const SEA_RULES={
+  1061762:['6월 21일~8월 20일 (해역마다 다름)','두흉갑장 6.4cm 이하 · 알 밴 암컷'],
+  342067:['4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)','외투장 15cm 이하'],
+  397082:['9월 1일~10월 31일 (제주 10월 1일~12월 31일)','각장 7cm 이하 (제주 10cm 이하)'],
+  241776:['7월 1일~7월 31일',''],
+  372119:['11월 1일~이듬해 3월 31일',''],
+  494972:['10월 1일~이듬해 1월 31일',''],
+  281273:['7월 1일~7월 31일 (유자망 4월 22일~8월 10일)','15cm 이하'],
+  127022:['4월 1일~6월 30일 가운데 1개월 (해양수산부 고시)','21cm 이하'],
+  254538:['1월 16일~2월 15일','35cm 이하'],
+  275816:['','35cm 이하'],
+  274849:['','23cm 이하'],
+  276651:['','30cm 이하'],
+  534443:['5월 16일~6월 30일 (시·도가 따로 정할 수 있음)','']};
+const SEA_CARE_LINKS=[
+  ['https://www.caresea.kr/','반려해변 ↗','해변 하나를 정해 꾸준히 돌보는 활동 · 개인·단체 신청'],
+  ['https://www.1365.go.kr/','1365 자원봉사포털 ↗','지역과 해양 정화·갯벌 정화로 찾고 봉사시간 인증']];
+function seaCare(s){
+  const r=SEA_RULES[s?.aphiaID];
+  const rules=!r?'':'<h3>이 종의 보호 기준</h3>'+(r[0]?row('금어기',r[0]):'')+(r[1]?row('잡지 않는 크기',r[1]):'')+
+    '<p class="fine">이 기간과 크기는 사지 않고 잡지 않는 것만으로도 지킬 수 있습니다.</p>'+
+    `<p class="fine">${sourceLink(SEA_RULES_URL,'해양수산부 금어기·금지체장 기준 ↗')} · <span>수산자원관리법 시행령 별표 1·2</span> · <span>확인 ${SEA_RULES_CHECKED}</span></p>`;
+  return `<div class="sea-care">${rules}<h3>이 생물이 사는 바다를 돌보는 활동</h3><ul class="why sea-care-links">`+
+    SEA_CARE_LINKS.map(([url,label,note])=>`<li>${sourceLink(url,label)}<span class="sea-care-note">${esc(note)}</span></li>`).join('')+
+    '</ul><p class="fine">바깥 누리집으로 이동합니다.</p></div>';
+}
+const seaCareFold=(more,s)=>more('이 생물이 사는 바다 지키기',seaCare(s)).replace('<details class="detail-more"','<details class="detail-more sea-care-fold"');
 function institutionChecks(s){
   const j=recordJurisdiction(s);
   // TODO(원문 확인 필요): 「유전자원의 접근·이용 및 이익 공유에 관한 법률」의 국내 유전자원 접근 신고·이익 공유 조항과
@@ -2740,7 +2774,7 @@ function altProductionBlock(s,compact=false){
 }
 // Citizen observation (external link only) and the planned precise-coordinate procedure (nothing is requested or stored).
 const inatUrl=s=>`https://www.inaturalist.org/taxa/search?q=${encodeURIComponent(String(s.name||'').split(/\s+/).slice(0,2).join(' '))}`;
-const speciesActionButtons=s=>`<a class="detail-act" href="${esc(inatUrl(s))}" target="_blank" rel="noopener" title="iNaturalist에서 ${esc(s.name)} 관찰 기록 보기 · 외부 사이트"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>관찰 기록 보러가기 ↗</a><button type="button" class="detail-act" data-coord-request aria-haspopup="dialog"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>정밀 좌표 이용 신청</button>`;
+const speciesActionButtons=s=>`<a class="detail-act" href="${esc(inatUrl(s))}" target="_blank" rel="noopener" title="iNaturalist에서 ${esc(s.name)} 관찰 기록 보기 · 외부 사이트"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>관찰 기록 보러가기 ↗</a><button type="button" class="detail-act" data-coord-request aria-haspopup="dialog"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>정밀 좌표 이용 신청</button><button type="button" class="detail-act" data-sea-care><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 15c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></svg>바다 지키기</button>`;
 const speciesActions=s=>`<div class="detail-actions">${speciesActionButtons(s)}</div>`;
 function openCoordDialog(){
   const d=$('coord-dialog');if(!d)return;
@@ -5102,6 +5136,8 @@ $('matrix-points').addEventListener('click',e=>{
 // '정밀 좌표 이용 신청': explains the planned procedure only; no form, nothing is sent or stored
 let coordReturn=null;
 for(const id of ['detail','side-panel'])$(id)?.addEventListener('click',e=>{const b=e.target.closest('[data-coord-request]');if(b){coordReturn=b;openCoordDialog();}});
+// '바다 지키기': 종 상세의 '이 생물이 사는 바다 지키기' 칸을 열고 그 칸으로 간다(넓은 화면은 근거 서랍, 좁은 화면은 스크롤). 바깥 사이트로 바로 보내지 않는다.
+for(const id of ['detail','side-panel'])$(id)?.addEventListener('click',e=>{const b=e.target.closest('[data-sea-care]');if(!b)return;const f=$('detail')?.querySelector('.sea-care-fold');if(f)f.open=true;openDrawer('.sea-care-fold > summary',b);});
 $('coord-dialog')?.addEventListener('click',e=>{const d=$('coord-dialog');if(e.target===d||e.target.closest('.coord-close')){d.close();(coordReturn&&document.contains(coordReturn)&&coordReturn.offsetParent?coordReturn:document.querySelector('#detail [data-coord-request]'))?.focus();}});
 // ---- right panel (from 1180px): tabs, ⓘ notes, the evidence drawer ----
 function setSideTab(tab,focus=false){
