@@ -1502,6 +1502,7 @@ BBVI
 3
 1
 1
+@aria-label=지도 크게 보기
 @aria-label=Zoom in
 @title=Zoom in
 +
