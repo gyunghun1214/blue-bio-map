@@ -118,7 +118,7 @@ const issue=committed.feedback.issue_url.replace(/[?.]/g,'\\$&');
 assert.match(html,new RegExp(`<a class="foot-link" data-feedback="foot" href="${issue}" target="_blank" rel="noopener">의견 보내기</a><span data-feedback-issue hidden> · <a class="foot-link" href="${issue}" target="_blank" rel="noopener">GitHub 이슈</a></span>`));
 assert.match(html,new RegExp(`<a class="coord-link" data-feedback="coord" href="${issue}"`));
 assert.match(html,/<li class="is-now" data-stage="now"><p class="gate-next-k">지금<\/p><p class="gate-next-t">[^]*?<\/p><p class="gate-next-use" data-ops-usage hidden><\/p><\/li>/);
-assert.match(html,/<p class="mt-made-note mt-effect" data-ops-effect hidden><\/p><\/section>/);
+assert.match(html,/\(SIL OFL 1\.1\)\.<\/p><p class="fine mt-effect" data-ops-effect hidden><\/p><p class="fine mt-visits"/);
 assert.match(html,/<p class="gate-uses-note">[^<]*<\/p><p class="gate-uses-voice" data-ops-voice hidden><\/p>/);
 const v=crypto.createHash('sha256').update(code).digest('hex').slice(0,10);
 assert.match(html,new RegExp(`<script defer src="operations\\.js\\?v=${v}"></script><script defer src="analytics\\.js`));

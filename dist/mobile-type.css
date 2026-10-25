@@ -1,0 +1,114 @@
+/* Phone type scale (2026-10-25, 휴대폰 글자 크기 체계): on phones (≤740px; the entry screen ≤760px, as intro.css) text under
+   18px takes only 13 (label: chips, badges, kickers, table heads, ticks, units, sources), 14 (secondary: sentences, list
+   and table bodies, legend sentences), 15 (main sentences, small names), 16 (kept) and 17px (small headings). No text gets
+   smaller than before; words, colours, data and the PC screen stay as they are. Loaded after every other stylesheet: each
+   rule copies the selector that sets the size today (same specificity, later file wins), !important only where that rule has
+   it. Remove this file (and its index.html line) to go back. Verification and the selector table:
+   verification/2026-10-25-mobile-type-scale/. */
+
+/* ---------- entry screen (intro.css, ≤760px) ---------- */
+@media (max-width:760px){
+  .gate-task,.gate-why-k,.gate-sources p,.gate-next-basis,.gate-next-tag,.gate-legend .gate-credit,.gate-legend{font-size:13px}
+  .gate-connect,.gate-share-status{font-size:13px}
+  .gate-problems li:before{font-size:13px}
+  /* sentences */
+  .gate-problems,.gate-card-sub,.gate-note,.gate-use-when,.gate-next-use,.gate-next-who,.gate-next-cost{font-size:14px}
+}
+
+/* ---------- everything else (≤740px) ---------- */
+@media (max-width:740px){
+  :root{--fs-min:13px}
+
+  /* header, tabs, status, footer */
+  .tabs button,.tabs button[data-short]{font-size:14px}
+  .expedition-link,.lang-switch button,.status-chip{font-size:13px}
+  .brand{font-size:15px}
+  /* the larger name and status chip fit in one header line at 390px: the gaps only (header 8 → 6px, logo to name 12 → 10px) */
+  .header{gap:6px}
+  .brand{gap:10px}
+  .notice p,.status-pop .notice p{font-size:14px}
+  #snapshot-date,.scope span,.compact button{font-size:13px}
+  footer{font-size:13px}
+  .eyebrow,.step{font-size:13px}
+  .fine{font-size:14px!important}
+
+  /* 탐색 지도: species list and filters */
+  .species-card b{font-size:15px}
+  .species-card em,.species-card .group,.species-card .card-verdict,.species-card .card-line,.species-card .card-line .cl-cat{font-size:13px}
+  .species-filters label,.pane-title>span,.period-filter button,.use-title,#explore .use-chip b{font-size:13px}
+  .pf-menu button{font-size:14px} /* the period menu keeps 14px: theme.css's .pf-menu button wins over .period-filter button by order */
+  /* map controls, chips and legend */
+  .map-mode button,.basemap-switch button,.map-title,.map-title button,.map-title #copy-link,.map-title #reset-map,.map-bottom span{font-size:13px}
+  .map-caption,.map-info,.map-ui-bl .map-key,.map-key,.map-ui-bl .effort-key,.cell-summary span{font-size:13px}
+  .map-ui-bl.legend-collapsed .legend-toggle,.map-legend-more>summary,.legend-why>summary{font-size:13px}
+  .value-legend strong,.value-grid span,.value-layers,.value-mini>.w-badge,.vkey,.vk-view{font-size:13px}
+  .map-legend-more>span,#explore .key-note,.legend-why p,.value-lead,.value-key{font-size:14px}
+  .map-review-note,.map-judgment{font-size:14px}
+  /* species detail */
+  .detail-pane h3,.detail-top span,.detail-top .verified{font-size:13px}
+  #detail-map-summary>.evidence-item>b,#detail-map-summary>.evidence-item>span:first-child,.evidence-item span:last-child{font-size:13px}
+  .ax-sub,.moved-link,.sheet-summary .type-chip,#explore .ax-type-name,#explore .sheet-summary .type-chip .verdict,.detail-fold.ax-sens-fold>summary{font-size:13px}
+  .score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure) summary span,.score-disclosure:is(.rx-disclosure,.breadth-disclosure,.lit-disclosure) summary b{font-size:13px}
+  .gloss{font-size:13px}
+  .cell-table table{font-size:14px}
+  .cell-table th{font-size:13px}
+  .ax-where p,.detail-limit,.stock-decline h4{font-size:14px}
+  .score-disclosure-body,.detail-pane .why,.detail-pane .why b,.detail-more-body,.detail-context{font-size:14px}
+  .coord-steps li{font-size:14px}
+  .coord-dialog h3 span{font-size:13px}
+  .coord-note{font-size:14px}
+  .coord-ok{font-size:15px}
+
+  /* 비교와 지표 */
+  #compare .cmp-lead{font-size:16px}
+  #compare .cmp-panel-head p,#compare .cmp-read-lead,#compare .cmp-read-plain,#compare .cmp-read-more,#compare .cmp-basis-moves,#compare .matrix-explanation p{font-size:14px}
+  #compare .cmp-read-types{font-size:14px}
+  #compare .cmp-read-types thead th,#compare #comparison thead th,#compare .cmp-sim-flag,#compare .cmp-i,#compare .cp-info span{font-size:13px}
+  #compare .cmp-chip,#compare .cp-chip,#compare .cp-status,#compare .cp-tag,#compare .cp-kind-badge{font-size:13px}
+  #compare .cp-evidence,#compare .cp-def,#compare .cd-note,#compare .cd-table td{font-size:14px}
+  #compare .cp-links,#compare .cp-links .cmp-link,#compare .cmp-fold>summary{font-size:15px}
+  #compare .cdr-sec p{font-size:14px}
+  .decision-detail h3{font-size:17px}
+  .decision-detail h4,.decision-axis b{font-size:15px}
+  #compare .cmp-pop .weight-status,#compare .w-presets .cmp-ghost{font-size:13px}
+  #compare .cmp-pop .weight-control p{font-size:14px}
+  /* data table */
+  #compare .dt-card-sub,#compare #comparison tbody th small,#compare #comparison .dt-type b,#compare #comparison .dt-x h4,#compare #comparison .dt-x-sub{font-size:13px}
+  #compare #comparison thead .cmp-sort small,#compare #comparison .cmp-more-grid>div,td small{font-size:13px}
+  #compare #comparison td.cmp-val[data-k]::before,#compare #comparison td.cmp-rx::before{font-size:13px}
+  #compare .dt-hint,#compare #comparison .dt-x-main{font-size:14px}
+  /* matrix: quadrant names, ticks, legend */
+  #compare .matrix .quadrant span,#compare .matrix-ticks i,#compare .matrix-ticks b,#compare .matrix .axis-x,#compare .cmp-legend{font-size:13px}
+  #compare .cmp-limit,#compare .cmp-spread-note{font-size:14px}
+  /* the larger quadrant names keep their lines on a 390px phone: the quadrant's side padding only (10 → 6px) */
+  #compare .matrix .quadrant{padding:10px 6px}
+  /* matrix point names: hidden until the point is selected, focused from the keyboard or in the compare basket (app.js
+     markBasketPoints). The name is aria-hidden and the point button carries its own aria-label, so visibility:hidden takes
+     nothing from screen readers and keeps the name's box, which app.js declutterPointLabels measures: point and name
+     positions come out as before. Sizes stay (14px, the selected 16px); a shown name gets the panel colour behind it. */
+  #compare .matrix-point.pilot .point-label{visibility:hidden}
+  #compare .matrix-point.pilot:is([aria-current=true],:focus-visible,.in-basket) .point-label{visibility:visible}
+  #compare .matrix-point.pilot:is(:focus-visible,.in-basket):not([aria-current=true]) .point-label{background:rgba(8,29,46,.85);background:color-mix(in srgb,var(--cs-panel) 85%,transparent)}
+  /* compare tray */
+  #compare .ct-empty,#compare .ct-toggle,#compare .ct-go-btn,#compare .ct-go small{font-size:14px}
+
+  /* 근거와 방법 */
+  #method .mt-eyebrow,#method .mt-ix-k,#method .mt-q span,#method .mt-quad-rule,#method .mt-origins li span,#method .mt-src-parts{font-size:13px}
+  #method .mt-ix .mt-ix-w{font-size:13px!important}
+  #method .mt-origins li b{font-size:15px}
+  #method .mt-sec-head.row p{font-size:14px}
+  #method .mt-ck-table,#method .type-table,#method .mt-nat-table{font-size:14px}
+  #method .mt-ck-table thead th,#method .mt-ck-table :is(th,td) small,#method .mt-ck-table .mt-ck-fig,#method .mt-ck-pill,#method .mt-ck-table td:before{font-size:13px}
+  #method .mt-nat-table thead th,#method .mt-nat-table tbody th>small,#method .mt-nat-src,#method .mt-nat-table td:before{font-size:13px}
+  #method .mt-ck-foot,#method .flow-wrap figcaption{font-size:14px}
+  #method .mt-nat-lead{font-size:15px}
+  /* the flow diagram's SVG text is laid out in SVG coordinates (boxes, arrows): it keeps its sizes, so the token above does
+     not reach it */
+  .flow .fs,.flow .noadd text{font-size:12px}
+
+  /* 멍이 guide panel (chatbot.css) */
+  .bbc-panel{font-size:14px}
+  .bbc-reset,.bbc-titles small,.bbc-chips button,.bbc-show{font-size:13px}
+  .bbc-head strong{font-size:15px}
+  .bbc-form button{font-size:14px}
+}

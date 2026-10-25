@@ -280,14 +280,6 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-sources-fold>summary{padding:10px 0;color:var(--mt-ink);font-size:14px;font-weight:600;cursor:pointer}
 #method .mt-sources-fold>summary span{color:var(--mt-ink2);font-weight:500}
 #method .mt-src-parts{display:block;margin-top:4px;color:var(--mt-ink2);font-size:12.5px;font-weight:400;line-height:1.55}
-/* 2026-10-19 (LKH, prompt 8/10): '만든 방법', the tools used to build the site, under the source notices */
-#method .mt-made{margin-top:20px;padding-top:16px;border-top:1px solid var(--mt-line)}
-#method .mt-made-h{margin:0 0 10px;color:var(--mt-ink);font-size:14px;font-weight:600}
-#method .mt-made-list{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-#method .mt-made-list li{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr);gap:12px;color:var(--mt-ink2);font-size:13px;line-height:1.55}
-#method .mt-made-list b{color:var(--mt-ink);font-weight:600}
-#method .mt-made-note{margin:10px 0 0;color:var(--mt-ink2);font-size:13px;line-height:1.55}
-@media (max-width:740px){#method .mt-made-list li{grid-template-columns:minmax(0,1fr);gap:2px}}
 #method .mt-src-k{margin-top:20px;color:var(--mt-ink);font-size:14px;font-weight:600}
 #method #all-sources{max-height:min(46vh,420px);margin-top:10px;padding:2px 18px;border:1px solid var(--mt-line);border-radius:12px;background:var(--mt-low)}
 #method .citation{border-top-color:var(--mt-line);color:var(--mt-ink2)}
