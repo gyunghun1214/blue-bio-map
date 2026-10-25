@@ -160,6 +160,9 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .mt-ck{--oc-pass:#3dd6c3;--oc-consistent:#8fd3e8;--oc-fail:#e3b26a;--oc-stopped:#c99a6b;--oc-void:#a9bbc6;margin-top:20px}
 #method .mt-ck [data-oc=pass]{--oc:var(--oc-pass)}#method .mt-ck [data-oc=consistent]{--oc:var(--oc-consistent)}#method .mt-ck [data-oc=fail]{--oc:var(--oc-fail)}
 #method .mt-ck [data-oc=stopped]{--oc:var(--oc-stopped)}#method .mt-ck [data-oc=void]{--oc:var(--oc-void)}
+#method .mt-ck [data-oc=registered]{--oc:var(--oc-void)}
+#method .mt-ck-pill[data-oc=registered]{border-style:dashed;background:none}
+#method .mt-ck-ledger{margin-top:4px}
 #method .mt-ck-sum{color:var(--mt-ink);font-size:15px;font-weight:600;line-height:1.7}
 #method .mt-ck-sum span{white-space:nowrap}
 #method .mt-ck-sum span:before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;background:var(--oc);vertical-align:0}
@@ -386,7 +389,15 @@ footer .foot-link{padding:0;border:0;background:none;color:inherit;font-size:inh
 }
 @media (prefers-reduced-motion:reduce){#method *{transition:none!important}}
 /* 2026-10-15 team check: phones get no text under --fs-min (12px since the readability pass) */
-@media(max-width:740px){#method .mt-src .mt-k{font-size:var(--fs-min)}#method .mt-lic-table :is(th,td,small){font-size:12px}#method .lic-list :is(summary,ul){font-size:12px}
+@media(max-width:740px){
+  /* 2026-10-25 휴대폰: 머리글의 흐림 효과(backdrop-filter)는 그 안의 고정 탭바(.tabs·.expedition-link)를 머리글에 묶어,
+     근거와 방법 탭에서만 아래 탭바가 화면 맨 위로 올라가 로고·언어·상태 칩을 덮고 내리면 함께 사라졌다. 휴대폰 머리글은
+     화면에 붙어 있지 않아(static) 흐림이 보이지 않으므로 휴대폰에서만 끈다. 넓은 화면은 그대로. */
+  body:has(#method.active) .header{-webkit-backdrop-filter:none;backdrop-filter:none}
+  /* 2026-10-25 영어 화면: 03 접이식의 유형 표(최소 420px)가 한 칸짜리 그리드를 화면보다 넓혀(360px에서 455px) 페이지가 옆으로 밀렸다.
+     칸은 화면 폭까지만, 표는 제 상자 안에서 옆으로 민다(한국어는 305px라 그대로). */
+  #method .method-bottom{grid-template-columns:minmax(0,1fr)}
+  #method .mt-src .mt-k{font-size:var(--fs-min)}#method .mt-lic-table :is(th,td,small){font-size:12px}#method .lic-list :is(summary,ul){font-size:12px}
   /* the four-group table becomes one card per group; each cell names its column */
   #method #license-table thead{display:none}
   #method #license-table,#method #license-table tbody,#method #license-table tr{display:block}
@@ -409,3 +420,30 @@ footer .foot-link{padding:0;border:0;background:none;color:inherit;font-size:inh
 #method .obis-warn-table th[scope=row],#method .obis-warn-table thead th{color:var(--mt-ink);font-weight:700}
 #method .obis-warn-table thead th{font-size:12.5px;color:var(--mt-ink2)}
 
+
+/* ---------- 01: national marine-life systems beside this map (2026-10-21, 사이트 v4 prompt 03) ---------- */
+#method .mt-nat{max-width:1100px;margin-top:26px}
+#method .mt-nat-h{margin:0;color:var(--mt-ink);font-size:17px;font-weight:700}
+#method .mt-nat-lead{margin:6px 0 0;color:var(--mt-ink2);font-size:14px;line-height:1.65}
+#method .mt-nat-wrap{margin-top:12px;overflow-x:auto;border:1px solid var(--mt-line2);border-radius:12px;background:var(--mt-low)}
+#method .mt-nat-table{width:100%;min-width:760px;border-collapse:collapse;color:var(--mt-ink2);font-size:13.5px;line-height:1.55}
+#method .mt-nat-table :is(th,td){padding:12px 14px;border-bottom:1px solid var(--mt-line);background:none;text-align:left;vertical-align:top}
+#method .mt-nat-table thead th{color:var(--mt-ink3);font-size:12.5px;font-weight:600;white-space:nowrap}
+#method .mt-nat-table tbody tr:last-child>*{border-bottom:0}
+#method .mt-nat-table tbody th{width:19%;color:var(--mt-ink);font-weight:400}
+#method .mt-nat-table tbody th>b{display:block;font-weight:700}
+#method .mt-nat-table tbody th>small{display:block;margin-top:3px;color:var(--mt-ink3);font-size:12px}
+#method .mt-nat-table td:nth-of-type(2){width:13%}
+#method .mt-nat-table tbody tr:last-child th>b{color:var(--mt-accent-hi)}
+#method .mt-nat-src{margin:10px 0 0;color:var(--mt-ink3);font-size:12px;line-height:1.7}
+#method .mt-nat-src a{color:inherit}
+@media (max-width:900px){
+  #method .mt-nat-wrap{overflow:visible;border:0;background:none}
+  #method .mt-nat-table{min-width:0}
+  #method .mt-nat-table,#method .mt-nat-table tbody,#method .mt-nat-table tr,#method .mt-nat-table :is(th,td){display:block;width:auto!important}
+  #method .mt-nat-table thead{display:none}
+  #method .mt-nat-table tbody tr{margin-top:10px;padding:12px 14px;border:1px solid var(--mt-line2);border-radius:12px;background:var(--mt-low)}
+  #method .mt-nat-table tbody th{padding:0 0 6px;border:0;font-size:15px}
+  #method .mt-nat-table td{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 0 0;border:0}
+  #method .mt-nat-table td:before{content:attr(data-label);color:var(--mt-ink3);font-size:12px}
+}

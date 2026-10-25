@@ -83,10 +83,15 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
   transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .55s ease}
 .gate-kicker{display:flex;align-items:center;gap:14px;margin:0 0 clamp(10px,2vh,22px);font-size:clamp(13px,min(1.02vw,1.85vh),17px);font-weight:500;color:var(--g-teal)}
 .gate-kicker:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
+/* 2026-10-21 (site v4 05): the contest's challenges under the kicker, and the 'connect' line under the solution; both in
+   small type so the column keeps its height */
+.gate-task{margin:calc(-1*clamp(4px,1.2vh,14px)) 0 clamp(10px,2vh,20px);font-size:12px;line-height:1.5;color:var(--g-ink3);
+  max-width:clamp(280px,max(calc(73vw - min(77.86vh,55vw) - var(--g-pad)),calc(clamp(190px,15.6vw,262px) + clamp(24px,2.6vw,44px) + 96px)),560px)}
+.gate-connect{grid-column:2;margin:0;font-size:clamp(12px,min(.9vw,1.6vh),14px);line-height:1.55;color:var(--g-ink2)}
 .gate-title{margin:0;font-size:clamp(38px,min(5.6vw,9.4vh),112px);line-height:1.12;font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 30px rgba(4,16,27,.5)}
 .gate-title span{display:block}
 .gate-lead{margin:clamp(12px,2.6vh,26px) 0 0;font-size:clamp(15px,min(1.32vw,2.35vh),22px);line-height:1.6;color:var(--g-ink2)}
-/* 2026-10-17 (#1) why the map exists, under the slogan: three problem lines, then the solution in the lead's type, then the
+/* 2026-10-17 (#1) why the map exists, under the slogan: the problem (one line since 2026-10-21), then the solution in the lead's type, then the
    ways in. The title is a size smaller to make room. The block stays inside the room the globe already left the copy (its
    left edge, or the buttons' row where that reaches further), so the globe stays where the design put it. */
 .gate-why{max-width:clamp(280px,max(calc(73vw - min(77.86vh,55vw) - var(--g-pad)),calc(clamp(190px,15.6vw,262px) + clamp(24px,2.6vw,44px) + 96px)),560px)}
@@ -99,8 +104,10 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-problems li{position:relative;padding-left:1.7em;counter-increment:gp}
 .gate-problems li:before{content:counter(gp,decimal-leading-zero);position:absolute;left:0;top:.2em;font-size:12px;font-weight:600;color:var(--g-ink3);font-variant-numeric:tabular-nums}
 .gate-problems b,.gate-why .gate-lead b{font-weight:700;color:var(--g-ink)}
-.gate-src.is-wait{visibility:hidden}
-.gate-src-n:empty{display:inline-block;min-width:3ch}
+/* 2026-10-21: one problem line keeps the list (a second can come back) but drops its number */
+.gate-problems li:only-child{padding-left:0}
+.gate-problems li:only-child:before{content:none}
+.gate-method b{font-weight:700}
 .gate-why .gate-lead{margin:0;font-size:clamp(15px,min(1.25vw,2.2vh),21px);color:var(--g-ink);text-wrap:balance}
 .gate-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px clamp(24px,2.6vw,44px);margin-top:clamp(16px,3vh,34px)}
 .gate-enter{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-width:clamp(190px,15.6vw,262px);height:clamp(50px,6.2vh,58px);padding:0 28px;
@@ -163,7 +170,7 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-uses-k:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
 .gate-uses-h{margin:0;font-size:clamp(26px,min(2.6vw,4.6vh),44px);font-weight:800;line-height:1.2;letter-spacing:-.02em}
 .gate-uses-h:focus{outline:none}
-.gate-uses-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,24px);margin:clamp(18px,3.4vh,36px) 0 0;padding:0;list-style:none}
+.gate-uses-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.4vw,24px);margin:clamp(18px,3.4vh,36px) 0 0;padding:0;list-style:none}
 .gate-uses-list li{display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2.4vh,28px) clamp(18px,1.7vw,28px);border:1px solid rgba(255,255,255,.14);
   border-radius:14px;background:rgba(10,32,50,.78)}
 .gate-uses-list p{margin:0}
@@ -176,6 +183,9 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-use-go{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding:16px 0 8px;border:0;border-bottom:1px solid rgba(244,243,238,.5);
   background:none;color:var(--g-ink);font-size:clamp(14px,.96vw,16px);font-weight:600;text-decoration:none;white-space:nowrap}
 .gate-use-go:hover{color:var(--g-teal);border-bottom-color:var(--g-teal)}
+.gate-use-when{font-size:13px;line-height:1.5;color:var(--g-teal)}
+.gate-uses-voice{margin:8px 0 0;font-size:clamp(14px,.96vw,16px);line-height:1.6;color:var(--g-ink)}
+@media (min-width:761px) and (max-width:1100px){.gate-uses-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .gate-uses-note{margin:clamp(14px,2.4vh,24px) 0 0;font-size:clamp(14px,.96vw,16px);color:var(--g-ink2)}
 /* 2026-10-17 (#4) '다음 단계': where the map stands now, then the planned steps, one line each, a dot on one line */
 .gate-next{padding:0 var(--g-pad) clamp(52px,9vh,92px)}
@@ -192,6 +202,8 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
 .gate-next-k{font-size:clamp(15px,1.1vw,17px);font-weight:700;color:var(--g-ink)}
 .is-now .gate-next-k{color:var(--g-teal)}
 .gate-next-t{margin-bottom:6px!important;font-size:clamp(14px,.96vw,15px);line-height:1.6;color:var(--g-ink2)}
+.gate-next-use{font-size:13px;line-height:1.55;color:var(--g-teal)}
+.gate-next-who,.gate-next-cost{font-size:13px;line-height:1.55;color:var(--g-ink2)}.gate-next-who{margin-top:2px!important}.gate-next-cost{margin-bottom:6px!important}.gate-next-basis{font-size:12px;line-height:1.5;color:var(--g-ink2);opacity:.85;margin-bottom:6px!important}
 .gate-next-tag{margin-top:auto!important;padding:2px 9px;border:1px solid rgba(255,255,255,.26);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--g-ink2)}
 
 /* leaving: the copy lifts away, the globe leans in toward Korea, the screen fades and the map is there underneath */
@@ -257,6 +269,13 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-counts:before{display:none}
   .gate-problems{font-size:13px}
   .gate-why{gap:6px 10px;margin-top:16px}
+  /* 2026-10-21 (site v4 05): the column keeps its phone height: the contest line takes the kicker's place */
+  .gate-kicker{display:none}
+  .gate-task{max-width:none;margin:0 0 6px;color:var(--g-teal)}
+  .gate-connect-lead{display:none}
+  .gate-why{row-gap:4px;margin-top:12px}
+  .gate-actions{margin-top:16px}
+  .gate-counts{margin-top:9px}
   .gate-card{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 12px;padding:12px 16px}
   .gate-card-title{grid-column:1/-1;font-size:15px}
   .gate-card-sub{margin-top:0!important;font-size:13px}

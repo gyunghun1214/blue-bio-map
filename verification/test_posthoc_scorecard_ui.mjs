@@ -16,6 +16,7 @@ const app=read('app.js'), html=read('index.html'), report=JSON.parse(read('asses
 const els={};const el=id=>els[id]??={id,innerHTML:'',textContent:'',hidden:false,dataset:{},title:''};
 const badges=['MFPI','MBPI','MCUI'].map(k=>({dataset:{ind:k},hidden:true,textContent:'',title:''}));
 const ctx={document:{getElementById:el,querySelectorAll:sel=>sel.includes('mt-vbadge')?badges:[]}};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../dist/i18n.js',import.meta.url),'utf8'),ctx); // as on the page: language and dictionaries (i18n.js) before app.js
 vm.runInContext(fs.readFileSync(new URL('../dist/score-format.js',import.meta.url),'utf8'),ctx); // as on the page: app.js writes its numbers with it
 vm.runInContext(app.split('function setView')[0]+
   ';globalThis.file=scorecardFile;globalThis.render=renderVerifyBadges;globalThis.table=renderPosthocTable;globalThis.setSc=f=>{posthocScorecard=f};globalThis.setData=d=>{data=d};'+
@@ -49,7 +50,7 @@ assert.deepEqual(Object.keys(els),[],'the badges write nothing else');
 
 // The table, drawn from the file.
 ctx.table();assert.equal(snap(),none,'drawing the table changes no score, label or type');
-assert.deepEqual(Object.keys(els).sort(),['mt-ck-body','mt-ck-foot','mt-ck-sum','mt-ck-title'],'the table writes its own elements only');
+assert.deepEqual(Object.keys(els).sort(),['mt-ck-body','mt-ck-foot','mt-ck-ledger','mt-ck-sum','mt-ck-title'],'the table writes its own elements only');
 const strip=h=>h.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
 assert.equal(els['mt-ck-title'].textContent,`검증 기록 ${file.total}건`);
 assert.equal(file.total,8);
@@ -57,7 +58,20 @@ assert.equal(strip(els['mt-ck-sum'].innerHTML),'통과 1 · 기준 미충족 3 �
 const OC={'통과':'pass','실패':'fail','실패 후 사용 중단':'stopped','일관성 확인(독립 아님)':'consistent','검증 불성립':'void'};
 const body=els['mt-ck-body'].innerHTML, rows=body.split('</tr>').filter(Boolean);
 const order=[...file.rows].sort((a,b)=>a.order-b.order);
-assert.equal(rows.length,order.length);
+// 2026-10-21 (site v4 09, LKH option A): registered checks follow the stored ones, never counted above
+assert.equal(rows.length,order.length+file.registered.length);
+assert.deepEqual(file.registered.map(r=>[r.key,r.prereg,r.prereg_commit,r.results_due]),
+  [['MBPI_origin_rerank','research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md','6b06ca8','2026-12']]);
+{const tr=rows.at(-1),r=file.registered[0];
+  assert.ok(tr.startsWith(`<tr data-oc="registered" data-key="${r.key}" id="mt-ck-${r.key}">`));
+  assert.deepEqual([...tr.matchAll(/<td data-label="([^"]+)">/g)].map(m=>m[1]),['무엇을 확인했나','사전 등록','결과','그 뒤 처리']);
+  assert.ok(tr.includes(`<a href="${file.repository}${r.prereg}" target="_blank" rel="noopener" title="${r.prereg}">prereg-mbpi-origin-rerank-2026-10.md ↗</a>`));
+  assert.ok(tr.includes('<a href="https://github.com/gyunghun1214/blue-bio-map/commit/6b06ca8" target="_blank" rel="noopener">사전 등록 커밋 6b06ca8 ↗</a>'));
+  assert.ok(tr.includes('<span class="mt-ck-pill" data-oc="registered">등록됨</span><small class="mt-ck-fig">2026-12 공개 예정</small>'));
+  for(const w of ['아직','미정','확인 전','실패'])assert.ok(!strip(tr).includes(w),`registered row: no '${w}'`);}
+assert.equal(strip(els['mt-ck-ledger'].innerHTML),'지표 규칙이 바뀐 이력 전체: method-changelog.json ↗');
+assert.ok(els['mt-ck-ledger'].innerHTML.includes(`href="${file.repository}research/method-changelog.json"`));
+assert.ok(fs.readFileSync(new URL('../research/method-changelog.json',import.meta.url))&&true,'the ledger file exists');
 const esc=t=>ctx.esc(String(t));  // the page's own screen wording (plainWords: '탐색적' → '탐색용' and the like)
 order.forEach((r,i)=>{const tr=rows[i], oc=OC[r.outcome_class];
   assert.ok(tr.startsWith(`<tr data-oc="${oc}" data-key="${r.key}" id="mt-ck-${r.key}">`),`${r.key}: row ${i+1}, its class and anchor`);
@@ -80,7 +94,7 @@ const fig=k=>rows[order.findIndex(r=>r.key===k)].match(/<small class="mt-ck-fig"
 assert.equal(fig('MFPI'),'시범 3.15 기록: 순위상관 0.873 · 11종');
 assert.equal(fig('MBPI'),'4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1');
 assert.equal(fig('MCUI_preliminary'),'시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)');
-assert.equal((body.match(/class="mt-ck-fig"/g)||[]).length,file.rows.filter(r=>r.figure).length,'a figure only where the file has one');
+assert.equal((body.match(/class="mt-ck-fig"/g)||[]).length,file.rows.filter(r=>r.figure).length+file.registered.length,'a figure only where the file has one (and the due month of a registered row)');
 const foot=els['mt-ck-foot'].textContent;
 assert.ok(foot.includes('통과로 세지 않습니다')&&foot.includes(`사전 등록 ‘예’ ${file.preregistered}건`)&&foot.endsWith('4.19 기준.'),foot);
 // no file: no rows, no count, a plain sentence

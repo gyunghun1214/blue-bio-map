@@ -570,12 +570,21 @@ for(const ex of [null,{},{species:'x'}])assert.equal(JSON.stringify(ctx.exampleL
 assert.ok(!read('intro.css').includes('gate-ex'),'intro.css: no .gate-ex rule');
 // the markup: the lines as written, the number left empty for intro.js, the order slogan → problems → solution → buttons
 const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.indexOf('<div class="gate-actions">'));
-assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.',
-  '그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.','이 지도에 쓰인 근거 출처만 해도 건입니다.']);
-assert.match(why,/<li class="gate-src is-wait">[^<]*<b class="gate-src-n"><\/b>/,'출처 N: no number in the HTML, the line waits for it');
+// 2026-10-21 (site v4 05): the two problem lines are one declarative sentence. 2026-10-21 (prompt 11): the '근거 출처 N건'
+// line left the problems (a count is not a problem); one line shows no number, the list stays for a second one
+assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.']);
+assert.ok(!why.includes('gate-src'),'no source count among the problems');
+assert.match(read('intro.css'),/\.gate-problems li:only-child:before\{content:none\}/,'a single problem line has no number');
+// the contest's challenges under the kicker (모집공고 첨부 1) and the 'connect' line under the solution, sourced in the
+// method tab (the forum theme by its press report)
+assert.ok(gateHtml.includes('<p class="gate-kicker">한반도 주변 바다의 해양생물 근거 지도</p><p class="gate-task">Ocean 20 Challenge · 해양 10대 과제 3 ‘지속가능한 식량 공급’ · 2 ‘생태계·생물다양성 보호와 복원’</p>'));
+assert.match(why,/<p class="gate-lead">[^]*?<\/p><p class="gate-connect"><span class="gate-connect-lead">흩어진 자료를 잇고, 오늘의 이용과 다음 세대의 바다를 잇는 지도 · <\/span>2026 세계해양포럼 대주제 「해양, 잇다」 · UN Ocean Decade ‘과학 기반 정책 연계’<\/p><\/div>$/);
+assert.match(html,/<p class="fine mt-context">첫 화면의 대회 주제 연결: Ocean 20 Challenge 모집공고 첨부 1 「우리가 풀어갈 해양 10대 과제」[^<]*<a href="https:\/\/v\.daum\.net\/v\/20260304182211655" target="_blank" rel="noopener">부산일보 2026-03-04 보도 ↗<\/a>\)\.<\/p>/);
 // 2026-10-19 (LKH, prompt 7/10): the count is named '근거 출처'; the method tab's list says how it relates to its own total,
-// counting with the same uses as evidenceSourceCount
-assert.match(why,/근거 출처만 해도 <b class="gate-src-n"><\/b>건입니다\./);
+// counting with the same uses as evidenceSourceCount. Since 2026-10-21 (prompt 11) it heads the way into that list, hidden and
+// with no number in the HTML until intro.js has counted it
+assert.ok(gateHtml.includes('<button class="gate-method" type="button" data-go="method"><span class="gate-src" hidden>근거 출처 <b class="gate-src-n"></b>건 · </span>전체 출처·방법 보기<span aria-hidden="true">→</span></button>'));
+assert.match(browser,/const src=q\('\.gate-src'\),srcN=q\('\.gate-src-n'\);[^\n]*\n\s*if\(src&&srcN&&gate\.sources!==undefined\)/,'no count markup: nothing to fill, no error');
 assert.deepEqual(JSON.parse(app.match(/const SOURCE_EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),JSON.parse(intro.match(/const EVIDENCE_USES=(\[[^\]]*\]);/)[1].replace(/'/g,'"')),'app.js and intro.js count the same uses');
 assert.match(html,/<summary>전체 출처 목록 <span id="all-sources-n"><\/span><small id="all-sources-parts" class="mt-src-parts" hidden><\/small><\/summary>/);
 assert.match(why,/<p class="gate-lead">우리 바다 생물 <b class="gate-total">\d+<\/b>종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다\.<\/p>/);
@@ -603,11 +612,21 @@ assert.ok(at('class="gate-foot"')>0&&at('class="gate-foot"')<at('<section class=
 assert.match(usesHtml,/^<section class="gate-uses" aria-labelledby="gate-uses-h">/);
 assert.match(usesHtml,/<h2 class="gate-uses-h" id="gate-uses-h" tabindex="-1">이렇게 쓸 수 있습니다<\/h2>/);
 const useCards=[...usesHtml.matchAll(/<li data-use="(\w+)">([\s\S]*?)<\/li>/g)].map(([,use,li])=>({use,lines:[...li.matchAll(/<p class="gate-use-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<[^>]+>/g,'')]),
-  go:(li.match(/<(?:button|a) class="gate-use-go"[^>]*?(?:data-go-table="(\w+)"|href="([^"]+)")/)||[]).slice(1).find(Boolean)}));
+  go:(li.match(/<(?:button|a) class="gate-use-go"[^>]*?(?:data-go-table="(\w+)"|data-go-hash="([^"]+)"|href="([^"]+)")/)||[]).slice(1).find(Boolean)}));
 assert.deepEqual(useCards,[
-  {use:'policy',lines:[['who','정책 담당자'],['see','‘보전 지표 높음’ 종'],['pick','보전 연구를 먼저 살필 종 고르기']],go:'conservation_priority'},
-  {use:'research',lines:[['who','연구자·기업'],['see','활용 지표가 높은 종'],['pick','다음 실험 대상 고르기']],go:'sustainable_use'},
-  {use:'public',lines:[['who','시민·교육'],['see','바다 탐험'],['pick','우리 바다 생물의 쓸모와 보전 필요성 배우기']],go:'expedition.html'}]);
+  {use:'policy',lines:[['who','정책 담당자'],['see','‘보전 지표 높음’ 종'],['pick','보전 연구를 먼저 살필 종 고르기'],['when','지금 쓸 수 있음']],go:'conservation_priority'},
+  {use:'research',lines:[['who','연구자·기업'],['see','활용 지표가 높은 종'],['pick','다음 실험 대상 고르기'],['when','지금 쓸 수 있음']],go:'sustainable_use'},
+  {use:'public',lines:[['who','시민·교육'],['see','바다 탐험'],['pick','우리 바다 생물의 쓸모와 보전 필요성 배우기'],['when','지금 쓸 수 있음']],go:'expedition.html'},
+  // 2026-10-21 (site v4 07): the fourth card opens 탐색 지도 with the '상업 양식' chip (app.js TRAITS 'farmed', link key u=)
+  {use:'farm',lines:[['who','어업인·양식업'],['see','양식 단계(상업 양식 중 · 시험·연구 양식)와 보전 지표'],['pick','야생 채취보다 양식 쪽 근거가 있는 종 고르기'],
+    ['when','지금 쓸 수 있음 · 목표 2027 상반기 종·해역 확대']],go:'#u=farmed'}]);
+assert.match(app,/\{id:'farmed',group:'식량',label:'상업 양식',tier:'commercial'\}/,'the chip the farming card turns on');
+assert.match(app,/if\(h\.u\)setUses\(h\.u\.split\(','\)\);/,'u= turns chips on through the app\'s own link handling');
+assert.ok(usesHtml.includes('‘상업 양식’ 종 보기'),'the button names the chip');
+// its timing is the '종·해역 확대' step's target under '다음 단계'
+assert.match(gateHtml,/<li data-stage="expand"><p class="gate-next-k">종·해역 확대<\/p>[^]*?<p class="gate-next-tag">목표 2027 상반기<\/p>/);
+assert.match(browser,/for\(const b of el\.querySelectorAll\('\[data-go-hash\]'\)\)b\.addEventListener\('click',\(\)=>enter\('explore',\{hash:b\.dataset\.goHash\}\)\);/);
+assert.match(read('intro.css'),/\.gate-uses-list\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\);/,'four cards a row side by side');
 assert.match(usesHtml,/<span class="gate-use-sp"><\/span>/,'the policy card\'s species: filled from the data, none typed in');
 assert.match(usesHtml,/<p class="gate-uses-note">무엇을 먼저 조사할지 순서를 제안합니다\.<\/p>/);
 for(const t of ['conservation_priority','sustainable_use'])assert.ok(app.includes(`'${t}'`)&&/data-mt-table="\$\{/.test(app),`${t} is a type the app's data table shows`);
@@ -631,7 +650,7 @@ assert.ok(at('class="gate-foot"')<at('<div class="gate-below">')&&at('<div class
 const nextHtml=gateHtml.slice(at('<section class="gate-next"'),gateHtml.indexOf('</section>',at('<section class="gate-next"')));
 assert.match(nextHtml,/^<section class="gate-next" aria-labelledby="gate-next-h">/);
 assert.match(nextHtml,/<h2 class="gate-next-h" id="gate-next-h">다음 단계<\/h2>/);
-const steps=[...nextHtml.matchAll(/<li( class="is-now")?>([\s\S]*?)<\/li>/g)].map(([,now,li])=>({now:!!now,
+const steps=[...nextHtml.matchAll(/<li( class="is-now")?(?: data-stage="[a-z]+")?>([\s\S]*?)<\/li>/g)].map(([,now,li])=>({now:!!now,
   ...Object.fromEntries([...li.matchAll(/<p class="gate-next-(\w+)">([\s\S]*?)<\/p>/g)].map(m=>[m[1],m[2].replace(/<b class="gate-total">\d+<\/b>/,'N').replace(/<[^>]+>/g,'')]))}));
 assert.deepEqual(steps,[
   {now:true,k:'지금',t:'한반도 주변 N종 공개'},

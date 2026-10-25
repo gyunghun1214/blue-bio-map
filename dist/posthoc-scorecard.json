@@ -242,5 +242,16 @@
    "record_note": null,
    "figure": null
   }
+ ],
+ "registered": [
+  {
+   "key": "MBPI_origin_rerank",
+   "indicator": "MBPI",
+   "name": "MBPI · 신약 기원종 순위 재검증(표본 확대)",
+   "checked": "4.11과 같은 질문을 사례를 늘려 다시 묻는다: 신약 기원종 MBPI 중앙값이 지도 30종 중앙값보다 크고, 절반 이상이 상위 3분의 1 경계 이상인지(계산되는 기원종 5종 미만이면 검증 불성립)",
+   "prereg": "research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md",
+   "prereg_commit": "6b06ca8",
+   "results_due": "2026-12"
+  }
  ]
 }

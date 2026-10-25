@@ -1,0 +1,196 @@
+[
+ {
+  "name": "1440px: method-card labels are words only",
+  "ok": true,
+  "detail": [
+   {
+    "id": "method-01",
+    "text": "자료 연결",
+    "cls": "step",
+    "color": "rgb(68, 215, 192)",
+    "size": "12px"
+   },
+   {
+    "id": "method-02",
+    "text": "산출 방법",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-obis",
+    "text": "보조 근거",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-chembl",
+    "text": "자료 선택",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-03",
+    "text": "해석",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   }
+  ]
+ },
+ {
+  "name": "1440px: flow caption",
+  "ok": true,
+  "detail": "상자를 누르면 해당 설명(자료 연결 · 산출 방법 · 해석)을 펼치고 그 자리로 이동합니다."
+ },
+ {
+  "name": "1440px: kept numbered sets run 01→N",
+  "ok": true,
+  "detail": {
+   "acc": [
+    "01",
+    "02",
+    "03",
+    "04"
+   ],
+   "flow": [
+    "01",
+    "02",
+    "03"
+   ],
+   "cards": [
+    "01",
+    "02",
+    "03"
+   ]
+  }
+ },
+ {
+  "name": "1440px: flow box 01 → #method-01 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 144
+  }
+ },
+ {
+  "name": "1440px: flow box 02 → #method-02 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 144
+  }
+ },
+ {
+  "name": "1440px: flow box 03 → #method-03 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 144
+  }
+ },
+ {
+  "name": "1440px: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "390px: method-card labels are words only",
+  "ok": true,
+  "detail": [
+   {
+    "id": "method-01",
+    "text": "자료 연결",
+    "cls": "step",
+    "color": "rgb(68, 215, 192)",
+    "size": "12px"
+   },
+   {
+    "id": "method-02",
+    "text": "산출 방법",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-obis",
+    "text": "보조 근거",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-chembl",
+    "text": "자료 선택",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   },
+   {
+    "id": "method-03",
+    "text": "해석",
+    "cls": "step amber",
+    "color": "rgb(240, 160, 75)",
+    "size": "12px"
+   }
+  ]
+ },
+ {
+  "name": "390px: flow caption",
+  "ok": true,
+  "detail": "상자를 누르면 해당 설명(자료 연결 · 산출 방법 · 해석)을 펼치고 그 자리로 이동합니다."
+ },
+ {
+  "name": "390px: kept numbered sets run 01→N",
+  "ok": true,
+  "detail": {
+   "acc": [
+    "01",
+    "02",
+    "03",
+    "04"
+   ],
+   "flow": [
+    "01",
+    "02",
+    "03"
+   ],
+   "cards": [
+    "01",
+    "02",
+    "03"
+   ]
+  }
+ },
+ {
+  "name": "390px: flow box 01 → #method-01 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 16
+  }
+ },
+ {
+  "name": "390px: flow box 02 → #method-02 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 16
+  }
+ },
+ {
+  "name": "390px: flow box 03 → #method-03 opened and in view",
+  "ok": true,
+  "detail": {
+   "open": true,
+   "top": 16
+  }
+ },
+ {
+  "name": "390px: no page errors",
+  "ok": true,
+  "detail": []
+ }
+]

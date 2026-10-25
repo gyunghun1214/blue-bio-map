@@ -149,37 +149,41 @@ try{
     check('G-1 first open: entry screen over the map, map and chatbot inert, loader finished with the species total, counts read from the loaded data',
       g.on&&!g.hidden&&g.ready&&g.held>0&&g.inert===g.held&&g.step===`해양생물 ${total}종 자료를 불러왔어요`&&g.counts===`${total}종의 해양생물 · 공개 데이터 기반`&&!/운영 발행|조사 후보/.test(g.counts)&&g.note===''&&g.stored===null,JSON.stringify(g));
     check('G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen',g.focus==='gate-enter'&&g.enterBox.bottom<=g.vh&&g.enterBox.top>0,JSON.stringify(g));
-    // 2026-10-17 (#1): under the slogan three problem lines ('출처 N건' counted from license-matrix.json, never typed in) → the
-    // solution naming the species total → the buttons. The three example cards that followed were taken off the screen (2026-10-17).
+    // 2026-10-17 (#1): under the slogan the problem (one sentence since 2026-10-21; '근거 출처 N건', counted from
+    // license-matrix.json and never typed in, moved to the way into the source list) → the solution naming the species total → the buttons. The three example cards that followed were taken off the screen (2026-10-17).
     const why=await evaluate(`(()=>{const g=document.getElementById('site-gate'),box=s=>(r=>({top:r.top,bottom:r.bottom,left:r.left,right:r.right}))(g.querySelector(s).getBoundingClientRect());
       return {problems:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden).map(li=>li.textContent),solve:g.querySelector('.gate-why .gate-lead').textContent,
-        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,
+        p:box('.gate-problems'),s:box('.gate-why .gate-lead'),enter:box('#gate-enter'),vh:innerHeight,num:getComputedStyle(g.querySelector('.gate-problems li'),'::before').content,
+        method:g.querySelector('.gate-method').textContent,
         cards:g.querySelectorAll('.gate-ex,[data-ex]').length,said:['활용 지표 1위','보전 지표 높음','어획량 감소 신호'].filter(t=>g.querySelector('.gate-center').textContent.includes(t))};})()`);
     const evidenceSources=readDist('license-matrix.json').rows.filter(r=>r.uses.some(u=>['MFPI','MBPI','MCUI','출현 지도 셀'].includes(u))).length;
-    check('G-1b entry screen: three problem lines (출처 N from license-matrix.json) → the solution naming the species total → the buttons, all in the first screen',
-      JSON.stringify(why.problems)===JSON.stringify(['바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있습니다.','그래서 어떤 생물을 먼저 연구하고, 어떤 생물을 먼저 살펴야 하는지 한눈에 보기 어렵습니다.',`이 지도에 쓰인 근거 출처만 해도 ${evidenceSources}건입니다.`])
+    check('G-1b entry screen: the problem sentence alone, unnumbered → the solution naming the species total → the buttons, all in the first screen; 근거 출처 N (from license-matrix.json) heads the way into the source list',
+      JSON.stringify(why.problems)===JSON.stringify(['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.'])
+      &&why.num==='none'&&why.method===`근거 출처 ${evidenceSources}건 · 전체 출처·방법 보기→`
       &&why.solve===`우리 바다 생물 ${total}종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.`&&why.p.bottom<=why.s.top&&why.s.bottom<=why.enter.top&&why.enter.bottom<=why.vh,JSON.stringify(why));
     check('G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen\'s text',why.cards===0&&why.said.length===0,JSON.stringify({cards:why.cards,said:why.said}));
     // the globe keeps the design's place: the new block stays inside the room the title and the buttons leave it
+    // (2026-10-21, site v4 05: the problem is one sentence, and the contest line and the 'connect' line count as the block)
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
-      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead').map(tb);
+      const added=vis('.gate-task,.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
-    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=6&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
+    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=5&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
     // 2026-10-17 (#3): '이렇게 쓸 수 있습니다' under the first screen (the first screen as above): three cards, each who → what
     // they look at → what they choose with its way in, then one line; the policy card's species are the conservation example's
     // (app.js gateExamples, the data the example cards above the buttons read before they were taken off on 2026-10-17)
     const uses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),u=g.querySelector('.gate-uses');
       return {top:u.getBoundingClientRect().top,vh:innerHeight,h:u.querySelector('.gate-uses-h').textContent,note:u.querySelector('.gate-uses-note').textContent,text:u.textContent,
-        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable)(li.querySelector('.gate-use-go'))})),
+        cards:[...u.querySelectorAll('.gate-uses-list li')].map(li=>({use:li.dataset.use,lines:[...li.querySelectorAll('p')].map(p=>p.textContent),go:(b=>b.getAttribute('href')||b.dataset.goTable||b.dataset.goHash)(li.querySelector('.gate-use-go'))})),
         red:((typeof gateExamples==='function'?gateExamples():[]).find(x=>x?.kind==='conservation')?.species||[]).map(s=>s.name)};})()`);
-    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, three cards (who → what they look at → what they choose) with their ways in, the line under them',
+    check('G-1e under the first screen: 이렇게 쓸 수 있습니다, four cards (who → what they look at → what they choose) with their ways in, the line under them',
       uses.top>=uses.vh-1&&uses.h==='이렇게 쓸 수 있습니다'&&uses.note==='무엇을 먼저 조사할지 순서를 제안합니다.'&&uses.red.length>0&&!/우뭇가사리|예시/.test(uses.text)&&JSON.stringify(uses.cards)===JSON.stringify([
-        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기'],go:'conservation_priority'},
-        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기'],go:'sustainable_use'},
-        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기'],go:'expedition.html'}]),JSON.stringify({...uses,text:undefined}));
+        {use:'policy',lines:['정책 담당자',`‘보전 지표 높음’ 종(${uses.red.join('·')})`,'보전 연구를 먼저 살필 종 고르기','지금 쓸 수 있음'],go:'conservation_priority'},
+        {use:'research',lines:['연구자·기업','활용 지표가 높은 종','다음 실험 대상 고르기','지금 쓸 수 있음'],go:'sustainable_use'},
+        {use:'public',lines:['시민·교육','바다 탐험','우리 바다 생물의 쓸모와 보전 필요성 배우기','지금 쓸 수 있음'],go:'expedition.html'},
+        {use:'farm',lines:['어업인·양식업','양식 단계(상업 양식 중 · 시험·연구 양식)와 보전 지표','야생 채취보다 양식 쪽 근거가 있는 종 고르기','지금 쓸 수 있음 · 목표 2027 상반기 종·해역 확대'],go:'#u=farmed'}]),JSON.stringify({...uses,text:undefined}));
     // the pill on the source strip's line scrolls down to them (their heading focused); the globe rides up with the first screen
     await evaluate("document.querySelector('#site-gate .gate-down').click();1");await sleep(1500);
     const down=await evaluate(`(()=>{const g=document.getElementById('site-gate'),h=g.querySelector('.gate-hero'),u=g.querySelector('.gate-uses').getBoundingClientRect();
@@ -188,6 +192,8 @@ try{
       down.scroll>0&&down.top>=-1&&down.bottom<=down.vh+1&&down.lift===`0px ${-down.scroll}px`&&down.focus==='gate-uses-h',JSON.stringify(down));
     // 2026-10-17 (#4): '다음 단계' after the uses: 지금 (the species total, read from the data), then three steps;
     // 2026-10-19 (LKH, prompt 4/10): each step's tag gives its target in place of '계획'
+    // 2026-10-21 (site v4 07): with the fourth card the uses fill the screen, so 다음 단계 is measured at the end of the scroll
+    await evaluate("(h=>{h.scrollTop=h.scrollHeight;})(document.querySelector('#site-gate .gate-hero'));1");await sleep(800);
     const next=await evaluate(`(()=>{const g=document.getElementById('site-gate'),n=g.querySelector('.gate-next'),b=n.getBoundingClientRect(),u=g.querySelector('.gate-uses').getBoundingClientRect();
       return {h:n.querySelector('.gate-next-h').textContent,top:b.top,bottom:b.bottom,uses:u.bottom,vh:innerHeight,vw:innerWidth,
         steps:[...n.querySelectorAll('.gate-next-list li')].map(li=>({now:li.classList.contains('is-now'),k:li.querySelector('.gate-next-k').textContent,t:li.querySelector('.gate-next-t').textContent,tag:li.querySelector('.gate-next-tag')?.textContent||'',
@@ -233,10 +239,11 @@ try{
     eckAxes.scores.MFPI===62.5&&eckAxes.scores.MCUI===10&&!eck.includes('10.0 · 정식 산출 · 역검증 기준 미충족 · 자체 예비평가(Rapid LC)')&&
     // 2026-10-17 (LKH): the MCUI box names where the category comes from in one line; the basis stays 'preliminary' in the report
     // 2026-10-19 (LKH, 사이트 v3 2·3/10): the number reads '10.0 (LC·예비)' and the box opens with the preliminary line (PRELIM);
-    // the MBPI section says what was measured and the stored result of the MBPI check
-    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
-    !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
-    eckAxes.mbpi.includes('근거: 효소·수용체 등 단백질 표적 Ki 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
+    // the MBPI section says what was measured and the stored result of the MBPI check;
+    // 2026-10-21 (site v4 04): the material's name leads the evidence line; (site v4 08) the category and Ki read in Korean on first use
+    eckAxes.basis==='preliminary'&&eckAxes.mcui.includes('범주 출처: 분포 범위 계산(IUCN 기준 B 적용, 이 지도에서 계산)')&&eckAxes.mcui.includes('10.0 (LC·관심대상·예비) · 정식 산출')&&eckAxes.mcui.includes(PRELIM)&&
+    !/예비|공식|Rapid LC/.test(eckAxes.mcui.replace(PRELIM,'').replace('(LC·관심대상·예비)',''))&&!eckAxes.mcui.includes('LC 가능성')&&eckAxes.scores.BBVI===59.6&&
+    eckAxes.mbpi.includes('근거: Dieckol · 효소·수용체 등 단백질 표적 Ki(결합 세기, 낮을수록 강함) 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님')&&eckAxes.mbpi.includes(MBPI_CHECK+' 검증 기록 보기')&&
     eckAxes.cells===release.find(e=>e.aphiaID===371986).cells.length&&(eckAxes.cells?eckAxes.map.includes('매트릭스 유형: 활용 연구 검토')&&!/예비|Rapid LC|역검증|56\.8/.test(eckAxes.map):eckAxes.map.includes('지도에 반영되지 않습니다'))&&
     /MBPI 57(?![.\d])/.test(eck)&&!eck.includes('MBPI 56.8')&&!eck.includes('시범')&&eck.includes('효소·수용체 등 단백질 표적')&&
     !eck.includes('eckstolonol')&&!eck.includes('1.47 ± 0.04 mM'),
@@ -308,7 +315,7 @@ try{
   // 2026-10-17 (LKH): the index report's lines only; the profile's older 미수집/미검토 stay in the profile
   {const sq=snapshot.profiles.find(p=>p.aphia_id===342067).evidence_summary;
   check('Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10)',sq.nutrition.status==='not_collected'&&sq.conservation.status==='not_reviewed'&&
-    /MFPI · 식량 가능성\s*46\.1 · 정식 산출/.test(t)&&/MBPI · 생리활성\s*57 · 정식 산출/.test(t)&&/MCUI · 보전 평가\s*60\.0 \(LC \+ 자원 감소\) · 정식 산출/.test(t)&&!/미수집|미검토|지표 보고서/.test(t)&&/별도 수집 기록\s*기록 수\s*2건/.test(t),t);}
+    /MFPI · 식량 가능성\s*46\.1 · 정식 산출/.test(t)&&/MBPI · 생리활성\s*57 · 정식 산출/.test(t)&&/MCUI · 보전 평가\s*60\.0 \(LC \+ 어획량 감소\) · 정식 산출/.test(t)&&!/미수집|미검토|지표 보고서/.test(t)&&/별도 수집 기록\s*기록 수\s*2건/.test(t),t);}
   await detailEl();await shot('desktop-squid');
   const leak=await evaluate("document.body.innerText");
   check('No CMNPD raw data / coordinates in page',!/InChI|SMILES|CMNPD\d|raw_record/i.test(leak));
@@ -626,9 +633,11 @@ try{
   // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
   // in a new tab (the issue form is GitHub's: the site itself has no form that takes personal details; the one form on the page
   // is the guide's question box, a single text field answered from its fixed list, chatbot.js sends nothing)
-  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a');return {t:f?f.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
+  // since 2026-10-21 (site v4 02) the operator line also says from when the team keeps running it after the contest (operations.json)
+  // since 2026-10-21 (site v4 01) the GitHub issue link beside a form link stays hidden until operations.json has a form, so the text skips [hidden]
+  const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a'),c=f&&f.cloneNode(true);c?.querySelectorAll('[hidden]').forEach(e=>e.remove());return {t:c?c.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
     forms:[...document.querySelectorAll('form,textarea')].filter(e=>!e.matches('form.bbc-form')).length,guide:[...document.querySelectorAll('form.bbc-form input')].map(i=>i.type).join()};})()`);
-  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
+  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영 · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
     foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
@@ -639,23 +648,30 @@ try{
   // record files linked on GitHub (the file's repository value), the result in words and colour (the consistency checks dashed
   // and unfilled, never the filled 통과 pill), no text under 12px; the species detail's '검증 기록 보기' opens the tab, the fold
   // and that check's row
-  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr')];
+  const ck=await evaluate(`(async()=>{const wait=ms=>new Promise(x=>setTimeout(x,ms)),was=currentView,sel=selected?.aphiaID;setView('method',false);const d=document.getElementById('mt-acc-04'),sc=posthocScorecard,rows=[...d.querySelectorAll('#mt-ck-body tr:not([data-oc=registered])')],reg=[...d.querySelectorAll('#mt-ck-body tr[data-oc=registered]')];
     d.open=true;await wait(200);
     const pill=oc=>{const p=d.querySelector('.mt-ck-pill[data-oc='+oc+']');if(!p)return null;const st=getComputedStyle(p);return {text:p.textContent,border:st.borderTopStyle,bg:st.backgroundColor};};
     const order=[...sc.rows].sort((a,b)=>a.order-b.order);
     const r={after:d.previousElementSibling?.id,title:document.getElementById('mt-ck-title').textContent,sum:document.getElementById('mt-ck-sum').textContent,n:rows.length,
       keys:rows.map(t=>t.dataset.key).join()===order.map(x=>x.key).join(),links:rows.every((t,i)=>[...t.querySelectorAll('a')].map(a=>a.href).join()===order[i].records.map(p=>sc.repository+p).join()),
-      figs:[...d.querySelectorAll('.mt-ck-fig')].map(e=>e.textContent),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
+      figs:rows.flatMap(t=>[...t.querySelectorAll('.mt-ck-fig')]).map(e=>e.textContent),
+      reg:reg.map(t=>({key:t.dataset.key,text:t.textContent,links:[...t.querySelectorAll('a')].map(a=>a.getAttribute('href'))})),reglist:(sc.registered||[]).map(x=>x.key),
+      ledger:(a=>a?[a.parentElement.textContent,a.getAttribute('href')]:null)(document.querySelector('#mt-ck-ledger a')),pass:pill('pass'),consistent:pill('consistent'),fail:pill('fail'),
       small:[...d.querySelectorAll('*')].filter(e=>e.childElementCount===0&&e.textContent.trim()&&parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.textContent.slice(0,30))};
     d.open=false;setView('explore',false);selectSpecies(145721);await wait(400);
     const b=document.querySelector('#detail [data-go-checks="MCUI_preliminary"]');b?.click();await wait(1400);
     const row=document.getElementById('mt-ck-MCUI_preliminary'),rr=row?.getBoundingClientRect();
     r.go={btn:!!b,view:currentView,open:d.open,inView:!!rr&&rr.top>=0&&rr.bottom<=innerHeight,flash:!!row?.classList.contains('flash')};
     setView(was,false);if(sel)selectSpecies(sel);return r})()`);
-  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look); the detail\'s 검증 기록 보기 opens the row',
+  // 2026-10-21 (site v4 09): one check registered before its result follows the 8 rows ('등록됨', its prereg file and commit
+  // linked), and one line under the table links the method changelog file
+  check('Method tab fold 04: 검증 기록 8건 under 03 with the count line, linked record files, record figures and the result in words and colour (일관성 확인 never the 통과 look), then the registered check and the changelog line; the detail\'s 검증 기록 보기 opens the row',
     ck.after==='mt-acc-03'&&ck.title==='검증 기록 8건'&&ck.sum==='통과 1 · 기준 미충족 3 · 미충족 후 사용 중단 1 · 일관성 확인(독립 아님) 2 · 검증 불성립 1'&&ck.n===8&&ck.keys&&ck.links&&
     JSON.stringify(ck.figs)===JSON.stringify(['시범 3.15 기록: 순위상관 0.873 · 11종','4.11 기록: 운영 종 미역 89.2 · 신약 기원종 3종 중 값이 나온 2종: 해면 73.8 · 멍게류 56.1','시범 3.15 기록: 14종 중 11종 일치 · LC로 판정한 위협종 2종: 해삼·전복(종 수준)'])&&
     ck.pass?.text==='통과'&&ck.pass.bg!=='rgba(0, 0, 0, 0)'&&ck.consistent?.text==='일관성 확인(독립 아님)'&&ck.consistent.border==='dashed'&&ck.consistent.bg==='rgba(0, 0, 0, 0)'&&ck.fail?.text==='기준 미충족'&&
+    ck.reg.length===1&&ck.reg.map(x=>x.key).join()===ck.reglist.join()&&ck.reg[0].key==='MBPI_origin_rerank'&&ck.reg[0].text.includes('등록됨2026-12 공개 예정')&&
+    ck.reg[0].links.some(h=>h.endsWith('research/verified-indices/prereg-mbpi-origin-rerank-2026-10.md'))&&ck.reg[0].links.some(h=>/\/commit\/6b06ca8$/.test(h))&&
+    ck.ledger?.[0]==='지표 규칙이 바뀐 이력 전체: method-changelog.json ↗'&&/research\/method-changelog\.json$/.test(ck.ledger[1])&&
     ck.small.length===0&&ck.go.btn&&ck.go.view==='method'&&ck.go.open&&ck.go.inView&&ck.go.flash,JSON.stringify(ck));
   const cucT=await pick(241776);
   // 2026-10-17 (LKH): the case is labelled by what it is ('원문 조사 사례 · 참고 자료')
@@ -771,7 +787,7 @@ try{
     // posthoc-scorecard.json) and keeps the 19.6–89.2 aggregation range in its 민감도 line
     // 2026-10-19 (LKH, 사이트 v3 3/10): above the stratum, what was measured ('근거: … 시험 N건 · …'), and below it the stored
     // result of the MBPI check with its link to the method tab
-    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
+    strat.summary==='MBPI · 생리활성89 · 정식 산출 · ACE 펩타이드'&&strat.first.startsWith('근거: VW 펩타이드 · ACE 저해 IC50 시험 1건 · 분리 화합물·펩타이드의 시험값이며 종 추출물 효능 시험은 아님근거 층: ACE 저해 펩타이드(AHTPDB 352개 안 순위')&&
     !/사후 검증|미충족/.test(strat.first)&&strat.check==='MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용 검증 기록 보기'&&strat.range&&
     readDist('posthoc-scorecard.json').rows.some(r=>r.indicator==='MBPI'&&r.result==='failed')&&
     /생리활성 MBPI.*ACE 펩타이드/.test(strat.axis)&&strat.kept&&!!strat.profileStratum&&strat.profile.includes(strat.profileStratum),JSON.stringify(strat));
@@ -849,7 +865,7 @@ try{
   check('Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip',!oyPoint.chip&&oyPoint.title.includes('MCUI 한국 국가 평가 기반')&&oyPoint.title.includes(typeLabel(836033))&&oyPoint.list.includes('MCUI 국가 평가')&&oyPoint.box.includes(typeLabel(836033)),JSON.stringify(oyPoint));
   check('Collection note: no stale "점수는 아직 발행하지 않았습니다"',await evaluate("(()=>{const n=document.getElementById('collection-note').textContent;return !n.includes('점수는 아직 발행하지 않았습니다')&&!n.includes('보류')&&!n.includes('시범')})()"));
   // 2026-10-13 design 2: one status chip ('연구 프로토타입 · version · OCEAN 20') instead of three badges; the popover keeps the full text
-  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&(releaseText(releaseInfo)?document.getElementById('pop-version').textContent===releaseText(releaseInfo)&&document.getElementById('snapshot-date').textContent.includes(data.assessmentInfo.version):document.getElementById('pop-version').textContent.includes(data.assessmentInfo.version))&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
+  check('Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아"',await evaluate("(()=>{const c=document.getElementById('notice-chip').textContent;const r=document.createRange();r.selectNodeContents(document.getElementById('notice-chip-text'));const rs=[...r.getClientRects()].filter(x=>x.width>0);return rs.length>0&&rs.every(x=>x.top<rs[0].bottom&&x.bottom>rs[0].top)&&c.includes('연구 프로토타입')&&(releaseText(releaseInfo)?document.getElementById('pop-version').textContent===releaseText(releaseInfo)&&document.getElementById('snapshot-date').textContent.includes(methodName(data.assessmentInfo.version)):document.getElementById('pop-version').textContent.includes(methodName(data.assessmentInfo.version)))&&!c.includes('0.2')&&!document.querySelector('.project-tag,.header .version')&&document.getElementById('notice-pop').textContent.includes('OCEAN 20')&&!document.body.innerText.includes('첫 버전')&&!document.body.innerText.includes('점수를 산출하지 않아')})()"));
   // 2026-10-19 (LKH, prompt 10/10): the popover names the presentation build once release.json has a commit; empty, as
   // committed, it keeps the method version. Filled in here for a moment, then put back.
   const stamp=await evaluate(`(()=>{const v=document.getElementById('pop-version'),was=releaseInfo,before=v.textContent;
@@ -858,7 +874,7 @@ try{
     releaseInfo=was;renderPopVersion();return {before,on,noted,after:v.textContent,file:was};})()`);
   check('Release stamp: 발표 기준판 2026-10-27 · 커밋 abc1234 once release.json has a commit; the method version while it is empty',
     stamp.on==='발표 기준판 2026-10-27 · 커밋 abc1234'&&stamp.noted==='발표 기준판 2026-10-27 · 커밋 abc1234 · 11-02 오탈자 수정'&&stamp.after===stamp.before&&
-    (stamp.file?.commit?stamp.before.startsWith('발표 기준판 '):stamp.before.includes(report.method_version)),JSON.stringify(stamp));
+    (stamp.file?.commit?stamp.before.startsWith('발표 기준판 '):stamp.before.includes(report.method_version.replace(/^verified-(\d+\.\d+)$/,'방법 $1판'))),JSON.stringify(stamp));
   const inlineSim=await evaluate("(()=>{toggleSimulation(false);const b=document.getElementById('simulate-inline');if(!b)return 'no button';b.click();const r=simulated&&document.getElementById('matrix-note').textContent.includes('실제 종과 무관');toggleSimulation(false);return r})()");
   // verified-pilot-3.2 places real species, so the empty-matrix shortcut appears only when nothing is placed
   const matrixNote=await evaluate("document.getElementById('matrix-note').textContent");
@@ -1199,6 +1215,8 @@ try{
   ms=await clickMode('occurrence');
   check(`Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, ${noCell?'no fake cell for candidate':'시카메굴 cells drawn once'}`,
     ms.mode==='occurrence'&&ms.occ==='true'&&ms.val==='false'&&ms.occLegend&&!ms.valLegend&&!ms.panel&&!ms.source.startsWith('활용')&&!ms.judgment.includes('조합 분류')&&/(^|&)t=occurrence/.test(ms.hash.slice(1))&&ms.shapes===emptyPlaces,JSON.stringify(ms));
+  // 2026-10-24 (teammate report): the all-taxa effort shading also shows under the 22 candidates
+  check('B-1 effort layer stays on for a candidate species in occurrence mode',!ms.effortDisabled&&ms.effort>100,JSON.stringify({effortDisabled:ms.effortDisabled,effort:ms.effort}));
   await pick(836033);await sleep(300);ms=await modeState();
   check('Back in occurrence mode: live species redraws cells and the effort layer',!ms.effortDisabled&&ms.effort>100&&ms.shapes>0&&!ms.source.startsWith('활용'),JSON.stringify(ms));
   await pick(504357);await sleep(300);ms=await modeState();
@@ -1416,6 +1434,49 @@ try{
   check('Mobile 390px 톳 with cells: no horizontal overflow',pov.doc<=pov.vw&&pov.wide===0,JSON.stringify(pov));
   await shot('mobile-live-hijiki');
 
+  // ---------- 2026-10-25 휴대폰 화면 개선 (design/mobile-ux-2026-10-25, verification/2026-10-25-mobile-ux) ----------
+  // Phone-only fixes kept from coming back: the bottom tab bar on 근거와 방법, the map-cell popup inside the map, the species
+  // detail as a sheet over the page, and the data table as one card per species. Positions are read from the page.
+  {
+    const keyPress=async(k,code,vk)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk});await sleep(200);};
+    // (1) 근거와 방법: the header's blur once made the fixed tab bar follow the header, so it sat at the top and scrolled away.
+    const mt=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('method');await wait(300);window.scrollTo(0,1500);await wait(400);
+      const t=document.querySelector('.tabs').getBoundingClientRect(),x=document.querySelector('.expedition-link').getBoundingClientRect();
+      const r={y:Math.round(scrollY),tabsTop:Math.round(t.top),tabsBottom:Math.round(t.bottom),expBottom:Math.round(x.bottom),vh:innerHeight};
+      window.scrollTo(0,0);setView('explore');await wait(300);return r})()`);
+    check('Mobile 390px 근거와 방법: scrolled 1500px down, the bottom tab bar and 바다 탐험 stay at the bottom of the screen',
+      mt.y>=1000&&Math.abs(mt.tabsBottom-mt.vh)<=1&&Math.abs(mt.expBottom-mt.vh)<=1&&mt.tabsTop>mt.vh/2,JSON.stringify(mt));
+    // (2) A map-cell popup fits inside the map stage, its close button is not covered, and the map buttons hide only while it is open.
+    await pick(836033);await evaluate("window.scrollTo(0,0);1");await sleep(400);
+    const pop=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const L0=cellLayers[0];if(!L0)return {none:true};L0.openPopup();await wait(1200);
+      const st=document.querySelector('#explore .map-stage').getBoundingClientRect(),p=document.querySelector('.leaflet-popup');if(!p)return {open:false};
+      const r=p.getBoundingClientRect(),c=p.querySelector('.leaflet-popup-close-button').getBoundingClientRect(),hit=document.elementFromPoint(c.left+c.width/2,c.top+c.height/2);
+      const ui=getComputedStyle(document.querySelector('#explore .map-ui')).visibility;
+      const out={open:true,stage:[st.left,st.top,st.right,st.bottom].map(Math.round),popup:[r.left,r.top,r.right,r.bottom].map(Math.round),close:Math.round(c.width),closeHit:!!hit?.closest('.leaflet-popup-close-button'),ui};
+      map.closePopup();await wait(400);out.uiAfter=getComputedStyle(document.querySelector('#explore .map-ui')).visibility;return out})()`);
+    check('Mobile 390px map cell popup: inside the map stage, close (×) ≥40px and not covered, map buttons hidden only while it is open',
+      pop.open&&pop.popup[0]>=pop.stage[0]-1&&pop.popup[2]<=pop.stage[2]+1&&pop.popup[1]>=pop.stage[1]-1&&pop.popup[3]<=pop.stage[3]+1&&pop.close>=40&&pop.closeHit&&pop.ui==='hidden'&&pop.uiAfter==='visible',JSON.stringify(pop));
+    // (3) The species detail opens as a sheet from the selected-species summary; Esc closes it where it was opened.
+    await evaluate("window.scrollTo(0,200);1");await sleep(300);
+    const sh1=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const y0=Math.round(scrollY),b=document.querySelector('#sheet-summary .ss-open');if(!b)return {button:false};
+      b.click();await wait(500);const d=document.getElementById('ev-drawer'),r=d.getBoundingClientRect();
+      return {button:true,y0,open:d.classList.contains('open'),modal:d.getAttribute('aria-modal'),box:[r.left,r.top,r.right,r.bottom].map(Math.round),vw:innerWidth,vh:innerHeight,
+        focus:document.activeElement?.classList.contains('evd-close'),expanded:b.getAttribute('aria-expanded'),title:document.getElementById('ev-drawer-title').textContent,label:selected?.label,y:Math.round(scrollY)}})()`);
+    await keyPress('Escape','Escape',27);await sleep(400);
+    const sh2=await evaluate(`({open:document.getElementById('ev-drawer').classList.contains('open'),y:Math.round(scrollY),focus:!!document.activeElement?.closest('#sheet-summary .ss-open'),expanded:document.querySelector('#sheet-summary .ss-open')?.getAttribute('aria-expanded')})`);
+    check('Mobile 390px species detail sheet: the summary button opens the evidence sheet over the whole screen (focus on ✕, page not moved); Esc closes it and focus returns',
+      sh1.button&&sh1.open&&sh1.modal==='true'&&sh1.box[0]===0&&sh1.box[1]===0&&sh1.box[2]===sh1.vw&&sh1.box[3]===sh1.vh&&sh1.focus&&sh1.expanded==='true'&&!!sh1.label&&sh1.title.startsWith(sh1.label)&&sh1.y===sh1.y0&&
+      !sh2.open&&sh2.y===sh1.y0&&sh2.focus&&sh2.expanded==='false',JSON.stringify({sh1,sh2}));
+    // (4) The data table: one card per species, every cell inside the screen (no sideways scroll in its box).
+    const dt=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('compare');setCompareMode('table');await wait(500);
+      const c=document.getElementById('comparison'),rows=[...c.querySelectorAll('tbody tr.cmp-row')];
+      const outside=rows.flatMap(tr=>[...tr.children].filter(td=>{const r=td.getBoundingClientRect();return r.width>0&&(r.left<-1||r.right>innerWidth+1);}));
+      const r={rows:rows.length,box:c.scrollWidth-c.clientWidth,outside:outside.length,doc:document.documentElement.scrollWidth-innerWidth};
+      setCompareMode('matrix');setView('explore');await wait(300);return r})()`);
+    check('Mobile 390px data table: one card per species, no cell outside the screen, no sideways scroll in its box or the page',
+      dt.rows>0&&dt.box<=1&&dt.outside===0&&dt.doc<=0,JSON.stringify(dt));
+  }
+
   // ---------- 멍이 버튼 옮기기 (chatbot.js): drag vs click, remembered and clamped, reset, phone touch ----------
   // Real mouse and touch input through DevTools; positions come from the page, not typed in. Clears bbChatFabPos at the end.
   {
@@ -1628,12 +1689,12 @@ try{
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
   await sleep(1200);await shot('gate-mobile',false);
-  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 sits in the column after the globe and its card, before the source strip
+  // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 (four cards since site v4 07) sits in the column after the globe and its card, before the source strip
   const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
     return {after:Math.max(r('.gate-globe').bottom,g.querySelector('.gate-callout').getClientRects().length?r('.gate-callout').bottom:0),uses:[r('.gate-uses').top,r('.gate-uses').bottom],foot:r('.gate-foot').top,
       cards:[...g.querySelectorAll('.gate-uses-list li')].map(li=>(b=>[b.left,b.right])(li.getBoundingClientRect())),pill:getComputedStyle(g.querySelector('.gate-down')).display,vw:innerWidth,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
   check('G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways',
-    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===3&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
+    phoneUses.uses[0]>=phoneUses.after-1&&phoneUses.uses[1]<=phoneUses.foot+1&&phoneUses.cards.length===4&&phoneUses.cards.every(([l,r])=>l>=0&&r<=phoneUses.vw)&&phoneUses.pill==='none'&&phoneUses.doc<=phoneUses.vw&&phoneUses.hero[0]<=phoneUses.hero[1],JSON.stringify(phoneUses));
   // 2026-10-17 (#4): then 다음 단계, before the source strip, one step under another
   const phoneNext=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {uses:r('.gate-uses').bottom,next:[r('.gate-next').top,r('.gate-next').bottom],foot:r('.gate-foot').top,vw:innerWidth,
@@ -1650,8 +1711,8 @@ try{
   const small=await evaluate(`(()=>{const g=document.getElementById('site-gate'),hero=g.querySelector('.gate-hero'),r=s=>g.querySelector(s).getBoundingClientRect();
     return {problems:r('.gate-problems').top,solve:r('.gate-why .gate-lead').bottom,enter:r('#gate-enter').bottom,shown:[...g.querySelectorAll('.gate-problems li')].filter(li=>!li.hidden&&li.getClientRects().length).length,
       vw:innerWidth,vh:innerHeight,doc:document.documentElement.scrollWidth,hero:[hero.scrollWidth,hero.clientWidth]};})()`);
-  check('G-9 phone 375×667: the three problem lines, the solution and the button inside the first screen, no sideways scroll',
-    gs.on&&gs.ready&&small.shown===3&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
+  check('G-9 phone 375×667: the problem sentence, the solution and the button inside the first screen, no sideways scroll',
+    gs.on&&gs.ready&&small.shown===1&&small.problems>0&&small.solve<=small.enter&&small.enter<=small.vh&&small.doc<=small.vw&&small.hero[0]<=small.hero[1],JSON.stringify(small));
   await sleep(1200);await shot('gate-mobile-375',false);
   await viewport(1560,900,false);
   // 2026-10-17 (#9): '전체 출처·방법 보기' lands on the source list, which now sits in a fold: the way in opens it
@@ -1742,6 +1803,30 @@ try{
       check(`R-1 ${w}px ${v}: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean`,!r.small.length&&!bad.english.length&&!bad.abbr.length,JSON.stringify(bad));
     }
   }
+  // ---------- L English screen (2026-10-24, ?lang=en): captures at 1440·1280×720·390, no sideways scroll, 12px floor ----------
+  // The words come from dist/i18n-en.js·i18n-data-en.json (Claude draft; team review in docs/i18n-review.csv). R-1's English check
+  // is for the Korean screen, so it is not run here. A phone widens innerWidth to fit wide content, so innerWidth must stay at the set width. EN is remembered per browser, so the stored language goes back to Korean last.
+  for(const [w,h,mobile,tag] of [[1440,900,false,'1440'],[1280,720,false,'1280x720'],[390,844,true,'390']]){
+    await viewport(w,h,mobile);
+    await send('Page.navigate',{url:URL0+'?lang=en#v=explore'});
+    for(let i=0;i<120;i++){await sleep(250);if(await evaluate("typeof data!=='undefined'&&!!data?.species?.length&&document.readyState==='complete'").catch(()=>false))break;}
+    if(await evaluate("document.documentElement.classList.contains('gate-on')")){await gateReady();await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);}
+    for(const v of ['explore','compare','method']){
+      const r=await evaluate(`(async()=>{setView('${v}');await new Promise(r=>setTimeout(r,900));const p=(${collect})(['#${v}',12]);
+        return {lang:document.documentElement.lang,en:document.querySelector('.lang-switch [data-lang="en"]')?.getAttribute('aria-pressed'),doc:document.documentElement.scrollWidth,vw:innerWidth,small:p.small.slice(0,5)};})()`);
+      check(`L-1 ${tag} ${v}: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px`,r.lang==='en'&&r.en==='true'&&r.doc<=r.vw&&r.vw<=w&&!r.small.length,JSON.stringify(r));
+      await shot(`lang-en-${tag}-${v}`,false);
+    }
+  }
+  await viewport(1440,900,false);
+  await send('Page.navigate',{url:URL0+'expedition.html?lang=en'});
+  for(let i=0;i<120;i++){await sleep(250);if(await evaluate("document.readyState==='complete'&&!document.body.classList.contains('is-loading')").catch(()=>false))break;}
+  await sleep(2500);
+  const xr=await evaluate("({lang:document.documentElement.lang,doc:document.documentElement.scrollWidth,vw:innerWidth})");
+  check('L-2 1440 바다 탐험: English screen, no sideways scroll',xr.lang==='en'&&xr.doc<=xr.vw,JSON.stringify(xr));
+  await shot('lang-en-1440-expedition',false);
+  await evaluate("try{localStorage.removeItem('lang')}catch{};1");
+  await send('Page.navigate',{url:URL0});await loaded();
   await viewport(1560,900,false);await evaluate("setView('explore');1");
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
 }catch(e){check('Harness',false,e.stack);}

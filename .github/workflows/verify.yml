@@ -39,6 +39,7 @@ jobs:
           node verification/test_csv_export.mjs
           node verification/test_client_outdated.mjs
           node verification/test_analytics_beacon.mjs
+          node verification/test_operations.mjs
           node verification/test_release_stamp.mjs
           node verification/test_mbpi_chembl_ui.mjs
           node verification/test_matrix_map.mjs
@@ -59,6 +60,7 @@ jobs:
           node verification/test_score_format.mjs
           node verification/test_mbpi_kind.mjs
           node verification/test_species_group_icon.mjs
+          node verification/test_method_kickers.mjs
           node --check dist/chatbot.js
           node verification/test_chatbot_faq.mjs
           node verification/test_chatbot_drag.mjs
@@ -69,6 +71,11 @@ jobs:
           node verification/test_intro_ui.mjs
           node verification/test_shared_link.mjs
           node verification/test_screen_text_ko.mjs
+          node --check dist/i18n.js
+          node --check dist/i18n-en.js
+          node verification/test_i18n.mjs
+          python scripts/i18n_data_strings.py --check
+          python scripts/build_species_names_en.py --check
           node --check verification/offline_check.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
