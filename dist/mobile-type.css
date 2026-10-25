@@ -80,6 +80,10 @@
   /* matrix: quadrant names, ticks, legend */
   #compare .matrix .quadrant span,#compare .matrix-ticks i,#compare .matrix-ticks b,#compare .matrix .axis-x,#compare .cmp-legend{font-size:13px}
   #compare .cmp-limit,#compare .cmp-spread-note{font-size:14px}
+  /* '배치 현황' fold (2026-10-25) */
+  #compare .cmp-pl-sum{font-size:15px}
+  #compare .cmp-pl-list li,#compare .cmp-pl-group h3{font-size:14px}
+  #compare .cmp-pl-group h3 small,#compare .cmp-pl-left button{font-size:13px}
   /* the larger quadrant names keep their lines on a 390px phone: the quadrant's side padding only (10 → 6px) */
   #compare .matrix .quadrant{padding:10px 6px}
   /* matrix point names: hidden until the point is selected, focused from the keyboard or in the compare basket (app.js
