@@ -1,0 +1,41 @@
+/* ==========================================================================================================================
+   2026-10-25 휴대폰 영어 눈썹 글 · 반복 설명 정리 (LKH, prompts/mobile-labels-dedupe-claude-code.md · verification/2026-10-25-mobile-labels-dedupe)
+   휴대폰(740px 이하) 한국어 화면에서만 숨긴다. 글은 DOM에 그대로 남고(textContent 같음), 넓은 화면(741px 이상)과 영어 화면
+   (html.lang-en)은 손대지 않는다. 새로 보이는 글자는 이 파일의 content로만 그린다.
+   A) 영어 눈썹 글: 바로 아래 같은 뜻의 한국어 제목이 있는 대문자 영어 라벨(근거와 방법 .mt-eyebrow · .mt-k, 비교와 지표 '읽는 법'
+      HOW TO READ). 지표·자료 이름(MBPI · ChEMBL …)과 단계 번호는 그대로. 탐색 지도의 MARINE EVIDENCE EXPLORER는 이미 숨겨져 있다.
+   B) 반복 설명: 탭 사이 반복(.dup-m)은 기준 위치가 아닌 탭에서 숨기고 그 자리의 .see-also 단추로 기준 위치에 간다(mobile-dedupe.js).
+      지도 시트 안 반복(.dup-sheet)은 시트에서 뒤에 오는 쪽만 숨긴다(출현 기록 보기: '색의 의미' 쪽, 활용 × 보전 보기: 'ⓘ 범례' 쪽).
+   기존 CSS 파일은 고치지 않는다. index.html에서 다른 모든 CSS 다음(mobile-compact.css 다음)에 불러온다.
+   ========================================================================================================================== */
+
+/* 넓은 화면: 기준 위치로 가는 단추는 없다 */
+@media (min-width:741px){
+  .see-also{display:none}
+}
+/* 영어 화면: 아무것도 숨기지 않는다(단추도 없다) */
+html.lang-en .see-also{display:none}
+
+@media (max-width:740px){
+  /* ---- A. 영어 눈썹 글 ---- */
+  html:not(.lang-en) #method .mt-eyebrow,
+  html:not(.lang-en) #method .mt-k,
+  html:not(.lang-en) #cmp-read-pop .matrix-explanation>.eyebrow{display:none}
+  /* 눈썹 글이 빠진 자리: 제목이 맨 위에 오므로 위 여백을 없앤다 */
+  html:not(.lang-en) #method .mt-strengths>li>h4,
+  html:not(.lang-en) #method .mt-src>div>h4{margin-top:0}
+  html:not(.lang-en) #method .mt-src{min-height:0} /* 근거 자료 세 카드: 라벨 한 줄만큼 줄어든 높이 그대로 */
+  html:not(.lang-en) #cmp-read-pop .matrix-explanation>h3{margin-top:0}
+
+  /* ---- B. 반복 설명 ---- */
+  html:not(.lang-en) .dup-m{display:none}
+  html:not(.lang-en) .mg-body>.legend-why .dup-sheet,
+  html:not(.lang-en) .mg-body>#value-legend~.map-legend-more>.dup-sheet{display:none}
+
+  /* 기준 위치로 가는 단추: 글자는 content로만, 누르는 높이 44px, 탭의 링크 색 */
+  .see-also{display:flex;align-items:center;width:max-content;max-width:100%;min-height:44px;margin:2px 0;padding:0 6px;border:0;border-radius:6px;
+    background:none;color:var(--mt-accent,var(--cs-accent,#3dd6c3));font:inherit;font-size:14px;font-weight:700;line-height:1.3;text-align:left;cursor:pointer}
+  .see-also::before{content:"근거와 방법에서 자세히 보기 →"}
+  .see-also[data-see="map-guide"]::before{content:"지도 읽는 법 보기 →"}
+  .see-also:focus-visible{outline:2px solid var(--mt-accent-hi,var(--cs-accent-hi,#44d7c0));outline-offset:2px}
+}
