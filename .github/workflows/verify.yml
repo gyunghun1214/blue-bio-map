@@ -39,6 +39,7 @@ jobs:
           node verification/test_csv_export.mjs
           node verification/test_client_outdated.mjs
           node verification/test_analytics_beacon.mjs
+          node verification/test_csp_headers.mjs
           node verification/test_operations.mjs
           node verification/test_release_stamp.mjs
           node verification/test_mbpi_chembl_ui.mjs
