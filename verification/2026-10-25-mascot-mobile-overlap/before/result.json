@@ -1,0 +1,131 @@
+{
+ "base": "http://127.0.0.1:8766/",
+ "covered": {
+  "exploreFirst": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": [
+    {
+     "tag": "button",
+     "id": "",
+     "cls": "species-card",
+     "text": "홍합(참담치) Mytilus coruscus , 판단 두 지표 모두 낮음",
+     "box": [
+      240,
+      707,
+      460,
+      927
+     ]
+    }
+   ]
+  },
+  "exploreCardsEnd": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": [
+    {
+     "tag": "button",
+     "id": "",
+     "cls": "species-card",
+     "text": "갑오징어 Acanthosepion esculentum , 판단 활용 지표",
+     "box": [
+      158,
+      707,
+      378,
+      927
+     ]
+    }
+   ]
+  },
+  "exploreDetailBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  },
+  "compareBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  },
+  "methodBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  }
+ },
+ "checks": [],
+ "overflow": {},
+ "errors": [],
+ "hint": {
+  "bottom": 766,
+  "right": 316,
+  "left": 111,
+  "top": 722,
+  "fabTop": 724,
+  "fabRight": 374,
+  "vw": 390
+ },
+ "cardsEnd": {
+  "lastCardRight": 378,
+  "fabLeft": 326,
+  "padRight": "12px"
+ },
+ "pc": {
+  "before": {
+   "l": 947,
+   "t": 836,
+   "r": 995,
+   "b": 884,
+   "w": 48,
+   "right": 445,
+   "bottom": 16,
+   "tucked": false,
+   "left": false,
+   "open": false,
+   "tx": 0,
+   "opacity": 1,
+   "transition": "0.12s",
+   "scrollW": 1440,
+   "clientW": 1440,
+   "focusVisible": false
+  },
+  "during": {
+   "l": 947,
+   "t": 836,
+   "r": 995,
+   "b": 884,
+   "w": 48,
+   "right": 445,
+   "bottom": 16,
+   "tucked": false,
+   "left": false,
+   "open": false,
+   "tx": 0,
+   "opacity": 1,
+   "transition": "0.12s",
+   "scrollW": 1440,
+   "clientW": 1440,
+   "focusVisible": false
+  }
+ }
+}

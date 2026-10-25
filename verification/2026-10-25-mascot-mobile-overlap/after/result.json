@@ -1,0 +1,762 @@
+{
+ "base": "http://127.0.0.1:8765/",
+ "covered": {
+  "exploreFirst": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": [
+    {
+     "tag": "button",
+     "id": "",
+     "cls": "species-card",
+     "text": "홍합(참담치) Mytilus coruscus , 판단 두 지표 모두 낮음",
+     "box": [
+      240,
+      707,
+      460,
+      927
+     ]
+    }
+   ]
+  },
+  "exploreCardsEnd": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  },
+  "exploreDetailBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  },
+  "compareBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  },
+  "methodBottom": {
+   "fab": [
+    326,
+    724,
+    374,
+    772
+   ],
+   "covered": []
+  }
+ },
+ "checks": [
+  {
+   "name": "390 exploreDetailBottom: 맨 아래에서 멍이 버튼 아래에 가려진 링크·버튼 없음",
+   "ok": true,
+   "detail": {
+    "fab": [
+     326,
+     724,
+     374,
+     772
+    ],
+    "covered": []
+   }
+  },
+  {
+   "name": "390 compareBottom: 맨 아래에서 멍이 버튼 아래에 가려진 링크·버튼 없음",
+   "ok": true,
+   "detail": {
+    "fab": [
+     326,
+     724,
+     374,
+     772
+    ],
+    "covered": []
+   }
+  },
+  {
+   "name": "390 methodBottom: 맨 아래에서 멍이 버튼 아래에 가려진 링크·버튼 없음",
+   "ok": true,
+   "detail": {
+    "fab": [
+     326,
+     724,
+     374,
+     772
+    ],
+    "covered": []
+   }
+  },
+  {
+   "name": "390 종 카드 줄 끝: 마지막 카드가 버튼 왼쪽에서 끝남",
+   "ok": true,
+   "detail": {
+    "lastCardRight": 322,
+    "fabLeft": 326,
+    "padRight": "68px"
+   }
+  },
+  {
+   "name": "390 첫 안내 말풍선: 버튼 바로 위, 오른쪽 끝 2px 안",
+   "ok": true,
+   "detail": {
+    "bottom": 716,
+    "right": 374,
+    "left": 169,
+    "top": 672,
+    "fabTop": 724,
+    "fabRight": 374,
+    "vw": 390
+   }
+  },
+  {
+   "name": "1440 PC: 스크롤해도 접히지 않고 버튼 자리 그대로",
+   "ok": true,
+   "detail": {
+    "before": {
+     "l": 947,
+     "t": 836,
+     "r": 995,
+     "b": 884,
+     "w": 48,
+     "right": 445,
+     "bottom": 16,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.12s",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "focusVisible": false
+    },
+    "during": {
+     "l": 947,
+     "t": 836,
+     "r": 995,
+     "b": 884,
+     "w": 48,
+     "right": 445,
+     "bottom": 16,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.12s",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "focusVisible": false
+    },
+    "ref": {
+     "l": 947,
+     "t": 836,
+     "r": 995,
+     "b": 884,
+     "w": 48,
+     "right": 445,
+     "bottom": 16,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.12s",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "focusVisible": false
+    }
+   }
+  },
+  {
+   "name": "접기: 스크롤 직후 bbc-tucked, 폭 48 그대로, 밀어 넣기 55%·불투명도 .55, 1초 뒤 떨어짐",
+   "ok": true,
+   "detail": {
+    "t1": {
+     "l": 333,
+     "t": 724,
+     "r": 381,
+     "b": 772,
+     "w": 48,
+     "right": 9,
+     "bottom": 72,
+     "tucked": true,
+     "left": false,
+     "open": false,
+     "tx": 6.88948,
+     "opacity": 0.882566,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "t2": {
+     "l": 352,
+     "t": 724,
+     "r": 400,
+     "b": 772,
+     "w": 48,
+     "right": -10,
+     "bottom": 72,
+     "tucked": true,
+     "left": false,
+     "open": false,
+     "tx": 26.4,
+     "opacity": 0.55,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "t3": {
+     "l": 326,
+     "t": 724,
+     "r": 374,
+     "b": 772,
+     "w": 48,
+     "right": 16,
+     "bottom": 72,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    }
+   }
+  },
+  {
+   "name": "접힌 버튼이 가로 넘침을 만들지 않음(390)",
+   "ok": true,
+   "detail": {
+    "l": 352,
+    "t": 724,
+    "r": 400,
+    "b": 772,
+    "w": 48,
+    "right": -10,
+    "bottom": 72,
+    "tucked": true,
+    "left": false,
+    "open": false,
+    "tx": 26.4,
+    "opacity": 0.55,
+    "transition": "0.2s, 0.2s",
+    "scrollW": 390,
+    "clientW": 390,
+    "focusVisible": false
+   }
+  },
+  {
+   "name": "접힌 버튼 탭: 대화창은 닫힌 채 펼치기만, 다시 탭하면 열림",
+   "ok": true,
+   "detail": {
+    "tap1": {
+     "l": 326,
+     "t": 724,
+     "r": 374,
+     "b": 772,
+     "w": 48,
+     "right": 16,
+     "bottom": 72,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "tap2": {
+     "l": 0,
+     "t": 0,
+     "r": 0,
+     "b": 0,
+     "w": 0,
+     "right": 390,
+     "bottom": 844,
+     "tucked": false,
+     "left": false,
+     "open": true,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    }
+   }
+  },
+  {
+   "name": "포커스: 버튼에 키보드 포커스(:focus-visible)가 있으면 스크롤해도 접지 않음",
+   "ok": true,
+   "detail": {
+    "l": 326,
+    "t": 724,
+    "r": 374,
+    "b": 772,
+    "w": 48,
+    "right": 16,
+    "bottom": 72,
+    "tucked": false,
+    "left": false,
+    "open": false,
+    "tx": 0,
+    "opacity": 1,
+    "transition": "0.2s, 0.2s",
+    "scrollW": 390,
+    "clientW": 390,
+    "focusVisible": true
+   }
+  },
+  {
+   "name": "종 카드 줄 가로 스크롤 중 접힘",
+   "ok": true,
+   "detail": {
+    "l": 346,
+    "t": 724,
+    "r": 394,
+    "b": 772,
+    "w": 48,
+    "right": -4,
+    "bottom": 72,
+    "tucked": true,
+    "left": false,
+    "open": false,
+    "tx": 20.3224,
+    "opacity": 0.653595,
+    "transition": "0.2s, 0.2s",
+    "scrollW": 390,
+    "clientW": 390,
+    "focusVisible": false
+   }
+  },
+  {
+   "name": "지도 끌기 중 접힘(멈춘 채 손가락을 대고 있어도), 놓고 멈추면 돌아옴",
+   "ok": true,
+   "detail": {
+    "md": {
+     "l": 352,
+     "t": 724,
+     "r": 400,
+     "b": 772,
+     "w": 48,
+     "right": -10,
+     "bottom": 72,
+     "tucked": true,
+     "left": false,
+     "open": false,
+     "tx": 26.4,
+     "opacity": 0.55,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "me": {
+     "l": 326,
+     "t": 724,
+     "r": 374,
+     "b": 772,
+     "w": 48,
+     "right": 16,
+     "bottom": 72,
+     "tucked": false,
+     "left": false,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    }
+   }
+  },
+  {
+   "name": "끌어 옮기기: 접힌 상태에서 시작해도 원래 자리 기준으로 옮겨지고 대화창은 안 열림",
+   "ok": true,
+   "detail": {
+    "f": {
+     "l": 352,
+     "t": 724,
+     "r": 400,
+     "b": 772,
+     "w": 48,
+     "right": -10,
+     "bottom": 72,
+     "tucked": true,
+     "left": false,
+     "open": false,
+     "tx": 26.4,
+     "opacity": 0.55,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "dragged": {
+     "l": 70,
+     "t": 296,
+     "r": 118,
+     "b": 344,
+     "w": 48,
+     "right": 272,
+     "bottom": 500,
+     "tucked": false,
+     "left": true,
+     "open": false,
+     "tx": 0,
+     "opacity": 1,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "want": {
+     "x": 70,
+     "y": 296
+    }
+   }
+  },
+  {
+   "name": "옮긴 버튼(왼쪽 위): 스크롤 때 왼쪽으로 밀려 접힘, 말풍선은 지금처럼 옆",
+   "ok": true,
+   "detail": {
+    "lt": {
+     "l": -10,
+     "t": 140,
+     "r": 38,
+     "b": 188,
+     "w": 48,
+     "right": 352,
+     "bottom": 656,
+     "tucked": true,
+     "left": true,
+     "open": false,
+     "tx": -26.4,
+     "opacity": 0.55,
+     "transition": "0.2s, 0.2s",
+     "scrollW": 390,
+     "clientW": 390,
+     "focusVisible": false
+    },
+    "h": {
+     "hidden": false,
+     "left": 74,
+     "fabRight": 64
+    }
+   }
+  },
+  {
+   "name": "말풍선: 종 카드 줄을 가로로 200px 넘기면 바로 접히고 bbChatHintSeen 저장",
+   "ok": true,
+   "detail": {
+    "shown": true,
+    "after": {
+     "hidden": true,
+     "seen": "1"
+    }
+   }
+  },
+  {
+   "name": "움직임 줄이기(시스템 설정): 전환 없이 바로 접힘",
+   "ok": true,
+   "detail": {
+    "l": 352,
+    "t": 724,
+    "r": 400,
+    "b": 772,
+    "w": 48,
+    "right": -10,
+    "bottom": 72,
+    "tucked": true,
+    "left": false,
+    "open": false,
+    "tx": 26.4,
+    "opacity": 0.55,
+    "transition": "0s",
+    "scrollW": 390,
+    "clientW": 390,
+    "focusVisible": false
+   }
+  },
+  {
+   "name": "움직임 줄이기(사이트 스위치): 전환 없이 바로 접힘",
+   "ok": true,
+   "detail": {
+    "l": 352,
+    "t": 724,
+    "r": 400,
+    "b": 772,
+    "w": 48,
+    "right": -10,
+    "bottom": 72,
+    "tucked": true,
+    "left": false,
+    "open": false,
+    "tx": 26.4,
+    "opacity": 0.55,
+    "transition": "0s",
+    "scrollW": 390,
+    "clientW": 390,
+    "focusVisible": false
+   }
+  },
+  {
+   "name": "360px 가로 넘침 없음(스크롤 중) · 접힘",
+   "ok": true,
+   "detail": [
+    {
+     "v": "explore",
+     "scrollW": 360,
+     "clientW": 360,
+     "tucked": true
+    },
+    {
+     "v": "compare",
+     "scrollW": 360,
+     "clientW": 360,
+     "tucked": true
+    },
+    {
+     "v": "method",
+     "scrollW": 360,
+     "clientW": 360,
+     "tucked": true
+    }
+   ]
+  },
+  {
+   "name": "390px 가로 넘침 없음(스크롤 중) · 접힘",
+   "ok": true,
+   "detail": [
+    {
+     "v": "explore",
+     "scrollW": 390,
+     "clientW": 390,
+     "tucked": true
+    },
+    {
+     "v": "compare",
+     "scrollW": 390,
+     "clientW": 390,
+     "tucked": true
+    },
+    {
+     "v": "method",
+     "scrollW": 390,
+     "clientW": 390,
+     "tucked": true
+    }
+   ]
+  },
+  {
+   "name": "768px 가로 넘침 없음(스크롤 중)",
+   "ok": true,
+   "detail": [
+    {
+     "v": "explore",
+     "scrollW": 768,
+     "clientW": 768,
+     "tucked": false
+    },
+    {
+     "v": "compare",
+     "scrollW": 768,
+     "clientW": 768,
+     "tucked": false
+    },
+    {
+     "v": "method",
+     "scrollW": 768,
+     "clientW": 768,
+     "tucked": false
+    }
+   ]
+  },
+  {
+   "name": "1440px 가로 넘침 없음(스크롤 중)",
+   "ok": true,
+   "detail": [
+    {
+     "v": "explore",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "tucked": false
+    },
+    {
+     "v": "compare",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "tucked": false
+    },
+    {
+     "v": "method",
+     "scrollW": 1440,
+     "clientW": 1440,
+     "tucked": false
+    }
+   ]
+  },
+  {
+   "name": "콘솔 오류 없음",
+   "ok": true,
+   "detail": []
+  }
+ ],
+ "overflow": {
+  "360": [
+   {
+    "v": "explore",
+    "scrollW": 360,
+    "clientW": 360,
+    "tucked": true
+   },
+   {
+    "v": "compare",
+    "scrollW": 360,
+    "clientW": 360,
+    "tucked": true
+   },
+   {
+    "v": "method",
+    "scrollW": 360,
+    "clientW": 360,
+    "tucked": true
+   }
+  ],
+  "390": [
+   {
+    "v": "explore",
+    "scrollW": 390,
+    "clientW": 390,
+    "tucked": true
+   },
+   {
+    "v": "compare",
+    "scrollW": 390,
+    "clientW": 390,
+    "tucked": true
+   },
+   {
+    "v": "method",
+    "scrollW": 390,
+    "clientW": 390,
+    "tucked": true
+   }
+  ],
+  "768": [
+   {
+    "v": "explore",
+    "scrollW": 768,
+    "clientW": 768,
+    "tucked": false
+   },
+   {
+    "v": "compare",
+    "scrollW": 768,
+    "clientW": 768,
+    "tucked": false
+   },
+   {
+    "v": "method",
+    "scrollW": 768,
+    "clientW": 768,
+    "tucked": false
+   }
+  ],
+  "1440": [
+   {
+    "v": "explore",
+    "scrollW": 1440,
+    "clientW": 1440,
+    "tucked": false
+   },
+   {
+    "v": "compare",
+    "scrollW": 1440,
+    "clientW": 1440,
+    "tucked": false
+   },
+   {
+    "v": "method",
+    "scrollW": 1440,
+    "clientW": 1440,
+    "tucked": false
+   }
+  ]
+ },
+ "errors": [],
+ "hint": {
+  "bottom": 716,
+  "right": 374,
+  "left": 169,
+  "top": 672,
+  "fabTop": 724,
+  "fabRight": 374,
+  "vw": 390
+ },
+ "cardsEnd": {
+  "lastCardRight": 322,
+  "fabLeft": 326,
+  "padRight": "68px"
+ },
+ "pc": {
+  "before": {
+   "l": 947,
+   "t": 836,
+   "r": 995,
+   "b": 884,
+   "w": 48,
+   "right": 445,
+   "bottom": 16,
+   "tucked": false,
+   "left": false,
+   "open": false,
+   "tx": 0,
+   "opacity": 1,
+   "transition": "0.12s",
+   "scrollW": 1440,
+   "clientW": 1440,
+   "focusVisible": false
+  },
+  "during": {
+   "l": 947,
+   "t": 836,
+   "r": 995,
+   "b": 884,
+   "w": 48,
+   "right": 445,
+   "bottom": 16,
+   "tucked": false,
+   "left": false,
+   "open": false,
+   "tx": 0,
+   "opacity": 1,
+   "transition": "0.12s",
+   "scrollW": 1440,
+   "clientW": 1440,
+   "focusVisible": false
+  }
+ }
+}

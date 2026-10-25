@@ -1729,7 +1729,8 @@ try{
       !m.moved&&m.stored===null&&!m.reset&&m.open&&m.bottom===16&&Math.abs(m.right-defaultRight)<=1&&m.focus==='bbc-input',JSON.stringify(m));
     await evaluate("document.querySelector('.bbc-close').click();1");
     await viewport(390,844,true);await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});await sleep(500);
-    await evaluate("window.scrollTo(0,400);1");await sleep(300);
+    // 2026-10-25: on a phone 멍이 tucks to the edge while the page scrolls and comes back 0.7 s after it stops, so measure the place after that.
+    await evaluate("window.scrollTo(0,400);1");await sleep(1100);
     m=await fabState();
     await touchDrag(mid(m),{x:50,y:300});
     // Chrome makes no tap from a touch that starts within about a second of the previous touch gesture, so wait like a person would.
@@ -1741,6 +1742,20 @@ try{
     check('M-6 phone 390px: a finger drag moves 멍이 without scrolling the page, a tap opens the bottom sheet, no horizontal overflow',
       !m.moved&&m.right===16&&t.moved&&!t.open&&t.x===26&&t.y===276&&t.scrollY===m.scrollY&&JSON.parse(t.stored).mobile&&JSON.parse(t.stored).desktop===undefined&&
       tap.open&&tap.panel.l===0&&tap.panel.r===tap.vw&&Math.abs(tap.panel.b-tap.vh)<=1&&tap.doc<=tap.vw,JSON.stringify({m,t,tap}));
+    // 2026-10-25 (verification/2026-10-25-mascot-mobile-overlap): while the page scrolls on a phone 멍이 slides half off the edge, dimmed, at the
+    // same 48px; a tap on it then only brings it back (the chat stays shut), and it comes back by itself 0.7 s after the scrolling stops.
+    await evaluate("document.querySelector('.bbc-close').click();document.activeElement.blur();localStorage.removeItem('bbChatFabPos');dispatchEvent(new Event('resize'));window.scrollTo(0,0);1");await sleep(1100);
+    const tuckState=()=>evaluate(`(()=>{const f=document.querySelector('.bbc-fab'),d=document.documentElement;return {tucked:document.querySelector('.bbc').classList.contains('bbc-tucked'),
+      w:Math.round(f.getBoundingClientRect().width),opacity:+getComputedStyle(f).opacity,open:!document.querySelector('.bbc-panel').hidden,doc:d.scrollWidth,vw:d.clientWidth}})()`);
+    await evaluate("window.scrollBy(0,300);1");await sleep(300);
+    const tk=await tuckState();
+    await touchDrag(mid(await fabState()),mid(await fabState()),1);
+    const tkTap=await tuckState();
+    await evaluate("window.scrollBy(0,200);1");await sleep(1200);
+    const tkBack=await tuckState();
+    await shot('mascot-mobile-tucked',false);
+    check('M-6b phone 390px: scrolling tucks 멍이 to the edge (same 48px, dimmed, no horizontal overflow); a tap on it only untucks, the chat stays shut; it comes back 0.7 s after scrolling stops',
+      tk.tucked&&tk.w===48&&tk.opacity<1&&tk.doc<=tk.vw&&!tkTap.tucked&&!tkTap.open&&!tkBack.tucked&&tkBack.opacity===1,JSON.stringify({tk,tkTap,tkBack}));
     await evaluate("document.querySelector('.bbc-close').click();localStorage.removeItem('bbChatFabPos');window.scrollTo(0,0);1");
     await send('Emulation.setTouchEmulationEnabled',{enabled:false});
 
