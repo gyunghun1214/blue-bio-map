@@ -1541,6 +1541,87 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .sheet-summary .card-scores i small{color:#A9BBC6}
   #explore .sheet-summary .ss-name{font-size:17px}
   #explore .sheet-summary .type-chip{padding:2px 9px 2px 7px;border-radius:99px;background:rgba(255,255,255,.07)}
+  /* 2026-10-25 탐색 지도 첫 화면: 지도(55%)·선택 종 요약·검색·분류·칩이 화면을 채워 종 카드 줄이 탭바 아래에 숨어 있었다
+     (360px는 0px, 390px는 19px만 보임). 처음 온 사람이 '종을 골라 본다'는 것을 알 수 있게, 검색과 분류(전체 ▾)를 한 줄에 두고
+     지도를 화면의 50%로 줄여 카드 줄 윗부분(이름·학명·건수)이 첫 화면에 걸리게 한다. 지도·카드·문구는 그대로. */
+  #explore .map-stage{height:50vh;height:50svh}
+  #explore .species-pane{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px;align-items:center}
+  #explore .species-pane>*{grid-column:1/-1;min-width:0}
+  #explore .species-pane>.search{grid-column:1}
+  #explore #filter-fold{display:contents}
+  #explore .species-filters{grid-column:2;display:block;margin:0}
+  #explore .species-filters select{width:auto;max-width:42vw;height:42px;padding-right:30px;font-size:14px}
+  #explore #use-chips{grid-column:1/-1;margin-top:8px}
+  html.lang-en #explore .species-filters select{max-width:34vw}
+  /* 2026-10-25 지도 칸(셀) 팝업: 휴대폰 지도(화면 50~55%)에서는 팝업(최대 480px)이 위의 모드·기간·배경 버튼과 아래 범례·확대 버튼에
+     가려 제목·숫자·닫기(×)가 보이지 않았고 아래쪽은 시트에 잘렸다. 팝업이 열린 동안에만 지도 위 버튼을 숨기고(닫으면 그대로),
+     팝업은 지도 칸 안에 들어오는 높이에서 스크롤한다. 닫기 단추는 손가락 크기(40px). */
+  #explore .map-stage:has(.leaflet-popup) :is(.map-ui,.leaflet-control-zoom,.leaflet-control-attribution){visibility:hidden}
+  #explore .leaflet-popup-content{max-width:calc(100vw - 78px);max-height:calc(50svh - 110px);margin:13px 40px 13px 16px;overscroll-behavior:contain}
+  #explore .leaflet-container a.leaflet-popup-close-button{width:40px;height:40px;font-size:24px;line-height:40px}
+  /* 팝업 안 종 수 칸 세 개(확인 종 · 활용 지표 높은 종 · 보전 지표 높은 종)는 다섯 칸 격자(style.css)라 위 폭 제한 뒤 칸이 45px 남짓으로
+     좁아져 '활용 지/표 높은/종'처럼 낱말 중간에서 줄이 바뀌었다. 팝업에서는 세 칸으로 나누고 낱말 단위로 줄을 바꾼다. */
+  #explore .leaflet-popup-content .cell-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #explore .leaflet-popup-content .cell-summary span{word-break:keep-all}
+  /* 2026-10-25 종 상세 시트: 종 상세가 긴 페이지 맨 아래(카드 줄에서 약 800px 아래, 길이 1,300px)에 붙어 있어 한참 내려가야 했다.
+     선택 종 요약 전체를 '근거 자세히 보기' 단추로 두고(app.js sheetSummary, 글자는 시트 손잡이 줄 오른쪽 빈자리에), 누르면 근거 서랍(#ev-drawer)이 화면 전체를 덮는
+     시트로 열린다: 위에 종 이름과 ✕, 안에서 스크롤하는 상세(맨 위에 두 축 카드: BBVI·MFPI·MBPI, MCUI), 아래에 '비교와 지표에서 보기'·
+     '닫기'. 닫으면 연 때의 목록·지도·스크롤 위치 그대로. 시트가 닫혀 있을 때 상세는 전처럼 페이지 아래에도 있다. */
+  #explore .sheet-summary .ss-open{display:block;width:100%;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+  #explore .sheet-summary .ss-open:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:10px}
+  #explore .sheet-summary .ss-more{position:absolute;top:0;right:12px;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 0 0 8px;color:var(--teal-ink);font-size:13px;font-weight:700;white-space:nowrap}
+  #explore .sheet-summary .ss-more::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg)}
+  #explore .ev-drawer.open{position:fixed;inset:0;z-index:1300;display:flex;flex-direction:column;background:var(--nv-panel)}
+  #explore .ev-drawer.open .evd-head{display:flex;flex:none;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 16px;padding-top:max(8px,env(safe-area-inset-top,0px));border-bottom:1px solid var(--nv-line2);background:#05192A}
+  #explore .ev-drawer.open .evd-head h2{min-width:0;margin:0;overflow:hidden;color:#fff;font-size:16px;font-weight:800;text-overflow:ellipsis;white-space:nowrap}
+  #explore .ev-drawer.open .evd-close{display:grid;flex:none;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--nv-line2);border-radius:10px;background:none;color:#fff;font-size:18px;cursor:pointer}
+  #explore .ev-drawer.open #detail{order:0;flex:1 1 auto;min-height:0;margin:0;overflow-y:auto;overscroll-behavior:contain;border-top:0}
+  #explore .ev-drawer.open .evd-foot{display:flex;flex:none;gap:8px;padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--nv-line2);background:#05192A}
+  #explore .ev-drawer.open .evd-foot button{flex:1 1 0;min-height:44px;padding:0 12px;border:1.5px solid var(--nv-line2);border-radius:10px;background:none;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+  #explore .ev-drawer.open .evd-foot .evd-compare{border-color:var(--teal);color:var(--teal-ink)}
+  #explore .ev-drawer.open :is(.evd-close,.evd-foot button):focus-visible{outline:2px solid #fff;outline-offset:2px}
+  html:has(#explore.active #ev-drawer.open){overflow:hidden}
+  body:has(#explore.active #ev-drawer.open) .bbc{display:none}
+  /* 2026-10-25 영어 화면(휴대폰): 아래 탭 이름(Compare & indices · Evidence & methods · Ocean expedition)이 칸보다 길어 줄을 넘지
+     못하고 옆 칸으로 밀려 겹쳤고(360px에서 'Evidence & methods' 칸이 바다 탐험 칸을 29px 덮음), 지도 위 'Occurrence records |
+     Use × conservation' 버튼이 위성/수심 버튼과 겹쳤다(360: 47px, 390: 17px). 영어에서만 칸을 고르게 나누고 이름을 두 줄까지
+     쓰게 한다(글자 크기 그대로). */
+  html.lang-en .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  html.lang-en :is(.tabs button,.tabs button[data-short],.expedition-link){white-space:normal;text-align:center;line-height:1.1}
+  html.lang-en #explore .map-mode button{max-width:104px;white-space:normal;line-height:1.15;text-align:center}
+  /* 2026-10-25 종 카드 점수 네 칸을 2×2로(칸 순서·값 그대로): 카드(220px) 안 한 줄 네 칸은 38px씩이라
+     - 영어: 'Bioactivity'(약 66px)·'Conservation'(약 78px)이 옆 칸까지 넘쳐 서로 겹쳐 읽을 수 없었다(카드 높이 139→194px).
+     - 한국어: 보전 등급이 옆 칸 밑에 가려 '(VU+감소)'가 '(VU+감', '(LC·예비)'가 '(LC·예비'로 보였다(30장 중 13장), '생리활성'도
+       칸보다 넓었다(카드 높이 155→210px). */
+  #explore .species-card .card-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* 2026-10-25 누르는 칸: 탐색 지도 첫 화면에서 누르는 것 36개 중 29개가 44px보다 작았다(분야 칩 26px, 지도 위 모드·기간·배경 버튼
+     27~29px, 확대/축소 34px, 비교 담기 칸 20px, 머리글 EN 23px·상태 칩 29px). 칩과 지도 위 버튼은 보이는 높이를 40px로 키우고
+     (칩 글자 12→13px), 머리글 버튼과 비교 담기 칸은 보이는 크기를 그대로 두고 누르는 범위만 넓힌다(::after). */
+  #explore .use-chip{min-height:40px;padding:0 12px;font-size:13px}
+  #explore .use-chip b{font-size:12px}
+  #explore .use-row{align-items:center}
+  #explore :is(.map-mode,.basemap-switch,.period-filter) button{min-height:40px}
+  /* 확대/축소는 위 공통 규칙(.leaflet-bar a, 34px)이 !important라 같은 방법으로 덮는다(2026-10-25 보완: 처음엔 !important가 없어 34px 그대로였다) */
+  #explore .leaflet-control-zoom a{width:40px!important;height:40px!important;line-height:40px!important}
+  #explore .map-ui-bl.legend-collapsed .legend-toggle{height:40px}
+  #explore .sc-check::after{content:"";position:absolute;inset:-8px}
+  :is(.lang-switch button,.status-chip){position:relative}
+  :is(.lang-switch button,.status-chip)::after{content:"";position:absolute;inset:-8px -3px}
+  /* 시작 화면(지구본) 카드의 '지도에서 살펴보기 ↗'는 높이 20px: 보이는 크기는 그대로, 누르는 범위만 위아래 12px 넓힌다 */
+  #site-gate .gate-card button{position:relative}
+  #site-gate .gate-card button::after{content:"";position:absolute;inset:-12px -4px}
+  /* 2026-10-25 종 상세의 '관찰 기록 보러가기 ↗'·'정밀 좌표 이용 신청': 아이콘 크기가 넓은 화면(1180px 이상)에만 있어 휴대폰에서는
+     아이콘이 단추 높이만큼(약 38px) 커지고 글자가 두세 줄로 접혔다. 아이콘을 글자 크기에 맞추고, 단추가 낮아져도 손가락 크기(44px)는 지킨다. */
+  #explore .act-ico{flex:none;width:18px;height:18px;margin-right:6px}
+  #explore .detail-act{min-height:44px}
+  /* 2026-10-25 머리글 상태 칩: 칩이 overflow:hidden이라 칸보다 긴 글자가 글자 중간에서 잘렸고(영어 'Research prototy', 오프라인 시연
+     '오프라인 시연 · 연구 프', 자료 연결이 안 돼 '저장 사본' 칩이 함께 뜨면 '연구 프로'·'⚠ 저장 사본 · 20'), 위에 넓힌 누르는 범위(::after)도
+     칩 밖은 잘려 눌리지 않았다. 칩은 잘라 내지 않고 글자만 '…'로 줄이며 ▾·⚠는 남긴다. 칩 묶음은 머리글의 55%까지는 줄지 않고
+     (로고 글자가 먼저 '…'로 줄어든다), 좌우 여백 10→8px로 한국어 기본 상태('연구 프로토타입 ▾')는 360·390·430px 모두 다 보인다. */
+  .status-chips{flex-shrink:0;max-width:55%}
+  .status-chip{min-width:0;overflow:visible;padding-left:8px;padding-right:8px}
+  .status-chip>[aria-hidden]{flex:none}
+  :is(#notice-chip-text,#alert-chip-text){min-width:0;overflow:hidden;text-overflow:ellipsis}
 }
 /* 2026-10-21 (site v4 08): the plain-Korean note beside an abbreviation (app.js glossHtml) */
 .gloss{font-size:max(12px,.86em);font-weight:400;opacity:.85}

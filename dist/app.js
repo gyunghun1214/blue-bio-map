@@ -2076,6 +2076,7 @@ function setView(view,toTop=true) {
   if(view==='compare'){if(data)syncComparison();loadCompareStops();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
   // toTop=false, so the page does not jump up first and then travel the whole way back down.
+  if(changed&&view!=='explore'&&phoneSheet()&&drawerIsOpen())closeDrawer(false); // 2026-10-25: 휴대폰 상세 시트는 다른 탭으로 가면 닫는다
   if(changed&&toTop)window.scrollTo(0,0);
   writeHash();
 }
@@ -2410,7 +2411,7 @@ function renderSidePanel(s){
   box.querySelector('.sp-badge')?.addEventListener('click',()=>openDrawer('evidence'));
   syncCtaLabel();
 }
-function syncCtaLabel(){const c=$('sp-cta');if(c)c.setAttribute('aria-expanded',String(drawerIsOpen()));}
+function syncCtaLabel(){const c=$('sp-cta');if(c)c.setAttribute('aria-expanded',String(drawerIsOpen()));document.querySelector('#sheet-summary .ss-open')?.setAttribute('aria-expanded',String(drawerIsOpen()));}
 // ⓘ: click or Enter opens the short note under the button (not hover-only); Escape or a click elsewhere closes it
 function closeSpPops(except){document.querySelectorAll('#side-panel .sp-info[aria-expanded=true]').forEach(b=>{if(b===except)return;b.setAttribute('aria-expanded','false');$(b.getAttribute('aria-controls')).hidden=true;});}
 // ---- evidence drawer (#ev-drawer around #detail): over the right panel and part of the map; the map keeps its centre and zoom
@@ -3573,7 +3574,8 @@ function renderMap() {
 
 function fitMap(){if(!map)return;const i=mapInsets();map.fitBounds([[30,122],[43,136]],{paddingTopLeft:[8+i.left,8],paddingBottomRight:[8+i.right,8]});}
 // Evidence popups pan into the part of the map the floating panels leave free (read by Leaflet each time a popup opens).
-function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,10);}
+// 2026-10-25 휴대폰: 지도 아래 14px는 종 시트가 덮으므로(theme.css margin-top:-14px) 팝업을 그보다 위에 둔다. 넓은 화면은 그대로 10px.
+function syncPopupPad(){const i=mapInsets();L.Popup.prototype.options.autoPanPaddingTopLeft=L.point(i.left+10,10);L.Popup.prototype.options.autoPanPaddingBottomRight=L.point(i.right+10,phoneSheet()?24:10);}
 
 // Background maps: satellite (NASA GIBS Blue Marble with shaded relief and bathymetry, the default) and depth (GEBCO WMS).
 // 2026-10-11 design concept: the relief and the shelf/deep-sea shading of that Blue Marble read through the navy tint (theme.css).
@@ -4641,7 +4643,23 @@ function sheetSummary(s){
   const t=matrixType(s), v=k=>{const x=pilotScore(s,k);
     return `<i class="${x===null?'held':''}">${tileLabel(k)}${x===null?'–':scoreChip(s,k,x)}</i>`;};
   const chip=t?`<span class="type-chip" title="${esc(matrixPlainNote())}"><i style="background-color:${matrixTypeColour[t]}" aria-hidden="true"></i>${verdictWord(t)} ${esc(matrixTypeLabel(t))}</span>`:'';
-  box.innerHTML=`<p class="ss-name"><b>${esc(s.label)}</b> ${chip}</p><p class="ss-scores card-scores">${['MFPI','MBPI','BBVI','MCUI'].map(v).join('')}</p>`;
+  const scores=['MFPI','MBPI','BBVI','MCUI'].map(v).join('');
+  // 2026-10-25 휴대폰: 요약 전체(이름·유형·점수 4칸)가 한 단추다. 누르면 종 상세가 아래에서 올라오는 시트로 열린다(openPhoneSheet).
+  // 단추 안에는 문단(p)을 둘 수 없어 같은 class의 span을 쓴다. 넓은 화면은 그대로 문단 두 줄.
+  box.innerHTML=phoneSheet()?`<button type="button" class="ss-open" aria-haspopup="dialog" aria-controls="ev-drawer" aria-expanded="${drawerIsOpen()}"><span class="ss-name"><b>${esc(s.label)}</b> ${chip} <span class="ss-more">근거 자세히 보기</span></span><span class="ss-scores card-scores">${scores}</span></button>`
+    :`<p class="ss-name"><b>${esc(s.label)}</b> ${chip}</p><p class="ss-scores card-scores">${scores}</p>`;
+}
+// 2026-10-25 휴대폰 상세 시트: 근거 서랍(#ev-drawer, 넓은 화면에서는 오른쪽 서랍)을 740px 이하에서는 화면 전체를 덮는 시트로 연다.
+// 닫으면(✕·닫기·Esc) 시트가 내려가고 목록·지도·스크롤 위치는 연 때 그대로다. 닫기는 closeDrawer()를 같이 쓴다.
+function openPhoneSheet(target,from){
+  const d=$('ev-drawer');if(!d||!selected||!phoneSheet())return;
+  drawerReturn=from||document.activeElement;
+  d.classList.add('open');detailOpen=true;d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');syncCtaLabel();
+  $('ev-drawer-title').textContent=`${selected.label} · 근거 자세히 보기`;
+  const t=drawerTarget(target),body=$('detail');
+  for(let x=t?.closest('details');x;x=x.parentElement?.closest('details'))x.open=true;
+  body.scrollTop=t&&t!==body?Math.max(0,t.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop-8):0;
+  d.querySelector('.evd-close')?.focus({preventScroll:true});
 }
 function sheetSync(){
   const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
@@ -4730,7 +4748,9 @@ $('sheet-handle').addEventListener('click',()=>{
 });
 addEventListener('scroll',()=>{if(!sheetSync.f)sheetSync.f=requestAnimationFrame(()=>{sheetSync.f=0;sheetSync();});},{passive:true});
 // the map's height changes across the 740px line: tell Leaflet
-globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();});
+globalThis.matchMedia?.('(max-width:740px)').addEventListener?.('change',()=>{map?.invalidateSize();sheetSync();
+  if(selected)sheetSummary(selected);if(!phoneSheet()&&!wideLayout())closeDrawer(false);}); // 2026-10-25: 요약 단추·상세 시트는 휴대폰에만
+$('sheet-summary').addEventListener('click',e=>{const b=e.target.closest('.ss-open');if(b)openPhoneSheet(null,b);});
 // the filter fold, the right panel and the evidence drawer apply from 1180px only: re-sync when the window crosses that line
 function syncWide(){
   syncFolds();
@@ -4944,6 +4964,17 @@ $('matrix-cluster-pop').addEventListener('click',e=>{const b=e.target.closest('b
   $('matrix-points').querySelector('.matrix-point[aria-current="true"]')?.focus({preventScroll:true});});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('matrix-cluster-pop').hidden)closeClusterPop(true);});
 document.addEventListener('click',e=>{if(!$('matrix-cluster-pop').hidden&&!e.target.closest('#matrix-cluster-pop,.matrix-cluster-btn'))closeClusterPop(false);});
+// 2026-10-25 휴대폰: 매트릭스 점의 누르는 범위(44px 원, compare.css ::after)는 이웃 점과 겹치고, 겹친 곳은 나중에 그린 점·선택된 점
+// (z-index 7)이 가져가 바로 옆 점의 보이는 점을 눌러도 다른 종이 골라졌다. 휴대폰에서 손가락으로 누르면(click.detail>0) 누른 자리에서
+// 가장 가까운 점을 고른다. 키보드(Enter·Space)와 넓은 화면은 그대로.
+$('matrix-points').addEventListener('click',e=>{
+  if(!phoneSheet()||e.detail===0)return;
+  const hit=e.target.closest?.('.matrix-point.pilot');if(!hit)return;
+  let best=hit,bd=Infinity;
+  for(const b of e.currentTarget.querySelectorAll('.matrix-point.pilot')){const r=b.getBoundingClientRect();if(!r.width)continue;
+    const d=Math.hypot(r.left+r.width/2-e.clientX,r.top+r.height/2-e.clientY);if(d<bd){bd=d;best=b;}}
+  if(best!==hit){e.stopPropagation();e.preventDefault();best.click();}
+},true);
 // one listener per region: the profile and the tray redraw their buttons
 // '정밀 좌표 이용 신청': explains the planned procedure only; no form, nothing is sent or stored
 let coordReturn=null;
@@ -4977,7 +5008,7 @@ document.addEventListener('keydown',e=>{
     if(open){closeSpPops();open.focus();return;}
     if(drawerIsOpen()&&!document.querySelector('dialog[open]')){closeDrawer();}
     return;}
-  if(e.key!=='Tab'||!drawerIsOpen()||!wideLayout())return;
+  if(e.key!=='Tab'||!drawerIsOpen()||!(wideLayout()||phoneSheet()))return; // 2026-10-25: 휴대폰 상세 시트도 Tab이 시트 안에 머문다
   const d=$('ev-drawer'),f=[...d.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,summary,[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null||x===document.activeElement);
   if(!f.length)return;const first=f[0],last=f.at(-1);
   if(!d.contains(document.activeElement)){e.preventDefault();first.focus();}

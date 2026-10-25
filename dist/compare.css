@@ -589,6 +589,61 @@ body:has(#compare.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 }
 @media (max-width:740px){
   #compare #comparison thead th:first-child,#compare #comparison tbody th{min-width:140px;width:140px}
+  /* 2026-10-25 휴대폰 데이터 표 → 종별 카드: 1,060px 표가 화면 폭 상자 안에서 가로·세로로 따로 스크롤되어 종·유형 칸만 보이고
+     MFPI 다음 칸들은 밀어야 나왔다. 휴대폰에서는 한 종을 카드 한 장으로: 위에 이름·학명·분류와 '근거 자세히'(⌄), 그 아래 유형,
+     점수 4칸(식량 MFPI · 생리활성 MBPI · 활용 BBVI · 보전 MCUI, 머리글과 같은 낱말을 칸 위에), 맨 아래 한 줄 MBPI-Rx.
+     머리글 줄은 정렬 단추 줄(옆으로 밀기)로 남긴다. 표 마크업·값·단추·aria는 그대로이고 CSS만 바꾼다(넓은 화면 그대로). */
+  #compare #comparison{max-height:none;overflow:visible;border:0;border-radius:0;background:none}
+  #compare #comparison table{display:block;width:100%;min-width:0}
+  #compare #comparison :is(thead,tbody){display:block}
+  #compare #comparison thead tr{display:flex;gap:6px;margin:0;padding:2px 2px 10px;overflow-x:auto;scrollbar-width:thin}
+  #compare #comparison thead th,#compare #comparison thead th:first-child{position:static;display:block;flex:none;width:auto;min-width:0;padding:0;border:0;background:none}
+  #compare #comparison thead th:is(.cmp-type-h,.cmp-x-h){display:none}
+  #compare #comparison thead th:is(:nth-child(n)){width:auto}
+  #compare #comparison thead .cmp-sort{flex-wrap:nowrap;align-items:center;gap:5px;min-height:40px;padding:0 12px;border:1px solid var(--cs-line);border-radius:99px;background:var(--cs-panel);white-space:nowrap}
+  #compare #comparison thead .cmp-sort small{order:0;flex-basis:auto;font-size:12px}
+  #compare #comparison thead th:is([aria-sort=ascending],[aria-sort=descending]) .cmp-sort{border-color:var(--cs-accent-hi)}
+  #compare #comparison tbody tr.cmp-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"name name name more" "type type type type" "mfpi mbpi bbvi mcui" "rx rx rx rx";gap:10px 8px;margin:0 0 10px;padding:14px 14px 12px;border:1px solid var(--cs-line);border-radius:12px;background:var(--cs-panel)}
+  #compare #comparison tbody tr.cmp-row>*,#compare #comparison tbody tr.cmp-row:first-child>*{display:block;width:auto;min-width:0;padding:0;border:0;background:none}
+  #compare #comparison tbody tr.cmp-row>th{grid-area:name}
+  #compare #comparison tbody tr.cmp-row>th b{display:block}
+  #compare #comparison tbody tr.cmp-row>th :is(small,.dt-meta){display:inline;margin:0}
+  #compare #comparison tbody tr.cmp-row>th .dt-meta::before{content:" · "}
+  #compare #comparison tbody tr.cmp-row>.cmp-type{grid-area:type}
+  #compare #comparison tbody tr.cmp-row>[data-k=MFPI]{grid-area:mfpi}
+  #compare #comparison tbody tr.cmp-row>[data-k=MBPI]{grid-area:mbpi}
+  #compare #comparison tbody tr.cmp-row>[data-k=BBVI]{grid-area:bbvi}
+  #compare #comparison tbody tr.cmp-row>[data-k=MCUI]{grid-area:mcui}
+  #compare #comparison tbody tr.cmp-row>.cmp-rx{grid-area:rx;display:flex;align-items:center;gap:8px;padding-top:8px;border-top:1px solid var(--dt-row)}
+  #compare #comparison tbody tr.cmp-row>.cmp-x{grid-area:more;justify-self:end;align-self:start}
+  #compare #comparison tbody tr.cmp-row:has(+tr.cmp-more:not([hidden])){margin-bottom:0;border-radius:12px 12px 0 0}
+  #compare #comparison tbody tr.cmp-row:hover>*{background:none}
+  #compare #comparison td.cmp-val[data-k]::before{display:block;margin:0 0 3px;color:var(--dt-ink2);font-size:12px;font-weight:600;line-height:1.25;white-space:pre-line}
+  #compare #comparison td[data-k=MFPI]::before{content:"식량\A MFPI"}
+  #compare #comparison td[data-k=MBPI]::before{content:"생리활성\A MBPI"}
+  #compare #comparison td[data-k=BBVI]::before{content:"활용\A BBVI"}
+  #compare #comparison td[data-k=MCUI]::before{content:"보전\A MCUI"}
+  #compare #comparison td.cmp-rx::before{content:"의약 표적 보조 MBPI-Rx";flex:none;color:var(--dt-ink2);font-size:12px;font-weight:600}
+  html.lang-en #compare #comparison td[data-k=MFPI]::before{content:"Food\A MFPI"}
+  html.lang-en #compare #comparison td[data-k=MBPI]::before{content:"Bioactivity\A MBPI"}
+  html.lang-en #compare #comparison td[data-k=BBVI]::before{content:"Use\A BBVI"}
+  html.lang-en #compare #comparison td[data-k=MCUI]::before{content:"Conservation\A MCUI"}
+  html.lang-en #compare #comparison td.cmp-rx::before{content:"Drug-target supplementary MBPI-Rx"}
+  #compare #comparison td.cmp-val .score-cell.cv{display:block;width:100%;min-height:44px;text-align:left}
+  #compare #comparison td.cmp-val .cv-num{font-size:17px}
+  #compare #comparison td:is([data-k=BBVI],[data-k=MCUI]) .cv-num{font-size:19px}
+  #compare #comparison td.cmp-val .cv-num .cv-cat{display:block}
+  #compare #comparison td.cmp-val .cv-bar,#compare #comparison td:is([data-k=BBVI],[data-k=MCUI]) .cv-bar{width:100%}
+  #compare #comparison td.cmp-rx .rx-cv{display:flex;flex:1;align-items:center;gap:8px}
+  #compare #comparison td.cmp-rx .cv-bar{flex:1;margin:0}
+  #compare #comparison tbody tr.cmp-group{display:block;margin:6px 0 8px}
+  #compare #comparison tbody tr.cmp-group>th{display:block;width:auto;min-width:0;padding:0 2px;border:0;background:none}
+  #compare #comparison tbody tr.cmp-more:not([hidden]){display:block;margin:0 0 10px;padding:0;border:1px solid var(--cs-line);border-top:0;border-radius:0 0 12px 12px;overflow:hidden;background:var(--dt-open)}
+  #compare #comparison tbody tr.cmp-row:has(+tr.cmp-more:not([hidden])){background:var(--dt-open)}
+  #compare #comparison tbody tr.cmp-row:has(+tr.cmp-more:not([hidden]))>*{background:none}
+  #compare #comparison tbody tr.cmp-more>td{display:block;padding:4px 12px 14px}
+  #compare #comparison .dt-x{position:static;width:auto}
+  #compare #comparison tbody tr:is(.cmp-row,.cmp-more,.cmp-group).cmp-out{display:none}
 }
 /* 4.12: the stock-decline box in the comparison profile (the point itself is a circle like every other since 2026-10-18) */
 #compare #comparison .stock-decline{margin:0;border-color:var(--cs-line);background:var(--dt-well)}
@@ -948,6 +1003,9 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare .cmp-tray.empty .ct-head{position:static;width:auto;height:auto;overflow:visible;clip:auto;grid-area:head;font-size:16px}
   #compare .cmp-tray.empty .ct-toggle{display:none}
   #compare .cmp-tray.empty .ct-list{display:none}
+  /* 2026-10-25 자료를 불러오지 못한 상태에서는 '선택한 생물' 상자(#cmp-tray)가 내용 없이 그려지지 않아, 빈 알약 모양 상자만 탭바 위에
+     떠 있었다(누를 것도 읽을 것도 없음). 내용이 없을 때는 숨긴다. 자료가 있으면(빈 담기 상태 포함) 전과 같다. */
+  #compare .cmp-tray:empty{display:none}
   #compare .ct-count{font-size:16px}
   #compare .ct-go-btn{min-width:0;min-height:40px;padding:0 12px;font-size:13.5px}
   #compare .matrix-types{grid-template-columns:1fr}
@@ -1018,4 +1076,24 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   #compare .cmp-spread-note{display:none}
   #compare .cmp-tray{bottom:calc(10px + var(--bbc-bar,0px))}
   #compare{padding-bottom:calc(96px + var(--bbc-bar,0px))}
+  /* 2026-10-25 첫 화면에 매트릭스 전체: 360×780에서 매트릭스 아래 x축(활용가치 BBVI 0–100)이 탭바에 가렸다. 가중치가 공식값이면
+     '공식 가중치 · MBPI 0.50 · MFPI 0.50' 줄은 바로 위 '비교 기준' 줄과 같은 값이라 휴대폰에서만 숨기고(탐색 가중치로 바꾸면
+     '공식값으로' 단추와 함께 그대로 보임, 거르기 안내가 있으면 그 줄도 보임), 위 칸 사이 여백을 줄인다. */
+  #compare #cmp-wline:not(.off){display:none}
+  #compare .cmp-status:not(:has(#cmp-wline.off)):has(#cmp-filter-note:empty){display:none}
+  #compare .cmp-top{row-gap:8px}
+  #compare .cmp-top>*{min-width:0} /* 영어 분류 단추(All 30 · Seaweed 9 …)가 화면보다 넓어 비교 탭 전체가 옆으로 밀리던 것: 단추 줄 안에서만 밀린다 */
+  #compare .cmp-bar{gap:6px}
+  #compare .cmp-weight{padding-top:6px;padding-bottom:6px}
+  #compare .cmp-weight,#compare .cmp-status{margin-top:0}
+  #compare .cmp-main{margin-top:8px}
+  #compare .cmp-matrix-panel{padding-top:10px}
+  /* 매트릭스 점(9–20px)은 손가락으로 누르기 어려웠다: 보이는 점은 그대로 두고 누르는 범위만 44px 원으로 넓힌다
+     (점이 몰린 곳의 흐린 점은 'N종' 단추로 고르므로 넓히지 않는다) */
+  #compare .matrix-point.pilot:not([data-clustered])::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;border-radius:50%;transform:translate(-50%,-50%)}
+  /* 매트릭스/데이터 표(34px)·비교 기준(28px)·읽는 법(34px) 단추: 보이는 크기는 그대로, 누르는 범위만 44px 안팎으로 */
+  #compare :is(.cmp-mode button,.cw-name,#cmp-read-toggle){position:relative}
+  #compare .cmp-mode button::after{content:"";position:absolute;inset:-5px 0}
+  #compare .cw-name::after{content:"";position:absolute;inset:-8px -6px}
+  #compare #cmp-read-toggle::after{content:"";position:absolute;inset:-5px 0}
 }

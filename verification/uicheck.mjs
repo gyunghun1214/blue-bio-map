@@ -1434,6 +1434,49 @@ try{
   check('Mobile 390px 톳 with cells: no horizontal overflow',pov.doc<=pov.vw&&pov.wide===0,JSON.stringify(pov));
   await shot('mobile-live-hijiki');
 
+  // ---------- 2026-10-25 휴대폰 화면 개선 (design/mobile-ux-2026-10-25, verification/2026-10-25-mobile-ux) ----------
+  // Phone-only fixes kept from coming back: the bottom tab bar on 근거와 방법, the map-cell popup inside the map, the species
+  // detail as a sheet over the page, and the data table as one card per species. Positions are read from the page.
+  {
+    const keyPress=async(k,code,vk)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk});await sleep(200);};
+    // (1) 근거와 방법: the header's blur once made the fixed tab bar follow the header, so it sat at the top and scrolled away.
+    const mt=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('method');await wait(300);window.scrollTo(0,1500);await wait(400);
+      const t=document.querySelector('.tabs').getBoundingClientRect(),x=document.querySelector('.expedition-link').getBoundingClientRect();
+      const r={y:Math.round(scrollY),tabsTop:Math.round(t.top),tabsBottom:Math.round(t.bottom),expBottom:Math.round(x.bottom),vh:innerHeight};
+      window.scrollTo(0,0);setView('explore');await wait(300);return r})()`);
+    check('Mobile 390px 근거와 방법: scrolled 1500px down, the bottom tab bar and 바다 탐험 stay at the bottom of the screen',
+      mt.y>=1000&&Math.abs(mt.tabsBottom-mt.vh)<=1&&Math.abs(mt.expBottom-mt.vh)<=1&&mt.tabsTop>mt.vh/2,JSON.stringify(mt));
+    // (2) A map-cell popup fits inside the map stage, its close button is not covered, and the map buttons hide only while it is open.
+    await pick(836033);await evaluate("window.scrollTo(0,0);1");await sleep(400);
+    const pop=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const L0=cellLayers[0];if(!L0)return {none:true};L0.openPopup();await wait(1200);
+      const st=document.querySelector('#explore .map-stage').getBoundingClientRect(),p=document.querySelector('.leaflet-popup');if(!p)return {open:false};
+      const r=p.getBoundingClientRect(),c=p.querySelector('.leaflet-popup-close-button').getBoundingClientRect(),hit=document.elementFromPoint(c.left+c.width/2,c.top+c.height/2);
+      const ui=getComputedStyle(document.querySelector('#explore .map-ui')).visibility;
+      const out={open:true,stage:[st.left,st.top,st.right,st.bottom].map(Math.round),popup:[r.left,r.top,r.right,r.bottom].map(Math.round),close:Math.round(c.width),closeHit:!!hit?.closest('.leaflet-popup-close-button'),ui};
+      map.closePopup();await wait(400);out.uiAfter=getComputedStyle(document.querySelector('#explore .map-ui')).visibility;return out})()`);
+    check('Mobile 390px map cell popup: inside the map stage, close (×) ≥40px and not covered, map buttons hidden only while it is open',
+      pop.open&&pop.popup[0]>=pop.stage[0]-1&&pop.popup[2]<=pop.stage[2]+1&&pop.popup[1]>=pop.stage[1]-1&&pop.popup[3]<=pop.stage[3]+1&&pop.close>=40&&pop.closeHit&&pop.ui==='hidden'&&pop.uiAfter==='visible',JSON.stringify(pop));
+    // (3) The species detail opens as a sheet from the selected-species summary; Esc closes it where it was opened.
+    await evaluate("window.scrollTo(0,200);1");await sleep(300);
+    const sh1=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const y0=Math.round(scrollY),b=document.querySelector('#sheet-summary .ss-open');if(!b)return {button:false};
+      b.click();await wait(500);const d=document.getElementById('ev-drawer'),r=d.getBoundingClientRect();
+      return {button:true,y0,open:d.classList.contains('open'),modal:d.getAttribute('aria-modal'),box:[r.left,r.top,r.right,r.bottom].map(Math.round),vw:innerWidth,vh:innerHeight,
+        focus:document.activeElement?.classList.contains('evd-close'),expanded:b.getAttribute('aria-expanded'),title:document.getElementById('ev-drawer-title').textContent,label:selected?.label,y:Math.round(scrollY)}})()`);
+    await keyPress('Escape','Escape',27);await sleep(400);
+    const sh2=await evaluate(`({open:document.getElementById('ev-drawer').classList.contains('open'),y:Math.round(scrollY),focus:!!document.activeElement?.closest('#sheet-summary .ss-open'),expanded:document.querySelector('#sheet-summary .ss-open')?.getAttribute('aria-expanded')})`);
+    check('Mobile 390px species detail sheet: the summary button opens the evidence sheet over the whole screen (focus on ✕, page not moved); Esc closes it and focus returns',
+      sh1.button&&sh1.open&&sh1.modal==='true'&&sh1.box[0]===0&&sh1.box[1]===0&&sh1.box[2]===sh1.vw&&sh1.box[3]===sh1.vh&&sh1.focus&&sh1.expanded==='true'&&!!sh1.label&&sh1.title.startsWith(sh1.label)&&sh1.y===sh1.y0&&
+      !sh2.open&&sh2.y===sh1.y0&&sh2.focus&&sh2.expanded==='false',JSON.stringify({sh1,sh2}));
+    // (4) The data table: one card per species, every cell inside the screen (no sideways scroll in its box).
+    const dt=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('compare');setCompareMode('table');await wait(500);
+      const c=document.getElementById('comparison'),rows=[...c.querySelectorAll('tbody tr.cmp-row')];
+      const outside=rows.flatMap(tr=>[...tr.children].filter(td=>{const r=td.getBoundingClientRect();return r.width>0&&(r.left<-1||r.right>innerWidth+1);}));
+      const r={rows:rows.length,box:c.scrollWidth-c.clientWidth,outside:outside.length,doc:document.documentElement.scrollWidth-innerWidth};
+      setCompareMode('matrix');setView('explore');await wait(300);return r})()`);
+    check('Mobile 390px data table: one card per species, no cell outside the screen, no sideways scroll in its box or the page',
+      dt.rows>0&&dt.box<=1&&dt.outside===0&&dt.doc<=0,JSON.stringify(dt));
+  }
+
   // ---------- 멍이 버튼 옮기기 (chatbot.js): drag vs click, remembered and clamped, reset, phone touch ----------
   // Real mouse and touch input through DevTools; positions come from the page, not typed in. Clears bbChatFabPos at the end.
   {
