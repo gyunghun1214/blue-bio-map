@@ -32,6 +32,7 @@ jobs:
           node verification/test_followup_decisions.mjs
           node verification/test_verified_ui.mjs
           node verification/test_detail_render.mjs
+          node verification/test_escape_sinks.mjs
           node verification/test_pilot_ui.mjs
           node verification/test_food_evidence.mjs
           node verification/test_map_boundary.mjs

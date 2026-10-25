@@ -774,7 +774,7 @@ function aquacultureTierRows(file,outdated){
 function aquacultureTierLine(aphia){
   const r=aquacultureTier.get(aphia);if(!r)return '';
   const src=aquacultureTierFile?.sources||{}, link=r.source_id===src.kosis?.source_id?src.kosis:r.source_id===src.fao_casip?.source_id?src.fao_casip:null;
-  const ref=link?` · <a href="${esc(link.url)}" target="_blank" rel="noopener">${r.source_id===src.kosis?.source_id?'KOSIS':'FAO 양식종 자료집'} ↗</a>`:r.tier==='commercial'?' · '+verifiedSource(r.source_id,'근거 ↗'):'';
+  const ref=link?` · <a href="${esc(safeUrl(link.url))}" target="_blank" rel="noopener">${r.source_id===src.kosis?.source_id?'KOSIS':'FAO 양식종 자료집'} ↗</a>`:r.tier==='commercial'?' · '+verifiedSource(r.source_id,'근거 ↗'):'';
   return `<p class="aqua-tier" data-tier="${esc(r.tier)}"><b>양식 단계</b> ${esc(r.tier_label)} · ${esc(r.basis)}${ref}</p>`;
 }
 // 4.12 (prereg-4.12-2026-10-14 3-D): related papers that no score uses (dist/supplementary-literature.json, built by
@@ -3284,7 +3284,7 @@ function showValueCell(key,all=false){
     esc(cellRange(group))+' ('+esc(group.size)+'° 공개 범위)</p>'+types+(selectedCellLine(group)?'<p class="value-selected-line fine">'+esc(selectedCellLine(group))+'</p>':'')+
     cellSummaryHtml(species,true)+'<p class="fine">연결 종 '+species.length+'종 · 지표는 종 단위 '+(released()?'값':'시범값')+'입니다.</p>'+
     '<div class="vs-list">'+species.map(s=>valueSpeciesCard(s,group.records?.get(s.aphiaID))).join('')+'</div>'+
-    '<details class="cell-rules"><summary>셀 색 규칙</summary><p class="fine">해당 공개 셀에 기록이 있는 종만 표시합니다.'+cellTypeLine(group)+'</p></details>';
+    '<details class="cell-rules"><summary>셀 색 규칙</summary><p class="fine">해당 공개 셀에 기록이 있는 종만 표시합니다.'+escRaw(cellTypeLine(group))+'</p></details>';
   const sets=cellSpeciesGroups(species);
   panel.querySelectorAll('[data-cell-filter]').forEach(b=>b.addEventListener('click',()=>{
     const key=b.getAttribute('aria-pressed')==='true'&&b.dataset.cellFilter!=='all'?'all':b.dataset.cellFilter,keep=new Set(sets[key].map(s=>String(s.aphiaID)));
@@ -3318,7 +3318,7 @@ function drawSufficiency(g){
 function sufficiencyTip(g){
   const part=(layer,flag,label)=>{
     const list=[...g.species.values()].filter(s=>s.assessment?.[flag]).map(s=>s.label);
-    return sufficiencyLayers[layer]&&list.length?' · '+label+' '+list.length+'종('+list.join(', ')+')':'';
+    return sufficiencyLayers[layer]&&list.length?' · '+label+' '+list.length+'종('+list.map(escRaw).join(', ')+')':'';
   };
   return part('unexplored','unexplored_candidate','다음 탐색 후보');
 }
@@ -3694,7 +3694,7 @@ function initWheelZoom(){
 
 function renderComparison(){
   const compared=cmpSorted(), keep=$('comparison').scrollLeft, keepTop=$('comparison').scrollTop;
-  const pending=t=>`<span class="pending">${t}</span>`;
+  const pending=t=>`<span class="pending">${escRaw(t)}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
   const axisCell=(s,key)=>{
     const st=axisState(s,key);
@@ -3713,7 +3713,7 @@ function renderComparison(){
       (cohort?`<small>고정 비교집단 ${esc(cohortLabel)}${cohortCount?' '+cohortCount+'개 식품':''}</small>`:'')+
       (key==='MCUI'&&separateMcui(s)?'<small>'+esc(mcuiBasisLabel(s))+'</small>':'')+'</button>';
   };
-  function occurrenceCell(s){return s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · ${s.info?.map?.source||'GBIF CC0·CC BY'}${flaggedRecords(s,'historical')?` · 2000년 이전 ${flaggedRecords(s,'historical')}건`:''}</small>`:s.catalog?pending(s.review?`${reviewLine(s.review)} · 공개 셀 없음`:releaseMissing(s)):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · 조사 범위 표시<small>${years(s)} · 조회·선별된 자료</small>`;}
+  function occurrenceCell(s){return s.cells.length?`${cellCountLabel(s)} · ${sitesLabel(s)} ${cellSites(s).toLocaleString()}곳<small>기록 ${cellRecords(s).toLocaleString()}건 · 공개 ${s.cells[0].sizeDeg}° 셀 · ${escRaw(s.info?.map?.source||'GBIF CC0·CC BY')}${flaggedRecords(s,'historical')?` · 2000년 이전 ${flaggedRecords(s,'historical')}건`:''}</small>`:s.catalog?pending(s.review?`${reviewLine(s.review)} · 공개 셀 없음`:releaseMissing(s)):s.noOccurrences?pending('미수집'):!Number.isSafeInteger(s.recordCount)?pending('기록 수 미확인'):`${s.recordCount.toLocaleString()}건 · 조사 범위 표시<small>${years(s)} · 조회·선별된 자료</small>`;}
   const fallback={
     MFPI:s=>s.catalog&&s.audit?.nutrition?.foodCode?pending('RDA 식품명 후보 · 종 연결 보류'):v2(s,({nutrition:n={}})=>n.status==='available'?`영양 기록 ${count(n.record_count)}<small>수집 현황 · 단위/가식부 검증 전 · 기준량 가정 ${count(n.basis_assumed_count)}</small>`:pending(n.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
     MBPI:s=>v2(s,({compounds:c={}})=>c.status==='available'?`보고 화합물 ${count(c.compound_count,'개')}<small>${c.quantitative_bioactivity_count===0?'정량 활성 자료 없음':'정량 활성 자료 '+count(c.quantitative_bioactivity_count)}</small>`:pending(c.status==='not_collected'?'미수집':'정보 없음'),'자료 미확인'),
