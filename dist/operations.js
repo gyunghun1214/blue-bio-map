@@ -15,7 +15,7 @@
     if(!d||!n)return '';
     return `${d} 기준 ${n.toLocaleString('ko-KR')}명 사용`+(f?` · 의견 ${f.toLocaleString('ko-KR')}건`:'')+(fixed?` · 의견으로 고친 것: ${fixed}`:'');
   };
-  // Measured effect under '만든 방법': shown only with a date, the species timed and both times, and only when the map was
+  // Measured effect under the source notices: shown only with a date, the species timed and both times, and only when the map was
   // the faster way (the line exists to report that measurement).
   const effectLine=e=>{
     const d=day(e?.as_of),sp=Array.isArray(e?.species)?e.species.map(str).filter(Boolean):[];
