@@ -1420,7 +1420,8 @@ try{
     const act=async js=>{await evaluate(js+';1');await sleep(700);return st();};
     const key=k=>act(`document.getElementById('sheet-handle').focus();document.getElementById('sheet-handle').dispatchEvent(new KeyboardEvent('keydown',{key:'${k}',bubbles:true,cancelable:true}))`);
     const base=await st(),down=await drag(300);await shot('mobile-map-full',false);
-    const up=await drag(-300),btnOn=await act("document.querySelector('.map-full-btn').click()"),handleTap=await act("document.getElementById('sheet-handle').click()");
+    // 커진 만큼만 올린다(더 올리면 이어서 시트가 페이지 스크롤로 올라온다)
+    const up=await drag(base.map-down.map),btnOn=await act("document.querySelector('.map-full-btn').click()"),handleTap=await act("document.getElementById('sheet-handle').click()");
     const keyDown=await key('ArrowDown'),keyUp=await key('ArrowUp');
     return {base,down,up,btnOn,handleTap,keyDown,keyUp};})();
   const mfFull=s=>s.full&&s.pressed==='true'&&s.y===0&&s.name<=s.tabs&&s.head>=s.tabs-100&&s.map>=mf.base.map+200&&s.leaflet===s.map&&s.label==='종 목록·상세 다시 올리기';

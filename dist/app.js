@@ -4840,9 +4840,9 @@ $('sheet-handle').setAttribute('aria-keyshortcuts','ArrowDown ArrowUp');
   head.addEventListener('touchend',done);head.addEventListener('touchcancel',done);}
 // 마우스·펜: 손잡이를 잡고 위아래로(페이지 스크롤도 같은 손으로)
 {let p=null;const b=$('sheet-handle');
-  b.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0||!phoneSheet())return;p={id:e.pointerId,y:e.clientY,mine:false};});
+  b.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0||!phoneSheet())return;p={id:e.pointerId,y:e.clientY,mine:false};b.setPointerCapture?.(e.pointerId);});
   b.addEventListener('pointermove',e=>{if(!p||e.pointerId!==p.id)return;
-    if(!p.mine){if(Math.abs(e.clientY-p.y)<6)return;p.mine=true;b.setPointerCapture?.(e.pointerId);sheetDragBegin(p.y);}
+    if(!p.mine){if(Math.abs(e.clientY-p.y)<6)return;p.mine=true;sheetDragBegin(p.y);}
     sheetDragMove(e.clientY);});
   const done=e=>{if(!p||e.pointerId!==p.id)return;if(p.mine)sheetDragDone();p=null;};
   b.addEventListener('pointerup',done);b.addEventListener('pointercancel',done);}
