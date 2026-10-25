@@ -60,7 +60,6 @@ for(const [name,page] of [['index.html',html],['expedition.html',exp]]){
   assert.ok(!page.includes('cloudflareinsights'),`${name}: no beacon tag in the markup`);
 }
 assert.match(html,/<p class="fine mt-visits" data-analytics-note hidden>방문 수를 셉니다\. 쿠키와 개인정보는 모으지 않습니다\(<span lang="en">Cloudflare Web Analytics<\/span>\)\.<\/p><\/div>\n<\/section>/);
-// (5) dist/_headers sets no Content-Security-Policy, so there is nothing to widen for the beacon
-assert.ok(!/Content-Security-Policy/i.test(read('_headers')));
+// (5) the Content-Security-Policy in dist/_headers lets the beacon load and send: verification/test_csp_headers.mjs
 
 console.log('PASS: visit counting loads the beacon only with a token, never offline; the note shows only then; both pages load it deferred');
