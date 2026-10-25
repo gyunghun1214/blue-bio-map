@@ -1,0 +1,2108 @@
+{
+ "made": "2026-10-25",
+ "width": 390,
+ "lang": "ko",
+ "how": "scan.mjs(390px, 접힌 곳까지 연 상태) → group.mjs(문장 단위, 같은 문장 · 2-gram 자카드 0.75 이상 · 20자 이상). 지침 배경 표의 여덟 묶음은 뜻이 같아도 글자가 달라 자동으로 다 잡히지 않아 손으로 묶었다(groups). auto_groups는 자동으로 잡힌 나머지와 그 처리.",
+ "groups": [
+  {
+   "id": "cell-4deg",
+   "title": "4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시",
+   "kind": "한 화면 안(지도 시트)",
+   "places": [
+    {
+     "screen": "explore 시트",
+     "selector": ".map-legend-more>span.dup-sheet",
+     "text": "셀 색은 바다 부분에만 칠합니다. 4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다."
+    },
+    {
+     "screen": "explore 시트",
+     "selector": ".legend-why>p>span.dup-sheet",
+     "text": "셀 색은 바다 부분에만 칠합니다. 4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다."
+    }
+   ],
+   "base": "탐색 지도 '지도 읽는 법' 시트",
+   "treatment": "화면 안 숨김(시트에서 뒤에 오는 쪽)",
+   "reason": "시트는 출현 기록 보기에서 'ⓘ 범례' → '색의 의미', 활용 × 보전 보기에서 유형 범례('색의 의미') → 'ⓘ 범례' 순으로 담는다. 보기마다 뒤 것을 숨긴다. 근거와 방법에는 같은 문장이 없다(국가 시스템 표의 '1°·4° 격자'는 다른 뜻). 지도 위 칩 '4° 공개 셀 · 민감종 보호로 넓게 공개 (테두리만)'은 app.js가 그리는 짧은 칩이라 그대로.",
+   "checks": [
+    {
+     "screen": "sheet-occ",
+     "phrase": "4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다.",
+     "n": 1
+    },
+    {
+     "screen": "sheet-value",
+     "phrase": "4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다.",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "sea-only",
+   "title": "셀 색은 바다 부분에만 칠함",
+   "kind": "한 화면 안 + 탭 사이",
+   "places": [
+    {
+     "screen": "explore 시트",
+     "selector": ".map-legend-more>span.dup-sheet · .legend-why>p>span.dup-sheet",
+     "text": "셀 색은 바다 부분에만 칠합니다."
+    },
+    {
+     "screen": "method",
+     "selector": ".method-bottom details.mc-more li.dup-m",
+     "text": "공개 셀은 Natural Earth 1:10m 육지 경계로 바다 부분만 칠합니다."
+    }
+   ],
+   "base": "탐색 지도 '지도 읽는 법' 시트",
+   "treatment": "화면 안 숨김 + 탭 사이 숨김·링크(근거와 방법 → 지도 읽는 법 보기)",
+   "reason": "지도 표시 규칙이라 기준 위치는 지도 시트.",
+   "checks": [
+    {
+     "screen": "sheet-occ",
+     "phrase": "셀 색은 바다 부분에만 칠합니다.",
+     "n": 1
+    },
+    {
+     "screen": "sheet-value",
+     "phrase": "셀 색은 바다 부분에만 칠합니다.",
+     "n": 1
+    },
+    {
+     "screen": "method",
+     "phrase": "육지 경계로 바다 부분만 칠합니다.",
+     "n": 0
+    }
+   ]
+  },
+  {
+   "id": "red-dots",
+   "title": "붉은 점 = 기록이 있는 칸의 위치(넓게 묶음)",
+   "kind": "탭 사이(지도 범례 안 반복은 app.js 글)",
+   "places": [
+    {
+     "screen": "explore 시트",
+     "selector": ".map-legend-more>small.key-note",
+     "text": "점 = 기록이 있는 칸의 위치(넓게 묶음) · 기록 수 = 공개 관측 기록 건수"
+    },
+    {
+     "screen": "explore",
+     "selector": "#map-symbol-label (app.js)",
+     "text": "점 = 기록 수 구간(도식) 기록이 있는 칸의 위치(넓게 묶음)"
+    },
+    {
+     "screen": "explore 시트",
+     "selector": "#map-review-note (app.js)",
+     "text": "붉은 점은 공개 셀의 도식적 표시입니다(기록이 있는 칸의 위치, 넓게 묶음)."
+    },
+    {
+     "screen": "explore",
+     "selector": "#map-legend-note (정적 글은 app.js가 바로 덮어씀)",
+     "text": "붉은 점 = 기록이 있는 칸의 위치(넓게 묶음)"
+    },
+    {
+     "screen": "method",
+     "selector": ".method-bottom li.dup-m",
+     "text": "지도의 붉은 점은 공개 셀 안에 고정한 도식적 무늬로, 기록이 있는 칸의 위치(넓게 묶음)를 보여 줍니다. 점은 바다 부분에만 찍습니다."
+    }
+   ],
+   "base": "탐색 지도 '지도 읽는 법' 시트",
+   "treatment": "탭 사이 숨김·링크(근거와 방법 → 지도 읽는 법 보기)",
+   "reason": "지도 범례 안의 세 번 중 둘(#map-symbol-label 칩, #map-review-note)은 app.js가 그리는 글이라 범위 밖. #map-legend-note의 정적 글은 화면에 나오기 전에 app.js가 바꾼다. 남은 정적 범례 줄(.key-note)은 버블 줄 바로 아래의 한 줄 범례라 규칙 3으로 둔다.",
+   "checks": [
+    {
+     "screen": "method",
+     "phrase": "지도의 붉은 점은 공개 셀 안에 고정한 도식적 무늬로",
+     "n": 0
+    },
+    {
+     "screen": "sheet-occ",
+     "phrase": "점 = 기록이 있는 칸의 위치(넓게 묶음)",
+     "n": ">=1"
+    }
+   ]
+  },
+  {
+   "id": "record-count",
+   "title": "기록 수 = 공개 관측 기록 건수",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "explore 시트",
+     "selector": ".map-legend-more>small.key-note",
+     "text": "기록 수 = 공개 관측 기록 건수"
+    },
+    {
+     "screen": "method",
+     "selector": ".method-bottom li.dup-m",
+     "text": "기록 수 = 공개 관측 기록 건수입니다."
+    }
+   ],
+   "base": "탐색 지도 '지도 읽는 법' 시트",
+   "treatment": "탭 사이 숨김·링크(근거와 방법 → 지도 읽는 법 보기)",
+   "reason": "시트 안에서는 #map-review-note(app.js)에도 같은 말이 있어 두 번 나온다(범위 밖).",
+   "checks": [
+    {
+     "screen": "method",
+     "phrase": "기록 수 = 공개 관측 기록 건수입니다.",
+     "n": 0
+    },
+    {
+     "screen": "sheet-occ",
+     "phrase": "기록 수 = 공개 관측 기록 건수",
+     "n": ">=1"
+    }
+   ]
+  },
+  {
+   "id": "bubbles",
+   "title": "축소한 지도의 붉은 버블 = 공개 셀을 해역별로 묶음",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "explore 시트",
+     "selector": "#map-legend-note (app.js)",
+     "text": "축소한 지도에서는 칸을 해역별 버블로 묶어 먼저 보여 줍니다. …"
+    },
+    {
+     "screen": "explore 시트",
+     "selector": ".map-legend-more .key-bubble",
+     "text": "큰 버블 = 공개 셀 묶음 · 숫자 = 셀 수"
+    },
+    {
+     "screen": "method",
+     "selector": ".method-bottom details.mc-more li.dup-m",
+     "text": "축소한 지도의 붉은 버블은 공개 셀을 해역별로 묶은 표시입니다. 크기는 모인 셀 수, 진하기는 셀당 기록 수 구간입니다. 확대하면 셀별 붉은 점이 나옵니다. 선택 종의 기록 셀 수·기록 수·연도는 지도 위 칩에 한 번만 적습니다."
+    }
+   ],
+   "base": "탐색 지도 '지도 읽는 법' 시트",
+   "treatment": "탭 사이 숨김·링크(근거와 방법 → 지도 읽는 법 보기)",
+   "reason": "지침 B2 표의 '버블'. 같은 덩어리('자료를 읽을 때')의 다른 숨김과 링크 하나를 같이 쓴다.",
+   "checks": [
+    {
+     "screen": "method",
+     "phrase": "축소한 지도의 붉은 버블은",
+     "n": 0
+    },
+    {
+     "screen": "sheet-occ",
+     "phrase": "큰 버블 = 공개 셀 묶음",
+     "n": ">=1"
+    }
+   ]
+  },
+  {
+   "id": "plain-names",
+   "title": "쉬운 이름은 기준선 50 위·아래를 읽은 것, 유형은 연구 순서를 고르기 위한 분류",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "#cmp-read-pop p.cmp-read-plain.dup-m",
+     "text": "쉬운 이름은 두 값이 탐색용 기준선 50 위인지 아래인지를 읽은 것이고, 유형은 연구 순서를 고르기 위한 분류입니다."
+    },
+    {
+     "screen": "method",
+     "selector": "#mt-types-note #mc-rest-types",
+     "text": "‘활용 지표 높음’ 같은 앞의 짧은 말은 두 지표가 탐색용 기준선 위인지 아래인지를 읽은 것이고, 유형은 연구 순서를 고르기 위한 분류입니다."
+    }
+   ],
+   "base": "근거와 방법 '유형과 셀 색'",
+   "treatment": "탭 사이 숨김·링크(비교와 지표 → 근거와 방법 '유형과 셀 색', 접힌 문단을 편다)",
+   "reason": "한 문장이지만 그래프 옆 라벨이 아닌 설명 문단이고, 지침 배경 표에 있는 묶음이다.",
+   "checks": [
+    {
+     "screen": "compare",
+     "phrase": "쉬운 이름은 두 값이 탐색용 기준선 50 위인지 아래인지를",
+     "n": 0
+    },
+    {
+     "screen": "method",
+     "phrase": "앞의 짧은 말은 두 지표가 탐색용 기준선 위인지 아래인지를 읽은 것이고",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "two-axes",
+   "title": "두 축(활용·보전)은 더하지 않고 따로 봄",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "#cmp-read-pop .matrix-explanation>p.dup-m",
+     "text": "활용 가능성이 높아도 보전이 필요할 수 있습니다. 두 값을 합쳐 위험이 가려지지 않도록 분리합니다."
+    },
+    {
+     "screen": "compare",
+     "selector": "#cmp-read-pop ul.cmp-read-more li (둘째)",
+     "text": "두 값은 따로 봅니다 · 점 색은 유형입니다 · 자원 감소 신호로 정한 MCUI는 숫자 옆 괄호와 점 툴팁에 적습니다"
+    },
+    {
+     "screen": "compare",
+     "selector": ".cmp-limit",
+     "text": "두 축은 따로 봅니다 · 점 위치가 곧 판단입니다"
+    },
+    {
+     "screen": "method",
+     "selector": ".mt-flow 흐름도(aria-label) · #mt-quad-card · .mt-panel-foot",
+     "text": "활용가치와 보전 시급성. 독립된 두 축으로 함께 읽습니다."
+    },
+    {
+     "screen": "method",
+     "selector": ".mt-strengths li (TWO PERSPECTIVES 카드)",
+     "text": "두 축으로 연구 방향을 살펴봅니다."
+    },
+    {
+     "screen": "explore 시트(활용 × 보전)",
+     "selector": "#value-legend .value-lead",
+     "text": "두 지수는 따로 봅니다. 셀 색은 그 칸에 기록된 종의 유형입니다."
+    }
+   ],
+   "base": "근거와 방법 2×2 카드(#mt-quad-card)",
+   "treatment": "탭 사이 숨김·링크(비교와 지표 '두 축을 따로 보는 이유' 문단 → 근거와 방법 2×2 카드)",
+   "reason": "비교와 지표의 두 문장 설명 문단만 숨긴다. '읽는 법' 목록 둘째 줄은 일부만 겹쳐서(규칙 5), 그래프 아래 줄 · 흐름도 · 2×2 아래 줄 · 유형 범례 첫 줄은 그래프·범례 옆 한 줄이라(규칙 3), 근거와 방법 TWO PERSPECTIVES 카드는 한 줄 카드라 그대로.",
+   "checks": [
+    {
+     "screen": "compare",
+     "phrase": "두 값을 합쳐 위험이 가려지지 않도록 분리합니다.",
+     "n": 0
+    },
+    {
+     "screen": "compare",
+     "phrase": "두 축은 따로 봅니다 · 점 위치가 곧 판단입니다",
+     "n": 1
+    },
+    {
+     "screen": "method",
+     "phrase": "독립된 두 축으로 함께 읽습니다.",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "id": "mcui-brackets",
+   "title": "MCUI 숫자 옆 괄호 = 그 값을 정한 범주, '어획량 감소' 표시",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "#cmp-read-pop ul.cmp-read-more li (첫째)",
+     "text": "MCUI 숫자 옆 괄호는 그 값을 정한 범주입니다(예: 10 (LC), 60 (LC + 어획량 감소)) · 같은 점수는 이름 가나다순"
+    },
+    {
+     "screen": "compare",
+     "selector": "#cmp-read-pop ul.cmp-read-more li (둘째)",
+     "text": "… · 자원 감소 신호로 정한 MCUI는 숫자 옆 괄호와 점 툴팁에 적습니다"
+    },
+    {
+     "screen": "compare",
+     "selector": "#matrix-note (app.js)",
+     "text": "KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다."
+    },
+    {
+     "screen": "method",
+     "selector": ".method-bottom details.mc-more li ('매트릭스 점 색은…')",
+     "text": "자원 감소 신호(KOSIS 어획량 추세)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다."
+    }
+   ],
+   "base": "근거와 방법 '자료를 읽을 때'",
+   "treatment": "그대로 둠",
+   "reason": "비교와 지표 '읽는 법' 목록 두 줄은 다른 내용(같은 점수 순서, 점 색, 툴팁)과 ' · '로 이어진 한 항목이라 일부만 겹친다(규칙 5: 마크업을 쪼개지 않는다). 같은 탭의 #matrix-note는 app.js 글(범위 밖).",
+   "checks": []
+  },
+  {
+   "id": "weight-050",
+   "title": "공식 가중치 w = 0.50 고정, 슬라이더는 탐색용",
+   "kind": "탭 사이",
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "#bbvi-weight-help>span.dup-m",
+     "text": "공식 산출값은 w = 0.50으로 고정입니다."
+    },
+    {
+     "screen": "method",
+     "selector": "#method-03 li 'BBVI 가중치'",
+     "text": "공식 산출은 w = 0.50 고정입니다. ‘비교와 지표’의 가중치 슬라이더는 이용 목적별 탐색용이며, …"
+    },
+    {
+     "screen": "method",
+     "selector": ".mt-ix.bbvi .mt-ix-w",
+     "text": "공식 가중치 w = 0.50"
+    }
+   ],
+   "base": "근거와 방법 03 '규칙 고정'",
+   "treatment": "탭 사이 숨김·링크(비교와 지표 '비교 기준' 팝업 → 근거와 방법 03, 첫 항목의 접는 칸을 편다)",
+   "reason": "비교와 지표 설명 문단에서 그 문장만 span으로 감쌌다. 슬라이더 옆 '공식 0.50' 눈금 · '공식값 0.50으로' 단추 · 흐름도 BBVI 상자의 '공식 가중치 w = 0.50'은 그래프·조작 옆 짧은 라벨이라 그대로.",
+   "checks": [
+    {
+     "screen": "compare",
+     "phrase": "공식 산출값은 w = 0.50으로 고정입니다.",
+     "n": 0
+    },
+    {
+     "screen": "method",
+     "phrase": "공식 산출은 w = 0.50 고정입니다.",
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "auto_groups": [
+  {
+   "places": [
+    {
+     "screen": "gate",
+     "selector": "section.gate-next>div.gate-next-in>ol.gate-next-list>li.is-now>p.gate-next-cost",
+     "text": "운영비 · 월 0원 · alt F4 팀 부담",
+     "visible_first": true
+    },
+    {
+     "screen": "gate",
+     "selector": "section.gate-next>div.gate-next-in>ol.gate-next-list>li>p.gate-next-cost",
+     "text": "운영비 · 월 0원 · alt F4 팀 부담",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "첫 화면 다음 단계의 운영비 줄: operations.js가 그리는 글이라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "span#v-selected-all",
+     "text": "종 카드에 마우스를 올리면 그 종의 셀이 노란 점선",
+     "visible_first": false
+    },
+    {
+     "screen": "explore",
+     "selector": "span#v-selected-species",
+     "text": "다른 종 카드에 마우스를 올리면 그 종의 셀이 노란 점선",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 상태에 따라 하나만 보이는 안내(보기마다 하나)"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#value-legend>details.legend-why>p",
+     "text": "셀 색은 바다 부분에만 칠합니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "explore",
+     "selector": "div#occurrence-legend>div.key-foot>details.map-legend-more>span",
+     "text": "셀 색은 바다 부분에만 칠합니다.",
+     "visible_first": false
+    }
+   ],
+   "treatment": "groups의 'cell-4deg' · 'sea-only'로 처리"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#value-legend>details.legend-why>p",
+     "text": "4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "explore",
+     "selector": "div#occurrence-legend>div.key-foot>details.map-legend-more>span",
+     "text": "4° 셀은 민감종 보호를 위해 넓게 공개한 범위로, 테두리만 표시합니다.",
+     "visible_first": false
+    }
+   ],
+   "treatment": "groups의 'cell-4deg' · 'sea-only'로 처리"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap.selected>button.species-card.selected>em",
+     "text": "Magallana gigas",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div#sp-species>div.sp-head>div.sp-names>p.sp-latin",
+     "text": "Magallana gigas",
+     "visible_first": false
+    },
+    {
+     "screen": "explore",
+     "selector": "aside#detail>div.detail-head>p.latin",
+     "text": "Magallana gigas",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "aside#cmp-profile>div.cp-head>div.cp-id>p.cp-latin",
+     "text": "Magallana gigas",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.score-disclosure-body>div.stock-decline>div.sd-row>div>p.sd-means",
+     "text": "기준 평균 16,700톤(2015~17) → 최근 평균 19,752톤(2022~24) (+18.3%)",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div.dt-x>div.stock-decline>div.sd-row>div>p.sd-means",
+     "text": "기준 평균 16,700톤(2015~17) → 최근 평균 19,752톤(2022~24) (+18.3%)",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.score-disclosure-body>div.stock-decline>div.sd-row>div>p.sd-latest",
+     "text": "2024년 양식 310,076톤 · 연근해 어획 15,192톤 · 2025년 잠정 양식 301,638톤 (KOSIS 어업생산동향조사)",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div.dt-x>div.stock-decline>div.sd-row>div>p.sd-latest",
+     "text": "2024년 양식 310,076톤 · 연근해 어획 15,192톤 · 2025년 잠정 양식 301,638톤 (KOSIS 어업생산동향조사)",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.score-disclosure-body>div.stock-decline>div.sd-row>div>p.fine",
+     "text": "KOSIS 품종 굴류 · 연결 더 넓은 묶음 · 최근 3년 양식 비중 94.0% · 양식 비중이 커서 감소율은 참고로 적습니다 · 2025년 잠정치 17,728톤(점수 미사용)",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div.dt-x>div.stock-decline>div.sd-row>div>p.fine",
+     "text": "KOSIS 품종 굴류 · 연결 더 넓은 묶음 · 최근 3년 양식 비중 94.0% · 양식 비중이 커서 감소율은 참고로 적습니다 · 2025년 잠정치 17,728톤(점수 미사용)",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.sc-wrap>button.species-card>span.card-line>span.cl-v.high>span.sr-only",
+     "text": "자원 감소 신호 · 어획량 −90.2%",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "details.dt-x-all>div.cmp-more-grid>div>button.score-cell.cmp-more-cell>small",
+     "text": "자원 감소 신호 · 어획량 −90.2%",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-372119>td>div.dt-x>div.stock-decline.scored>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 어획량 감소 신호(80% 이상) · 80.0점",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-342067>td>div.dt-x>div.stock-decline.scored>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 어획량 감소 신호(50% 이상) · 60.0점",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.sc-wrap>button.species-card>span.card-line>span.cl-v.high>span.sr-only",
+     "text": "자원 감소 신호 · 어획량 −79.8%",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "details.dt-x-all>div.cmp-more-grid>div>button.score-cell.cmp-more-cell>small",
+     "text": "자원 감소 신호 · 어획량 −79.8%",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Gracilaria vermiculophylla",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Gracilaria vermiculophylla해조류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Ruditapes philippinarum",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Ruditapes philippinarum패류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Mizuhopecten yessoensis",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Mizuhopecten yessoensis패류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "aside#detail>section.axis-cards>div.ax-card>p.ax-note.ax-aux",
+     "text": "보조 정보 · 평가 2024년 · 어획량 변화 +18.3% (KOSIS 어획량 통계) · 2025년 잠정 17,728톤 · 자원 감소 신호 해당 없음(양식 위주)",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "td>div.dt-x>div.dt-x3>section>p.dt-x-sub.dt-x-aux",
+     "text": "보조 정보 · 평가 2024년 · 어획량 변화 +18.3% (KOSIS 어획량 통계) · 2025년 잠정 17,728톤 · 자원 감소 신호 해당 없음(양식 위주)",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "td>div.dt-x>div.dt-x3>section>p.dt-x-sub.dt-x-aux",
+     "text": "보조 정보 · 평가 2020년 · 어획량 변화 +18.3% (KOSIS 어획량 통계) · 2025년 잠정 17,728톤 · 자원 감소 신호 해당 없음(양식 위주)",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Sinonovacula constricta",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Sinonovacula constricta패류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Larimichthys polyactis",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Larimichthys polyactis어류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.sc-wrap>button.species-card>span.card-line>span.cl-v>span.sr-only",
+     "text": "자원 감소 신호 · 어획량 −31.4%",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "details.dt-x-all>div.cmp-more-grid>div>button.score-cell.cmp-more-cell>small",
+     "text": "자원 감소 신호 · 어획량 −31.4%",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Paralichthys olivaceus",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Paralichthys olivaceus어류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "section.verified-scores>details.score-disclosure>div.score-disclosure-body>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-836033>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-506159>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-494972>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-250680>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-145721>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-377084>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-234476>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-145086>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-397082>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-393716>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-836041>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-504357>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-275816>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-274849>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호: 양식 위주 · 해당 없음",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Seriola quinqueradiata",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Seriola quinqueradiata어류",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div#species-list>div.sc-wrap>button.species-card>em",
+     "text": "Acanthosepion esculentum",
+     "visible_first": true
+    },
+    {
+     "screen": "compare",
+     "selector": "div#comparison>table>tbody>tr.cmp-row>th",
+     "text": "Acanthosepion esculentum기타 무척추동물",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "학명 · 종 카드: 자료 값이라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-241776>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-231750>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-413600>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-127022>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-219984>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-276651>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-254538>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-1061762>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-534443>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-1666974>td>div.dt-x>div.stock-decline>h4",
+     "text": "자원 감소 신호 · KOSIS 어획량 추세 · 자원 감소 신호 없음",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-836033>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-506159>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-494972>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-372119>td>div.dt-x>div.stock-decline.scored>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-342067>td>div.dt-x>div.stock-decline.scored>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-250680>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-241776>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-145721>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-377084>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-234476>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-236157>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-145086>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-231750>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-397082>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-393716>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-836041>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-504357>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-413600>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-127022>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-219984>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-281273>td>div.dt-x>div.stock-decline.scored>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-275816>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-274849>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-276651>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-254538>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-1061762>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-534443>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "compare",
+     "selector": "tr#cmp-more-1666974>td>div.dt-x>div.stock-decline>p.fine",
+     "text": "KOSIS 어획량 통계로 계산한 값입니다.",
+     "visible_first": false
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js가 그리는 종별 근거(자원 감소 신호 · 비교 표 펼침)라 범위 밖"
+  },
+  {
+   "places": [
+    {
+     "screen": "gate",
+     "selector": "div#site-gate>div.gate-loader>div.gate-loader-body>p.gate-lockup>span",
+     "text": "Blue-bio Value Map",
+     "visible_first": false
+    },
+    {
+     "screen": "gate",
+     "selector": "div#site-gate>div.gate-hero>div.gate-bar>p.gate-brand>span",
+     "text": "Blue-bio Value Map",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "table.mt-nat-table>tbody>tr>th>small",
+     "text": "Blue-bio Value Map",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "사이트 이름"
+  },
+  {
+   "places": [
+    {
+     "screen": "compare",
+     "selector": "div#matrix-note",
+     "text": "KOSIS 어획량 추세(자원 감소 신호)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다.",
+     "visible_first": false
+    },
+    {
+     "screen": "method",
+     "selector": "div.method-bottom>article>details.mc-more>ul.large-list>li",
+     "text": "자원 감소 신호(KOSIS 어획량 추세)로 MCUI가 정해진 종은 MCUI 숫자 옆 괄호에 ‘어획량 감소’로 적습니다.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "app.js 글(#matrix-note)이라 범위 밖. 근거와 방법 '자료를 읽을 때'가 기준 위치(그대로 보임)"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MBPI>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-mbpi-4.11-2026-10-13.json ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MBPI_RX>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-mbpi-rx-4.10-2026-10-12.json ↗",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "근거와 방법 04 검증 기록 표의 기록 파일 이름(행마다 자기 기록): 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MFPI>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-2026-10-02.json ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_preliminary>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-2026-10-02.json ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_preliminary_criterion_A>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-3.27-2026-10-03.json ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_trend>th>small.mt-ck-rec>a",
+     "text": "posthoc-validation-3.27-2026-10-03.json ↗",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "근거와 방법 04 검증 기록 표의 기록 파일 이름(행마다 자기 기록): 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_preliminary_criterion_A>th>small.mt-ck-rec>a",
+     "text": "01_method_fixed_before_data.md ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_preliminary_criterion_A>td>small",
+     "text": "실행 전 기준 고정(01_method_fixed_before_data.md)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_trend>th>small.mt-ck-rec>a",
+     "text": "01_method_fixed_before_data.md ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "tr#mt-ck-MCUI_trend>td>small",
+     "text": "실행 전 기준 고정(01_method_fixed_before_data.md)",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "근거와 방법 04 검증 기록 표의 기록 파일 이름(행마다 자기 기록): 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "Aquatic Food Composition Database (AFCD) ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Aquatic Food Composition Database (AFCD)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Aquatic Food Composition Database (AFCD).",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "2021_kbif_joint_survey_marine_observation_information_NSMK_11 · CC0 1.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "2021_kbif_joint_survey_marine_observation_information_NSMK_11 ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2021_kbif_joint_survey_marine_observation_information_NSMK_11",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2021_kbif_joint_survey_marine_observation_information_NSMK_11.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "Observation.org, Nature data from around the World · CC BY-NC 4.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "Observation.org, Nature data from around the World ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Observation.org, Nature data from around the World",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Observation.org, Nature data from around the World.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "2019_nsmk_biodiversity_ms_1000 · CC0 1.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "2019_nsmk_biodiversity_ms_1000 ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2019_nsmk_biodiversity_ms_1000",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2019_nsmk_biodiversity_ms_1000.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "2019_nsmk_ms_20200324 ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2019_nsmk_ms_20200324",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2019_nsmk_ms_20200324.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2022_nsmk_smpl_ms_514",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2022_nsmk_smpl_ms_514.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "국립생물자원관 생물지리정보(표본 채집 지점·일자)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "국립생물자원관 생물지리정보(표본 채집 지점·일자).",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "NMNH Extant Specimen Records (USNM, US)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "NMNH Extant Specimen Records (USNM, US).",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "MGC Herbarium of University of Malaga (Spain): MGC-PHYC dataset",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "MGC Herbarium of University of Malaga (Spain): MGC-PHYC dataset.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "University of Michigan Herbarium",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "University of Michigan Herbarium.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "2024_naturing_observation_all_13970 · CC BY-NC 4.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "2024_naturing_observation_all_13970 ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2024_naturing_observation_all_13970",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2024_naturing_observation_all_13970.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2020_biodiversity_new_contents",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2020_biodiversity_new_contents.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "iNaturalist Research-grade Observations · CC BY-NC 4.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "iNaturalist Research-grade Observations · CC BY 4.0 · CC BY-NC 4.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "iNaturalist Research-grade Observations ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "iNaturalist Research-grade Observations",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "iNaturalist Research-grade Observations.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2020_biodiversity_information_specimen",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2020_biodiversity_information_specimen.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2021_kbif_joint_survey_seaweed_specimen_information_nsmk_46",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2021_kbif_joint_survey_seaweed_specimen_information_nsmk_46.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "NATURING_CS_Observation_2020",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "NATURING_CS_Observation_2020.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Meise Botanic Garden Herbarium (BR)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Meise Botanic Garden Herbarium (BR).",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Duke University Herbarium Algae Collection",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Duke University Herbarium Algae Collection.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "NATURING_CS_Observation_Dataset ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "NATURING_CS_Observation_Dataset",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "NATURING_CS_Observation_Dataset.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "A dataset of molluscan fauna sampled in estuaries of medium and small rivers in Kyushu, Japan",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "A dataset of molluscan fauna sampled in estuaries of medium and small rivers in Kyushu, Japan.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Shellfish specimens of the Nishinomiya Shell Museum, Japan",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Shellfish specimens of the Nishinomiya Shell Museum, Japan.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Survey data of tidal flats on the Monitoring sites 1000 project, BDCJ.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Mollusca specimens of Toyama Science Museum",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Mollusca specimens of Toyama Science Museum.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Marine Invertebrata specimen database of Osaka Museum of Natutal History",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Marine Invertebrata specimen database of Osaka Museum of Natutal History.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Plankton&BenthosResearch",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Plankton&BenthosResearch.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Malacological Collection of the Kaunas Tadas Ivanauskas Museum of Zoology",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Malacological Collection of the Kaunas Tadas Ivanauskas Museum of Zoology.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 · CC0 1.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "01_2025_kbif_joint_survey_marin_specimen_information_mabik_130 ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "01_2025_kbif_joint_survey_marin_specimen_information_mabik_130",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "01_2025_kbif_joint_survey_marin_specimen_information_mabik_130.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Gunma Museum of Natural History, Molluscan Specimen",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Gunma Museum of Natural History, Molluscan Specimen.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "tr>td>div>ul>li",
+     "text": "Santa Barbara Museum of Natural History - Invertebrate Zoology · CC BY-NC 4.0",
+     "visible_first": true
+    },
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-list>details.detail-more>div.detail-more-body>div.source-area>p",
+     "text": "Santa Barbara Museum of Natural History - Invertebrate Zoology ↗",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Santa Barbara Museum of Natural History - Invertebrate Zoology",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Santa Barbara Museum of Natural History - Invertebrate Zoology.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Natural History Museum Rotterdam - Specimens",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Natural History Museum Rotterdam - Specimens.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2023 marine_specimen_enhm_750",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2023 marine_specimen_enhm_750.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2023 ms_specimen_NSMK_228",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2023 ms_specimen_NSMK_228.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2021_nsmk_biodiversity_ms_748",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2021_nsmk_biodiversity_ms_748.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "CAS Invertebrate Zoology (IZ)",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "CAS Invertebrate Zoology (IZ).",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Occurrence records of southern African fish biodiversity",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Occurrence records of southern African fish biodiversity.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Fish collection of the Kagoshima University Museum",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Fish collection of the Kagoshima University Museum.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "Fish collection of National Museum of Nature and Science",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Fish collection of National Museum of Nature and Science.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "World Ocean Database 2009",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "World Ocean Database 2009.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "2024_Recording_Local_Biodiversity_Fish_observation_NSMK_652",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "2024_Recording_Local_Biodiversity_Fish_observation_NSMK_652.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation>strong",
+     "text": "University of Michigan Museum of Zoology, Division of Fishes",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "University of Michigan Museum of Zoology, Division of Fishes.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-body>section.verified-scores>details.score-disclosure>div.score-disclosure-body>p.fine",
+     "text": "(2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides.",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "(2015) AHTPDB: a comprehensive platform for analysis and presentation of antihypertensive peptides.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-body>section.verified-scores>details.score-disclosure>div.score-disclosure-body>p.fine",
+     "text": "원값 출처: Frontiers in Nutrition 9:981163 (Chen et al.",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Frontiers in Nutrition 9:981163 (Chen et al.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-body>section.verified-scores>details.score-disclosure>div.score-disclosure-body>p.fine",
+     "text": "원값 출처: Journal of Life Science 22(2):220-225 (Do et al.",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "Journal of Life Science 22(2):220-225 (Do et al.",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  },
+  {
+   "places": [
+    {
+     "screen": "explore",
+     "selector": "div.detail-more-body>section.verified-scores>details.score-disclosure>div.score-disclosure-body>p.fine",
+     "text": "원값 출처: mBio 10(5):e01821-19 (American Society for Microbiology), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC6805989 ↗ · 이용조건 CC BY 4.0 · 조회 2026-10-02",
+     "visible_first": true
+    },
+    {
+     "screen": "method",
+     "selector": "div#all-sources>div.citation",
+     "text": "mBio 10(5):e01821-19 (American Society for Microbiology), open access, full text and tables read from the Europe PMC REST fullTextXML of PMC6805989원문 ↗ · CC BY 4.0CC BY 4.0 · 서열과 수치만 기록 · 2026-10-02 조회",
+     "visible_first": true
+    }
+   ],
+   "treatment": "그대로 둠",
+   "reason": "출처 이름(데이터셋·문헌 제목) 목록: 같은 출처가 종 상세와 전체 출처 목록에 나오는 것은 자료 표기라 그대로"
+  }
+ ]
+}
