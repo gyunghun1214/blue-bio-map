@@ -1124,3 +1124,18 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   html.lang-en #compare .mt-top{flex-wrap:wrap} /* 'Species N' goes under a long type name (as at 1280) */
   html.lang-en #compare .cw-ends span{white-space:nowrap}
 }
+
+/* English matrix on a phone (2026-10-25): the two-line English quadrant names and their notes covered the points. The
+   notes leave the plot and stand under each type's name in the cards below it (the h3 title, already translated); the
+   names sit closer to the top edge */
+@media (max-width:740px){
+  html.lang-en #compare .matrix .quadrant span{display:none}
+  html.lang-en #compare .matrix .quadrant{padding-top:6px}
+  /* group buttons show the count only ('7'; the aria-label says 7 species and that it opens the list), so they fit above their boxes */
+  html.lang-en #compare .mcb-unit{display:none}
+  html.lang-en #compare .ct-head{white-space:normal} /* 'Selected species 0 / 3' wraps beside 'Compare side by side' */
+  html.lang-en #compare .mt-top h3{flex-wrap:wrap;row-gap:2px;white-space:normal}
+  /* the selected point's English name may take two lines, so it fits beside its point and the group buttons keep the row above */
+  html.lang-en #compare .matrix-point.pilot[aria-current=true] .point-label{max-width:6.5em;white-space:normal;line-height:1.15;text-align:left}
+  html.lang-en #compare .mt-top h3::after{content:attr(title);content:attr(title) / "";flex-basis:100%;padding-left:30px;color:var(--cs-ink2);font-size:13px;font-weight:500;line-height:1.35}
+}
