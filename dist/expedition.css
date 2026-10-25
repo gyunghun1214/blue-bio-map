@@ -114,6 +114,8 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-score:not(.is-big) .x-val b{font-size:20px}
 .x-tag{font-size:var(--fs-min);color:var(--ink2);line-height:1.4}
 .x-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.x-care{margin-top:14px;font-size:13px}
+.x-care a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .x-seen{color:var(--teal)}
 
 .x-steer{position:fixed;z-index:9;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px;border:1px solid var(--line);border-radius:99px;background:rgba(3,16,32,.7);backdrop-filter:blur(8px)}
