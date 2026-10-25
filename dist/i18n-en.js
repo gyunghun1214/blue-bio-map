@@ -477,7 +477,13 @@ Object.assign(I18N_EN,{
 "종 프로필과 종 상세의 MBPI 아래에 최상위 근거의 종류(의약 표적: 항균·항암·기타 표적 / 기능성 펩타이드: ACE·XO)와 점수 항목 중 ACE·XO 항목의 비중을 적고, 의약 표적 항목이 있는 종은 의약 표적만 모은 MBPI-Rx를 나란히 둡니다.":"Below the MBPI in the species profile and species details, the kind of the top evidence (medicinal target: antibacterial·anticancer·other target / functional peptide: ACE·XO) and the share of ACE·XO items among the scored items are written; for species with medicinal-target items, MBPI-Rx, built from medicinal-target items only, is placed beside it.",
 "표시만 더한 것이라 MBPI·BBVI 값과 유형은 그대로입니다.":"This adds a display only, so MBPI·BBVI values and types stay the same.",
 "종 단위 유형입니다.":"Types are per species.",
-"‘활용 × 보전’은 먼저 선택 종의 셀만 그 종의 유형 색으로 보여 주고, ‘모든 종 겹쳐 보기’에서는 한 셀에 여러 유형의 종이 있으면 표의 우선순위가 가장 높은 유형 하나로 칠합니다. ‘활용 지표 높음’ 같은 앞의 짧은 말은 두 지표가 탐색용 기준선 위인지 아래인지를 읽은 것이고, 유형은 연구 순서를 고르기 위한 분류입니다.":"‘Use × conservation’ first shows only the selected species' cells in that species' type colour; in ‘Overlay all species’, when a cell holds species of several types, it is painted with the one type of highest precedence in the table. The short words in front, such as ‘Use index high’, read whether the two indices are above or below the exploratory reference line, and the type is a classification for choosing the order of research."
+"‘활용 × 보전’은 먼저 선택 종의 셀만 그 종의 유형 색으로 보여 주고, ‘모든 종 겹쳐 보기’에서는 한 셀에 여러 유형의 종이 있으면 표의 우선순위가 가장 높은 유형 하나로 칠합니다. ‘활용 지표 높음’ 같은 앞의 짧은 말은 두 지표가 탐색용 기준선 위인지 아래인지를 읽은 것이고, 유형은 연구 순서를 고르기 위한 분류입니다.":"‘Use × conservation’ first shows only the selected species' cells in that species' type colour; in ‘Overlay all species’, when a cell holds species of several types, it is painted with the one type of highest precedence in the table. The short words in front, such as ‘Use index high’, read whether the two indices are above or below the exploratory reference line, and the type is a classification for choosing the order of research.",
+"색은 ‘출현 기록이 있는 셀 × 그 셀에 기록된 종의 매트릭스 유형’입니다. 테두리는 공개 격자 범위이고, 지표는 종 단위로 봅니다.":"The colour is ‘cell with occurrence records × matrix type of the species recorded in that cell’. The outline is the public grid range, and the indices are read per species.",
+"이용 목적(신약 탐색·식량자원 탐색)에 따라 두 근거의 비중을 바꿔 봅니다.":"Change the share of the two kinds of evidence according to the purpose (drug discovery·food resource exploration).",
+"공식 산출값은 w = 0.50으로 고정입니다.":"The official value is fixed at w = 0.50.",
+"두 축이 모두 산출된 종에만 적용하고, 비교집단은 고정됩니다.":"It applies only to species with both axes calculated, and the comparison sets stay fixed.",
+"근거와 방법에서 자세히 보기":"See details in Evidence & methods",
+"지도 읽는 법 보기":"See how to read the map"
 });
 // @section 탐색 지도(app.js)
 Object.assign(I18N_EN,{
