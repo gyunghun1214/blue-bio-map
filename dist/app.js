@@ -2328,7 +2328,7 @@ function renderList() {
   const query=$('search').value.trim().toLowerCase();
   const group=$('species-group').value;
   const base=data.species.filter(s=>(group==='all'||s.group===group)
-    &&[s.label,s.name,s.group,String(s.aphiaID),...[s.koLabel,s.enName].filter(Boolean)].some(v=>v.toLowerCase().includes(query)));
+    &&[s.label,s.name,s.group,String(s.aphiaID),...[s.koLabel,s.enName,...(s.enAlt||[])].filter(Boolean)].some(v=>v.toLowerCase().includes(query)));
   const matches=useSorted(base.filter(useMatch));
   $('species-count').textContent=`${matches.length}종`;filterCount();
   const extra=$('use-extra');
@@ -4078,7 +4078,7 @@ globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t)
 // does, as s). A filter dims matrix points instead of removing them, and the note says how many are shown.
 let cmpMode='matrix', cmpBasket=[];const cmpFilter={q:'',group:'all',type:null}, CMP_MAX=3;
 const cmpById=id=>data?.species.find(s=>s.aphiaID===Number(id))||null;
-const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID)].some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
+const cmpMatch=s=>!!s&&(cmpFilter.group==='all'||s.group===cmpFilter.group)&&(!cmpFilter.q||[s.label,s.name,String(s.aphiaID),s.koLabel,s.enName,...(s.enAlt||[])].filter(Boolean).some(v=>String(v).toLowerCase().includes(cmpFilter.q)));
 const cmpFiltered=()=>cmpFilter.group!=='all'||!!cmpFilter.q;
 // the data table also takes a type card ('none' = 유형 미산출); the matrix keeps dimming by group and search only
 const cmpTypeOf=s=>matrixType(s)||'none';
@@ -4611,8 +4611,9 @@ const loadDone=state=>loadProgress('done',{state,snapshotAt:data?.snapshotAt||nu
 // 영어 화면에서는 i18n.js가 이 글자를 영어로 바꿔 두므로 두 말을 다 본다(한국어 화면은 예전과 같다)
 const loadFailedText=t=>t==='불러오기 실패'||t===T_('불러오기 실패');
 // 2026-10-24 종 영어 일반명(species-names-en.json: WoRMS·FAO에서 확인한 이름만, 지어내지 않음). 검색은 두 언어 모두 한국어명·영어명·학명으로 찾는다.
+// 2026-10-25 alt(같은 출처의 다른 영어 이름)로도 찾는다. 이름이 없는 종(en null)은 지금처럼 학명이 이름이다.
 // 영어 화면의 종 이름은 일반명, 없으면 학명 하나(학명 줄은 비운다). 한국어 화면의 이름·학명 줄은 예전 그대로다.
-function speciesNamesEn(list,names){for(const s of list){const n=names?.[s.aphiaID];s.enName=typeof n?.en==='string'&&n.en?n.en:null;s.enNameSource=s.enName?String(n.source||''):'';s.koLabel=s.label;if(LANG==='en')s.label=s.enName||s.name;}}
+function speciesNamesEn(list,names){for(const s of list){const n=names?.[s.aphiaID];s.enName=typeof n?.en==='string'&&n.en?n.en:null;s.enNameSource=s.enName?String(n.source||''):'';s.enAlt=Array.isArray(n?.alt)?n.alt.filter(x=>typeof x==='string'):[];s.koLabel=s.label;if(LANG==='en')s.label=s.enName||s.name;}}
 function updateStatusChips(){
   const err=$('error'),alert=err.classList.contains('in-chip')&&!err.hidden;
   // 2026-10-13 design 2: one chip instead of three header badges (status, team tag, prototype); the popover keeps the full text

@@ -1,5 +1,6 @@
 // 언어 전환 검사 (2026-10-24). 사전 파일만 보는 검사는 늘 돌고, --browser를 붙이면 로컬 dist(http://127.0.0.1:8765/)를 열어 화면도 본다.
 //   node verification/test_i18n.mjs              (다) 숫자 같음 · (바) 용어·단서 · (사) 사전 HTML의 링크·태그 · 변수 이름 · i18n.js 동작
+//                                                  · (아) 안내 도우미 영어 · (자) 종 영어 이름 파일
 //   node verification/test_i18n.mjs --browser    + (가) 한국어 화면이 기준과 한 글자도 다르지 않음 · (나) 영어 화면에 표시 없이 남은 한글
 //                                                  · (라) 같은 종 상세의 BBVI·MCUI·MBPI·MFPI와 셀 수 · (사) 두 언어의 href 목록
 // (마) 자료 사전 완성도는 python scripts/i18n_data_strings.py --check가 본다(CI unit 잡).
@@ -86,6 +87,17 @@ for(const [ko,en,src] of all){if(!/</.test(ko)&&!/</.test(en))continue;
     ['is it validated','validation'],['where is the data from','sources']])if(match(q)?.id!==id)fail(`(아) chatbot "${q}" -> ${match(q)?.id}, want ${id}`);
   for(const q of ["what's the weather today",'recommend a lunch menu','hello','','?!'])if(match(q)!=null)fail(`(아) chatbot "${q}" should be unknown`);
   for(const k of ['matrix','score','basis','mcuiwhy'])if(H.test(fact(k,'참굴:MCUI')))fail(`(아) chatbot fact ${k} fallback not English`);}
+
+// (자) 종 영어 이름(species-names-en.json, scripts/build_species_names_en.py): 대상 종(assessments.json의 species + candidate_species)이
+// 모두 있고, kind는 common(확인한 영어 이름, 출처 있음) 또는 scientific(이름 없음 → 학명이 이름), 영어 이름에 한글이 없다.
+{const A=JSON.parse(read('assessments.json')),N=JSON.parse(read('species-names-en.json')),H=/[ㄱ-ㆎ가-힣]/;
+  const ids=[...A.species,...(A.candidate_species||[])].map(s=>String(s.aphia_id));
+  for(const id of ids){const n=N[id];if(!n){fail(`(자) species-names-en.json has no entry for ${id}`);continue;}
+    if(!['common','scientific'].includes(n.kind))fail(`(자) ${id}: kind ${n.kind}`);
+    if(n.kind==='common'&&!(typeof n.en==='string'&&n.en.trim()&&String(n.source||'').trim()))fail(`(자) ${id}: common name without en or source`);
+    if(n.kind==='scientific'&&n.en!=null)fail(`(자) ${id}: scientific kind with an English name`);
+    if([n.en,...(n.alt||[])].some(x=>x&&H.test(x)))fail(`(자) ${id}: Korean in the English name`);}
+  for(const id of Object.keys(N))if(!ids.includes(id))fail(`(자) species-names-en.json has ${id}, not a target species`);}
 
 console.log(`i18n dictionaries: ${ui.length} screen + ${dat.length} data entries · numbers ${numChecked} · glossary terms ${termChecked} (${gl.length} rows)`);
 
