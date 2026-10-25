@@ -2,6 +2,7 @@
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
 import {collect} from './readability_probe.mjs';
+import {offScale} from './type_scale_probe.mjs';
 const OUT=process.argv[2];
 // Expected counts are computed from the published files, never typed in: 22 candidates, snapshot rows, pilot scores.
 const DIST=path.join(path.dirname(fileURLToPath(import.meta.url)),'..','dist');
@@ -1813,6 +1814,7 @@ try{
     await clickAt(await logo('mark'));g=await home();
     check('G-7 phone 390px (비교와 지표): tapping the logo shows the globe entry screen',atGlobe(g,'v=compare')&&g.doc<=g.vw,JSON.stringify(g));
     await sleep(1200);await shot('logo-home-mobile',false);
+    {const r=await evaluate(`(${offScale})(['#site-gate'])`);check('T-1 390px entry screen: text under 18px is only 13·14·15·16·17px, none under 13px',!r.length,JSON.stringify(r.slice(0,6)));}
     await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);
     await viewport(1560,900,false);
   }
@@ -1825,6 +1827,34 @@ try{
       const bad={small:r.small.slice(0,5),english:r.eng.filter(e=>!e.marked).slice(0,5).map(e=>e.text.slice(0,80)),abbr:Object.entries(r.abbr).filter(([,a])=>!a.named).map(([k,a])=>k+' '+a.text)};
       check(`R-1 ${w}px ${v}: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean`,!r.small.length&&!bad.english.length&&!bad.abbr.length,JSON.stringify(bad));
     }
+  }
+  // ---------- T phone type scale (2026-10-25, dist/mobile-type.css): 13·14·15·16·17px under 18px, matrix names on demand ----------
+  // The entry screen is checked at G-7 (the globe on a 390px phone). PC sizes and every word stay as before: checked once
+  // against main in verification/2026-10-25-mobile-type-scale/ (compare.mjs), not here, so later PC changes stay free.
+  {
+    await viewport(390,844,true);
+    for(const v of ['explore','compare','method']){
+      const r=await evaluate(`(async()=>{setView('${v}');if('${v}'==='compare')setCompareMode('table');for(const d of document.querySelectorAll('#${v} details'))d.open=true;await new Promise(r=>setTimeout(r,500));const a=(${offScale})(['body']);if('${v}'==='compare'){setCompareMode('matrix');await new Promise(r=>setTimeout(r,500));a.push(...(${offScale})(['body']));}return a;})()`);
+      check(`T-1 390px ${v}: text under 18px is only 13·14·15·16·17px, none under 13px`,!r.length,JSON.stringify(r.slice(0,6)));
+    }
+    // matrix point names: only the selected point's (and basket points') name is shown; a tap shows the tapped point's name
+    // instead, and the points keep their places (style left/bottom from the BBVI·MCUI values)
+    const names=`(()=>{const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')];return {shown:p.filter(b=>getComputedStyle(b.querySelector('.point-label')).visibility==='visible').map(b=>b.dataset.name),
+      want:p.filter(b=>b.getAttribute('aria-current')==='true'||b.classList.contains('in-basket')).map(b=>b.dataset.name),pos:Object.fromEntries(p.map(b=>[b.dataset.aphia,b.style.left+' '+b.style.bottom]))};})()`;
+    await evaluate("(async()=>{setView('compare');setCompareMode('matrix');for(const id of [...cmpBasket])toggleBasket(id);document.getElementById('matrix').scrollIntoView({block:'center'});await new Promise(r=>setTimeout(r,600));})()");
+    const m0=await evaluate(names);
+    const tgt=await evaluate(`(()=>{const b=[...document.querySelectorAll('#matrix-points .matrix-point.pilot:not([data-clustered]):not([aria-current])')].find(b=>{const r=b.getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.closest('.matrix-point')===b;});
+      if(!b)return null;const r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,id:b.dataset.aphia,name:b.dataset.name};})()`);
+    if(tgt)for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:tgt.x,y:tgt.y,button:'left',buttons:type==='mousePressed'?1:0,clickCount:1});
+    await sleep(800);
+    const m1=await evaluate(names);
+    const basket=await evaluate(`(async()=>{toggleBasket(${tgt?.id||0});const o=[...document.querySelectorAll('#matrix-points .matrix-point.pilot')].find(b=>!b.matches('[aria-current],[data-clustered]'));toggleBasket(o.dataset.aphia);await new Promise(r=>setTimeout(r,300));
+      const r=(${names});toggleBasket(o.dataset.aphia);toggleBasket(${tgt?.id||0});return {...r,extra:o.dataset.name};})()`);
+    check('T-2 390px matrix: point names are hidden except the selected one; tapping a point shows only its name, on the same place; a basket point shows its name',
+      !!tgt&&m0.shown.length===1&&String(m0.shown)===String(m0.want)&&String(m1.shown)===tgt.name&&m0.pos[tgt.id]===m1.pos[tgt.id]&&
+      Object.keys(m0.pos).every(k=>m0.pos[k].split(' ')[0]===m1.pos[k].split(' ')[0])&&basket.shown.includes(basket.extra)&&basket.shown.length===2,
+      JSON.stringify({tgt,before:m0.shown,after:m1.shown,basket:basket.shown}));
+    await viewport(1560,900,false);
   }
   // ---------- L English screen (2026-10-24, ?lang=en): captures at 1440·1280×720·390, no sideways scroll, 12px floor ----------
   // The words come from dist/i18n-en.js·i18n-data-en.json (Claude draft; team review in docs/i18n-review.csv). R-1's English check

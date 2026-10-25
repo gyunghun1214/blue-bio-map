@@ -4289,6 +4289,7 @@ function placeWeightSlider(){
 function syncCompareMatrix(){
   const box=$('matrix-points');if(!data||!box?.querySelectorAll)return;
   box.querySelectorAll('.matrix-point.pilot[data-aphia]').forEach(b=>Number(b.dataset.aphia)===selected?.aphiaID?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current'));
+  markBasketPoints();
   // 2026-10-15 design: short legend names; the full judgement each one stands for is in the title, for screen readers and in '읽는 법'
   const lg=(cls,short,full)=>`<span title="${esc(full)}"><i class="lg-dot${cls?' '+cls:''}" aria-hidden="true"></i>${esc(short)}${full!==short?`<span class="sr-only"> (${esc(full)})</span>`:''}</span>`;
   // 2026-10-18: every point is a circle; an MCUI from the stock-decline signal reads in the number's brackets and the tooltip.
@@ -4383,8 +4384,11 @@ function onCompareDrawerClosed(){
 function toggleBasket(id){
   id=Number(id);
   if(cmpBasket.includes(id))cmpBasket=cmpBasket.filter(x=>x!==id);else if(cmpBasket.length<CMP_MAX)cmpBasket=[...cmpBasket,id];else return false;
-  renderCompareTray();renderCompareProfile();syncBasketChecks();return true;
+  renderCompareTray();renderCompareProfile();syncBasketChecks();markBasketPoints();return true;
 }
+// Phones show a matrix point's name only for the selected, focused and basket points (mobile-type.css, 2026-10-25): the
+// basket ones carry .in-basket
+function markBasketPoints(){document.querySelectorAll?.('#matrix-points .matrix-point.pilot[data-aphia]').forEach(b=>b.classList.toggle('in-basket',cmpBasket.includes(Number(b.dataset.aphia))));}
 // the 탐색 후보 checkboxes show the same basket as '비교와 지표'
 function syncBasketChecks(){document.querySelectorAll('#species-list [data-basket]').forEach(b=>{b.checked=cmpBasket.includes(Number(b.dataset.basket));});}
 // The tray always shows three places: a basket species, or a dashed empty slot. The matrix selection and the basket are
