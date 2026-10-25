@@ -1821,7 +1821,9 @@ Object.assign(I18N_EN,{
 "⌘ + 스크롤 또는 두 손가락을 벌려 지도를 확대합니다":"⌘ + scroll or spread two fingers to zoom the map",
 "Ctrl + 스크롤로 지도를 확대합니다":"Ctrl + scroll to zoom the map",
 "{0}곳":"{0} {0|site|sites}",
-"{0}칸":"{0} {0|cell|cells}"
+"{0}칸":"{0} {0|cell|cells}",
+"지도 크게 보기":"Enlarge the map",
+"종 목록·상세 다시 올리기":"Bring the species list and details back up"
 });
 // @section 비교와 지표(app.js)
 Object.assign(I18N_EN,{

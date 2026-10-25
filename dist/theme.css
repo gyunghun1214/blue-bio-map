@@ -1653,3 +1653,22 @@ html.lang-en #explore #sp-name{overflow-wrap:anywhere}
   html.lang-en .tabs button[data-short]::before{content:attr(data-short);font-size:13.5px}
 }
 @media (min-width:1180px) and (max-width:1599px){html.lang-en .tabs button[data-short]::before{font-size:16px}}
+/* 2026-10-25 (LKH) 휴대폰 지도 크게 보기: 시트 손잡이(또는 선택 종 요약)를 아래로 끌면 시트가 손잡이와 종 이름 줄만 남기고 내려가고
+   지도가 그 자리까지 커진다(app.js setMapFull, 높이는 --map-full-h). 위로 끌거나 손잡이를 누르면 원래대로(지도 50%). 끌 수 없을 때는
+   확대/축소 위 '지도 크게 보기' 단추. 넓은 화면(741px~)에는 단추도 상태도 없다. 크게 본 동안 '근거 자세히 보기' 글자는 멍이와 겹쳐
+   숨긴다(종 이름 줄을 누르면 전처럼 상세 시트가 열린다). */
+.map-full-ctl{display:none}
+@media (max-width:740px){
+  #explore .explorer.map-full .map-stage{height:var(--map-full-h,50svh)}
+  #explore .explorer.map-snap .map-stage{transition:height .25s ease}
+  #explore .explorer.map-full .sheet-summary .ss-more{visibility:hidden}
+  #explore .leaflet-control.map-full-ctl{display:block}
+  #explore .map-full-btn{display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;background:rgba(11,31,45,.96);color:var(--ink);cursor:pointer}
+  #explore .map-full-btn:hover{background:var(--nv-raise)}
+  #explore .map-full-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+  #explore .map-full-btn svg{width:20px;height:20px}
+  #explore .map-full-btn .ico-shrink,#explore .map-full-btn[aria-pressed="true"] .ico-grow{display:none}
+  #explore .map-full-btn[aria-pressed="true"] .ico-shrink{display:block}
+  #explore .map-stage:has(.leaflet-popup) .map-full-ctl{visibility:hidden}
+}
+@media (max-width:740px) and (prefers-reduced-motion:reduce){#explore .explorer.map-snap .map-stage{transition:none}}

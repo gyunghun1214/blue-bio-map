@@ -1405,6 +1405,29 @@ try{
     const open={exp:b.getAttribute('aria-expanded'),top:Math.round(document.getElementById('sheet-head').getBoundingClientRect().top),stage:getComputedStyle(stage).position};b.click();await wait(900);
     return {open,closed:{exp:b.getAttribute('aria-expanded'),y:Math.round(scrollY)},doc:document.documentElement.scrollWidth,vw:innerWidth}})()`);
   check('Mobile sheet: the handle button opens the sheet over the pinned map and closes it again (aria-expanded follows), no horizontal overflow',sheet.open.exp==='true'&&Math.abs(sheet.open.top)<=2&&sheet.open.stage==='sticky'&&sheet.closed.exp==='false'&&sheet.closed.y===0&&sheet.doc<=sheet.vw,JSON.stringify(sheet));
+  // 2026-10-25 (LKH) 지도 크게 보기: 손잡이를 아래로 끌면 시트가 손잡이와 종 이름 줄만 탭바 위에 남기고 내려가 지도가 커지고, 위로 끌면
+  // 원래대로. 끌기 대신 지도의 '지도 크게 보기' 단추(aria-pressed)와 손잡이 ↓·↑. 여기서는 마우스로 끈다(손가락 끌기와 360·430·영어는
+  // verification/2026-10-25-map-full/drag.mjs).
+  const mf=await (async()=>{
+    const st=()=>evaluate(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),b=document.querySelector('.map-full-btn'),m=r('#explore .map-stage');
+      return {full:document.querySelector('#explore .explorer').classList.contains('map-full'),y:Math.round(scrollY),map:Math.round(m.height),leaflet:map.getSize().y,head:Math.round(r('#sheet-head').top),
+        name:Math.round(r('#sheet-summary .ss-name').bottom),tabs:Math.round(r('.tabs').top),pressed:b?.getAttribute('aria-pressed'),btn:Math.round(b?.getBoundingClientRect().height||0),
+        label:document.getElementById('sheet-handle').getAttribute('aria-label'),doc:document.documentElement.scrollWidth}})()`);
+    const drag=async dy=>{const h=await evaluate("(r=>({x:Math.round(r.left+r.width/2),y:Math.round(r.top+r.height/2)}))(document.getElementById('sheet-handle').getBoundingClientRect())");
+      await send('Input.dispatchMouseEvent',{type:'mousePressed',x:h.x,y:h.y,button:'left',buttons:1,clickCount:1});
+      for(let i=1;i<=10;i++)await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:h.x,y:h.y+dy*i/10,button:'left',buttons:1});
+      await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:h.x,y:h.y+dy,button:'left',buttons:0,clickCount:1});await sleep(700);return st();};
+    const act=async js=>{await evaluate(js+';1');await sleep(700);return st();};
+    const key=k=>act(`document.getElementById('sheet-handle').focus();document.getElementById('sheet-handle').dispatchEvent(new KeyboardEvent('keydown',{key:'${k}',bubbles:true,cancelable:true}))`);
+    const base=await st(),down=await drag(300);await shot('mobile-map-full',false);
+    // 커진 만큼만 올린다(더 올리면 이어서 시트가 페이지 스크롤로 올라온다)
+    const up=await drag(base.map-down.map),btnOn=await act("document.querySelector('.map-full-btn').click()"),handleTap=await act("document.getElementById('sheet-handle').click()");
+    const keyDown=await key('ArrowDown'),keyUp=await key('ArrowUp');
+    return {base,down,up,btnOn,handleTap,keyDown,keyUp};})();
+  const mfFull=s=>s.full&&s.pressed==='true'&&s.y===0&&s.name<=s.tabs&&s.head>=s.tabs-100&&s.map>=mf.base.map+200&&s.leaflet===s.map&&s.label==='종 목록·상세 다시 올리기';
+  const mfBack=s=>!s.full&&s.pressed==='false'&&s.y===0&&s.map===mf.base.map&&s.head===mf.base.head&&s.leaflet===s.map&&s.label==='종 목록·상세 펼치기';
+  check('Mobile map full: dragging the sheet handle down leaves the handle and species name above the tab bar and grows the map; dragging up, the map button, a tap on the handle and ↓/↑ on the handle switch it the same way',
+    mfBack(mf.base)&&mf.base.btn===40&&mfFull(mf.down)&&mfBack(mf.up)&&mfFull(mf.btnOn)&&mfBack(mf.handleTap)&&mfFull(mf.keyDown)&&mfBack(mf.keyUp)&&mf.down.doc<=390,JSON.stringify(mf));
   // BBVI 통합 가중치 on a phone: the panel and the matrix badge fit 390px, no sideways scroll
   const wm=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s);setView('compare');setCompareMode('matrix');q('#cmp-basis-toggle').click();
     setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-wline').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());
