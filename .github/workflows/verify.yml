@@ -116,8 +116,8 @@ jobs:
             # Sea expedition page: desktop / phone / reduced motion (WebGL via SwiftShader) and WebGL disabled
             node verification/expedition_check.mjs verification/ci-ui/expedition
             if ($LASTEXITCODE -ne 0) { throw "Expedition checks failed with exit code $LASTEXITCODE" }
-            # English text layout (README '언어 전환'): overlap, off-screen, wording, species names; desktop sizes for now
-            $env:SIZES = '1440,1280x720'; $env:FIXTURE = 'dist/live-snapshot.json'
+            # English text layout (README '언어 전환'): overlap, off-screen, wording, species names; 1440, 1280×720 and 390
+            $env:FIXTURE = 'dist/live-snapshot.json'
             node verification/i18n_layout_check.mjs verification/ci-ui/i18n-layout
             if ($LASTEXITCODE -ne 0) { throw "English layout checks failed with exit code $LASTEXITCODE" }
           } finally {

@@ -1953,7 +1953,7 @@ function weightSensitivityLine(s){
   const rows=weightSensitivity(s);if(!rows)return '';
   const types=new Set(rows.map(r=>r.type));
   // 2026-10-18 (LKH, 휴대폰): the line sits in a fold that only phones close (theme.css .detail-fold); wider screens show it as before
-  return `<details class="detail-fold ax-sens-fold"${foldOpen()}><summary>가중치별 BBVI</summary><p class="ax-note ax-sens">MFPI 가중치별 BBVI: ${rows.map(r=>`${r.w.toFixed(1)}${r.w===officialWeight()?'(기본)':''} ${scoreText(s,'BBVI',r.value,r.raw??undefined)} ${esc(r.type?matrixTypePlain(r.type):'—')}`).join(' · ')}`+
+  return `<details class="detail-fold ax-sens-fold"${foldOpen()}><summary>가중치별 BBVI</summary><p class="ax-note ax-sens">MFPI 가중치별 BBVI: ${rows.map(r=>`${r.w.toFixed(1)}${r.w===officialWeight()?(LANG==='en'?' (기본)':'(기본)'):''} ${scoreText(s,'BBVI',r.value,r.raw??undefined)} ${esc(r.type?matrixTypePlain(r.type):'—')}`).join(' · ')}`+
     ` · ${types.size>1?'가중치에 따라 유형이 바뀜':'세 가중치에서 유형 같음'}</p></details>`;
 }
 // species whose type differs between weights 0.2 · 0.5 · 0.8 (the method section count)
@@ -2760,7 +2760,7 @@ function mapSection(s){
 <li><b>민감도</b>${degree===4?'채취 압력을 고려해 4° 광역 셀을 적용했습니다.':'GBIF 지침에서 가장 엄격한 공개 수준인 1°를 적용했습니다.'}</li>
 <li><b>중복</b>같은 표본 번호는 한 번만 셌고, 셀은 이번 검수 기록으로 만들었습니다.</li>
 <li><b>원좌표</b>원좌표와 기록 ID는 비공개로 둡니다.</li></ul>`;
-  return `<h3>지도 셀</h3><p class="fine">선별된 출현기록을 공개 ${degree}° 셀의 붉은 점 무늬로 보여줍니다(점 간격 = 기록 수 구간). 붉은 점은 기록이 있는 칸의 위치(넓게 묶음)이며 원좌표는 비공개입니다.</p>${row('공개 셀',s.cells.length?`${spatialCells(s).length}개 · ${degree}°×${degree}°${spatialCells(s).length===s.cells.length?'':` · 기간별 ${s.cells.length}행`}`:'없음',s.cells.length?'done':'pending')}${s.cells.length?row(sitesLabel(s),count(cellSites(s),'곳')):''}${single?`<p class="fine">조사 지점이 1곳인 셀 ${single}개도 ${degree}° 범위로 넓게 묶어 표시합니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'&&isMapRun(s)?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 선별 <span class="fine">GBIF 조회 ${esc(m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${map3?row('CC BY-NC 기록(비상업 연구용)',count(m.nc_records)):''}${Number.isFinite(m.outcome?.accepted)?row('셀에 쓴 기록',count(m.outcome.accepted)):''}<p class="fine">셀은 그 기간에 공개된 관측 기록이 있는 칸입니다(공개된 관측 기록 기준).</p>`;
+  return `<h3>지도 셀</h3><p class="fine">선별된 출현기록을 공개 ${degree}° 셀의 붉은 점 무늬로 보여줍니다(점 간격 = 기록 수 구간). 붉은 점은 기록이 있는 칸의 위치(넓게 묶음)이며 원좌표는 비공개입니다.</p>${row('공개 셀',s.cells.length?`${spatialCells(s).length}개 · ${degree}°×${degree}°${spatialCells(s).length===s.cells.length?'':` · 기간별 ${s.cells.length}행`}`:'없음',s.cells.length?'done':'pending')}${s.cells.length?row(sitesLabel(s),count(cellSites(s),'곳')):''}${single?`<p class="fine">조사 지점이 1곳인 셀 ${single}개도 ${degree}° 범위로 넓게 묶어 표시합니다.</p>`:''}${m.note&&m.status!=='held_sensitivity_review'&&isMapRun(s)?`<p class="fine">${esc(m.note)}</p>`:''}<h3>${m.status==='held_sensitivity_review'?'지도 표시 기준':'왜 공개할 수 있는가'}</h3>${why}<h3>조회와 선별 <span class="fine">GBIF 조회 ${esc(LANG==='en'?String(m.retrieved).replace(/(\d)\(/g,'$1 ('):m.retrieved)}</span></h3>${row('조회 기록(2000년 이후)',count(m.queried_records))}${row('CC0·CC BY 기록',count(m.open_records))}${map3?row('CC BY-NC 기록(비상업 연구용)',count(m.nc_records)):''}${Number.isFinite(m.outcome?.accepted)?row('셀에 쓴 기록',count(m.outcome.accepted)):''}<p class="fine">셀은 그 기간에 공개된 관측 기록이 있는 칸입니다(공개된 관측 기록 기준).</p>`;
 }
 
 
@@ -4167,7 +4167,7 @@ function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
     rect.style.cssText=`left:${L-frame.left}px;top:${T-frame.top}px;width:${R-L}px;height:${B-T}px`;box.prepend(rect);
     const btn=document.createElement('button');  // '· 펼치기' folds away on a phone; the aria-label keeps it
     btn.type='button';btn.className='matrix-cluster-btn';btn.dataset.cluster=g.ids.join(',');const warnN=g.ids.filter(id=>byId.get(id)?.classList?.contains('obis-warn')).length;  // ⚠ of a hidden member stays visible on its pill
-    btn.innerHTML=`${warnN?'<i class="mp-obis-pill" aria-hidden="true">⚠</i>':''}${LANG==='en'?esc(T_('{0}종 묶음',{0:g.ids.length})):g.ids.length+'종'}<span class="mcb-act"> ${LANG==='en'?esc(T_('· 펼치기')):'· 펼치기'}</span>`;  // English is written here, not by the page translator, so the button is measured at its English width
+    btn.innerHTML=`${warnN?'<i class="mp-obis-pill" aria-hidden="true">⚠</i>':''}${LANG==='en'?(l=>l.startsWith(g.ids.length+' ')?`${g.ids.length}<span class="mcb-unit">${esc(l.slice(String(g.ids.length).length))}</span>`:esc(l))(T_('{0}종 묶음',{0:g.ids.length})):g.ids.length+'종'}<span class="mcb-act"> ${LANG==='en'?esc(T_('· 펼치기')):'· 펼치기'}</span>`;  // English is written here, not by the page translator, so the button is measured at its English width
     btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','matrix-cluster-pop');
     btn.setAttribute('aria-label',`점이 몰린 ${g.ids.length}종 · BBVI ${clusterBbvi(g.ids[0])}–${clusterBbvi(g.ids.at(-1))} · MCUI ${scoreValue(null,'MCUI',g.m)}${warnN?` · OBIS 감소 신호 ${warnN}종(점수 미반영)`:''} · 종 목록 펼치기`);
     btn.addEventListener('click',()=>btn.getAttribute('aria-expanded')==='true'?closeClusterPop(true):openClusterPop(btn));
@@ -4185,10 +4185,10 @@ function drawMatrixClusters(groups,byId,frame,placeKeep=()=>[]){
     const ix=Math.min(Math.max((L+R-w)/2,frame.left+2),frame.right-w-2), iy=(T+B-h)/2;
     // English screen: the scientific-name labels and longer quadrant names leave less room, so before sitting inside its
     // box a button also tries the box's ends and beside the earlier buttons, inside, below or above the box, never on an
-    // earlier button (spots clear of the points first)
+    // earlier button (spots over the fewest points first)
     const inBox=LANG==='en'?[ix,L+2,R-w-2,...pills.flatMap(o=>[o.right+gap,o.left-gap-w])].flatMap(x=>[iy,B+3,T-h-3].map(y=>({left:x,top:y,right:x+w,bottom:y+h})))
       .filter(r=>r.left>=frame.left+2&&r.right<=frame.right-2&&r.top>=frame.top+2&&r.bottom<=frame.bottom-2&&!hit(r,pills))
-      .sort((a,c)=>hit(a,free)-hit(c,free)):[];
+      .sort((a,c)=>free.filter(o=>hit(a,[o])).length-free.filter(o=>hit(c,[o])).length):[];
     const spot=[up[0],down[0],...up.slice(1),...down.slice(1),...up2,...up3].find(r=>r&&ok(r))||inBox[0]||{left:ix,top:iy,right:ix+w,bottom:iy+h};
     btn.style.left=spot.left-frame.left+'px';btn.style.top=spot.top-frame.top+'px';
     pills.push(spot);shapes.push({left:L,top:T,right:R,bottom:B},spot);

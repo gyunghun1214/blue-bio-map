@@ -105,6 +105,9 @@ const collect=`((roots,scrollers)=>{
     const ox=Math.min(a.r,b.r)-Math.max(a.l,b.l), oy=Math.min(a.b,b.b)-Math.max(a.t,b.t);if(ox<=4||oy<=4)continue;
     const A=nodes[a.k],B=nodes[b.k];
     if(A.dot&&B.dot||A.dot&&A.el.contains(B.el)||B.dot&&B.el.contains(A.el))continue;
+    // a group button over the dots it stands for (its own box) is how the group is drawn
+    const own=(d,o)=>d.dot&&(o.el.closest('.matrix-cluster-btn')?.dataset.cluster||'').split(',').includes(d.el.dataset.aphia);
+    if(own(A,B)||own(B,A))continue;
     // lines of one heading with a tight line-height touch by their font boxes, not by their letters
     if(blockOf(A.el)===blockOf(B.el)&&oy<.35*Math.min(a.b-a.t,b.b-b.t))continue;
     const key=Math.min(a.k,b.k)+':'+Math.max(a.k,b.k);if(pairs.has(key))continue;pairs.add(key);
