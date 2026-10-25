@@ -461,7 +461,23 @@ Object.assign(I18N_EN,{
 "종의 ‘쓸모’와 ‘지켜야 할 정도’를 근거와 함께 한 지도에 모았습니다.":" marine species: their ‘uses’ and ‘how much they need protecting’, on one map with the evidence.",
 "관측 기록이 있는 공개 격자(1°·4°)":"Public cells with records (1°·4°)",
 "지구 영상: NASA Blue Marble·Black Marble":"Globe: NASA Blue Marble·Black Marble",
-"종 비교와 지표":"Species · Compare & indices"
+"종 비교와 지표":"Species · Compare & indices",
+"용어 풀이":"Terms",
+"식량·생리활성 근거를 합친 값":"Food and bioactivity evidence combined",
+"영양성분·가식부·양식 가능성":"Nutrients, edible portion, aquaculture feasibility",
+"같은 표적·같은 시험 안의 백분위":"Percentile within the same target and assay",
+"보전 평가와 자원 감소 신호":"Conservation status and stock decline signal",
+"활용가치 · BBVI":"Use value · BBVI",
+"식량 · MFPI":"Food · MFPI",
+"생리활성 · MBPI":"Bioactivity · MBPI",
+"보전 시급성 · MCUI":"Conservation urgency · MCUI",
+"활용가치 × 보전 시급성 유형 · 출현 기록 셀":"Use value × conservation urgency type · occurrence record cells",
+"활용 낮음 · 보전 높음":"Use low · conservation high",
+"활용·보전 모두 높음":"Use and conservation both high",
+"활용·보전 모두 낮음":"Use and conservation both low",
+"활용 높음 · 보전 낮음":"Use high · conservation low",
+"보전 ↑":"Conservation ↑",
+"활용 →":"Use →"
 });
 // @section 탐색 지도(app.js)
 Object.assign(I18N_EN,{
@@ -1815,7 +1831,9 @@ Object.assign(I18N_EN,{
 "{0}곳":"{0} {0|site|sites}",
 "{0}칸":"{0} {0|cell|cells}",
 "지도 크게 보기":"Enlarge the map",
-"종 목록·상세 다시 올리기":"Bring the species list and details back up"
+"종 목록·상세 다시 올리기":"Bring the species list and details back up",
+"활용가치(BBVI)는 식량(MFPI)과 생리활성(MBPI) 근거를 합친 탐색용 활용 지표입니다(w = {0}{1}). 보전 시급성과 따로 봅니다.":"Use value (BBVI) is an exploratory use index combining food (MFPI) and bioactivity (MBPI) evidence (w = {0}{1}). Read separately from conservation urgency.",
+"보전 시급성(MCUI)은 {0}을 0–100점으로 옮긴 값입니다{1}. 활용가치와 따로 봅니다.":"Conservation urgency (MCUI) is {0} converted to a 0–100 scale{1}. Read separately from use value."
 });
 // @section 비교와 지표(app.js)
 Object.assign(I18N_EN,{
@@ -1846,7 +1864,6 @@ Object.assign(I18N_EN,{
 "평가 미조회":"Assessment not queried",
 "IUCN {0} · {1}년 발표 · 역사적 평가 · 현행 평가 확인 보류":"IUCN {0} · published {1} · historical assessment · check of current assessment on hold",
 "식량 근거 · MFPI":"Food evidence · MFPI",
-"생리활성 · MBPI":"Bioactivity · MBPI",
 "통합점수 · BBVI":"Combined score · BBVI",
 "보전 평가 · MCUI":"Conservation assessment · MCUI",
 "{0} · MBPI·BBVI와 별도인 보조 지표":"{0} · supplementary index, separate from MBPI·BBVI",

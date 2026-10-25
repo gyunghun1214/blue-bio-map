@@ -34,9 +34,9 @@ const scored=S.filter(s=>T.pilotScore(s,'BBVI')!==null);
 assert.ok(scored.length>=8,'snapshot has BBVI species');
 assert.equal(data.assessmentInfo.foodWeight,0.5,'the report weight is the official one');
 
-// (1) every step: "MBPI a · MFPI b" with a + b = 1.00 exactly (two decimals)
+// (1) every step: "생리활성 a · 식량 b" (2026-10-25: Korean names on the Korean screen) with a + b = 1.00 exactly (two decimals)
 for(let k=0;k<=20;k++){
-  const [, a, b]=T.weightPair(k/20).match(/^MBPI (\d\.\d\d) · MFPI (\d\.\d\d)$/);
+  const [, a, b]=T.weightPair(k/20).match(/^생리활성 (\d\.\d\d) · 식량 (\d\.\d\d)$/);
   assert.equal((Math.round(Number(a)*100)+Math.round(Number(b)*100)),100,`step ${k}: ${a} + ${b}`);
   assert.equal(b,(k/20).toFixed(2));
 }
@@ -82,7 +82,7 @@ for(const w of [0,.2,.35,.8,1]){
 }
 console.log(`moved types: w 0.8 → ${independent(.8).length}종, w 0.2 → ${independent(.2).length}종 (of ${scored.length} BBVI species)`);
 T.syncWeightControl();
-assert.equal($('bbvi-weight-moved').hidden,true);assert.equal($('bbvi-weight').value,'10');assert.equal($('bbvi-weight-value').textContent,'MBPI 0.50 · MFPI 0.50');
+assert.equal($('bbvi-weight-moved').hidden,true);assert.equal($('bbvi-weight').value,'10');assert.equal($('bbvi-weight-value').textContent,'생리활성 0.50 · 식량 0.50');
 
 // (6) the MBPI floor line shows only while some BBVI carries the floor (none in verified-4.11)
 assert.equal($('bbvi-weight-floor').hidden,!S.some(s=>T.pilotScore(s,'BBVI')!==null&&s.assessment?.mbpi_floor));

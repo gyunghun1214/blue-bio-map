@@ -1672,3 +1672,6 @@ html.lang-en #explore #sp-name{overflow-wrap:anywhere}
   #explore .map-stage:has(.leaflet-popup) .map-full-ctl{visibility:hidden}
 }
 @media (max-width:740px) and (prefers-reduced-motion:reduce){#explore .explorer.map-snap .map-stage{transition:none}}
+
+/* 2026-10-25 설문 피드백(약어·지표 이름): 활용가치 숫자 아래 계산 한 줄 */
+#explore .sp-calc{grid-column:1/-1;margin:6px 0 0;color:#C3D1D9;font-size:13px;font-variant-numeric:tabular-nums}

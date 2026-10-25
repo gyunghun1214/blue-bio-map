@@ -273,6 +273,16 @@ const pilotScore = (s,key) => {
 };
 // One axis state for every view: comparison, detail, summary, popup, matrix, CSV and WebMCP.
 // "조회 실패" (report not reached) and "기술 오류" (trace did not re-check) are never "산출 보류".
+// 2026-10-25 (설문 피드백: 약어·지표 이름이 어렵다는 의견이 가장 많음): 활용가치 숫자 아래에 화면에 보이는 값 그대로의 계산 한 줄.
+// 보이는 값(반올림 후)으로 다시 계산해 보이는 활용가치와 0.5 넘게 다르면 '≈'를 쓴다. 산출 보류·검증 전 보고서는 줄을 쓰지 않는다.
+function bbviCalcLine(s){
+  if(!VERIFIED.includes(s?.assessment?.report_version))return '';
+  const b=pilotScore(s,'BBVI'),f=pilotScore(s,'MFPI'),m=pilotScore(s,'MBPI');if(b===null||f===null||m===null)return '';
+  const w=Number(bbviWeight.toFixed(2)),wb=Number((1-bbviWeight).toFixed(2));
+  const fd=scoreValue(s,'MFPI',f),md=scoreValue(s,'MBPI',m),bd=scoreValue(s,'BBVI',b);
+  const eq=Math.abs(w*Number(fd)+wb*Number(md)-Number(bd))<0.5?'=':'≈';
+  return `식량 ${fd} × ${w} + 생리활성 ${md} × ${wb} ${eq} ${bd}`;
+}
 function axisState(s,key){
   const value=pilotScore(s,key);
   if(value!==null)return {value,kind:'scored',label:scoreText(s,key,value)};
@@ -1152,7 +1162,7 @@ const W_STEPS=20;
 const officialWeight=()=>{const w=data?.assessmentInfo?.foodWeight;return Number.isFinite(w)&&w>=0&&w<=1?w:.5;};
 const weightStep=w=>Math.round(w*W_STEPS);
 const weightOff=()=>weightStep(bbviWeight)!==weightStep(officialWeight());
-const weightPair=(w=bbviWeight)=>{const k=weightStep(w);return `MBPI ${((W_STEPS-k)/W_STEPS).toFixed(2)} · MFPI ${(k/W_STEPS).toFixed(2)}`;};
+const weightPair=(w=bbviWeight)=>{const k=weightStep(w);return LANG==='en'?`MBPI ${((W_STEPS-k)/W_STEPS).toFixed(2)} · MFPI ${(k/W_STEPS).toFixed(2)}`:`생리활성 ${((W_STEPS-k)/W_STEPS).toFixed(2)} · 식량 ${(k/W_STEPS).toFixed(2)}`;};
 // the report's own BBVI beside an on-screen re-mix ('공식 55.1'), only when the weight is not the official one and the two differ
 const officialBbvi=s=>pilotScore(s,'BBVI')===null?null:VERIFIED.includes(s.assessment?.report_version)?s.assessment.scores.BBVI:pilotScore(s,'BBVI');
 const officialType=s=>matrixTypeAt(s,bbviRawAt(s,officialWeight()));
@@ -2393,17 +2403,18 @@ function renderSidePanel(s){
   const bar=(v,cls)=>v===null?'':`<span class="sp-bar ${cls}" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></span>`;
   const held=st=>`<span class="sp-held">${esc(st.label)}</span>`;
   const cat=m.value===null?'':mcuiCatTag(s),word=mcuiBasisWord(s);
-  const bbviPop=`식량(MFPI)과 생리활성(MBPI) 근거를 합친 탐색용 활용 지표입니다(w = ${bbviWeight.toFixed(2)}${rule?` · ${esc(thresholdWord())} ${rule.bbvi_threshold}`:''}). 보전 시급성 MCUI와 따로 봅니다.`;
-  const mcuiPop=`${esc(mcuiDefOf(s))}을 0–100점으로 옮긴 값입니다${rule?` · ${esc(thresholdWord())} ${rule.mcui_threshold}`:''}. 활용가치 BBVI와 따로 봅니다.`;
+  const bbviPop=`활용가치(BBVI)는 식량(MFPI)과 생리활성(MBPI) 근거를 합친 탐색용 활용 지표입니다(w = ${bbviWeight.toFixed(2)}${rule?` · ${esc(thresholdWord())} ${rule.bbvi_threshold}`:''}). 보전 시급성과 따로 봅니다.`;
+  const mcuiPop=`보전 시급성(MCUI)은 ${esc(mcuiDefOf(s))}을 0–100점으로 옮긴 값입니다${rule?` · ${esc(thresholdWord())} ${rule.mcui_threshold}`:''}. 활용가치와 따로 봅니다.`;
   const badgePop=esc(badge);
   box.innerHTML=`<div class="sp-head"><div class="sp-names"><h2 id="sp-name">${esc(s.label)}</h2><p class="sp-latin" lang="la">${esc(latinOf(s))}</p></div>`+
     (art?`<img class="sp-art" src="${art.src}" width="${art.w}" height="${art.h}" alt="${esc(art.alt)}" decoding="async">`:`<span class="sp-art sp-art-icon">${groupBadge(s)}</span>`)+`</div>`+
     `<p class="sp-type" title="${esc(matrixPlainNote())}">${typeShape(t,'sp-shape')}<b>${esc(t?matrixTypePlain(t):'—')}</b>${t?`<span class="sr-only"> (${esc(matrixTypeLabel(t))})</span>`:''}</p>`+
     (badge?`<div class="sp-badge-row"><button type="button" class="sp-badge" data-drawer-go="evidence">${esc(badge)} <span aria-hidden="true">›</span></button>${spInfo('sp-pop-badge','근거 배지',badgePop)}</div>`:'')+
-    `<section class="sp-score sp-bbvi" aria-labelledby="sp-bbvi-h"><div class="sp-score-head"><h3 id="sp-bbvi-h">활용가치 BBVI</h3>${spInfo('sp-pop-bbvi','활용가치 BBVI',bbviPop)}</div><p class="sp-range">0–100점</p>`+
+    `<section class="sp-score sp-bbvi" aria-labelledby="sp-bbvi-h"><div class="sp-score-head"><h3 id="sp-bbvi-h">활용가치</h3>${spInfo('sp-pop-bbvi','활용가치',bbviPop)}</div><p class="sp-range">0–100점</p>`+
       `<div class="sp-score-row">${b.value===null?held(b):`<strong class="sp-num">${scoreText(s,'BBVI',b.value)}</strong>`}${bar(b.value,'use')}</div>`+
+      (bbviCalcLine(s)?`<p class="sp-calc">${esc(bbviCalcLine(s))}</p>`:'')+
       (officialNote(s)?`<p class="sp-sub">${esc(officialNote(s))} · ${esc(weightPair())}</p>`:'')+`</section>`+
-    `<section class="sp-score sp-mcui" aria-labelledby="sp-mcui-h"><div class="sp-score-head"><h3 id="sp-mcui-h">보전 시급성 MCUI</h3>${spInfo('sp-pop-mcui','보전 시급성 MCUI',mcuiPop)}</div><p class="sp-range">0–100점</p>`+
+    `<section class="sp-score sp-mcui" aria-labelledby="sp-mcui-h"><div class="sp-score-head"><h3 id="sp-mcui-h">보전 시급성</h3>${spInfo('sp-pop-mcui','보전 시급성',mcuiPop)}</div><p class="sp-range">0–100점</p>`+
       `<div class="sp-score-row">${m.value===null?held(m):`<strong class="sp-num">${scoreValue(s,'MCUI',m.value)}</strong>`}${bar(m.value,'cons')}</div>`+
       ([cat,word].filter(Boolean).length?`<p class="sp-cat">${glossHtml(esc([cat,word].filter(Boolean).join(' · ')))}</p>`:'')+`</section>`+
     `<p class="sp-sep"><span>두 축은 별도로 봅니다.</span></p>`+
@@ -3497,8 +3508,8 @@ function renderValueLegend(groups,own=false){
     :`셀 색 = 회색 · ${esc(selected.label)}`;
   $('value-view').setAttribute('aria-pressed',String(!own));
   if(!rule)return;
-  $('v-axis-x').textContent=`BBVI(활용가치) → · ${thresholdWord()} ${rule.bbvi_threshold}`;
-  $('v-axis-y').textContent=`MCUI(보전 시급성) → · ${thresholdWord()} ${rule.mcui_threshold}`;
+  $('v-axis-x').textContent=`활용가치(BBVI) → · ${thresholdWord()} ${rule.bbvi_threshold}`;
+  $('v-axis-y').textContent=`보전 시급성(MCUI) → · ${thresholdWord()} ${rule.mcui_threshold}`;
   $('v-rule-line').textContent=own?'셀 색 = 선택 종의 유형(종 단위 값)':colourRuleLine();
 }
 // Method tab: one row per type in the colour precedence. Thresholds come from the report.
@@ -4336,9 +4347,9 @@ function renderCompareProfile(){
     `<span id="cmp-add-note" class="cp-add-note">${inBasket?'<span class="sr-only">다시 누르면 비교에서 빠집니다</span>':full?'최대 3종까지 담을 수 있습니다':''}</span>`+
     // the plain verdict carries the formal type name for screen readers and on hover (the drawer shows it too)
     `<p class="cp-typeline${t?'':' none'}"${t?` data-type="${t}" title="${esc(matrixTypeLabel(t)+' · '+matrixPlainNote())}"`:''}><i class="cp-shape" aria-hidden="true"></i><b>${esc(matrixTypePlain(t))}</b><span class="sr-only">${t?' ('+esc(matrixTypeLabel(t))+')':''}</span></p></div>`+
-    `<section class="cp-use" aria-label="활용가치"><div class="cp-h"><h3>활용가치 <span>BBVI</span></h3>${info('use','활용가치 BBVI')}${badge?`<span class="cp-chip">${esc(badge)}</span>`:''}</div>`+
-    `<div class="cp-bigrow">${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}</div>${officialNote(s)?`<p class="cp-official">탐색 가중치 값 · ${esc(officialNote(s))}</p>`:''}${sub('MFPI','식량 MFPI')}${sub('MBPI','생리활성 MBPI')}</section>`+
-    `<section class="cp-con" aria-label="보전 시급성"><div class="cp-h"><h3>보전 시급성 <span>MCUI</span></h3>${info('con','보전 시급성 MCUI')}</div>`+
+    `<section class="cp-use" aria-label="활용가치"><div class="cp-h"><h3>활용가치</h3>${info('use','활용가치')}${badge?`<span class="cp-chip">${esc(badge)}</span>`:''}</div>`+
+    `<div class="cp-bigrow">${ev('BBVI','cp-big',num('BBVI'))}${bar('BBVI',rule?.bbvi_threshold)}</div>${officialNote(s)?`<p class="cp-official">탐색 가중치 값 · ${esc(officialNote(s))}</p>`:''}${sub('MFPI','식량')}${sub('MBPI','생리활성')}${bbviCalcLine(s)?`<p class="cp-calc">${esc(bbviCalcLine(s))}</p>`:''}</section>`+
+    `<section class="cp-con" aria-label="보전 시급성"><div class="cp-h"><h3>보전 시급성</h3>${info('con','보전 시급성')}</div>`+
     `<div class="cp-bigrow">${ev('MCUI','cp-big',num('MCUI'))}${bar('MCUI',rule?.mcui_threshold)}</div>${cat?`<p class="cp-basis">${esc(cat)}</p>`:''}<p class="cp-apart">두 축은 별도로 봅니다.</p></section>`+
     `<div class="cp-actions"><button type="button" id="cmp-open-more" class="cmp-solid" aria-haspopup="dialog" aria-controls="cmp-drawer" aria-describedby="cmp-open-more-note">근거 자세히 보기 <span aria-hidden="true">→</span></button><span id="cmp-open-more-note" class="sr-only">유형·지표 구성·후보 화합물·보전 평가·원문을 엽니다 · 숫자를 누르면 그 지표의 근거</span>`+
     `<p class="cp-links">${ev('OCC','cmp-link','출현 기록 지도')}<span class="cp-dot" aria-hidden="true">·</span><a id="cmp-expedition" class="cmp-link" href="${go?.href||'expedition.html'}"${go?'':' hidden'}>${esc(go?.text||'바다 탐험에서 보기')}</a></p></div>`;
