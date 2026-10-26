@@ -2,7 +2,7 @@
    2026-10-25 휴대폰 글 양 줄이기 (LKH, prompts/mobile-compact-text-claude-code.md · verification/2026-10-25-mobile-compact-text)
    휴대폰(740px 이하, 첫 화면은 760px 이하)에서만 글을 지우지 않고 접거나 숨긴다. 문구는 한 글자도 그대로(DOM에 남는다),
    새로 보이는 '더 보기' · '접기' 글자는 이 파일의 content로만 그린다(textContent에 들어가지 않는다).
-   1) 첫 화면: 대회 연결 두 줄(.gate-task · .gate-connect)을 숨긴다. 출처 문단('근거와 방법' 맨 아래 .mt-context)은 그대로.
+   1) 첫 화면: 대회 연결 줄(.gate-connect)을 숨긴다(대회 과제 줄 .gate-task는 2026-10-26 첫 화면에서 뺐다). 출처 문단('근거와 방법' 맨 아래 .mt-context)은 그대로.
    2) 탐색 지도: 지도 설명 네 덩어리(.map-notes · .map-legend-more · 그 안의 .map-info · .legend-why)를 '읽는 법 ⓘ'로 여는
       아래 시트(#map-guide)에서 읽는다. 시트에 옮겨 담는 일과 열고 닫기는 mobile-compact.js가 한다(닫으면 제자리로 돌아간다).
    3) 비교와 지표 · 근거와 방법: 긴 항목은 첫 문장 뒤를 <details class="mc-more" open>(문단 안은 .mc-rest + .mc-more-btn)로
@@ -48,9 +48,9 @@
   html.lang-en details.mc-more[open]>summary::before,html.lang-en .mc-more-btn::before{content:"Collapse"}
 }
 
-/* ---- 첫 화면: 대회 연결 두 줄 (intro.css와 같은 760px) ---- */
+/* ---- 첫 화면: 대회 연결 줄 (intro.css와 같은 760px) ---- */
 @media (max-width:760px){
-  .gate-task,.gate-connect{display:none}
+  .gate-connect{display:none}
 }
 
 /* ---- 탐색 지도: 지도 읽는 법 시트 ---- */
