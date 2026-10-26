@@ -3,7 +3,8 @@
 LKH 지침 「탐색 지도 '공개 집계 기간 · 전체' 칩: 글자와 펼침 표시(⌃/⌄) 겹침 고치기」(prompts/map-period-chip-caret-overlap-claude-code.md,
 이 작업에는 첨부 파일로 받음)대로 겹침만 고쳤다. 문구·선택지·기본값·글자 크기·색·칩 위치·기간 바꾸기 동작·URL 해시는 그대로다.
 
-- 기준 커밋: main `3a5aca1` (#272 멍이 휴대폰 가림 병합 뒤)
+- 기준 커밋: main `3a5aca1` (#272 멍이 휴대폰 가림 병합 뒤). 작업 중 병합된 #273(지도 출처 ⓘ)·#277(멍이 크기·끌기) main `e7cccff`을 합친 뒤
+  새 검사(164 PASS)·CI 단위 단계·uicheck를 다시 돌렸다. `?v=`는 stamp를 다시 돌려도 바뀌지 않았다.
 - 실제 원인: `theme.css`의 `.period-filter button{padding:4px 10px}`(선택자 점수 0,1,1)이 칩 버튼 `.pf-toggle{padding:8px 34px 8px 14px}`(0,1,0)을
   이겨서, 화살표 자리로 잡아 둔 오른쪽 여백 34px가 10px로 줄었다. 화살표(`::after`)는 오른쪽에서 14px에 그대로 있어서 값 글자가 화살표 밑으로
   13.7px 들어갔다. 휴대폰만이 아니라 **모든 폭(360·390·768·1440)에서 같은 13.7px** 겹쳤다. 모바일 글자 크기 작업(#266)은 원인이 아니다
@@ -73,10 +74,12 @@ LKH 지침 「탐색 지도 '공개 집계 기간 · 전체' 칩: 글자와 펼�
   값 `<b>` 오른쪽이 화살표 왼쪽보다 4px 이상 왼쪽 · 값이 잘리지 않음 · 화살표 하나 · '출현 기록 / 활용 × 보전', '위성 · 수심', 확대 버튼과 사각형
   교차 없음 · 가로 넘침 없음 · 링크에 기간 · 고를 때마다 같은 글자 크기 · 지도가 기간에 따라 다시 그려짐 · 열린 목록이 다른 컨트롤 밑에 있지 않음 ·
   키보드 포커스 링. Chromium 164 PASS / 0 FAIL, 고치기 전 main에서는 16건(모든 폭·선택지의 겹침) FAIL.
-- **CI**: `verify.yml`에 `webkit` 작업(ubuntu, `playwright@1.63.0` + `install --with-deps chromium webkit`)을 더해 이 검사를 두 엔진으로 돌린다.
+- **CI**: `verify.yml`에 `webkit` 작업(ubuntu, Playwright 공식 이미지 `mcr.microsoft.com/playwright:v1.63.0-noble` + `playwright@1.63.0`)을 더해
+  이 검사를 두 엔진으로 돌린다. 처음에는 `install --with-deps`로 브라우저 시스템 라이브러리를 apt로 받았는데 15분 제한에 걸려, 라이브러리가
+  든 이미지로 바꿨다. 이미지에 Python이 없어 검사가 `--serve`로 `dist/`를 직접 띄운다.
   Windows 작업은 의존성 없이 설치된 Chrome을 쓰므로 Playwright를 거기 넣지 않았다. 단위 작업에 `node --check verification/period_chip_check.mjs`.
 - CI 단위 단계 58개 명령(`node verification/test_*.mjs`, `python scripts/build_expedition_stops.py --check`, Python 3.12 `unittest discover` 등) 모두 통과.
-- `uicheck.mjs`(로컬, `FIXTURE=dist/live-snapshot.json`): 287 PASS / 4 FAIL. 4건은 클라우드에서 지도 타일(NASA GIBS·GEBCO)이 막혀 생기는
+- `uicheck.mjs`(로컬, `FIXTURE=dist/live-snapshot.json`): 287 PASS / 4 FAIL(main `e7cccff`을 합친 뒤 290 PASS / 4 FAIL). 4건은 클라우드에서 지도 타일(NASA GIBS·GEBCO)이 막혀 생기는
   환경 실패(위성·수심 타일, 저장된 '기본' 기본값, A-5 공유 링크 배경)로 main에서도 같다.
 - 이 칩에 묶인 기존 검사: `uicheck.mjs`의 기간 필터 검사(`#period-filter [data-period]` 클릭, 레이어 수·셀 표·해시·요약), `test_map_boundary.mjs`
   (팝업의 '공개 집계 기간 …' 문구). 둘 다 그대로 통과, 기대값 충돌 없음.

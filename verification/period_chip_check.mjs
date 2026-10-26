@@ -6,7 +6,8 @@
 //   - the chip crosses neither '출현 기록 / 활용 × 보전', '위성 · 수심' nor the zoom buttons
 //   - no sideways page scroll; the map's layers and the link change with the period; the font size is the same for every pick
 //   - keyboard focus (Tab from '활용 × 보전') shows a focus ring on the chip; the open menu is not under another control
-// Usage: node verification/period_chip_check.mjs <output-directory>   (site served at URL0, default http://127.0.0.1:8765/)
+// Usage: node verification/period_chip_check.mjs <output-directory> [--serve]   (site served at URL0, default http://127.0.0.1:8765/)
+//   --serve: serve dist/ on 127.0.0.1:8765 from this script (the CI Playwright container has no Python)
 //   ENGINES=chromium,webkit (default both) · SIZES=360,390,768,1440 · Playwright from `import('playwright')`, else PW_REQUIRE
 //   (a folder whose node_modules has it, e.g. /opt/node-tools/). The species list comes from dist/live-snapshot.json.
 import fs from 'node:fs'; import path from 'node:path'; import {createRequire} from 'node:module'; import {fileURLToPath} from 'node:url';
@@ -17,6 +18,14 @@ const pw=await import('playwright').catch(()=>createRequire(process.env.PW_REQUI
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const fx=JSON.parse(fs.readFileSync(path.join(HERE,'..','dist','live-snapshot.json'),'utf8'));
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
+if(process.argv.includes('--serve')){
+  const http=await import('node:http'),DIST=path.join(HERE,'..','dist');
+  const TYPES={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2','.webp':'image/webp','.jpg':'image/jpeg'};
+  const server=http.createServer((q,r)=>{let f=path.join(DIST,decodeURIComponent(new URL(q.url,URL0).pathname));
+    if(!f.startsWith(DIST)){r.writeHead(403).end();return;}if(fs.existsSync(f)&&fs.statSync(f).isDirectory())f=path.join(f,'index.html');
+    fs.readFile(f,(e,b)=>e?r.writeHead(404).end():r.writeHead(200,{'content-type':TYPES[path.extname(f)]||'application/octet-stream'}).end(b));});
+  await new Promise(ok=>server.listen(8765,'127.0.0.1',ok));server.unref();
+}
 const ENGINES=(process.env.ENGINES||'chromium,webkit').split(',');
 const SIZES=(process.env.SIZES||'360,390,768,1440').split(',').map(Number);
 const SPECIES=377084; // three periods in the snapshot: 2000–2015, 2000년 이전, 2016–2026
