@@ -2866,7 +2866,9 @@ Object.assign(I18N_EN,{
 "{0}의 MCUI는 {1}로 {2}점이 됐어요.":"The MCUI of {0} became {2} with {1}.",
 "(값은 종 상세 참고)":"(see species details for the value)",
 "종 상세에 적힌 근거":"the evidence in the species details",
-"값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.":"The value and evidence are in the MCUI field of the species details."
+"값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.":"The value and evidence are in the MCUI field of the species details.",
+"사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다":"Open the guide. Drag it, or use Shift and the arrow keys, to move it",
+"사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다":"Close the guide. Drag it, or use Shift and the arrow keys, to move it"
 });
 // @section 바다 탐험(expedition.js)
 Object.assign(I18N_EN,{
