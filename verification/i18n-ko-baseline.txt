@@ -1509,6 +1509,7 @@ BBVI
 @aria-label=Zoom out
 @title=Zoom out
 −
+@aria-label=배경 지도 출처 보기
 Leaflet
 |
 OBIS · GBIF

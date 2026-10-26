@@ -1874,7 +1874,8 @@ Object.assign(I18N_EN,{
 "지역과 해양 정화·갯벌 정화로 찾고 봉사시간 인증":"Search by region for coastal or tidal-flat clean-ups; volunteer hours are certified",
 "바깥 누리집으로 이동합니다.":"These links open outside websites.",
 "지도로 만난 바다를 직접 돌보고 싶다면":"If you want to care for the sea you met on the map",
-"4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)":"4/1 – 5/31 (4/1 – 4/30 for some fisheries)"
+"4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)":"4/1 – 5/31 (4/1 – 4/30 for some fisheries)",
+"배경 지도 출처 보기":"Show basemap credits"
 });
 // @section 비교와 지표(app.js)
 Object.assign(I18N_EN,{
