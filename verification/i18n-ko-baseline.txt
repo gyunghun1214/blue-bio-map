@@ -9800,6 +9800,8 @@ WoRMS · GBIF · OBIS · 국가표준식품성분 DB · FAO/INFOODS · ChEMBL ·
 279건
 지표 근거 167건 · 데이터셋 인용 82건 · 종별 학명 30건. 첫 화면의 근거 출처 232건은 지표 근거 167건과 지도 셀에 쓴 데이터셋 65건(이용조건별로 셈)입니다.
 종별 학명 출처 · WoRMS 인용문과 원문·이용조건 링크
+WoRMS 데이터베이스 인용
+WoRMS Editorial Board (2026). World Register of Marine Species. Available from https://www.marinespecies.org at VLIZ. doi:10.14284/170
 @aria-label=사용한 자료 출처 목록 · 스크롤
 참굴 · 학명
 MolluscaBase eds. (2026). MolluscaBase. Magallana gigas (Thunberg, 1793). Accessed through: World Register of Marine Species at: https://www.marinespecies.org/aphia.php?p=taxdetails&id=836033 on 2026-09-22

@@ -1,0 +1,994 @@
+[
+ {
+  "name": "chromium-360: species has the four choices",
+  "ok": true,
+  "detail": [
+   "all",
+   "2000년 이전",
+   "2000–2015",
+   "2016–2026"
+  ]
+ },
+ {
+  "name": "chromium-360: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2000년 이전: value shown",
+  "ok": true,
+  "detail": "2000년 이전"
+ },
+ {
+  "name": "chromium-360 2000년 이전: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.65625,
+   "caretLeft": 191.999394
+  }
+ },
+ {
+  "name": "chromium-360 2000년 이전: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2000년 이전: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2000년 이전: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-360 2000년 이전: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2000년 이전: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-360 2000년 이전: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%EB%85%84+%EC%9D%B4%EC%A0%84&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-360: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2000–2015: value shown",
+  "ok": true,
+  "detail": "2000–2015"
+ },
+ {
+  "name": "chromium-360 2000–2015: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.9375,
+   "caretLeft": 192.280644
+  }
+ },
+ {
+  "name": "chromium-360 2000–2015: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2000–2015: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2000–2015: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-360 2000–2015: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2000–2015: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-360 2000–2015: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-360: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2016–2026: value shown",
+  "ok": true,
+  "detail": "2016–2026"
+ },
+ {
+  "name": "chromium-360 2016–2026: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.296875,
+   "caretLeft": 191.640019
+  }
+ },
+ {
+  "name": "chromium-360 2016–2026: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2016–2026: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 2016–2026: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-360 2016–2026: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 2016–2026: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-360 2016–2026: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2016%E2%80%932026&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-360: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 전체: value shown",
+  "ok": true,
+  "detail": "전체"
+ },
+ {
+  "name": "chromium-360 전체: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 132.734375,
+   "caretLeft": 144.077519
+  }
+ },
+ {
+  "name": "chromium-360 전체: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 전체: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-360 전체: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-360 전체: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-360 전체: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-360 전체: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-360: same font size for every pick",
+  "ok": true,
+  "detail": [
+   "13px",
+   "13px",
+   "13px",
+   "13px"
+  ]
+ },
+ {
+  "name": "chromium-360: the map redraws for a period",
+  "ok": true,
+  "detail": [
+   [
+    "2000년 이전",
+    4
+   ],
+   [
+    "2000–2015",
+    8
+   ],
+   [
+    "2016–2026",
+    6
+   ],
+   [
+    "all",
+    8
+   ]
+  ]
+ },
+ {
+  "name": "chromium-360: Tab reaches the chip with a focus ring",
+  "ok": true,
+  "detail": {
+   "on": true,
+   "outline": true,
+   "shadow": false
+  }
+ },
+ {
+  "name": "chromium-360: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390: species has the four choices",
+  "ok": true,
+  "detail": [
+   "all",
+   "2000년 이전",
+   "2000–2015",
+   "2016–2026"
+  ]
+ },
+ {
+  "name": "chromium-390: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2000년 이전: value shown",
+  "ok": true,
+  "detail": "2000년 이전"
+ },
+ {
+  "name": "chromium-390 2000년 이전: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.65625,
+   "caretLeft": 191.999394
+  }
+ },
+ {
+  "name": "chromium-390 2000년 이전: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2000년 이전: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2000년 이전: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-390 2000년 이전: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2000년 이전: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-390 2000년 이전: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%EB%85%84+%EC%9D%B4%EC%A0%84&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-390: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2000–2015: value shown",
+  "ok": true,
+  "detail": "2000–2015"
+ },
+ {
+  "name": "chromium-390 2000–2015: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.9375,
+   "caretLeft": 192.280644
+  }
+ },
+ {
+  "name": "chromium-390 2000–2015: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2000–2015: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2000–2015: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-390 2000–2015: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2000–2015: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-390 2000–2015: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-390: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2016–2026: value shown",
+  "ok": true,
+  "detail": "2016–2026"
+ },
+ {
+  "name": "chromium-390 2016–2026: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 180.296875,
+   "caretLeft": 191.640019
+  }
+ },
+ {
+  "name": "chromium-390 2016–2026: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2016–2026: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 2016–2026: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-390 2016–2026: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 2016–2026: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-390 2016–2026: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2016%E2%80%932026&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-390: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 전체: value shown",
+  "ok": true,
+  "detail": "전체"
+ },
+ {
+  "name": "chromium-390 전체: value ends ≥4px left of the caret (gap 11.3px, 13px)",
+  "ok": true,
+  "detail": {
+   "vRight": 132.734375,
+   "caretLeft": 144.077519
+  }
+ },
+ {
+  "name": "chromium-390 전체: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 전체: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-390 전체: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-390 전체: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-390 전체: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-390 전체: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&m=5%2F37.09%2F127.00"
+ },
+ {
+  "name": "chromium-390: same font size for every pick",
+  "ok": true,
+  "detail": [
+   "13px",
+   "13px",
+   "13px",
+   "13px"
+  ]
+ },
+ {
+  "name": "chromium-390: the map redraws for a period",
+  "ok": true,
+  "detail": [
+   [
+    "2000년 이전",
+    4
+   ],
+   [
+    "2000–2015",
+    8
+   ],
+   [
+    "2016–2026",
+    6
+   ],
+   [
+    "all",
+    8
+   ]
+  ]
+ },
+ {
+  "name": "chromium-390: Tab reaches the chip with a focus ring",
+  "ok": true,
+  "detail": {
+   "on": true,
+   "outline": true,
+   "shadow": false
+  }
+ },
+ {
+  "name": "chromium-390: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768: species has the four choices",
+  "ok": true,
+  "detail": [
+   "all",
+   "2000년 이전",
+   "2000–2015",
+   "2016–2026"
+  ]
+ },
+ {
+  "name": "chromium-768: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2000년 이전: value shown",
+  "ok": true,
+  "detail": "2000년 이전"
+ },
+ {
+  "name": "chromium-768 2000년 이전: value ends ≥4px left of the caret (gap 11.3px, 12px)",
+  "ok": true,
+  "detail": {
+   "vRight": 453.28125,
+   "caretLeft": 464.624394
+  }
+ },
+ {
+  "name": "chromium-768 2000년 이전: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2000년 이전: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2000년 이전: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-768 2000년 이전: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2000년 이전: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-768 2000년 이전: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%EB%85%84+%EC%9D%B4%EC%A0%84&m=6%2F36.17%2F127.00"
+ },
+ {
+  "name": "chromium-768: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2000–2015: value shown",
+  "ok": true,
+  "detail": "2000–2015"
+ },
+ {
+  "name": "chromium-768 2000–2015: value ends ≥4px left of the caret (gap 11.3px, 12px)",
+  "ok": true,
+  "detail": {
+   "vRight": 453.546875,
+   "caretLeft": 464.890019
+  }
+ },
+ {
+  "name": "chromium-768 2000–2015: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2000–2015: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2000–2015: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-768 2000–2015: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2000–2015: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-768 2000–2015: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=6%2F36.17%2F127.00"
+ },
+ {
+  "name": "chromium-768: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2016–2026: value shown",
+  "ok": true,
+  "detail": "2016–2026"
+ },
+ {
+  "name": "chromium-768 2016–2026: value ends ≥4px left of the caret (gap 11.3px, 12px)",
+  "ok": true,
+  "detail": {
+   "vRight": 452.953125,
+   "caretLeft": 464.296269
+  }
+ },
+ {
+  "name": "chromium-768 2016–2026: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2016–2026: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 2016–2026: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-768 2016–2026: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 2016–2026: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-768 2016–2026: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2016%E2%80%932026&m=6%2F36.17%2F127.00"
+ },
+ {
+  "name": "chromium-768: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 전체: value shown",
+  "ok": true,
+  "detail": "전체"
+ },
+ {
+  "name": "chromium-768 전체: value ends ≥4px left of the caret (gap 11.3px, 12px)",
+  "ok": true,
+  "detail": {
+   "vRight": 409.046875,
+   "caretLeft": 420.390019
+  }
+ },
+ {
+  "name": "chromium-768 전체: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 전체: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-768 전체: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-768 전체: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-768 전체: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-768 전체: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&m=6%2F36.17%2F127.00"
+ },
+ {
+  "name": "chromium-768: same font size for every pick",
+  "ok": true,
+  "detail": [
+   "12px",
+   "12px",
+   "12px",
+   "12px"
+  ]
+ },
+ {
+  "name": "chromium-768: the map redraws for a period",
+  "ok": true,
+  "detail": [
+   [
+    "2000년 이전",
+    4
+   ],
+   [
+    "2000–2015",
+    16
+   ],
+   [
+    "2016–2026",
+    10
+   ],
+   [
+    "all",
+    16
+   ]
+  ]
+ },
+ {
+  "name": "chromium-768: Tab reaches the chip with a focus ring",
+  "ok": true,
+  "detail": {
+   "on": true,
+   "outline": true,
+   "shadow": false
+  }
+ },
+ {
+  "name": "chromium-768: no page errors",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440: species has the four choices",
+  "ok": true,
+  "detail": [
+   "all",
+   "2000년 이전",
+   "2000–2015",
+   "2016–2026"
+  ]
+ },
+ {
+  "name": "chromium-1440: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2000년 이전: value shown",
+  "ok": true,
+  "detail": "2000년 이전"
+ },
+ {
+  "name": "chromium-1440 2000년 이전: value ends ≥4px left of the caret (gap 11.3px, 15px)",
+  "ok": true,
+  "detail": {
+   "vRight": 1000.8125,
+   "caretLeft": 1012.155644
+  }
+ },
+ {
+  "name": "chromium-1440 2000년 이전: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2000년 이전: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2000년 이전: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-1440 2000년 이전: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2000년 이전: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-1440 2000년 이전: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%EB%85%84+%EC%9D%B4%EC%A0%84&m=6%2F36.79%2F127.31"
+ },
+ {
+  "name": "chromium-1440: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2000–2015: value shown",
+  "ok": true,
+  "detail": "2000–2015"
+ },
+ {
+  "name": "chromium-1440 2000–2015: value ends ≥4px left of the caret (gap 11.3px, 15px)",
+  "ok": true,
+  "detail": {
+   "vRight": 1000.8125,
+   "caretLeft": 1012.155644
+  }
+ },
+ {
+  "name": "chromium-1440 2000–2015: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2000–2015: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2000–2015: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-1440 2000–2015: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2000–2015: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-1440 2000–2015: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2000%E2%80%932015&m=6%2F36.79%2F127.31"
+ },
+ {
+  "name": "chromium-1440: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2016–2026: value shown",
+  "ok": true,
+  "detail": "2016–2026"
+ },
+ {
+  "name": "chromium-1440 2016–2026: value ends ≥4px left of the caret (gap 11.3px, 15px)",
+  "ok": true,
+  "detail": {
+   "vRight": 1000.8125,
+   "caretLeft": 1012.155644
+  }
+ },
+ {
+  "name": "chromium-1440 2016–2026: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2016–2026: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 2016–2026: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-1440 2016–2026: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 2016–2026: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-1440 2016–2026: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&p=2016%E2%80%932026&m=6%2F36.79%2F127.31"
+ },
+ {
+  "name": "chromium-1440: open menu not under another control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 전체: value shown",
+  "ok": true,
+  "detail": "전체"
+ },
+ {
+  "name": "chromium-1440 전체: value ends ≥4px left of the caret (gap 11.3px, 15px)",
+  "ok": true,
+  "detail": {
+   "vRight": 1000.8125,
+   "caretLeft": 1012.155644
+  }
+ },
+ {
+  "name": "chromium-1440 전체: value not cut",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 전체: caret inside the chip",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "chromium-1440 전체: one caret",
+  "ok": true,
+  "detail": 1
+ },
+ {
+  "name": "chromium-1440 전체: chip crosses no other map control",
+  "ok": true,
+  "detail": []
+ },
+ {
+  "name": "chromium-1440 전체: no sideways scroll",
+  "ok": true,
+  "detail": 0
+ },
+ {
+  "name": "chromium-1440 전체: link carries the period",
+  "ok": true,
+  "detail": "#s=377084&v=explore&b=basic&t=occurrence&m=6%2F36.79%2F127.31"
+ },
+ {
+  "name": "chromium-1440: same font size for every pick",
+  "ok": true,
+  "detail": [
+   "15px",
+   "15px",
+   "15px",
+   "15px"
+  ]
+ },
+ {
+  "name": "chromium-1440: the map redraws for a period",
+  "ok": true,
+  "detail": [
+   [
+    "2000년 이전",
+    4
+   ],
+   [
+    "2000–2015",
+    16
+   ],
+   [
+    "2016–2026",
+    10
+   ],
+   [
+    "all",
+    16
+   ]
+  ]
+ },
+ {
+  "name": "chromium-1440: Tab reaches the chip with a focus ring",
+  "ok": true,
+  "detail": {
+   "on": true,
+   "outline": true,
+   "shadow": false
+  }
+ },
+ {
+  "name": "chromium-1440: no page errors",
+  "ok": true,
+  "detail": []
+ }
+]

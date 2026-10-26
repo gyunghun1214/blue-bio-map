@@ -482,7 +482,8 @@ Object.assign(I18N_EN,{
 "공식 산출값은 w = 0.50으로 고정입니다.":"The official value is fixed at w = 0.50.",
 "두 축이 모두 산출된 종에만 적용하고, 비교집단은 고정됩니다.":"It applies only to species with both axes calculated, and the comparison sets stay fixed.",
 "근거와 방법에서 자세히 보기":"See details in Evidence & methods",
-"지도 읽는 법 보기":"See how to read the map"
+"지도 읽는 법 보기":"See how to read the map",
+"WoRMS 데이터베이스 인용":"WoRMS database citation"
 });
 // @section 탐색 지도(app.js)
 Object.assign(I18N_EN,{
