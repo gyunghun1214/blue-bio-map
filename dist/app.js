@@ -3072,7 +3072,21 @@ function setMapChip(s,text,title=''){
   chip.hidden=!text;if(!text)return;
   const t=s?matrixType(s):null;
   chip.innerHTML=(s?`<i class="mc-dot${t?'':' none'}"${t?` style="background-color:${matrixTypeColour[t]}"`:''} aria-hidden="true"></i><b>${esc(s.label)}</b> <span class="mc-sep" aria-hidden="true">·</span> `:'')+`<span>${esc(text)}</span>`;
-  chip.title=title;
+  // 2026-10-26: 이름이 말줄임으로 잘려도 전체 문구를 볼 수 있게 title 앞에 칩 문구 전체를 붙인다(기존 title '기록 연도 …'는 뒤에 그대로).
+  // 영어 화면은 조각마다 칩 글자와 같은 사전으로 옮겨 붙인다(이어 붙인 한 줄을 통째로 옮기면 '공개 셀 N개'가 칩과 다르게 옮겨진다)
+  const en=x=>LANG==='en'&&typeof i18nTr==='function'?i18nTr(i18nKey(x))??x:x;
+  chip.title=[s?.label,text,title].filter(Boolean).map(en).join(' · ');
+  placeChip();
+}
+// 2026-10-26 겹침 정리: 칩은 모드·기간 묶음 옆(넓은 화면) 또는 아래(741~1179px)에 다 들어갈 때만 그 자리에 두고, 아니면 오른쪽 위 묶음
+// 아래로 내린다(.mc-low, 자리는 theme.css가 --tr-b로 정한다). 내려가서도 좁으면 종 이름만 말줄임되고, 그때는 title을 보이게 마우스를 받는다(.mc-cut)
+function placeChip(){
+  const chip=$('map-chip');if(!chip||chip.hidden||!chip.offsetParent)return;
+  const b=chip.querySelector('b,span:only-child');
+  chip.classList.remove('mc-low','mc-cut');
+  const cut=()=>!!b&&b.scrollWidth>b.clientWidth+1;
+  if(cut())chip.classList.add('mc-low');
+  chip.classList.toggle('mc-cut',cut());
 }
 // 2026-10-15 design match: public cells and records on the chip, the record years in its title
 const chipCells=pv=>`공개 셀 ${spatialCells(pv).length}개 · 기록 ${cellRecords(pv).toLocaleString()}건`;
@@ -5041,9 +5055,14 @@ syncWide(); // fold the filters before the data arrives, so the list does not ju
 // 2026-10-13 design 2: the key is attached to the list (no gap) unless it is folded to its button.
 {const key=document.querySelector('.map-ui-bl');
   if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight,gap=key.classList.contains('legend-collapsed')&&$('value-key').hidden?12:0;$('explore').style.setProperty('--key-h',h?h+gap+'px':'0px');}).observe(key);}
-// From 741 to 1280px the summary chip sits under the mode and period bar, whatever its height (theme.css reads --tl-h).
-{const bar=document.querySelector('.map-ui-tl');
-  if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}
+// 지도 위 버튼 묶음의 실제 크기를 theme.css에 넘긴다: 왼쪽 위(모드·기간) 묶음의 높이·너비(--tl-h·--tl-w), 오른쪽 위(배경·링크 복사·전체 보기,
+// 좁은 화면에서는 작은 2×2 표도) 묶음의 너비와 아래끝(--tr-w·--tr-b). 오른쪽 위 묶음은 왼쪽 위 묶음 옆 남은 폭에서 줄바꿈하고, 칩은 둘을 피한다
+// (2026-10-26 겹침 정리; 원래 --tl-h만 넘기던 관찰기 하나가 두 묶음과 지도 판을 함께 본다)
+{const bar=document.querySelector('.map-ui-tl'),tr=document.querySelector('.map-ui-tr');
+  if(bar&&tr&&globalThis.ResizeObserver){const ex=$('explore'),ro=new ResizeObserver(()=>{
+    ex.style.setProperty('--tl-h',bar.offsetHeight+'px');ex.style.setProperty('--tl-w',bar.offsetWidth+'px');
+    ex.style.setProperty('--tr-w',tr.offsetWidth+'px');ex.style.setProperty('--tr-b',tr.offsetTop+tr.offsetHeight+'px');placeChip();});
+    ro.observe(bar);ro.observe(tr);ro.observe(bar.parentElement);}} // 지도 판(.map-stage) 크기가 바뀌어도(창 너비, 탭 열기) 칩 자리를 다시 본다
 $('value-view').addEventListener('click',()=>{valueView=valueView==='species'?'all':'species';typeFilter.clear();renderMap();});
 $('reload-data').addEventListener('click',()=>{startHash={...readHash(),v:null};loadCollection();});
 // "↻ 다시 시도" in the failure lines (banner, list, comparison) does what the header's ↻ does

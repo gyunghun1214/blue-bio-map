@@ -157,7 +157,8 @@ assert.equal(markers.filter(m=>/bbvi-tag/.test(m.options.icon?.className)).lengt
 assert.equal(nodes.get('map-chip').hidden,false);
 // 2026-10-15 탐색 지도 시안: the chip reads '공개 셀 N개 · 기록 N건'; the years move to its title (still under the map)
 assert.equal(nodes.get('map-chip').innerHTML,'<i class="mc-dot none" aria-hidden="true"></i><b>시험 종</b> <span class="mc-sep" aria-hidden="true">·</span> <span>공개 셀 1개 · 기록 500건</span>','no type without a report rule: grey dot');
-assert.equal(nodes.get('map-chip').title,'기록 연도 2015–2020');
+// 2026-10-26: the title starts with the chip's whole text (the name can be cut with … on narrow maps), the years stay at its end
+assert.equal(nodes.get('map-chip').title,'시험 종 · 공개 셀 1개 · 기록 500건 · 기록 연도 2015–2020');
 assert.deepEqual([nodes.get('map-cells').textContent,nodes.get('map-count').textContent,nodes.get('map-years').textContent],[1,'500','2015–2020']);
 assert.equal(nodes.get('key-bubble-mark').hidden,true);assert.equal(nodes.get('key-dot-mark').hidden,false);
 assert.equal(nodes.get('map-symbol-label').textContent,'점선 = 4° 셀 · 점 = 기록 수 구간(도식)\n기록이 있는 칸의 위치(넓게 묶음)','the cell size comes from the cells');

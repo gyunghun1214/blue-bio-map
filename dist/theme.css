@@ -81,7 +81,7 @@ main{max-width:none;margin:0;padding:0}
 .map-ui{position:absolute;z-index:500;display:flex;gap:8px;pointer-events:none}
 .map-ui>*{pointer-events:auto}
 .map-ui-tl{top:14px;left:14px;flex-direction:column;align-items:flex-start}
-.map-ui-tr{top:14px;right:14px;max-width:55%;flex-wrap:wrap;justify-content:flex-end}
+.map-ui-tr{top:14px;right:14px;max-width:calc(100% - 40px - var(--tl-w,45%));flex-wrap:wrap;justify-content:flex-end}
 .map-ui-bl{left:14px;bottom:14px;flex-direction:column;align-items:flex-start;max-width:min(340px,calc(100% - 90px))}
 .map-mode{gap:2px;padding:3px;border:0;border-radius:11px;background:#fff;box-shadow:var(--shadow)}
 .map-mode button{white-space:nowrap;padding:7px 14px;border:0;border-radius:8px;background:none;color:var(--ink2);font-size:13px;font-weight:500}
@@ -274,7 +274,7 @@ footer{max-width:none;padding:16px 20px;background:#fff}
   .map-caption,.map-review-note,.map-judgment,#value-cell-detail,#cell-table{order:4;margin:8px 12px 0}
   .detail-pane{order:6;position:static;height:auto;margin-top:12px;padding:18px 16px 24px;border:0;border-top:8px solid var(--bg)}
   .map-ui-tl{top:10px;left:10px}
-  .map-ui-tr{top:10px;right:10px}
+  .map-ui-tr{top:10px;right:10px;max-width:calc(100% - 28px - var(--tl-w,45%))}
   .map-ui-bl{left:10px;bottom:10px;max-width:calc(100% - 64px)}
   .map-mode button{padding:5px 10px;font-size:12px}
   .basemap-switch button{padding:4px 8px;font-size:12px}
@@ -931,20 +931,22 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 @media (max-width:1100px){.chip-freeze{display:none}}
 @media (max-width:740px){.status-chip#notice-chip{max-width:calc(100vw - 80px)}}
 
-/* map summary chip over the free part of the map: '● 참굴 기록 셀 19개 · 335건 · 2010–2026' (one line, display only). From 741 to
-   1280px it sits under the mode and period bar (app.js passes that bar's height as --tl-h); phones show the same in the sheet. */
-.map-chip{position:absolute;z-index:500;top:calc(var(--tl-h,36px) + 24px);left:14px;box-sizing:border-box;max-width:calc(100% - 28px);padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--ink2);font-size:13px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+/* map summary chip over the free part of the map: '● 참굴 · 공개 셀 19개 · 기록 335건' (one line, display only).
+   2026-10-26 겹침 정리: 칩은 버튼 묶음의 실제 크기를 보고 놓인다(app.js placeChip이 --tl-h·--tl-w·--tr-w·--tr-b를 넘긴다).
+   741~1179px: 모드·기간 묶음 아래, 오른쪽 위 묶음(작은 2×2 표 포함)의 왼쪽. 다 들어가지 않으면(.mc-low) 오른쪽 위 묶음 아래로 내려 폭을 다 쓴다.
+   줄어들 때는 종 이름만 말줄임(…)하고 점·셀 수·기록 수는 그대로 둔다. 휴대폰은 같은 내용을 시트에 보인다. */
+.map-chip{position:absolute;z-index:500;top:calc(var(--tl-h,36px) + 24px);left:14px;box-sizing:border-box;display:flex;align-items:center;gap:4px;max-width:calc(100% - 40px - var(--tr-w,0px));padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.97);box-shadow:var(--shadow);color:var(--ink2);font-size:13px;line-height:1.35;white-space:nowrap;overflow:hidden;pointer-events:none}
+.map-chip.mc-low{top:max(calc(var(--tl-h,36px) + 24px),calc(var(--tr-b,0px) + 12px));max-width:calc(100% - 28px)}
+.map-chip>*{flex:none}
+.map-chip>b,.map-chip>span:only-child{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+/* 이름이 잘렸을 때만 마우스를 받아 title(전체 문구 · 기록 연도)을 보인다. 평소에는 지도 끌기가 칩을 지나간다 */
+.map-chip.mc-cut{pointer-events:auto}
 .map-chip b{color:var(--ink);font-weight:700}
 .map-chip span{font-variant-numeric:tabular-nums}
-.mc-dot{display:inline-block;width:9px;height:9px;margin-right:8px;border-radius:50%;vertical-align:0}
+.mc-dot{display:inline-block;width:9px;height:9px;margin-right:4px;border-radius:50%;vertical-align:0}
 .mc-dot.none{box-sizing:border-box;border:1.5px solid #8193a4}
 #explore .map-chip{border:1px solid var(--nv-edge);background:rgba(11,31,45,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 @media (max-width:740px){.map-chip{display:none!important}}
-@media (min-width:1180px){
-  #explore .map-chip{top:16px;left:calc(var(--pane-l) + 32px);max-width:calc(100% - var(--pane-l) - var(--pane-r) - 64px)}
-}
-/* where the top-right buttons would meet the chip (the free part is narrow), the chip steps below them */
-@media (min-width:1180px) and (max-width:1439px){#explore .map-chip{top:62px}}
 /* legend in two lines (design 2): the mark and what the map shows now, then 조사량 with its date and 'ⓘ 범례' at the right end.
    The scale shows while the shading is on; the bubble row, the note and the full text open from 'ⓘ 범례'. */
 .map-ui-bl .key-line{align-items:flex-start}
@@ -1255,7 +1257,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .list-foot .text-button:hover{background:rgba(142,197,215,.08)}
   #explore .act-ico{flex:none;width:20px;height:20px}
   /* map controls over the free part of the map */
-  #explore .map-chip{top:var(--pt);left:var(--free-l);height:44px;box-sizing:border-box;display:flex;align-items:center;gap:8px;max-width:calc(100% - var(--free-l) - var(--free-r));padding:0 16px;border:1px solid var(--x-border2);border-radius:10px;background:#052033;color:#E5EDF1;font-size:16px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+  #explore .map-chip{top:var(--pt);left:var(--free-l);height:44px;box-sizing:border-box;display:flex;align-items:center;gap:8px;max-width:calc(100% - var(--free-l) - var(--free-r) - var(--tl-w,0px) - 16px);padding:0 16px;border:1px solid var(--x-border2);border-radius:10px;background:#052033;color:#E5EDF1;font-size:16px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
   #explore .map-chip b{margin-right:2px;color:#fff}
   #explore .mc-dot{width:10px;height:10px;margin-right:4px}
   #explore .mc-sep{color:#A9BBC6}
@@ -1281,8 +1283,8 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
   #explore .map-title #reset-map{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/%3E%3C/svg%3E")}
   #explore .map-ui-tr .vk-view[aria-pressed=true]{border-color:var(--x-fill);background:#15475A}
   #explore .basemap-status{flex-basis:100%}
-  /* below about 1600px the chip needs the room of the two right rows: it sits under them, at the left of the free part */
-  @media (max-width:1549px){#explore .map-chip{top:calc(var(--pt) + 110px)}}
+  /* 칩은 모드·기간 묶음의 왼쪽(위 줄)에 다 들어갈 때만 두고, 아니면 오른쪽 위 두 줄(배경·링크 복사·전체 보기, 활용 모드에서는 겹쳐 보기도) 아래로 */
+  #explore .map-chip.mc-low{top:calc(var(--tr-b,128px) + 12px);max-width:calc(100% - var(--free-l) - var(--free-r))}
   /* bottom-left: the occurrence key or the 2×2 legend card, at the left of the free part; the zoom buttons at its right */
   #explore .map-ui-bl{left:var(--free-l);bottom:var(--pb);width:min(430px,calc(100% - var(--free-l) - var(--free-r) - 70px));max-width:none}
   #explore .map-ui-bl .map-key,#explore .value-mini{box-sizing:border-box;width:100%;border:1px solid var(--x-border2);border-radius:12px;background:#031A29;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 26px rgba(0,0,0,.35)}

@@ -1194,6 +1194,9 @@ try{
   await mouse('mousePressed',typed[0]);await mouse('mouseReleased',typed[0]);await sleep(400);const iconOne=await iconState();
   await mouse('mouseMoved',typed[1]);await mouse('mousePressed',typed[1]);await mouse('mouseReleased',typed[1]);await sleep(400);const iconTwo=await iconState();
   for(const c of typed.slice(0,2)){await mouse('mouseMoved',c);await mouse('mousePressed',c);await mouse('mouseReleased',c);await sleep(300);}
+  // 2026-10-26: the wheel is judged against the view just before it. The first click opens the all-species view, whose long chip
+  // may step below the top-right buttons (placeChip) and so refit the cells a little lower: that move is not the wheel's.
+  const iconPreWheel=await iconState();
   await mouse('mouseWheel',typed[0],{deltaX:0,deltaY:-600,button:'none'});await sleep(500);const iconAfter=await iconState();
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:5,y:5});
   // 2026-10-15 탐색 지도 시안: the 2×2 is the bottom-left key of the free map area (shape + name per type, 44px rows), not the 72px corner icon
@@ -1201,7 +1204,7 @@ try{
     JSON.stringify(icon.legend)===JSON.stringify(icon.cells.map(c=>[c.key,c.n+'셀',c.bg]))&&icon.size[0]>=260&&icon.cellH>=44&&icon.inBl&&icon.beside&&icon.below&&typed.length>=2&&
     iconS0.drawn===icon.all&&iconS0.dim===0&&iconHover.dim===icon.all-typed[0].n&&iconHover.tip.includes(typed[0].tip)&&
     iconOne.drawn===typed[0].n&&JSON.stringify(iconOne.pressed)===JSON.stringify([typed[0].key])&&iconTwo.drawn===typed[0].n+typed[1].n&&iconTwo.pressed.length===2&&
-    iconAfter.drawn===icon.all&&!iconAfter.pressed.length&&iconAfter.zoom===iconS0.zoom&&iconAfter.centre===iconS0.centre,JSON.stringify({icon,iconS0,iconHover,iconOne,iconTwo,iconAfter}));
+    iconAfter.drawn===icon.all&&!iconAfter.pressed.length&&iconAfter.zoom===iconPreWheel.zoom&&iconAfter.centre===iconPreWheel.centre,JSON.stringify({icon,iconS0,iconHover,iconOne,iconTwo,iconPreWheel,iconAfter}));
   // 4.0: the outside candidates' list and purple markers (no score, one marker per public cell; a failed record check says so)
   const outList=await evaluate(`(async()=>{const box=document.querySelector('#layer-unexplored');box.checked=true;box.dispatchEvent(new Event('change'));
     await new Promise(r=>setTimeout(r,300));const d=document.querySelector('#unexplored-outside'),li=[...d.querySelectorAll('li')].map(e=>e.textContent);
@@ -2146,6 +2149,38 @@ try{
   const xr=await evaluate("({lang:document.documentElement.lang,doc:document.documentElement.scrollWidth,vw:innerWidth})");
   check('L-2 1440 바다 탐험: English screen, no sideways scroll',xr.lang==='en'&&xr.doc<=xr.vw,JSON.stringify(xr));
   await shot('lang-en-1440-expedition',false);
+  // ---------- O 지도 위 글씨 겹침 (2026-10-26, verification/2026-10-26-map-overlap): 14개 너비 × EN·KO × 두 모드 × 2종 ----------
+  // 지도 위에 뜬 요소끼리 상자가 겹치지 않는다(app.js placeChip, theme.css --tl-w·--tr-w·--tr-b). 한 요소가 다른 요소 안에 든 것은 겹침이
+  // 아니다(1180px 이상의 작은 2×2 표는 왼쪽 아래 묶음 안). 칩이 좁으면 종 이름만 말줄임되고 셀 수·기록 수는 다 보이며, 전체 문구는 title 앞에 있다.
+  // 종: 방어, 그리고 영어 칩이 가장 긴 꼬시래기(Gracilaria vermiculophylla, 2026-10-26 기준).
+  {const OV=`(()=>{const sel=['#map-chip','.map-mode','#period-filter','.basemap-switch','#copy-link','#reset-map','#value-mini','.map-ui-bl','.leaflet-control-zoom'];
+      const els=sel.map(s=>[s,document.querySelector(s)]).filter(([s,e])=>e&&e.offsetParent&&e.getBoundingClientRect().width>0),hits=[];
+      for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){const [sa,ea]=els[i],[sb,eb]=els[j];if(ea.contains(eb)||eb.contains(ea))continue;
+        const a=ea.getBoundingClientRect(),b=eb.getBoundingClientRect(),w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+        if(w>1&&h>1)hits.push(sa+' x '+sb+' '+Math.round(w)+'px');}
+      const c=document.getElementById('map-chip'),shown=!!c&&!!c.offsetParent,name=c?.querySelector('b'),nums=c?.querySelector('b~span:last-child'),cut=e=>!!e&&e.scrollWidth>e.clientWidth+1;
+      return {w:innerWidth,lang:document.documentElement.lang,hits,shown,nameCut:cut(name),numsCut:cut(nums)||(shown&&c.scrollWidth>c.clientWidth+1),title:c?.title||''};})()`;
+    const bad=[];let runs=0,cutAt=[];
+    for(const lang of ['en','ko']){
+      await viewport(1600,900,false);
+      await send('Page.navigate',{url:URL0+'?lang='+lang+'#v=explore'});
+      for(let i=0;i<120;i++){await sleep(250);if(await evaluate("typeof data!=='undefined'&&!!data?.species?.length&&document.readyState==='complete'").catch(()=>false))break;}
+      if(await evaluate("document.documentElement.classList.contains('gate-on')")){await gateReady();await evaluate("document.getElementById('gate-enter').click();1");await sleep(1100);}
+      for(const sp of [276651,236157]){
+        if(!await evaluate(`!!document.querySelector('[data-species="${sp}"]')`))continue;
+        for(const mode of ['occurrence','value']){
+          await evaluate(`document.querySelector('[data-species="${sp}"]').click();document.querySelector('[data-map-mode="${mode}"]').click();scrollTo(0,0);1`);
+          for(const w of [390,760,800,900,1000,1024,1180,1280,1440,1550,1600,1700,1800,1920]){
+            await viewport(w,900,false);await sleep(350);
+            const r=await evaluate(OV);runs++;
+            if(r.hits.length||r.numsCut||(r.shown&&!r.title.includes(' · ')))bad.push({lang,sp,mode,...r});
+            if(r.nameCut)cutAt.push(`${lang} ${sp} ${mode} ${w}`);
+          }
+        }
+      }
+    }
+    check('O-1 지도 위 요소끼리 겹침 0건 (14개 너비 × EN·KO × 두 모드 × 방어·꼬시래기), 칩 숫자는 잘리지 않고 title에 전체 문구',runs>=100&&!bad.length,JSON.stringify({runs,bad:bad.slice(0,6),nameCut:cutAt}));
+    await viewport(1440,900,false);}
   await evaluate("try{localStorage.removeItem('lang')}catch{};1");
   await send('Page.navigate',{url:URL0});await loaded();
   await viewport(1560,900,false);await evaluate("setView('explore');1");
