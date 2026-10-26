@@ -1886,7 +1886,8 @@ Object.assign(I18N_EN,{
 "만난 관찰을 이 지도에 더하기":"Add what you see to this map",
 "바다나 갯벌에서 이 생물을 만나면 사진과 함께 iNaturalist에 관찰로 남길 수 있습니다. 이용 허락(CC)을 붙인 연구 등급 관찰은 GBIF로 공유되고, 이 지도는 GBIF 공개 기록으로 칸을 만듭니다.":"If you meet this species at sea or on a tidal flat, you can post it with a photo as an observation on iNaturalist. Research-grade observations with a CC licence are shared with GBIF, and this map builds its cells from GBIF public records.",
 "iNaturalist에 관찰 남기기 ↗":"Post an observation on iNaturalist ↗",
-"바다 정화 활동":"Sea clean-up activities"
+"바다 정화 활동":"Sea clean-up activities",
+"배경 지도 출처 보기":"Show basemap credits"
 });
 // @section 비교와 지표(app.js)
 Object.assign(I18N_EN,{
