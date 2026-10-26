@@ -4016,7 +4016,7 @@ function toggleSimulation(value){
     const [label,x,y,meaning]=points[i];$('matrix-note').textContent=`가상 ${label} · 활용 ${x} / 보전 ${y} → ${meaning}. 화면 동작을 보여 주는 가상 예시입니다.`;
   }));
   renderMatrixTypes(value?[]:assessed);syncCompareMatrix();
-  if(!value)declutterPointLabels();
+  if(!value)declutterPointLabels();else placeQuadrantNames();
 }
 // Design 02: the four quadrants take a faint wash of their type colour and the rule's type name; below the graph, one box
 // per type lists its species (a reading path without colour). Names are buttons that open the same evidence as the point.
@@ -4108,6 +4108,7 @@ function spreadMatrixPoints(){
 // box and an 'N종 밀집 · 펼치기' button; its points keep their place (small, faint, out of the tab order, still clickable)
 // and the other labels are placed again around the box. The simulated example is never grouped.
 function declutterPointLabels(){
+  resetQuadrantNames();  // the frame and plot as drawn, before anything is measured
   const box=$('matrix-points'), frame=box?.parentElement?.getBoundingClientRect();  // points are placed in the .matrix frame
   if(!frame?.width)return;  // the comparison tab is hidden; setView and resize run it again
   closeClusterPop(false);
@@ -4163,12 +4164,58 @@ function declutterPointLabels(){
       placeLabels(all.filter(b=>!sel(b)&&!b.hasAttribute('data-clustered')),[...shapes,...keep],qn);
     }
   }
-  syncClusterDims();
+  syncClusterDims();placeQuadrantNames();
   const hidden=all.filter(b=>!b.hasAttribute('data-clustered')&&b.querySelector('.point-label.hidden-label')).length, boxed=groups.reduce((n,g)=>n+g.ids.length,0), note=$('matrix-note');
   let line=$('matrix-hidden');
   if(!line&&note&&(hidden||boxed)){line=document.createElement('span');line.id='matrix-hidden';note.append(line);}
   if(line)line.textContent=(boxed?` 점이 몰린 ${groups.length}곳(${boxed}종)은 상자로 묶었습니다. ‘펼치기’를 누르면 종 목록이 열리고, 상자 안 점도 누를 수 있습니다.`:'')+
     (hidden?` 이름표가 겹치는 점 ${hidden}개는 이름을 숨겼습니다. 점에 마우스를 올리거나 키보드로 고르면 이름이 보이고, 누르면 종 상세가 열립니다.`:'');
+}
+// 2026-10-26 (matrix-quadrant-label-overlap): a quadrant's name (both lines, as one block) stays in its corner unless a point,
+// a group button, a shown point name or a tick number comes within 6px of it; then it takes the corner of its own quadrant
+// they touch least. When all four are touched it stands outside the plot, both lines kept: the upper names above it (over
+// the y-axis name and the 가상 예시 flag), the lower ones under the x-axis name, in their quadrant's width. The frame grows by
+// just that much; the plot's height and the points never move. One measurement after the points and labels are placed.
+const QN_GAP=6;
+function resetQuadrantNames(){
+  const m=$('matrix'), f=m?.parentElement;if(!f?.style||!m.querySelectorAll)return;
+  m.querySelectorAll('.q-name').forEach(n=>{n.style.translate='';n.removeAttribute('data-out');});
+  f.style.paddingTop=f.style.paddingBottom=m.style.minHeight='';
+}
+function placeQuadrantNames(){
+  const m=$('matrix'), f=m?.parentElement;if(!m?.getBoundingClientRect||!f)return;
+  resetQuadrantNames();
+  const plot=m.getBoundingClientRect();if(!plot.width)return;
+  const box=e=>e.getBoundingClientRect(), shown=e=>!!e&&!e.closest('[hidden]')&&getComputedStyle(e).visibility!=='hidden'&&box(e).width>0;
+  const grow=(r,d)=>({left:r.left-d,right:r.right+d,top:r.top-d,bottom:r.bottom+d}), move=(r,dx,dy)=>({left:r.left+dx,right:r.right+dx,top:r.top+dy,bottom:r.bottom+dy});
+  const area=(a,c)=>Math.max(0,Math.min(a.right,c.right)-Math.max(a.left,c.left))*Math.max(0,Math.min(a.bottom,c.bottom)-Math.max(a.top,c.top));
+  // points with 2px around them (a 4px wider circle), group buttons, the point names a reader sees (a phone hides most), tick numbers
+  const taken=[...[...m.querySelectorAll('#matrix-points .matrix-point')].filter(shown).map(e=>grow(box(e),2)),
+    ...[...m.querySelectorAll('#matrix-points .matrix-cluster-btn,#matrix-points .point-label,.matrix-ticks i,.matrix-ticks b')].filter(shown).map(box)];
+  const pad=(e,k)=>parseFloat(getComputedStyle(e)['padding'+k])||0;
+  const text=n=>{const r=box(n);return {left:r.left+pad(n,'Left'),right:r.right-pad(n,'Right'),top:r.top+pad(n,'Top'),bottom:r.bottom-pad(n,'Bottom')};};  // less the backing
+  const out=[];
+  for(const n of m.querySelectorAll('.quadrant .q-name')){
+    if(!shown(n)||!n.textContent.trim())continue;
+    const q=n.parentElement, c=box(q), r=text(n);
+    const L=c.left+pad(q,'Left')-r.left, R=c.right-pad(q,'Right')-r.right, T=c.top+pad(q,'Top')-r.top, B=c.bottom-pad(q,'Bottom')-r.bottom;
+    // its own corner first, then across, then up or down, then the far corner; the first that touches least wins
+    const dx=Math.abs(R)<Math.abs(L)?L:R, dy=Math.abs(B)<Math.abs(T)?T:B;
+    const best=[[0,0],[dx,0],[0,dy],[dx,dy]].map(([x,y])=>({x,y,hit:taken.reduce((a,o)=>a+area(grow(move(r,x,y),QN_GAP),o),0)})).reduce((a,s)=>s.hit<a.hit?s:a);
+    if(best.hit>0)out.push(n);else if(best.x||best.y)n.style.translate=`${Math.round(best.x)}px ${Math.round(best.y)}px`;
+  }
+  if(!out.length)return;
+  const up=out.filter(n=>n.parentElement.matches('.q1,.q2')), down=out.filter(n=>!up.includes(n));
+  const ay=m.querySelector('.axis-y'), flag=f.querySelector('.cmp-sim-flag');
+  const edges=p=>({roof:Math.min(p.top,...[ay,flag].filter(shown).map(box).filter(r=>r.bottom<=p.top+1).map(r=>r.top)),
+    floor:Math.max(p.bottom,...[...m.querySelectorAll('.axis-x,.matrix-ticks b')].filter(shown).map(e=>box(e).bottom))});
+  const fr=box(f), {roof,floor}=edges(plot), h=list=>Math.max(0,...list.map(n=>box(n).height));
+  const addTop=up.length?Math.max(0,Math.ceil(fr.top-(roof-QN_GAP-h(up)))):0, addBottom=down.length?Math.max(0,Math.ceil(floor+QN_GAP+h(down)-fr.bottom)):0;
+  if(addTop)f.style.paddingTop=pad(f,'Top')+addTop+'px';
+  if(addBottom)f.style.paddingBottom=pad(f,'Bottom')+addBottom+'px';
+  if(Math.abs(box(m).height-plot.height)>.5)m.style.minHeight=plot.height+'px';  // a frame that fills a fixed panel keeps its plot height
+  const now=edges(box(m));
+  for(const n of out){const r=box(n);n.style.translate=`0px ${Math.round(up.includes(n)?now.roof-QN_GAP-r.bottom:now.floor+QN_GAP-r.top)}px`;n.setAttribute('data-out','');}
 }
 globalThis.addEventListener?.('resize',()=>{clearTimeout(declutterPointLabels.t);declutterPointLabels.t=setTimeout(declutterPointLabels,150);});
 
@@ -4342,10 +4389,11 @@ function applyCompareFilter(){
     if(out){b.setAttribute('data-dim','');b.tabIndex=-1;}else{b.removeAttribute('data-dim');if(!b.hasAttribute('data-clustered'))b.removeAttribute('tabindex');}});
   syncClusterDims();
   renderTypeCards();syncGroupCounts();cmpPageLine();renderTypeGrid();
-  if(!note)return;
+  if(!note)return placeQuadrantNames();
   note.innerHTML=!on?'':n?`${data.species.length}종 중 ${n}종 표시${cmpMode==='matrix'?' · 나머지 점은 흐리게 남겨 둡니다':''} <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`:
     `<b>검색 결과 없음</b> · ${cmpFilter.q?'‘'+esc(cmpFilter.q)+'’에 맞는 ':''}${cmpFilter.group!=='all'?esc(cmpFilter.group)+' ':''}${typed?'‘'+esc(matrixTypePlain(cmpFilter.type==='none'?null:cmpFilter.type))+'’ 유형 ':''}생물이 없습니다. 다른 조건으로 다시 찾아보세요. <button type="button" class="cmp-link" data-cmp-clear>필터 해제</button>`;
   note.classList.toggle('empty-result',on&&!n);
+  placeQuadrantNames();  // the note above can change the plot's height
 }
 function setCompareFilter(next){
   Object.assign(cmpFilter,next);
@@ -4488,7 +4536,7 @@ function toggleBasket(id){
 }
 // Phones show a matrix point's name only for the selected, focused and basket points (mobile-type.css, 2026-10-25): the
 // basket ones carry .in-basket
-function markBasketPoints(){document.querySelectorAll?.('#matrix-points .matrix-point.pilot[data-aphia]').forEach(b=>b.classList.toggle('in-basket',cmpBasket.includes(Number(b.dataset.aphia))));}
+function markBasketPoints(){document.querySelectorAll?.('#matrix-points .matrix-point.pilot[data-aphia]').forEach(b=>b.classList.toggle('in-basket',cmpBasket.includes(Number(b.dataset.aphia))));placeQuadrantNames();}  // a name shown or hidden moves the quadrant names
 // the 탐색 후보 checkboxes show the same basket as '비교와 지표'
 function syncBasketChecks(){document.querySelectorAll('#species-list [data-basket]').forEach(b=>{b.checked=cmpBasket.includes(Number(b.dataset.basket));});}
 // The tray always shows three places: a basket species, or a dashed empty slot. The matrix selection and the basket are
@@ -4553,7 +4601,11 @@ function setBbviStep(k){
 function redrawForWeight(){
   const before=matrixPositions();
   renderList();renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap(); // cell types move with the weight; explore cards carry 활용 and the verdict
-  updateBasisNow();syncWeightControl();writeHash();slideMatrixPoints(before);
+  updateBasisNow();syncWeightControl();writeHash();
+  // the profile and weight lines above changed the panel's height, and with it the plot's: place the labels, group boxes and
+  // quadrant names again on the plot as it now is (same task, nothing is painted in between)
+  if(currentView==='compare'&&cmpMode==='matrix'&&!simulated)declutterPointLabels();
+  slideMatrixPoints(before);
 }
 // The panel, the badges and the list of species whose type differs from the official one.
 function syncWeightControl(){
