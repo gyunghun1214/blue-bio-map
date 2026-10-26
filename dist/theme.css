@@ -1047,7 +1047,8 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #explore .sea-now b,#explore .sc-season b{color:#ff8079}
 .sea-care-act{margin:.4em 0 1em;font-weight:700}
 .sea-care-links{margin-top:1em}
-.sc-season{display:inline-flex;align-items:center;padding:1px 8px;border:1px solid var(--coral);border-radius:999px;font-size:13px;line-height:1.5;white-space:nowrap}
+/* '지금 금어기' on the 바다 지키기 button */
+.sc-season{display:inline-flex;flex:none;align-items:center;margin-left:8px;padding:0 7px;border:1px solid var(--coral);border-radius:999px;font-size:13px;line-height:1.4;white-space:nowrap}
 .sc-season b{font-weight:700}
 #explore .sp-actions .detail-act[data-sea-care]{grid-column:1/-1}
 .alt-production{margin:14px 0 4px;padding:12px 14px;border:1px solid var(--line);border-left:4px solid #f2b233;border-radius:10px;background:var(--surface)}

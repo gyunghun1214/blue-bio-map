@@ -13,7 +13,7 @@ assert.ok(block.length>200,'the sea-care block sits right before institutionChec
 
 // (1) rules: only our 30 species, each with a season or a size
 const ctx={esc:x=>String(x??''),row:(l,v)=>`<div class="evidence-item"><span>${l}</span><b>${v}</b></div>`,sourceLink:(u,l)=>`<a href="${u}" target="_blank" rel="noopener">${l}</a>`};
-vm.createContext(ctx);vm.runInContext(block+';globalThis.X={SEA_RULES,SEA_WINDOWS,seaCare,seaSeasonNow,seaSeasonBadge,seaSeasonCard,mdText,INAT_UPLOAD,SEA_RULES_URL,SEA_RULES_CHECKED};',ctx);
+vm.createContext(ctx);vm.runInContext(block+';globalThis.X={SEA_RULES,SEA_WINDOWS,seaCare,seaSeasonNow,seaSeasonBadge,seaSeasonTag,mdText,INAT_UPLOAD,SEA_RULES_URL,SEA_RULES_CHECKED};',ctx);
 const {X}=ctx;
 const a=JSON.parse(read('assessments.json')), ours=new Map([...a.species,...a.candidate_species].map(s=>[s.aphia_id,s.korean_name]));
 assert.equal(ours.size,30);
@@ -52,7 +52,8 @@ const badge=X.seaSeasonBadge({aphiaID:397082},new Date('2026-10-26T03:00:00Z'));
 assert.equal(badge.replace(/<[^>]+>/g,''),'지금 금어기 · 10월 31일까지 · 제주 12월 31일까지');
 assert.equal(X.seaSeasonBadge({aphiaID:1061762},new Date('2026-07-01T03:00:00Z')).replace(/<[^>]+>/g,''),'지금 금어기 · 8월 20일까지 · 해역마다 다름');
 assert.equal(X.seaSeasonBadge({aphiaID:1061762},new Date('2026-10-26T03:00:00Z')),'','no badge outside the season');
-assert.match(app,/<\/span>\$\{seaSeasonCard\(s\)\}<\/span>`;\n\}/,'the card line ends with the 지금 금어기 tag');
+assert.match(app,/<\/svg>바다 지키기\$\{seaSeasonTag\(s\)\}<\/button>/,'the 지금 금어기 tag on the 바다 지키기 button');
+assert.ok(!/seaSeason\w*\(s\)/.test(app.slice(app.indexOf('function cardLine(s){'),app.indexOf('function renderList()'))),'the 탐색 후보 cards keep one height: no tag on the card');
 
 // (3) the fold on all three detail screens; rules only where they exist; observation only for 1° species
 assert.equal((app.match(/more\('활용 전 확인할 제도',institutionChecks\(s\)\)\+\n\s+seaCareFold\(more,s\)\+/g)||[]).length,3,'fold right after 활용 전 확인할 제도 on the three detail screens');
@@ -87,7 +88,7 @@ assert.match(exp,/\.join\(''\)\+careLine\(\);/,'card list: once at the end');
 
 // (6) English dictionary
 const en=read('i18n-en.js');
-const all=[h,X.seaCare({aphiaID:397082,cells:[{sizeDeg:1}]},new Date('2026-10-26T03:00:00Z')),X.seaCare({aphiaID:534443,cells:[{sizeDeg:1}]},new Date('2026-06-01T03:00:00Z')),care,X.seaSeasonCard({aphiaID:494972})||'<b>지금 금어기</b>'];
+const all=[h,X.seaCare({aphiaID:397082,cells:[{sizeDeg:1}]},new Date('2026-10-26T03:00:00Z')),X.seaCare({aphiaID:534443,cells:[{sizeDeg:1}]},new Date('2026-06-01T03:00:00Z')),care,X.seaSeasonTag({aphiaID:494972})||'<b>지금 금어기</b>'];
 for(const [id,wins] of Object.entries(X.SEA_WINDOWS))for(const [,to,where,note] of wins)all.push(`<span>${(where?where+' ':'')+X.mdText(to)}까지</span><span>${note||''}</span>`);
 const texts=[...new Set([...all.flatMap(x=>x.replace(/<[^>]+>/g,'\n').split('\n')),
   ...Object.values(X.SEA_RULES).flat(),'이 생물이 사는 바다 지키기','바다 지키기'].map(t=>t.replace(/^[\s·]+|[\s·]+$/g,'').trim()).filter(t=>/[가-힣]/.test(t)))];

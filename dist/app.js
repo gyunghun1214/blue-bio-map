@@ -2323,7 +2323,7 @@ function cardLine(s){
   const cons=consShort(s),cat=m===null?'':mcuiCatTag(s);
   return `<span class="card-line"><span class="cl-v" title="통합 활용 BBVI ${num(b,'BBVI')}"><span class="sr-only">BBVI 통합 활용 </span><span aria-hidden="true">활용 </span><b>${num(b,'BBVI')}</b></span>`+
     `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">${LANG==='en'?'Cons. ':'보전 '}</span><b>${m===null?'–':scoreValue(s,'MCUI',m)}</b>${cat?rawPreliminaryMcui(s)?`<small class="cl-cat"> (${esc(cat)})</small>`:`<span class="sr-only"> (${esc(cat)})</span>`:''}${cons?`<span class="sr-only cl-cons${m===null?' unknown':''}"> ${esc(cons)}</span>`:''}${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
-    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${typeShape(t,'cv-shape')}${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span>${seaSeasonCard(s)}</span>`;
+    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${typeShape(t,'cv-shape')}${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span></span>`;
 }
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
@@ -2726,7 +2726,7 @@ const SEA_RULES={
   276651:['','30cm 이하'],
   534443:['5월 16일~6월 30일 (시·도가 따로 정할 수 있음)','']};
 // 2026-10-26 (LKH: 링크만으로는 의미가 약함): 칸은 우리 자료로 정할 수 있는 행동부터 보여 준다. (1) 오늘(한국 시각)이 별표 기간
-// 안이면 '지금 금어기'를 칸 맨 위와 탐색 후보 카드에 적는다. [시작, 끝, 앞말, 뒷말], 첫 줄이 기본 기간. 고등어는 고시로 정하는
+// 안이면 '지금 금어기'를 칸 맨 위와 '바다 지키기' 단추에 적는다. [시작, 끝, 앞말, 뒷말], 첫 줄이 기본 기간. 고등어는 고시로 정하는
 // 1개월이라 날짜를 미리 알 수 없어 넣지 않는다. 참조기 유자망·살오징어 일부 어업처럼 어업별 기간은 행에만 적는다.
 // (2) iNaturalist 연구 등급 관찰은 GBIF로 공유되고 이 지도의 칸은 GBIF 공개 기록으로 만든다(live-snapshot 출처의
 // 'iNaturalist Research-grade Observations'). 4° 민감종(해삼·전복·피조개)·발행 보류 종에는 관찰 안내를 넣지 않는다.
@@ -2748,7 +2748,8 @@ function seaSeasonBadge(s,d){
   return '<p class="sea-now"><b>지금 금어기</b>'+on.map(([,b,where])=>` · <span>${esc((where?where+' ':'')+mdText(b)+'까지')}</span>`).join('')+
     (note?` · <span>${esc(note)}</span>`:'')+'</p>';
 }
-const seaSeasonCard=s=>seaSeasonNow(s).length?'<span class="sc-season"><b>지금 금어기</b></span>':'';
+// On the 바다 지키기 button too, so it shows before the fold is opened (the 탐색 후보 cards keep one height without it)
+const seaSeasonTag=s=>seaSeasonNow(s).length?'<span class="sc-season"><b>지금 금어기</b></span>':'';
 const INAT_UPLOAD='https://www.inaturalist.org/observations/upload';
 const seaObserveOk=s=>!!s&&!(s.cells||[]).some(c=>c.sizeDeg>=4)&&s.info?.map?.status!=='held_sensitivity_review';
 function seaCare(s,d){
@@ -2798,7 +2799,7 @@ function altProductionBlock(s,compact=false){
 }
 // Citizen observation (external link only) and the planned precise-coordinate procedure (nothing is requested or stored).
 const inatUrl=s=>`https://www.inaturalist.org/taxa/search?q=${encodeURIComponent(String(s.name||'').split(/\s+/).slice(0,2).join(' '))}`;
-const speciesActionButtons=s=>`<a class="detail-act" href="${esc(inatUrl(s))}" target="_blank" rel="noopener" title="iNaturalist에서 ${esc(s.name)} 관찰 기록 보기 · 외부 사이트"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>관찰 기록 보러가기 ↗</a><button type="button" class="detail-act" data-coord-request aria-haspopup="dialog"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>정밀 좌표 이용 신청</button><button type="button" class="detail-act" data-sea-care><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 15c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></svg>바다 지키기</button>`;
+const speciesActionButtons=s=>`<a class="detail-act" href="${esc(inatUrl(s))}" target="_blank" rel="noopener" title="iNaturalist에서 ${esc(s.name)} 관찰 기록 보기 · 외부 사이트"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>관찰 기록 보러가기 ↗</a><button type="button" class="detail-act" data-coord-request aria-haspopup="dialog"><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>정밀 좌표 이용 신청</button><button type="button" class="detail-act" data-sea-care><svg class="act-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 15c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></svg>바다 지키기${seaSeasonTag(s)}</button>`;
 const speciesActions=s=>`<div class="detail-actions">${speciesActionButtons(s)}</div>`;
 function openCoordDialog(){
   const d=$('coord-dialog');if(!d)return;

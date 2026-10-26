@@ -1871,7 +1871,7 @@ Object.assign(I18N_EN,{
 "1365 자원봉사포털 ↗":"1365 Volunteer Portal (Korean) ↗",
 "지도로 만난 바다를 직접 돌보고 싶다면":"If you want to care for the sea you met on the map",
 "4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)":"4/1 – 5/31 (4/1 – 4/30 for some fisheries)",
-"지금 금어기":"Closed season now",
+"지금 금어기":"Closed season",
 "8월 20일까지":"until 8/20",
 "5월 31일까지":"until 5/31",
 "10월 31일까지":"until 10/31",
