@@ -13,7 +13,6 @@ Object.assign(I18N_EN,{
 "비교와 지표":"Compare & indices",
 "움직임 줄이기":"Reduce motion",
 "한반도 주변 바다의 해양생물 근거 지도":"An evidence map of marine life in the seas around the Korean Peninsula",
-"Ocean 20 Challenge · 해양 10대 과제 3 ‘지속가능한 식량 공급’ · 2 ‘생태계·생물다양성 보호와 복원’":"Ocean 20 Challenge · Ocean Top 10 Challenges 3 ‘Sustainable food supply’ · 2 ‘Protecting and restoring ecosystems and biodiversity’",
 "문제":"Problem",
 "해결":"Solution",
 "바다 탐색하기":"Explore the ocean",
