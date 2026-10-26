@@ -575,9 +575,10 @@ const why=gateHtml.slice(gateHtml.indexOf('<div class="gate-why">'),gateHtml.ind
 assert.deepEqual([...why.matchAll(/<li[^>]*>(.*?)<\/li>/g)].map(m=>m[1].replace(/<[^>]+>/g,'')),['우리 바다 생물의 식량·약 재료 정보와 보전 정보가 여러 기관에 흩어져 있어, 무엇을 먼저 연구하고 무엇을 먼저 지켜야 할지 한 번에 판단하기 어렵습니다.']);
 assert.ok(!why.includes('gate-src'),'no source count among the problems');
 assert.match(read('intro.css'),/\.gate-problems li:only-child:before\{content:none\}/,'a single problem line has no number');
-// the contest's challenges under the kicker (모집공고 첨부 1) and the 'connect' line under the solution, sourced in the
-// method tab (the forum theme by its press report)
-assert.ok(gateHtml.includes('<p class="gate-kicker">한반도 주변 바다의 해양생물 근거 지도</p><p class="gate-task">Ocean 20 Challenge · 해양 10대 과제 3 ‘지속가능한 식량 공급’ · 2 ‘생태계·생물다양성 보호와 복원’</p>'));
+// the 'connect' line under the solution, sourced in the method tab (the forum theme by its press report); the contest's
+// challenges line under the kicker was taken off the first screen on 2026-10-26 (LKH)
+assert.ok(gateHtml.includes('<p class="gate-kicker">한반도 주변 바다의 해양생물 근거 지도</p><h1 class="gate-title">'));
+assert.ok(!gateHtml.includes('gate-task')&&!gateHtml.includes('해양 10대 과제'),'no contest challenges line on the first screen');
 assert.match(why,/<p class="gate-lead">[^]*?<\/p><p class="gate-connect"><span class="gate-connect-lead">흩어진 자료를 잇고, 오늘의 이용과 다음 세대의 바다를 잇는 지도 · <\/span>2026 세계해양포럼 대주제 「해양, 잇다」 · UN Ocean Decade ‘과학 기반 정책 연계’<\/p><\/div>$/);
 assert.match(html,/<p class="fine mt-context">첫 화면의 대회 주제 연결: Ocean 20 Challenge 모집공고 첨부 1 「우리가 풀어갈 해양 10대 과제」[^<]*<a href="https:\/\/v\.daum\.net\/v\/20260304182211655" target="_blank" rel="noopener">부산일보 2026-03-04 보도 ↗<\/a>\)\.<\/p>/);
 // 2026-10-19 (LKH, prompt 7/10): the count is named '근거 출처'; the method tab's list says how it relates to its own total,

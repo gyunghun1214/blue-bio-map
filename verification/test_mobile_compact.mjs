@@ -41,7 +41,7 @@ assert.ok(html.indexOf('id="map-guide"')>html.indexOf('<section id="explore"')&&
 const block=q=>{const i=css.indexOf(`@media ${q}{`);assert.ok(i>=0,q);let d=0,j=i;for(;j<css.length;j++){if(css[j]==='{')d++;else if(css[j]==='}'&&--d===0)break;}return css.slice(i,j+1);};
 const wide=block('(min-width:741px)');
 assert.match(wide,/details\.mc-more\{display:contents\}/);assert.match(wide,/\.mc-more>summary,\.mc-more-btn\{display:none\}/);
-assert.match(block('(max-width:760px)'),/\.gate-task,\.gate-connect\{display:none\}/);
+assert.match(block('(max-width:760px)'),/\{\s*\.gate-connect\{display:none\}/);
 assert.ok(!/gate-(task|connect)/.test(css.replace(block('(max-width:760px)'),'').replace(/\/\*[^]*?\*\//g,'')),'the contest lines are hidden only on phones');
 assert.match(css,/summary::before\{content:"더 보기"\}/);assert.match(css,/\[open\]>summary::before\{content:"접기"\}/);
 for(const m of css.matchAll(/font-size:(\d+(?:\.\d+)?)px/g))assert.ok(Number(m[1])>=12,'new CSS text 12px or more: '+m[0]);

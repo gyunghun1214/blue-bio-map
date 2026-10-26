@@ -83,10 +83,8 @@ html.kb .gate :focus-visible{outline:2px solid var(--g-teal);outline-offset:4px}
   transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .55s ease}
 .gate-kicker{display:flex;align-items:center;gap:14px;margin:0 0 clamp(10px,2vh,22px);font-size:clamp(13px,min(1.02vw,1.85vh),17px);font-weight:500;color:var(--g-teal)}
 .gate-kicker:before{content:"";flex:none;width:32px;height:1.5px;background:currentColor}
-/* 2026-10-21 (site v4 05): the contest's challenges under the kicker, and the 'connect' line under the solution; both in
-   small type so the column keeps its height */
-.gate-task{margin:calc(-1*clamp(4px,1.2vh,14px)) 0 clamp(10px,2vh,20px);font-size:12px;line-height:1.5;color:var(--g-ink3);
-  max-width:clamp(280px,max(calc(73vw - min(77.86vh,55vw) - var(--g-pad)),calc(clamp(190px,15.6vw,262px) + clamp(24px,2.6vw,44px) + 96px)),560px)}
+/* 2026-10-21 (site v4 05): the 'connect' line under the solution, in small type so the column keeps its height
+   (the contest's challenges line under the kicker was taken off on 2026-10-26, LKH) */
 .gate-connect{grid-column:2;margin:0;font-size:clamp(12px,min(.9vw,1.6vh),14px);line-height:1.55;color:var(--g-ink2)}
 .gate-title{margin:0;font-size:clamp(38px,min(5.6vw,9.4vh),112px);line-height:1.12;font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 30px rgba(4,16,27,.5)}
 .gate-title span{display:block}
@@ -269,9 +267,8 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   .gate-counts:before{display:none}
   .gate-problems{font-size:13px}
   .gate-why{gap:6px 10px;margin-top:16px}
-  /* 2026-10-21 (site v4 05): the column keeps its phone height: the contest line takes the kicker's place */
+  /* 2026-10-21 (site v4 05): the column keeps its phone height: no kicker */
   .gate-kicker{display:none}
-  .gate-task{max-width:none;margin:0 0 6px;color:var(--g-teal)}
   .gate-connect-lead{display:none}
   .gate-why{row-gap:4px;margin-top:12px}
   .gate-actions{margin-top:16px}
@@ -302,7 +299,6 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
 @media (min-width:761px){
   html.lang-en .gate-title{font-size:clamp(36px,min(4.8vw,7.6vh),96px)}
   html.lang-en .gate-kicker{margin-bottom:clamp(8px,1.4vh,18px)}
-  html.lang-en .gate-task{margin-bottom:clamp(8px,1.4vh,16px)}
   html.lang-en .gate-why{row-gap:clamp(6px,1vh,12px);margin-top:clamp(10px,1.6vh,20px)}
   html.lang-en .gate-problems{line-height:1.42}
   html.lang-en .gate-why .gate-lead{line-height:1.45}

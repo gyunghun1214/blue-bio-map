@@ -168,9 +168,9 @@ try{
     const globe=await evaluate(`(()=>{const el=document.getElementById('site-gate'),w=innerWidth,h=innerHeight,vis=s=>[...el.querySelectorAll(s)].filter(n=>n.getClientRects().length);
       const tb=n=>{const r=document.createRange();r.selectNodeContents(n);const b=r.getBoundingClientRect();return {r:b.right,t:b.top,b:b.bottom};};
       const base=[...el.querySelector('.gate-title').children].map(s=>({...tb(s),title:true})).concat(vis('.gate-more,.gate-note,.gate-counts').map(tb));
-      const added=vis('.gate-task,.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
+      const added=vis('.gate-why-k,.gate-problems li,.gate-why .gate-lead,.gate-connect').map(tb);
       return {base:globeFrame(w,h,null,base).cx,all:globeFrame(w,h,null,base.concat(added)).cx,added:added.length};})()`);
-    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=5&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
+    check('G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it)',globe.added>=4&&Math.abs(globe.all-globe.base)<.5,JSON.stringify(globe));
     await sleep(1200);await shot('gate-desktop',false);
     // 2026-10-17 (#3): '이렇게 쓸 수 있습니다' under the first screen (the first screen as above): three cards, each who → what
     // they look at → what they choose with its way in, then one line; the policy card's species are the conservation example's
@@ -1914,10 +1914,11 @@ try{
   await evaluate("sessionStorage.removeItem('bbvm-intro-entered');history.replaceState(null,'',location.pathname);1");
   await load();gs=await gateReady();
   check('G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow',gs.on&&gs.ready&&gs.enterBox.bottom<=gs.vh&&gs.enterBox.left>=0&&gs.enterBox.right<=gs.vw&&gs.doc<=gs.vw,JSON.stringify(gs));
-  // 2026-10-25 (mobile-compact): on a phone the two contest lines are hidden; their words stay in the page (근거와 방법 keeps the source)
-  const gc=await evaluate(`(()=>{const g=document.getElementById('site-gate'),q=s=>g.querySelector(s);return {task:q('.gate-task').getClientRects().length,connect:q('.gate-connect').getClientRects().length,
-    words:/Ocean 20 Challenge/.test(q('.gate-task').textContent)&&/세계해양포럼/.test(q('.gate-connect').textContent),kicker:getComputedStyle(q('.gate-kicker')).display}})()`);
-  check('G-5e phone 390px: the contest lines (Ocean 20 Challenge · 세계해양포럼) are hidden, their words still in the page',gc.task===0&&gc.connect===0&&gc.words,JSON.stringify(gc));
+  // 2026-10-25 (mobile-compact): on a phone the contest line is hidden; its words stay in the page (근거와 방법 keeps the source).
+  // The contest's challenges line (Ocean 20 Challenge) left the first screen on 2026-10-26 (LKH)
+  const gc=await evaluate(`(()=>{const g=document.getElementById('site-gate'),q=s=>g.querySelector(s);return {task:g.querySelectorAll('.gate-task').length,connect:q('.gate-connect').getClientRects().length,
+    words:/세계해양포럼/.test(q('.gate-connect').textContent)&&!/Ocean 20 Challenge/.test(g.textContent),kicker:getComputedStyle(q('.gate-kicker')).display}})()`);
+  check('G-5e phone 390px: the contest line (세계해양포럼) is hidden, its words still in the page; no challenges line',gc.task===0&&gc.connect===0&&gc.words,JSON.stringify(gc));
   await sleep(1200);await shot('gate-mobile',false);
   // 2026-10-17 (#3): on a phone 이렇게 쓸 수 있습니다 (four cards since site v4 07) sits in the column after the globe and its card, before the source strip
   const phoneUses=await evaluate(`(()=>{const g=document.getElementById('site-gate'),r=s=>g.querySelector(s).getBoundingClientRect(),hero=g.querySelector('.gate-hero');
