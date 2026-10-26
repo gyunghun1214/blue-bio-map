@@ -71,6 +71,7 @@ jobs:
           node --check dist/expedition.js
           node --check verification/expedition_check.mjs
           node --check verification/i18n_layout_check.mjs
+          node --check verification/period_chip_check.mjs
           node verification/test_expedition_ui.mjs
           node --check dist/intro.js
           node verification/test_intro_ui.mjs
@@ -84,6 +85,27 @@ jobs:
           node --check verification/offline_check.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
+
+  # Map '공개 집계 기간' chip (2026-10-26): value text clear of the caret in WebKit (stands in for iOS Safari) and Chromium.
+  # Playwright is only here: the Windows browser job drives the installed Chrome without dependencies.
+  webkit:
+    runs-on: ubuntu-24.04
+    needs: unit
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Install Playwright with Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.63.0
+          npx playwright install --with-deps chromium webkit
+      - name: Map period chip check
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory dist >/dev/null 2>&1 &
+          for i in $(seq 30); do curl -sf http://127.0.0.1:8765/ >/dev/null && break; sleep 0.5; done
+          node verification/period_chip_check.mjs verification/ci-ui/period-chip
 
   browser:
     runs-on: windows-2025
