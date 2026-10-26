@@ -2323,7 +2323,7 @@ function cardLine(s){
   const cons=consShort(s),cat=m===null?'':mcuiCatTag(s);
   return `<span class="card-line"><span class="cl-v" title="통합 활용 BBVI ${num(b,'BBVI')}"><span class="sr-only">BBVI 통합 활용 </span><span aria-hidden="true">활용 </span><b>${num(b,'BBVI')}</b></span>`+
     `<span class="cl-v${m!==null&&rule&&m>=rule.mcui_threshold?' high':''}" title="보전 시급성 MCUI ${num(m)}${basis?' · '+esc(basis):''}"><span class="sr-only">, MCUI 보전 시급성 </span><span aria-hidden="true">${LANG==='en'?'Cons. ':'보전 '}</span><b>${m===null?'–':scoreValue(s,'MCUI',m)}</b>${cat?rawPreliminaryMcui(s)?`<small class="cl-cat"> (${esc(cat)})</small>`:`<span class="sr-only"> (${esc(cat)})</span>`:''}${cons?`<span class="sr-only cl-cons${m===null?' unknown':''}"> ${esc(cons)}</span>`:''}${basis?`<span class="sr-only"> ${esc(basis)}</span>`:''}</span>`+
-    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${typeShape(t,'cv-shape')}${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span></span>`;
+    `<span class="card-verdict" title="${esc(matrixPlainNote())}"><span class="sr-only">, 판단 </span>${typeShape(t,'cv-shape')}${verdictWord(t)}${t?`<span class="sr-only">(${esc(matrixTypeLabel(t))})</span>`:''}</span>${seaSeasonCard(s)}</span>`;
 }
 function renderList() {
   const query=$('search').value.trim().toLowerCase();
@@ -2725,17 +2725,41 @@ const SEA_RULES={
   274849:['','23cm 이하'],
   276651:['','30cm 이하'],
   534443:['5월 16일~6월 30일 (시·도가 따로 정할 수 있음)','']};
-const SEA_CARE_LINKS=[
-  ['https://www.caresea.kr/','반려해변 ↗','해변 하나를 정해 꾸준히 돌보는 활동 · 개인·단체 신청'],
-  ['https://www.1365.go.kr/','1365 자원봉사포털 ↗','지역과 해양 정화·갯벌 정화로 찾고 봉사시간 인증']];
-function seaCare(s){
+// 2026-10-26 (LKH: 링크만으로는 의미가 약함): 칸은 우리 자료로 정할 수 있는 행동부터 보여 준다. (1) 오늘(한국 시각)이 별표 기간
+// 안이면 '지금 금어기'를 칸 맨 위와 탐색 후보 카드에 적는다. [시작, 끝, 앞말, 뒷말], 첫 줄이 기본 기간. 고등어는 고시로 정하는
+// 1개월이라 날짜를 미리 알 수 없어 넣지 않는다. 참조기 유자망·살오징어 일부 어업처럼 어업별 기간은 행에만 적는다.
+// (2) iNaturalist 연구 등급 관찰은 GBIF로 공유되고 이 지도의 칸은 GBIF 공개 기록으로 만든다(live-snapshot 출처의
+// 'iNaturalist Research-grade Observations'). 4° 민감종(해삼·전복·피조개)·발행 보류 종에는 관찰 안내를 넣지 않는다.
+// (3) 반려해변·1365는 첫 화면 링크라 칸 끝 한 줄로만 둔다.
+const SEA_WINDOWS={1061762:[['06-21','08-20','','해역마다 다름']],342067:[['04-01','05-31']],
+  397082:[['09-01','10-31'],['10-01','12-31','제주']],241776:[['07-01','07-31']],372119:[['11-01','03-31']],494972:[['10-01','01-31']],
+  281273:[['07-01','07-31']],254538:[['01-16','02-15']],534443:[['05-16','06-30','','시·도마다 다를 수 있음']]};
+const kstMonthDay=(d=new Date())=>new Date(d.getTime()+9*3600e3).toISOString().slice(5,10);
+const mdText=md=>`${+md.slice(0,2)}월 ${+md.slice(3)}일`;
+// The windows open today: [[from, to, where, note], …]; a window that crosses the new year (11-01 → 03-31) wraps
+function seaSeasonNow(s,d){
+  const md=kstMonthDay(d);
+  return (SEA_WINDOWS[s?.aphiaID]||[]).filter(([a,b])=>a<=b?md>=a&&md<=b:md>=a||md<=b);
+}
+// Each part its own span, so the English dictionary has whole keys ('10월 31일까지', '제주 12월 31일까지')
+function seaSeasonBadge(s,d){
+  const on=seaSeasonNow(s,d);if(!on.length)return '';
+  const note=on.find(w=>w[3])?.[3];
+  return '<p class="sea-now"><b>지금 금어기</b>'+on.map(([,b,where])=>` · <span>${esc((where?where+' ':'')+mdText(b)+'까지')}</span>`).join('')+
+    (note?` · <span>${esc(note)}</span>`:'')+'</p>';
+}
+const seaSeasonCard=s=>seaSeasonNow(s).length?'<span class="sc-season"><b>지금 금어기</b></span>':'';
+const INAT_UPLOAD='https://www.inaturalist.org/observations/upload';
+const seaObserveOk=s=>!!s&&!(s.cells||[]).some(c=>c.sizeDeg>=4)&&s.info?.map?.status!=='held_sensitivity_review';
+function seaCare(s,d){
   const r=SEA_RULES[s?.aphiaID];
-  const rules=!r?'':'<h3>이 종의 보호 기준</h3>'+(r[0]?row('금어기',r[0]):'')+(r[1]?row('잡지 않는 크기',r[1]):'')+
+  const rules=!r?'':seaSeasonBadge(s,d)+'<h3>이 종의 보호 기준</h3>'+(r[0]?row('금어기',r[0]):'')+(r[1]?row('잡지 않는 크기',r[1]):'')+
     '<p class="fine">이 기간과 크기는 사지 않고 잡지 않는 것만으로도 지킬 수 있습니다.</p>'+
     `<p class="fine">${sourceLink(SEA_RULES_URL,'해양수산부 금어기·금지체장 기준 ↗')} · <span>수산자원관리법 시행령 별표 1·2</span> · <span>확인 ${SEA_RULES_CHECKED}</span></p>`;
-  return `<div class="sea-care">${rules}<h3>이 생물이 사는 바다를 돌보는 활동</h3><ul class="why sea-care-links">`+
-    SEA_CARE_LINKS.map(([url,label,note])=>`<li>${sourceLink(url,label)}<span class="sea-care-note">${esc(note)}</span></li>`).join('')+
-    '</ul><p class="fine">바깥 누리집으로 이동합니다.</p></div>';
+  const observe=!seaObserveOk(s)?'':'<h3>만난 관찰을 이 지도에 더하기</h3>'+
+    '<p>바다나 갯벌에서 이 생물을 만나면 사진과 함께 iNaturalist에 관찰로 남길 수 있습니다. 이용 허락(CC)을 붙인 연구 등급 관찰은 GBIF로 공유되고, 이 지도는 GBIF 공개 기록으로 칸을 만듭니다.</p>'+
+    `<p class="sea-care-act">${sourceLink(INAT_UPLOAD,'iNaturalist에 관찰 남기기 ↗')}</p>`;
+  return `<div class="sea-care">${rules}${observe}<p class="fine sea-care-links">바다 정화 활동 · ${sourceLink('https://www.caresea.kr/','반려해변 ↗')} · ${sourceLink('https://www.1365.go.kr/','1365 자원봉사포털 ↗')}</p></div>`;
 }
 const seaCareFold=(more,s)=>more('이 생물이 사는 바다 지키기',seaCare(s)).replace('<details class="detail-more"','<details class="detail-more sea-care-fold"');
 function institutionChecks(s){
