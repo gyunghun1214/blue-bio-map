@@ -4,7 +4,7 @@
 // The browser side (no name over a point, button or shown name at 360–1440px, every group filter, two weights) is in uicheck.mjs.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
+const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8').replace(/\r\n/g,'\n');  // a Windows checkout has CRLF
 const app=read('app.js'), compare=read('compare.css'), html=read('index.html');
 
 // markup: the four quadrants keep their words; each name's two lines are one block, '현재 0종' stays centred in the quadrant
