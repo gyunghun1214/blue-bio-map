@@ -64,6 +64,7 @@
 | `dist/app.js` | 새 `QN_GAP`·`resetQuadrantNames`·`placeQuadrantNames`. 부르는 곳: `declutterPointLabels`(시작·끝), `applyCompareFilter`(끝), `markBasketPoints`, `renderMatrix`(가상 예시), `redrawForWeight`(가중치 바뀐 뒤 한 번 더 배치) |
 | `dist/compare.css` | 끝에 `.q-name` 두 규칙(바탕·층·누르기 없음·오른쪽 맞춤). 새 글자 크기 없음 |
 | `verification/uicheck.mjs` | 'Matrix quadrant names' 검사 5개 더함(아래) |
+| `verification/i18n-layout-ko-baseline.json` | 한국어 기준 수 다시 적음(아래 '검사') |
 | `verification/test_matrix_quadrant_names.mjs`, `.github/workflows/verify.yml` | 새 단위 검사와 CI 한 줄 |
 | `verification/2026-10-26-matrix-quadrant-label-overlap/` | 이 README, `check.mjs`(겹침 조사·전후 캡처), `before/`·`after/` 캡처와 `result.json`, 지침 원문 |
 
@@ -78,9 +79,9 @@
 
 ## 검사
 
-- 고친 검사: 없다. 지운 검사: 없다. 건너뛴 검사: 없다.
+- 고친 검사: `verification/i18n-layout-ko-baseline.json` 한 개. 한국어 (가) 글자 겹침 5 → **0**(main의 390px 매트릭스 4개 = 사분면 이름 위 점, 1280×720 1개가 없어짐), (가′) 고정 막대 밑 글자 32 → 35(390px 매트릭스 캡처 때 그래프 틀이 이름표만큼 길어져 '두 축은 따로 봅니다' 줄이 화면 아래 탭바 밑에 걸린 것 4개. 캡처 시점의 스크롤 자리 문제로, 이 항목은 원래 실패로 치지 않고 개수만 기준을 넘지 않게 본다). 지운 검사: 없다. 건너뛴 검사: 없다.
 - 이름표 위치를 고정값으로 기대하는 기존 검사는 없었다(`verification/`에서 `quadrant`·`matrix`·`point-label`·`cluster`·`보전 지표 높음`·`기초조사 검토` 검색). uicheck 'Compare 390/1560px (design 3)'(네 사분면 두 이름이 보임, 점 이름·버튼·상자 겹침 없음)은 그대로 통과한다.
 - 더한 검사(`uicheck.mjs` 'Matrix quadrant names 360·390·768·1100·1440px'): 분류 5개 × 가중치 2개(공식, MFPI 0.00)마다 네 이름표 두 줄이 다 보이고 잘리지 않음, 글자 덩어리가 점·버튼·보이는 점 이름과 교차하지 않음, 자기 사분면 안(또는 바깥 자리면 그래프 밖·틀 안·사분면 폭 안), 자기 모서리가 비어 있던 이름표는 그대로, 이름표 배치 전후 점의 `left`/`bottom`과 매트릭스 `textContent`가 같음, 이름표 가운데를 눌러도 이름표가 받지 않음, 점을 누르면 그 종이 선택됨.
 - `test_matrix_quadrant_names.mjs`: 마크업·문구, `.q-name` 바탕·층·누르기, 부르는 곳, 네 모서리·6px·바깥 자리·그래프 높이 지킴, 반복 배치·줄 숨김 없음.
-- 이 세션에서 돌린 것: CI 단위 단계 전체(`node verification/test_*.mjs` 42개, `build_*.py --check` 넷, `i18n_data_strings.py --check`, `build_expedition_stops.py --check`, Python unittest 496개) 통과. `uicheck.mjs`와 `i18n_layout_check.mjs`는 Chromium(Playwright 1243)에서 돌렸다: 실패는 위성·수심 타일이 막힌 환경 탓 4개뿐이고 main에서도 같은 4개다.
+- 이 세션에서 돌린 것: CI 단위 단계 전체(`node verification/test_*.mjs` 42개, `build_*.py --check` 넷, `i18n_data_strings.py --check`, `build_expedition_stops.py --check`, Python unittest 496개) 통과. `uicheck.mjs`는 Chromium(Playwright 1243)에서 돌렸다: 실패는 위성·수심 타일이 막힌 환경 탓 4개뿐이고 main에서도 같은 4개다. `i18n_layout_check.mjs`는 위 기준으로 통과(영어 (가)(다)(마)(차) 0).
 - 확인하지 못한 것: iOS Safari·Android Chrome **실제 기기**는 보지 못했다. WebKit Playwright도 이 클라우드 환경에서 내려받기 주소(`cdn.playwright.dev`, `playwright.download.prss.microsoft.com`)가 막혀 돌리지 못했다. 쓴 CSS `translate` 속성은 Safari 14.1부터, `color-mix`는 16.2부터 되고 그 전에는 같은 색 rgba로 보인다.
