@@ -1,0 +1,39 @@
+/* 2026-10-26 멍이 버튼 키우기 · 끌어서 옮기기 · 스크롤하는 동안 흐려지기 (verification/2026-10-26-meongi-bigger-draggable/README.md).
+   index.html이 모든 CSS 중 마지막에 불러와 chatbot.css·theme.css·compare.css의 같은 선택자를 덮어쓴다(원래 규칙은 그대로 둔다).
+   자리와 상태 클래스는 chatbot.js가 정한다(place·placeMoved·fade·snap). 그림·표정·색·움직임(깡충·숨쉬기)은 chatbot.css 그대로.
+   - 크기: 버튼(누르는 영역) 48 → 56px, 안의 멍이 그림(SVG라 흐려지지 않음) 44 → 52px. PC·휴대폰 같다.
+   - 기본 자리: 오른쪽 16px(넓은 화면 탐색 지도는 확대/축소 컨트롤 왼쪽). 아래는 PC 16px, 휴대폰은 아래 탭 줄(--bbc-bar, safe-area 포함) 위 12px.
+   - 끄는 동안 .bbc-dragging: 1.08배·진한 그림자(chatbot.css). 놓은 뒤 .bbc-snap 동안 가까운 좌우 가장자리로 0.2초.
+   - 스크롤하는 동안 .bbc-fab.is-scrolling: 불투명도 .35·0.85배. 줄어드는 기준점은 붙은 가장자리라 자리는 그대로 보인다.
+     '움직임 줄이기'(사이트 스위치 .bbc-still 또는 시스템 설정)면 크기는 그대로, 불투명도만 바로 바뀐다. */
+.bbc-fab{width:56px;height:56px;transform-origin:100% 50%}
+.bbc-fab .bbc-mascot{width:52px;height:52px}
+.bbc-left .bbc-fab{transform-origin:0 50%}
+.bbc-dragging .bbc-fab{transform-origin:50% 50%}
+.bbc-fab.is-scrolling{opacity:.35}
+@media (prefers-reduced-motion:no-preference){
+  .bbc-fab{transition:transform .18s ease-out,opacity .18s ease-out}
+  .bbc:not(.bbc-still) .bbc-fab.is-scrolling{transform:scale(.85)}
+  .bbc-snap .bbc-fab{transition:left .2s ease-out,top .2s ease-out,transform .18s ease-out,opacity .18s ease-out}
+  .bbc-still .bbc-fab{transition:none}
+}
+/* PC 마우스: 올리면 잡는 손, 끄는 동안 쥔 손(손가락에는 커서가 없다) */
+@media (hover:hover) and (pointer:fine){
+  .bbc-fab{cursor:grab}
+  .bbc-dragging .bbc-fab{cursor:grabbing}
+}
+/* 버튼 높이·폭이 8px 늘어난 만큼 말풍선과 대화창도 띄운다(chatbot.css: 버튼 옆 58px·아래 22px, 대화창 아래 76px) */
+.bbc-hint{right:calc(var(--bbc-right) + 66px);bottom:calc(26px + var(--bbc-bar,0px));max-width:calc(100vw - var(--bbc-right) - 82px)}
+@media (min-width:768px){.bbc-panel{bottom:84px}}  /* 767px 이하의 대화창은 화면 아래 시트(bottom 0) 그대로 */
+@media (min-width:1180px){
+  body:has(#explore.active) .bbc:not(.bbc-moved) .bbc-hint{bottom:80px}
+}
+/* 휴대폰(740px 이하, 아래 탭 줄이 있는 폭): 탭 줄 위 12px. 맨 아래 여백·종 카드 줄 끝·활용 특성 칩 줄·담기 트레이도 56px 버튼에 맞춘다. */
+@media (max-width:740px){
+  .bbc-fab{bottom:calc(12px + var(--bbc-bar,0px))}
+  body{padding-bottom:calc(var(--bbc-bar,0px) + 56px + 12px)}
+  #explore .species-list{padding-right:calc(12px + 64px)}
+  .use-chips{margin-right:68px}
+  .bbc:not(.bbc-moved) .bbc-hint{bottom:calc(12px + var(--bbc-bar,0px) + 56px + 8px)}
+  #compare .cmp-tray{right:80px}
+}

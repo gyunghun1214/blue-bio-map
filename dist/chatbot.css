@@ -119,8 +119,7 @@
 }
 @media (max-width:400px){.bbc-hint-lead{display:none}}
 /* 2026-10-25 휴대폰(740px 이하, 아래 탭바가 있는 폭): 멍이 버튼이 내용을 가리지 않게. 741px 이상은 그대로.
-   - 스크롤·지도 끌기·종 카드 줄 가로 스크롤 동안 chatbot.js가 .bbc-tucked를 붙인다: 크기는 그대로(누르는 영역 48px) 두고
-     가장자리 쪽으로 버튼 폭의 55%를 밀어 넣고 흐리게. 왼쪽 절반으로 옮긴 버튼(.bbc-left)은 왼쪽으로. '움직임 줄이기'(.bbc-still·시스템 설정)면 바로 바뀐다.
+   - (2026-10-26) 스크롤 동안 가장자리로 접던 .bbc-tucked는 meongi.css의 '흐려지기'(.bbc-fab.is-scrolling)로 바뀌었다.
    - 맨 아래까지 내리면 마지막 줄이 버튼 위에서 끝나게 body 아래 여백에 버튼 높이(48px)와 띄움(16px)을 더한다(theme.css의 줄은 그대로).
      버튼을 위로 옮긴 사람에게는 남는 여백이지만 단순하게 그대로 둔다. 종 카드 줄 끝에도 56px를 더해 마지막 카드를 버튼 왼쪽까지 끌어올 수 있게.
      #compare(담기 트레이)처럼 탭 자체에 둔 더 큰 아래 여백은 그대로다.
@@ -128,9 +127,5 @@
 @media (max-width:740px){
   body{padding-bottom:calc(var(--bbc-bar,0px) + 48px + 16px)}
   #explore .species-list{padding-right:calc(12px + 56px)}
-  .bbc-tucked .bbc-fab{transform:translateX(55%);opacity:.55}
-  .bbc-tucked.bbc-left .bbc-fab{transform:translateX(-55%)}
   .bbc:not(.bbc-moved) .bbc-hint{right:var(--bbc-right);bottom:calc(16px + var(--bbc-bar,0px) + 48px + 8px);max-width:calc(100vw - 32px)}
 }
-@media (max-width:740px) and (prefers-reduced-motion:no-preference){.bbc-fab{transition:transform .2s ease-out,opacity .2s ease-out}.bbc-still .bbc-fab{transition:none}}
-

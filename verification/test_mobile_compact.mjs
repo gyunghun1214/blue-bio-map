@@ -10,8 +10,8 @@ const html=read('index.html'),css=read('mobile-compact.css'),js=read('mobile-com
 // 스크립트는 app.js 다음(defer). 둘 다 1년 캐시 목록에.
 const head=html.slice(0,html.indexOf('</head>'));
 const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]);
-// 2026-10-25 휴대폰 반복 설명 정리(mobile-dedupe.css)만 이 파일 뒤에 온다
-assert.equal(sheets.filter(f=>f!=='mobile-dedupe.css').at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet (before mobile-dedupe.css): ${sheets}`);
+// 2026-10-25 휴대폰 반복 설명 정리(mobile-dedupe.css)와 2026-10-26 멍이(meongi.css)만 이 파일 뒤에 온다
+assert.equal(sheets.filter(f=>f!=='mobile-dedupe.css'&&f!=='meongi.css').at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet (before mobile-dedupe.css and meongi.css): ${sheets}`);
 assert.ok(sheets.indexOf('mobile-compact.css')>sheets.indexOf('intro.css'));
 if(sheets.includes('mobile-type.css'))assert.match(html,/<link rel="stylesheet" href="mobile-type\.css\?v=[0-9a-f]{10}"><link rel="stylesheet" href="mobile-compact\.css\?v=[0-9a-f]{10}">/,'right after mobile-type.css');
 assert.match(head,/<script defer src="app\.js\?v=[0-9a-f]{10}"><\/script><script defer src="mobile-compact\.js\?v=[0-9a-f]{10}"><\/script>/);
