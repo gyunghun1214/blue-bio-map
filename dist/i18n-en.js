@@ -1874,7 +1874,8 @@ Object.assign(I18N_EN,{
 "지역과 해양 정화·갯벌 정화로 찾고 봉사시간 인증":"Search by region for coastal or tidal-flat clean-ups; volunteer hours are certified",
 "바깥 누리집으로 이동합니다.":"These links open outside websites.",
 "지도로 만난 바다를 직접 돌보고 싶다면":"If you want to care for the sea you met on the map",
-"4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)":"4/1 – 5/31 (4/1 – 4/30 for some fisheries)"
+"4월 1일~5월 31일 (일부 어업은 4월 1일~4월 30일)":"4/1 – 5/31 (4/1 – 4/30 for some fisheries)",
+"배경 지도 출처 보기":"Show basemap credits"
 });
 // @section 비교와 지표(app.js)
 Object.assign(I18N_EN,{
@@ -2865,7 +2866,9 @@ Object.assign(I18N_EN,{
 "{0}의 MCUI는 {1}로 {2}점이 됐어요.":"The MCUI of {0} became {2} with {1}.",
 "(값은 종 상세 참고)":"(see species details for the value)",
 "종 상세에 적힌 근거":"the evidence in the species details",
-"값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.":"The value and evidence are in the MCUI field of the species details."
+"값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.":"The value and evidence are in the MCUI field of the species details.",
+"사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다":"Open the guide. Drag it, or use Shift and the arrow keys, to move it",
+"사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다":"Close the guide. Drag it, or use Shift and the arrow keys, to move it"
 });
 // @section 바다 탐험(expedition.js)
 Object.assign(I18N_EN,{

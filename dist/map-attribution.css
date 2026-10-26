@@ -1,0 +1,31 @@
+/* ==========================================================================================================================
+   2026-10-26 휴대폰 탐색 지도 배경 지도 출처 ⓘ (LKH, prompts/map-attribution-info-button-claude-code.md · verification/2026-10-26-map-attribution-info)
+   지도 맨 아래 출처 줄(Leaflet 출처 컨트롤)이 아래에서 올라온 종 시트에 반쯤 덮여 글자 윗부분만 시트 가장자리 위로 삐져나왔다.
+   휴대폰(740px 이하)에서는 같은 컨트롤 안의 ⓘ 단추(.attr-toggle, app.js addAttrToggle)만 보이고, 누르면 출처 글(.attr-text)이
+   단추 위 말풍선으로 펼쳐진다(.attr-open). 단추는 확대/축소 단추 왼쪽, 시트 윗선 바로 위에 앉고 시트가 덮은 높이(--sheet-cover,
+   app.js sheetSync)를 따라 움직인다. 출처 문구와 Leaflet이 바꾸는 동작은 그대로다. 출처 글자는 13px 아래로 줄이지 않는다.
+   넓은 화면(741px 이상)은 단추가 없고 출처 줄이 전과 같은 자리·모양이다. 기존 CSS 파일은 고치지 않는다.
+   index.html에서 다른 모든 CSS 다음(mobile-dedupe.css 다음)에 불러온다.
+   ========================================================================================================================== */
+
+.attr-toggle{display:none}
+
+@media (max-width:740px){
+  /* 출처 컨트롤은 흐름에서 빠지므로, 확대/축소 단추는 아래 여백에 빠진 출처 줄 높이(18px)를 더해 전과 같은 자리에 둔다 */
+  #explore .leaflet-bottom.leaflet-right .leaflet-control-zoom{margin-bottom:42px}
+  #explore .leaflet-control-attribution{position:absolute;right:58px;bottom:calc(var(--sheet-cover,14px) + 4px);margin:0;padding:0;
+    background:none!important;line-height:1.45}
+  #explore .attr-toggle{display:grid;place-items:center;width:44px;height:44px;margin:0;padding:0;border:0;background:none;color:var(--ink2,#c6d5df);cursor:pointer}
+  #explore .attr-toggle::before{content:"i";display:grid;place-items:center;width:28px;height:28px;border-radius:50%;box-sizing:border-box;
+    background:rgba(11,31,45,.95);border:1px solid var(--nv-edge,rgba(156,178,194,.22));box-shadow:0 2px 8px rgba(0,0,0,.35);
+    font:italic 700 15px/1 Georgia,"Times New Roman",serif}
+  #explore .attr-toggle:hover::before,#explore .attr-open .attr-toggle::before{background:var(--nv-raise,#16384c);color:var(--ink,#eaf2f6)}
+  #explore .attr-toggle:focus-visible{outline:none}
+  #explore .attr-toggle:focus-visible::before{outline:2px solid var(--teal);outline-offset:2px}
+  /* 접힘: 출처 글은 숨긴다(단추의 aria-controls가 가리킨다) · 펼침: 단추 위 말풍선, 지도 안에서 줄바꿈 */
+  #explore .attr-text{display:none}
+  #explore .attr-open .attr-text{display:block;position:absolute;right:0;bottom:100%;width:max-content;max-width:calc(100vw - 74px);
+    padding:7px 10px;border-radius:10px;background:rgba(11,31,45,.95);border:1px solid var(--nv-edge,rgba(156,178,194,.22));
+    box-shadow:0 4px 14px rgba(0,0,0,.4);color:var(--ink2,#c6d5df);font-size:max(13px,var(--fs-min));line-height:1.45;white-space:normal;overflow-wrap:anywhere}
+  #explore .attr-open .attr-text a{color:var(--ink,#eaf2f6)}
+}
