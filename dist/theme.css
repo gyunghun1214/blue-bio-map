@@ -1161,9 +1161,16 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 #value-view[hidden]{display:none!important}
 /* period dropdown (all widths) */
 .period-filter{position:relative;padding:0}
-.pf-toggle{display:inline-flex;align-items:center;gap:6px;height:100%;padding:8px 34px 8px 14px;border:0;border-radius:inherit;background:none;color:inherit;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer;position:relative}
-.pf-toggle::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;margin-top:-6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:rotate(45deg)}
+.pf-toggle{--pf-caret-r:14px;--pf-caret-w:13px;display:inline-flex;align-items:center;gap:6px;height:100%;padding:8px calc(var(--pf-caret-r) + var(--pf-caret-w) + 8px) 8px 14px;border:0;border-radius:inherit;background:none;color:inherit;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer;position:relative}
+.pf-toggle::after{content:"";position:absolute;right:var(--pf-caret-r);top:50%;width:7px;height:7px;margin-top:-6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:rotate(45deg)}
 .pf-toggle[aria-disabled=true]{cursor:default}
+/* 2026-10-26: .period-filter button (above) outranked .pf-toggle's right padding, so the value ran under the caret.
+   Room = caret right gap + caret width (7px + 1.8px border, turned 45° ≈ 12.4px) + 8px; font size stays with the older rules. */
+.period-filter .pf-toggle{padding-right:calc(var(--pf-caret-r) + var(--pf-caret-w) + 8px)}
+.period-filter .pf-toggle .pf-k{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.period-filter .pf-toggle b{flex:none}
+/* the open menu hangs over the next control row (링크 복사 · 전체 보기, same z-index, later in the page): lift its row while open */
+.map-ui-tl:has(#pf-menu:not([hidden])){z-index:501}
 .pf-toggle[aria-disabled=true]::after{opacity:.35}
 .pf-toggle .pf-k{color:var(--ink2)}
 .pf-toggle b{font-weight:700}
