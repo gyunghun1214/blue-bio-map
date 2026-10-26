@@ -245,10 +245,11 @@ function chatbotMascot(state,size,crop,face){
 
 // 멍이 여는 버튼 옮기기(끌기). 계산만 여기 두고 화면 부분이 부른다. 좌표는 화면(뷰포트) 왼쪽 위 기준 px.
 // view={w,h,inset:{top,right,bottom,left}}: inset은 노치·홈 막대(safe-area) 여백.
-const CHATBOT_DRAG={mouse:6,touch:10,margin:8,gap:12,minPanel:260};
-// 누른 점에서 문턱값보다 많이 움직여야 끌기. 그 전에 떼면 누르기(열기/닫기). 손가락은 흔들림이 커서 문턱이 높다.
-function chatbotDragStarted(dx,dy,pointerType){
-  return Math.hypot(dx,dy)>(pointerType==='mouse'?CHATBOT_DRAG.mouse:CHATBOT_DRAG.touch);
+// 2026-10-26: 문턱은 마우스·손가락·펜 모두 8px(이상), 놓으면 가까운 좌우 가장자리(edge px 안쪽)로 붙고, 키보드는 Shift+방향키 step px.
+const CHATBOT_DRAG={threshold:8,margin:8,gap:12,minPanel:260,edge:16,step:16};
+// 누른 점에서 문턱값 이상 움직이면 끌기. 그 전에 떼면 누르기(열기/닫기).
+function chatbotDragStarted(dx,dy){
+  return Math.hypot(dx,dy)>=CHATBOT_DRAG.threshold;
 }
 // 버튼(size px 정사각형)을 화면 가장자리에서 margin 이상 떨어진 안쪽으로. 화면이 버튼보다 좁으면 가운데(음수면 0).
 function chatbotClampFab(pos,size,view,margin=CHATBOT_DRAG.margin){
@@ -256,13 +257,28 @@ function chatbotClampFab(pos,size,view,margin=CHATBOT_DRAG.margin){
     return hi<lo?Math.max(0,Math.round((len-size)/2)):Math.round(Math.min(hi,Math.max(lo,v)));};
   return {x:axis(+pos.x||0,view.w,i.left,i.right),y:axis(+pos.y||0,view.h,i.top,i.bottom)};
 }
-// 저장은 가까운 가장자리 기준: 오른쪽 아래에 둔 버튼은 창 크기가 바뀌어도 오른쪽 아래에 남는다.
+// 2026-10-26 전의 저장값(bbChatFabPos): 가까운 가장자리 기준 {h,x,v,y}. 이제는 한 번 읽어 위 {side,y}로 옮기고 지운다(아래 셋).
 function chatbotFabAnchor(pos,size,view){
   const h=pos.x+size/2<=view.w/2?'left':'right',v=pos.y+size/2<=view.h/2?'top':'bottom';
   return {h,x:Math.max(0,Math.round(h==='left'?pos.x:view.w-pos.x-size)),v,y:Math.max(0,Math.round(v==='top'?pos.y:view.h-pos.y-size))};
 }
 function chatbotFabFromAnchor(a,size,view){
   return {x:a.h==='left'?a.x:view.w-a.x-size,y:a.v==='top'?a.y:view.h-a.y-size};
+}
+// 2026-10-26 저장값 {side:'left'|'right',y}: 놓은 버튼에 가까운 좌우 가장자리와, 버튼 가운데 높이의 화면 높이 대비 비율(0~1, 소수 4자리).
+// 비율이라 화면 크기가 바뀌어도 비슷한 높이에 놓인다. PC·휴대폰이 한 값을 같이 쓴다.
+function chatbotFabSide(pos,size,view){
+  const y=view.h>0?(pos.y+size/2)/view.h:0;
+  return {side:pos.x+size/2<view.w/2?'left':'right',y:Math.round(Math.min(1,Math.max(0,y))*1e4)/1e4};
+}
+// 저장값 → 버튼 왼쪽 위 좌표. 가로는 붙은 가장자리에서 gap px(오른쪽은 기본 자리와 같은 거리), 세로는 비율 그대로. 화면 안 자르기는 chatbotClampFab.
+function chatbotFabFromSide(s,size,view,gap={}){
+  const i=view.inset||{},l=Math.max(gap.left??CHATBOT_DRAG.edge,CHATBOT_DRAG.edge+(i.left||0)),r=Math.max(gap.right??CHATBOT_DRAG.edge,CHATBOT_DRAG.edge+(i.right||0));
+  return {x:Math.round(s.side==='left'?l:view.w-size-r),y:Math.round(s.y*view.h-size/2)};
+}
+function chatbotReadMeongiPos(raw){
+  let o;try{o=JSON.parse(raw);}catch{return null;}
+  return o&&typeof o==='object'&&(o.side==='left'||o.side==='right')&&typeof o.y==='number'&&Number.isFinite(o.y)&&o.y>=0&&o.y<=1?{side:o.side,y:o.y}:null;
 }
 // localStorage 값 검사: {desktop:{h,x,v,y},mobile:{…}} 중 올바른 칸만 남긴다. 깨졌거나 남는 칸이 없으면 null.
 function chatbotReadFabPos(raw){
@@ -321,7 +337,7 @@ if(typeof document!=='undefined')(function(){
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
     '<p class="bbc-note">미리 준비한 답변으로 안내해요</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
-    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기" aria-expanded="false" aria-controls="bbc-panel" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
+    '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다" aria-expanded="false" aria-controls="bbc-panel" aria-keyshortcuts="Shift+ArrowUp Shift+ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+Home" draggable="false" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
     '<span class="bbc-safe" aria-hidden="true"></span>';
   document.body.append(root);
   const [hint,panel,fab]=['.bbc-hint','.bbc-panel','.bbc-fab'].map(s=>root.querySelector(s));
@@ -364,30 +380,46 @@ if(typeof document!=='undefined')(function(){
     live=null;
   }
 
-  // 멍이를 옮긴 자리(chatbotReadFabPos 형식). PC와 휴대폰은 화면이 달라 따로 기억한다.
-  // localStorage를 못 쓰면 이 탭에서만 기억한다(posCache). 창이 작아져 잘린 자리는 저장하지 않는다(다시 키우면 원래 자리).
-  const POS_KEY='bbChatFabPos',PANEL={w:360,h:520};
-  let posCache=chatbotReadFabPos(store.get(POS_KEY))||{};
-  const posMode=()=>mobile()?'mobile':'desktop';
+  // 멍이를 옮긴 자리(chatbotReadMeongiPos 형식 {side,y}, 2026-10-26). 이 기기의 localStorage 한 항목에 둔다. 못 쓰면(비공개 창 등)
+  // 이 탭에서만 기억한다(posSaved). 화면이 바뀌어 범위 밖이 된 자리는 화면 안으로 옮겨 그리되 저장값은 사용자가 다시 옮길 때까지 그대로.
+  const POS_KEY='bbMeongiPos',OLD_POS_KEY='bbChatFabPos',PANEL={w:360,h:520};
+  let posSaved=chatbotReadMeongiPos(store.get(POS_KEY));
   function savePos(){
-    try{if(Object.keys(posCache).length)localStorage.setItem(POS_KEY,JSON.stringify(posCache));else localStorage.removeItem(POS_KEY);}catch{}
+    try{if(posSaved)localStorage.setItem(POS_KEY,JSON.stringify(posSaved));else localStorage.removeItem(POS_KEY);}catch{}
   }
+  // 놓을 수 있는 범위: 위쪽 헤더 아래 ~ 아래 탭 줄(휴대폰에서 고정) 위, 노치·홈 막대(safe-area) 안. chatbotClampFab이 여기에 margin을 더한다.
   function view(){
     const s=getComputedStyle(safe),n=k=>parseFloat(s['padding'+k])||0,d=document.documentElement;
-    return {w:d.clientWidth,h:d.clientHeight,inset:{top:n('Top'),right:n('Right'),bottom:n('Bottom'),left:n('Left')}};
+    const head=document.querySelector('.header'),tabs=document.querySelector('.tabs');
+    const bar=tabs&&getComputedStyle(tabs).position==='fixed'&&visible(tabs)?Math.max(0,d.clientHeight-tabs.getBoundingClientRect().top):0;
+    return {w:d.clientWidth,h:d.clientHeight,inset:{top:Math.max(n('Top'),head?.offsetHeight||0),right:n('Right'),bottom:Math.max(n('Bottom'),bar),left:n('Left')}};
   }
-  const fabSize=()=>fab.offsetWidth||48;
+  const fabSize=()=>fab.offsetWidth||56;
+  {const old=chatbotReadFabPos(store.get(OLD_POS_KEY)),a=old&&(old[mobile()?'mobile':'desktop']||old.mobile||old.desktop);
+    if(a&&!posSaved){const v=view(),size=fabSize();posSaved=chatbotFabSide(chatbotClampFab(chatbotFabFromAnchor(a,size,v),size,v),size,v);savePos();}
+    try{localStorage.removeItem(OLD_POS_KEY);}catch{}}
+  // 기본 자리의 오른쪽 거리(16px, 넓은 화면 탐색 지도에서는 확대/축소 컨트롤 왼쪽). 오른쪽에 붙인 멍이도 같은 거리에 선다.
+  function defaultRight(){
+    const z=document.querySelector('.leaflet-control-zoom');
+    return !mobile()&&document.querySelector('#explore.active')&&visible(z)?Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12):16;
+  }
   function movedPos(){
-    const a=posCache[posMode()];if(!a)return null;
-    const v=view(),size=fabSize();return chatbotClampFab(chatbotFabFromAnchor(a,size,v),size,v);
+    if(!posSaved)return null;
+    const v=view(),size=fabSize(),p=chatbotClampFab(chatbotFabFromSide(posSaved,size,v,{right:defaultRight()}),size,v);
+    // 휴대폰 비교 탭의 담기 트레이(화면 아래 고정, 멍이 기본 자리 왼쪽)와 겹치면 그 위로 비킨다
+    const t=document.getElementById('cmp-tray'),r=visible(t)&&getComputedStyle(t).position==='fixed'?t.getBoundingClientRect():null;
+    if(r&&r.left<p.x+size&&r.right>p.x&&r.top<p.y+size)p.y=Math.max(v.inset.top+CHATBOT_DRAG.margin,Math.round(r.top-CHATBOT_DRAG.margin-size));
+    return p;
   }
+  // 지금 자리. 옮기지 않았으면 기본 자리(부르는 쪽이 흐려짐을 먼저 풀어 transform이 없을 때 잰다).
+  function fabPos(){const r=fab.getBoundingClientRect();return movedPos()||{x:Math.round(r.left),y:Math.round(r.top)};}
   const clearStyle=(el,keys)=>{for(const k of keys)el.style[k]='';};
   // 옮긴 자리에 버튼을 두고, 안내 말풍선과 (PC에서 열려 있으면) 대화창을 그 옆으로.
   function placeMoved(pos){
     root.classList.add('bbc-moved');
     root.style.setProperty('--bbc-x',pos.x+'px');root.style.setProperty('--bbc-y',pos.y+'px');
     const v=view(),size=fabSize(),right=pos.x+size/2>v.w/2;
-    root.classList.toggle('bbc-left',!right);  // 접을 때 밀어 넣는 쪽(chatbotFabAnchor의 h와 같은 기준)
+    root.classList.toggle('bbc-left',!right);  // 흐려질 때 줄어드는 기준 가장자리(meongi.css)
     if(!hint.hidden){
       const side=right?pos.x-18:v.w-pos.x-size-18;
       // 휴대폰(740px 이하)에서 옆 자리가 120px보다 좁으면 버튼 위(아래쪽 절반) 또는 아래(위쪽 절반)로, 버튼과 같은 쪽 끝에 맞춰 띄운다.
@@ -409,15 +441,12 @@ if(typeof document!=='undefined')(function(){
   // 탐색 지도 탭(폭 768px 이상)에서는 버튼과 대화창을 지도 확대/축소 컨트롤 왼쪽에 둔다: 근거 패널과 확대/축소를 가리지 않게.
   // 사용자가 멍이를 옮겼으면 그 자리가 이긴다.
   function place(){
-    if(!phone())untuck();  // 창이 넓어지면(741px 이상) 접힘을 바로 푼다: 넓은 화면의 누르기가 펼치기로 먹히지 않게
-    reset.hidden=!posCache[posMode()];
+    reset.hidden=!posSaved;
     const pos=movedPos();
     if(pos)return placeMoved(pos);
-    root.classList.remove('bbc-moved','bbc-left');hookMap();
+    root.classList.remove('bbc-moved','bbc-left');
     clearStyle(hint,['left','top','right','bottom','maxWidth']);clearStyle(panel,['left','top','right','bottom']);
-    let right=16;const z=document.querySelector('.leaflet-control-zoom');
-    if(!mobile()&&document.querySelector('#explore.active')&&visible(z))right=Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12);
-    root.style.setProperty('--bbc-right',right+'px');
+    root.style.setProperty('--bbc-right',defaultRight()+'px');
     if(panel.hidden)return;
     // 열려 있으면 높이를 줄여 위쪽 지도 컨트롤(2×2·위성/수심·확대/축소)과 겹치지 않게 한다.
     panel.style.maxHeight='';
@@ -497,7 +526,7 @@ if(typeof document!=='undefined')(function(){
   }
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
-    dismissHint();untuck();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기');fabFace(true);
+    dismissHint();unfade();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다');fabFace(true);
     if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();
     // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
@@ -505,7 +534,7 @@ if(typeof document!=='undefined')(function(){
     if(matchMedia('(max-width:740px)').matches)([...panel.querySelectorAll('.bbc-chips')].at(-1)?.querySelector('button')||panel.querySelector('.bbc-close'))?.focus();
     else input.focus();
   }
-  function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기');fabFace(false);fab.focus();}
+  function close(){clearTimeout(opening);opening=0;panel.hidden=true;fab.setAttribute('aria-expanded','false');fab.setAttribute('aria-label','사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다');fabFace(false);fab.focus();}
 
   // 기존 버튼을 눌러 이동한 뒤 대상에 잠깐 테두리. 이미 켜진 토글은 다시 누르지 않는다(누르면 꺼지거나 범례가 닫힘).
   // 원래 클릭이 document까지 올라간 뒤 실행해야 ⓘ 범례의 '바깥 클릭이면 닫기'에 걸리지 않는다.
@@ -529,87 +558,113 @@ if(typeof document!=='undefined')(function(){
     },0);
   }
 
-  // 2026-10-25 휴대폰(740px 이하, 아래 탭바가 있는 폭): 페이지·각 탭의 스크롤 상자·종 카드 줄 가로 스크롤·지도 끌기 동안 버튼을 화면 가장자리로
-  // 반쯤 밀어 넣고 흐리게(.bbc-tucked, chatbot.css) 했다가, 멈추고 TUCK_MS 뒤 되돌린다. 크기는 그대로라 누르는 영역(48px)은 같다.
-  // 대화창이 열렸거나 끄는 중이거나 키보드 포커스(:focus-visible)가 있으면 접지 않는다. 스크롤마다 레이아웃은 읽지 않는다(한 프레임에 한 번, 클래스만).
-  const TUCK_MS=700,phone=()=>matchMedia('(max-width:740px)').matches;
+  // 스크롤하는 동안 흐려지기(2026-10-26, 2026-10-25 휴대폰 '가장자리로 접기'를 바꿈): 페이지·각 탭의 스크롤 상자·종 카드 줄 가로 스크롤이 일어나면
+  // 버튼에 .is-scrolling(meongi.css: 불투명도 .35·0.85배, 붙은 가장자리 기준이라 자리는 그대로)을 붙이고, 마지막 스크롤 FADE_MS 뒤 뗀다.
+  // 지도를 끌거나 확대하는 것은 스크롤이 아니라 흐려지지 않는다. 대화창이 열렸거나 끄는 중이거나 키보드 포커스(:focus-visible)가 있으면 그대로.
+  // 스크롤마다 하는 일은 타이머를 다시 거는 것뿐이고 레이아웃은 읽지 않는다(클래스는 한 프레임에 한 번).
+  const FADE_MS=400,phone=()=>matchMedia('(max-width:740px)').matches;
   const still=()=>{try{if(localStorage.getItem('bbvm-reduce-motion')==='1')return true;}catch{}return reduced();};  // '움직임 줄이기'(intro.js)
-  let tuckTimer=0,tuckFrame=0,mapMoving=false,pressTucked=false,hookedMap=null;
-  const tucked=()=>root.classList.contains('bbc-tucked');
-  function untuck(){clearTimeout(tuckTimer);tuckTimer=0;root.classList.remove('bbc-tucked');}
-  function tuck(){
-    if(tuckFrame)return;
-    tuckFrame=requestAnimationFrame(()=>{
-      tuckFrame=0;
-      if(!phone()||!panel.hidden||opening||drag?.moving||fab.matches(':focus-visible'))return;
-      root.classList.toggle('bbc-still',still());root.classList.add('bbc-tucked');
-      clearTimeout(tuckTimer);tuckTimer=mapMoving?0:setTimeout(untuck,TUCK_MS);
+  let fadeTimer=0,fadeFrame=0;
+  const faded=()=>fab.classList.contains('is-scrolling');
+  function unfade(now){
+    clearTimeout(fadeTimer);fadeTimer=0;if(!faded())return;
+    // now: 누르거나 끌기 시작할 때는 애니메이션 없이 바로 원래 크기로(자리를 재기 전에)
+    if(now){fab.style.transition='none';fab.classList.remove('is-scrolling');void fab.offsetWidth;fab.style.transition='';}
+    else fab.classList.remove('is-scrolling');
+  }
+  function fade(){
+    clearTimeout(fadeTimer);fadeTimer=setTimeout(unfade,FADE_MS);
+    if(fadeFrame||faded())return;
+    fadeFrame=requestAnimationFrame(()=>{
+      fadeFrame=0;
+      if(drag||!panel.hidden||opening||fab.matches(':focus-visible'))return;
+      root.classList.toggle('bbc-still',still());fab.classList.add('is-scrolling');
     });
   }
-  // 지도(app.js의 map, 자료를 받은 뒤 생긴다): 끄는 동안 접어 두고, 멈추면(moveend) TUCK_MS 뒤 되돌린다.
-  function hookMap(){
-    if(typeof map==='undefined'||!map?.on||hookedMap===map)return;
-    hookedMap=map;
-    map.on('movestart',()=>{mapMoving=true;tuck();});
-    map.on('moveend',()=>{mapMoving=false;tuck();});
-  }
-  document.addEventListener('scroll',e=>{if(!root.contains(e.target))tuck();},{capture:true,passive:true});
-  document.addEventListener('pointerdown',hookMap,{capture:true,passive:true});
-  fab.addEventListener('focus',()=>{if(fab.matches(':focus-visible'))untuck();});
+  document.addEventListener('scroll',e=>{if(!root.contains(e.target))fade();},{capture:true,passive:true});
+  fab.addEventListener('focus',()=>{if(fab.matches(':focus-visible'))unfade(true);});
 
-  // 끌기: Pointer Events로 마우스·손가락·펜을 함께 처리한다. 문턱값(chatbotDragStarted)을 넘기 전에 떼면 보통 누르기.
-  // 끌어다 놓은 직후 브라우저가 보내는 click 한 번은 무시한다(키보드 Enter/Space의 click은 detail 0이라 막지 않음, 다음 누르기가 시작되면 해제).
-  // Esc나 pointercancel이면 처음 자리로 돌아간다.
-  let drag=null,dragEnd=-1e9,frame=0;
+  // 끌기: Pointer Events로 마우스·손가락·펜을 함께 처리한다. 8px(chatbotDragStarted) 전에 떼면 보통 누르기, 길게 누를 필요 없이 바로 끌린다.
+  // 끄는 동안 이벤트를 위로 올리지 않아 지도·시트·페이지가 같이 움직이지 않는다(touch-action:none, chatbot.css). 끌기를 시작하면 열린 대화창은 닫는다.
+  // 놓으면 가까운 좌우 가장자리로 붙고(.bbc-snap 0.2초, 움직임 줄이기면 바로) 세로는 놓은 자리. 끌어다 놓은 직후 브라우저가 보내는 click 한 번은
+  // 무시한다(키보드 Enter/Space의 click은 detail 0이라 막지 않음, 다음 누르기가 시작되면 해제). Esc나 pointercancel이면 처음 자리로 돌아간다.
+  let drag=null,dragEnd=-1e9,frame=0,snapTimer=0;
   const dragging=on=>{root.classList.toggle('bbc-dragging',on);document.documentElement.classList.toggle('bbc-drag-doc',on);};
+  function snap(){
+    clearTimeout(snapTimer);root.classList.remove('bbc-snap');
+    if(still())return;
+    root.classList.add('bbc-snap');snapTimer=setTimeout(()=>root.classList.remove('bbc-snap'),260);
+  }
+  function setPos(pos){posSaved=pos?chatbotFabSide(pos,fabSize(),view()):null;savePos();}
   function endDrag(save){
     cancelAnimationFrame(frame);frame=0;dragging(false);
-    if(save){const v=view();posCache[posMode()]=chatbotFabAnchor(drag.pos,fabSize(),v);savePos();}
+    if(save&&drag.pos){setPos(drag.pos);snap();}
     place();
   }
+  const own=e=>e.stopPropagation();
   fab.addEventListener('pointerdown',e=>{
     if(e.button!==0||!e.isPrimary||opening)return;
+    own(e);unfade(true);
     dragEnd=-1e9;  // 새로 누르면 그 뒤 click은 이번 누르기의 것(손가락 끌기는 click을 남기지 않으므로 다음 탭을 먹지 않게)
-    pressTucked=tucked()&&phone();
-    // 접혀 있으면 밀어 넣은 만큼(transform)을 빼서 원래 자리에서 끌기를 시작한다
-    const r=fab.getBoundingClientRect(),t=pressTucked?new DOMMatrixReadOnly(getComputedStyle(fab).transform):null;
-    drag={id:e.pointerId,type:e.pointerType,sx:e.clientX,sy:e.clientY,ox:r.left-(t?.m41||0),oy:r.top-(t?.m42||0),moving:false,cancelled:false,pos:null};
+    const p=fabPos();
+    drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:p.x,oy:p.y,moving:false,cancelled:false,pos:null};
     try{fab.setPointerCapture(e.pointerId);}catch{}
   });
   fab.addEventListener('pointermove',e=>{
     if(!drag||e.pointerId!==drag.id||drag.cancelled)return;
+    own(e);
     const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
-    if(!drag.moving){if(!chatbotDragStarted(dx,dy,drag.type))return;drag.moving=true;untuck();dragging(true);dismissHint();}
+    if(!drag.moving){
+      if(!chatbotDragStarted(dx,dy))return;
+      drag.moving=true;unfade(true);dismissHint();if(!panel.hidden)close();dragging(true);
+    }
     const v=view();drag.pos=chatbotClampFab({x:drag.ox+dx,y:drag.oy+dy},fabSize(),v);
     if(!frame)frame=requestAnimationFrame(()=>{frame=0;if(drag?.pos&&!drag.cancelled)placeMoved(drag.pos);});
   });
   fab.addEventListener('pointerup',e=>{
     if(!drag||e.pointerId!==drag.id)return;
+    own(e);
     if(drag.moving||drag.cancelled){dragEnd=performance.now();if(drag.moving&&!drag.cancelled)endDrag(true);}
     drag=null;
   });
   fab.addEventListener('pointercancel',e=>{
     if(!drag||e.pointerId!==drag.id)return;
+    own(e);
     if(drag.moving&&!drag.cancelled)endDrag(false);
     drag=null;
   });
+  fab.addEventListener('dragstart',e=>e.preventDefault());
   addEventListener('keydown',e=>{
     if(e.key!=='Escape'||!drag?.moving||drag.cancelled)return;
     e.preventDefault();e.stopPropagation();drag.cancelled=true;endDrag(false);
   },true);
+  // 키보드로 옮기기(끌기를 쓸 수 없는 사람을 위해 덧붙임): 멍이에 포커스가 있을 때 Shift+위/아래는 16px씩, Shift+왼쪽/오른쪽은 그 가장자리로,
+  // Shift+Home은 처음 자리(저장값 지움). Enter·Space는 그대로 누르기. 두 번 눌러 되돌리기는 두지 않는다(첫 누르기가 대화창을 연다).
+  function resetPos(){setPos(null);place();}
+  fab.addEventListener('keydown',e=>{
+    if(!e.shiftKey||e.altKey||e.ctrlKey||e.metaKey||drag)return;
+    const k=e.key,step={ArrowUp:-CHATBOT_DRAG.step,ArrowDown:CHATBOT_DRAG.step,ArrowLeft:0,ArrowRight:0}[k];
+    if(k!=='Home'&&step===undefined)return;
+    e.preventDefault();e.stopPropagation();
+    if(k==='Home')return resetPos();
+    const v=view(),size=fabSize(),cur=fabPos(),p=chatbotClampFab({x:cur.x,y:cur.y+step},size,v);
+    const side=k==='ArrowLeft'?'left':k==='ArrowRight'?'right':chatbotFabSide(cur,size,v).side;
+    posSaved={side,y:chatbotFabSide(p,size,v).y};savePos();
+    if(k==='ArrowLeft'||k==='ArrowRight')snap();
+    place();
+  });
   // 열 때 깡충 인사(F): 버튼 속 멍이가 웃으며 한 번 뛰고, 거의 다 뛴 600ms 뒤 창을 연다. 움직임 줄이기면 바로 연다. 닫기는 바로.
+  // 흐려진 동안에도 누르면 바로 원래대로 돌아오고 같은 일을 한다.
   fab.addEventListener('click',e=>{
     if(e.detail!==0&&performance.now()-dragEnd<700){dragEnd=-1e9;return;}
     if(opening)return;
-    // 접힌 버튼을 누르면 먼저 펼치기만 한다. 펼친 뒤 다시 누르면 연다.
-    const wasTucked=pressTucked||tucked();pressTucked=false;
-    if(wasTucked)return untuck();
+    unfade(true);
     if(!panel.hidden)return close();
     if(reduced())return open();
     fab.innerHTML=chatbotMascot('answer',44,true,'smile');mascotOnce(fab.firstElementChild,'bbc-m-hop',720);
     opening=setTimeout(()=>{opening=0;open();},600);
   });
-  reset.addEventListener('click',()=>{delete posCache[posMode()];savePos();place();input.focus();});
+  reset.addEventListener('click',()=>{resetPos();input.focus();});
   root.querySelector('.bbc-close').addEventListener('click',close);
   root.querySelector('.bbc-hint-x').addEventListener('click',dismissHint);
   panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}});
@@ -622,6 +677,9 @@ if(typeof document!=='undefined')(function(){
   // 탭은 탭 버튼 말고도(‘선택 종 비교하기’, ‘근거 보기’ 등) 바뀌므로 #explore의 class 변화를 지켜본다.
   const explore=document.getElementById('explore');
   if(explore)new MutationObserver(()=>requestAnimationFrame(place)).observe(explore,{attributes:true,attributeFilter:['class']});
+  // 휴대폰 비교 탭의 담기 트레이가 생기거나 펼쳐지면(크기 변화) 옮긴 멍이가 그 위로 비키게 다시 놓는다.
+  const tray=document.getElementById('cmp-tray');
+  if(tray&&typeof ResizeObserver==='function')new ResizeObserver(()=>requestAnimationFrame(place)).observe(tray);
   addEventListener('load',()=>setTimeout(place,300));
   if(!store.get(HINT_KEY))hintWhenGateGone();
   place();

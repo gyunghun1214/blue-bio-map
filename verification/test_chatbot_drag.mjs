@@ -1,21 +1,23 @@
 // 멍이 버튼 옮기기(chatbot.js 순수 계산): 끌기/누르기 문턱값, 화면 안으로 자르기, 가장자리 기준 저장값 왕복,
 // 대화창 자리(네 모서리, 화면 안, 버튼과 겹치지 않음), 깨진 저장값 무시, '멍이 옮기기' FAQ 매칭.
+// 2026-10-26(멍이 키우기·끌기): 문턱 8px, 좌우 가장자리 붙기 저장값 {side,y} 왕복, meongi.css(56px·마지막 스타일시트·1년 캐시·12px 미만 글자 없음).
 // Run: node verification/test_chatbot_drag.mjs
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import crypto from 'node:crypto';
 
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const ctx={};vm.createContext(ctx);  // document가 없으면 화면 부분은 건너뛴다
-vm.runInContext(read('chatbot.js')+';Object.assign(globalThis,{CHATBOT_DRAG,chatbotDragStarted,chatbotClampFab,chatbotFabAnchor,chatbotFabFromAnchor,chatbotReadFabPos,chatbotPanelPlace,chatbotMatch});',ctx);
+vm.runInContext(read('chatbot.js')+';Object.assign(globalThis,{CHATBOT_DRAG,chatbotDragStarted,chatbotClampFab,chatbotFabAnchor,chatbotFabFromAnchor,chatbotReadFabPos,chatbotPanelPlace,chatbotMatch,chatbotFabSide,chatbotFabFromSide,chatbotReadMeongiPos});',ctx);
 const {CHATBOT_DRAG:D,chatbotDragStarted:started,chatbotClampFab:clamp,chatbotFabAnchor:anchor,chatbotFabFromAnchor:fromAnchor,
-  chatbotReadFabPos:readPos,chatbotPanelPlace:panelPlace,chatbotMatch:match}=ctx;
+  chatbotReadFabPos:readPos,chatbotPanelPlace:panelPlace,chatbotMatch:match,chatbotFabSide:toSide,chatbotFabFromSide:fromSide,chatbotReadMeongiPos:readSide}=ctx;
 const plain=v=>JSON.parse(JSON.stringify(v));
 const SIZE=48,M=D.margin,desk={w:1440,h:900,inset:{}},phone={w:390,h:844,inset:{top:47,right:0,bottom:34,left:0}};
 
-// (1) 끌기 vs 누르기: 마우스 6px, 손가락·펜 10px를 넘어야 끌기
-for(const [dx,dy,type,want] of [[5,0,'mouse',false],[3,4,'mouse',false],[7,0,'mouse',true],[0,-7,'mouse',true],
-  [9,0,'touch',false],[11,0,'touch',true],[6,6,'touch',false],[8,8,'touch',true],[9,0,'pen',false],[11,0,'pen',true]])
+// (1) 끌기 vs 누르기: 마우스·손가락·펜 모두 8px 이상 움직이면 끌기(2026-10-26, 전에는 마우스 6px·손가락 10px 초과)
+for(const [dx,dy,type,want] of [[5,0,'mouse',false],[3,4,'mouse',false],[7,0,'mouse',false],[8,0,'mouse',true],[0,-8,'mouse',true],
+  [3,0,'touch',false],[7.9,0,'touch',false],[11,0,'touch',true],[5,5,'touch',false],[6,6,'touch',true],[7,0,'pen',false],[0,40,'pen',true]])
   assert.equal(started(dx,dy,type),want,`${type} ${dx},${dy}`);
 
 // (2) 화면 밖 좌표는 가장자리 margin 안으로, safe-area 여백도 비킨다. 버튼보다 좁은 화면에서도 예외 없이 0 이상.
@@ -76,4 +78,34 @@ assert.deepEqual(plain(readPos('{"desktop":{"h":"left","x":0,"v":"top","y":0},"m
 for(const q of ['멍이가 화면을 가려요','멍이 위치 옮기기','멍이 좀 옮기고 싶어','멍이가 지도를 가려요'])assert.equal(match(q)?.id,'move-mascot',`"${q}"`);
 for(const [q,id] of [['붉은 점은 실제 위치야?','red-dots'],['지도가 뭘 보여줘?','overview'],['위성 수심 배경 바꾸기','map-buttons']])assert.equal(match(q)?.id,id,`"${q}"`);
 
-console.log('PASS: 멍이 옮기기 · 끌기/누르기 문턱(마우스 6px·손가락 10px) · 화면 안 자르기(safe-area) · 가장자리 기준 저장 왕복 · 대화창 자리 · 깨진 저장값 무시 · FAQ');
+// (7) 2026-10-26 좌우 가장자리 붙기: 놓은 자리 → {side,y}(가운데 높이 비율) → 좌표. 가로는 가까운 쪽 가장자리에서 edge(16px, 오른쪽은 기본 자리와 같은 거리),
+// 세로는 놓은 자리 그대로. 비율이라 다른 화면에서도 비슷한 높이.
+const FAB=56;  // 2026-10-26 버튼 크기(meongi.css). 위 (2)~(4)는 순수 계산이라 옛 48px 그대로 둔다.
+assert.equal(D.threshold,8);assert.equal(D.edge,16);assert.equal(D.step,16);
+for(const [pos,side] of [[{x:20,y:300},'left'],[{x:160,y:300},'left'],[{x:170,y:300},'right'],[{x:300,y:600},'right']]){
+  const s=toSide(pos,FAB,phone);assert.equal(s.side,side,JSON.stringify(pos));
+  const back=fromSide(s,FAB,phone);
+  assert.equal(back.x,side==='left'?16:390-FAB-16,`가장자리 x ${JSON.stringify(pos)}`);
+  assert.ok(Math.abs(back.y-pos.y)<=1,`세로는 놓은 자리 ${JSON.stringify([pos,back])}`);
+}
+assert.deepEqual(plain(fromSide({side:'right',y:.5},FAB,desk,{right:493})),{x:1440-FAB-493,y:450-FAB/2},'오른쪽은 기본 자리와 같은 거리(탐색 지도 확대/축소 왼쪽)');
+assert.equal(fromSide({side:'left',y:.5},FAB,{w:390,h:844,inset:{left:44}}).x,60,'왼쪽 safe-area 안쪽');
+const half=toSide({x:100,y:400},FAB,desk);assert.deepEqual(plain(half),{side:'left',y:Math.round((400+FAB/2)/900*1e4)/1e4});
+assert.ok(Math.abs(fromSide(half,FAB,{w:390,h:844}).y+FAB/2-844*half.y)<=1,'다른 화면에서는 같은 비율 높이');
+assert.equal(toSide({x:0,y:-500},FAB,phone).y,0);assert.equal(toSide({x:0,y:5000},FAB,phone).y,1);
+for(const raw of [null,'','{','null','[]','{}','{"side":"up","y":.5}','{"side":"left","y":"0.5"}','{"side":"left","y":1.5}','{"side":"left","y":-0.1}','{"side":"right"}'])
+  assert.equal(readSide(raw),null,`깨진 값 ${raw}`);
+assert.deepEqual(plain(readSide('{"side":"left","y":0.25,"extra":1}')),{side:'left',y:.25});
+
+// (8) meongi.css: 모든 스타일시트 중 마지막, ?v=는 LF 파일 sha256 앞 10자, 1년 캐시 목록, 버튼 56px·그림 52px, 새 글자 크기 12px 미만 없음
+{const html=read('index.html'),css=read('meongi.css'),headers=read('_headers');
+  const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]);
+  assert.equal(sheets.at(-1),'meongi.css',`meongi.css is the last stylesheet: ${sheets}`);
+  const want=crypto.createHash('sha256').update(css.replace(/\r\n/g,'\n')).digest('hex').slice(0,10);
+  assert.deepEqual([...html.matchAll(/["\/]meongi\.css\?v=([^"]+)"/g)].map(m=>m[1]),[want],`meongi.css?v= must be ${want}`);
+  assert.match(headers.replace(/\r\n/g,'\n'),/\n\/meongi\.css\n  Cache-Control: public, max-age=31536000, immutable\n/);
+  assert.match(css,/\.bbc-fab\{width:56px;height:56px/);assert.match(css,/\.bbc-fab \.bbc-mascot\{width:52px;height:52px\}/);
+  for(const m of css.matchAll(/font-size:\s*([\d.]+)px/g))assert.ok(+m[1]>=12,`font-size ${m[1]}px`);
+  assert.match(css,/\.bbc-fab\.is-scrolling\{opacity:\.35\}/);assert.match(css,/scale\(\.85\)/);}
+
+console.log('PASS: 멍이 옮기기 · 끌기/누르기 문턱(모두 8px) · 화면 안 자르기(safe-area) · 가장자리 기준 저장 왕복 · 대화창 자리 · 깨진 저장값 무시 · FAQ · 좌우 가장자리 붙기 {side,y} · meongi.css');
