@@ -1340,6 +1340,51 @@ try{
     }
   }
 
+  // ---------- 2026-10-26 matrix quadrant names step aside (app.js placeQuadrantNames) ----------
+  // At every width, group filter and at the official and an exploratory weight: each quadrant name shows both lines whole, its
+  // text touches no point, group button or shown point name, it sits in its quadrant (or outside the plot in its quadrant's
+  // width, inside the frame), a name whose own corner is clear stays there, placing the names moves no point and no text, and a
+  // name never takes a click (a point under one still picks its species).
+  for(const [w,h,mobile] of [[360,780,true],[390,844,true],[768,1024,false],[1100,900,false],[1440,900,false]]){
+    await viewport(w,h,mobile);await load();
+    const qn=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));setView('compare');setCompareMode('matrix');await wait(600);
+      const b=e=>e.getBoundingClientRect(),vis=e=>!!e&&!e.closest('[hidden]')&&getComputedStyle(e).visibility!=='hidden'&&b(e).width>0&&b(e).height>0;
+      const over=(a,c,d=0)=>a.left-d<c.right&&a.right+d>c.left&&a.top-d<c.bottom&&a.bottom+d>c.top;
+      const m=document.getElementById('matrix'),f=m.parentElement,bad=[],moved=[],out=new Set();
+      const pts=()=>[...document.querySelectorAll('#matrix-points .matrix-point')].map(e=>e.dataset.aphia+':'+e.style.left+'/'+e.style.bottom).join();
+      const text=n=>{const r=b(n),s=getComputedStyle(n);return {left:r.left+parseFloat(s.paddingLeft),right:r.right-parseFloat(s.paddingRight),top:r.top+parseFloat(s.paddingTop),bottom:r.bottom-parseFloat(s.paddingBottom)};};
+      const blocks=()=>[...[...document.querySelectorAll('#matrix-points .matrix-point')].filter(vis).map(e=>{const r=b(e);return {left:r.left-2,right:r.right+2,top:r.top-2,bottom:r.bottom+2};}),
+        ...[...document.querySelectorAll('#matrix-points .matrix-cluster-btn,#matrix-points .point-label,#compare .matrix-ticks i,#compare .matrix-ticks b')].filter(vis).map(b)];
+      for(const step of [NaN,0])for(const g of ['all','해조류','패류','어류','기타 무척추동물']){
+        const tag=(Number.isNaN(step)?'공식':'w'+step)+' '+g;
+        setBbviStep(step);setCompareFilter({q:'',group:g});await wait(150);
+        const p0=pts(),t0=m.textContent;resetQuadrantNames();
+        const clear=[...m.querySelectorAll('.q-name')].map(n=>!blocks().some(o=>over(text(n),o,6)));
+        placeQuadrantNames();
+        if(pts()!==p0||m.textContent!==t0)bad.push(tag+': points or text changed');
+        const fr=b(f),pr=b(m),now=blocks();
+        m.querySelectorAll('.quadrant').forEach((q,i)=>{
+          const n=q.querySelector('.q-name'),k=q.classList[1],lines=[n.querySelector('strong'),n.querySelector('span')],t=text(n),c=b(q);
+          if(!lines.every(l=>vis(l)&&l.textContent.trim()&&l.scrollWidth<=l.clientWidth+1&&getComputedStyle(l).textOverflow!=='ellipsis'))bad.push(tag+' '+k+': a line hidden or cut');
+          const hits=now.filter(o=>over(t,o)).length;if(hits)bad.push(tag+' '+k+': touches '+hits);
+          const inQ=t.left>=c.left-1&&t.right<=c.right+1&&t.top>=c.top-1&&t.bottom<=c.bottom+1;
+          const outside=n.hasAttribute('data-out')&&t.left>=c.left-1&&t.right<=c.right+1&&t.top>=fr.top-1&&t.bottom<=fr.bottom+1&&(t.bottom<=pr.top||t.top>=pr.bottom);
+          if(!inQ&&!outside)bad.push(tag+' '+k+': outside its place');
+          if(clear[i]&&n.style.translate)bad.push(tag+' '+k+': moved from a clear corner');
+          if(n.style.translate)moved.push(k);if(n.hasAttribute('data-out'))out.add(tag.split(' ')[0]+' '+k);
+          const x=(t.left+t.right)/2,y=(t.top+t.bottom)/2;if(document.elementFromPoint(x,y)?.closest('.q-name'))bad.push(tag+' '+k+': takes clicks');
+        });
+      }
+      setBbviStep(NaN);setCompareFilter({q:'',group:'all'});await wait(150);
+      // a point still picks its species
+      const p=[...document.querySelectorAll('#matrix-points .matrix-point.pilot:not([data-clustered]):not([aria-current=true])')].find(e=>{const r=b(e);return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)===e;});
+      if(p){const r=b(p);document.elementFromPoint(r.left+r.width/2,r.top+r.height/2).click();await wait(200);}
+      const picked=!!p&&String(selected?.aphiaID)===p.dataset.aphia;
+      selectSpecies(836033);setView('explore');return {bad,moved:[...new Set(moved)],out:[...out],picked};})()`);
+    check(`Matrix quadrant names ${w}px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click`,
+      qn.bad.length===0&&qn.picked,JSON.stringify(qn));
+  }
+
   // ---------- The eight demo flows, desktop and mobile (screenshots in OUT) ----------
   for(const [tag,w,h,mobile] of [['desktop',1560,900,false],['mobile',390,844,true]]){
     await viewport(w,h,mobile);await load();

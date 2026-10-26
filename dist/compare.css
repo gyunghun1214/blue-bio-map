@@ -1139,3 +1139,9 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
   html.lang-en #compare .matrix-point.pilot[aria-current=true] .point-label{max-width:6.5em;white-space:normal;line-height:1.15;text-align:left}
   html.lang-en #compare .mt-top h3::after{content:attr(title);content:attr(title) / "";flex-basis:100%;padding-left:30px;color:var(--cs-ink2);font-size:13px;font-weight:500;line-height:1.35}
 }
+
+/* 2026-10-26 quadrant names (app.js placeQuadrantNames): both lines move as one block, under the points and group buttons and
+   never taking a click, on a faint panel-colour backing so a grid or dashed line under them stays readable; the negative
+   margin keeps the text exactly where it was */
+#compare .matrix .q-name{position:relative;z-index:2;display:flex;flex-direction:column;align-self:flex-start;align-items:flex-start;gap:3px;margin:-2px -6px;padding:2px 6px;border-radius:6px;background:rgba(8,29,46,.7);background:color-mix(in srgb,var(--cs-panel) 70%,transparent);pointer-events:none}
+#compare .matrix :is(.q2,.q4) .q-name{align-self:flex-end;align-items:flex-end}
