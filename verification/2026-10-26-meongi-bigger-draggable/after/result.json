@@ -1,0 +1,776 @@
+[
+ {
+  "name": "390 기본: 누르는 영역 56×56 이상, 그림 52px, 오른쪽 16px, 아래 탭 줄 위 12px(겹치지 않음)",
+  "ok": true,
+  "info": {
+   "x": 318,
+   "l": 318,
+   "t": 720,
+   "w": 56,
+   "h": 56,
+   "ow": 56,
+   "oh": 56,
+   "svg": 52,
+   "left": "318px",
+   "top": "720px",
+   "opacity": 1,
+   "transform": "none",
+   "origin": "56px 28px",
+   "cursor": "pointer",
+   "scrolling": false,
+   "moved": false,
+   "snap": false,
+   "open": false,
+   "stored": null,
+   "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+   "vw": 390,
+   "vh": 844,
+   "doc": 390,
+   "scrollY": 0,
+   "tabsTop": 788,
+   "headH": 49,
+   "center": "37.090240,128.496094,5",
+   "focusVisible": false
+  }
+ },
+ {
+  "name": "390 aria-label: 원래 이름 뒤에 옮기는 방법을 덧붙임",
+  "ok": true,
+  "info": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다"
+ },
+ {
+  "name": "390 3px 움직이고 떼면 누르기: 대화창이 열리고 저장값 없음",
+  "ok": true,
+  "info": {
+   "x": 0,
+   "l": 0,
+   "t": 0,
+   "w": 0,
+   "h": 0,
+   "ow": 0,
+   "oh": 0,
+   "svg": 0,
+   "left": "auto",
+   "top": "auto",
+   "opacity": 1,
+   "transform": "none",
+   "origin": "100% 50%",
+   "cursor": "pointer",
+   "scrolling": false,
+   "moved": false,
+   "snap": false,
+   "open": true,
+   "stored": null,
+   "label": "사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+   "vw": 390,
+   "vh": 844,
+   "doc": 390,
+   "scrollY": 0,
+   "tabsTop": 788,
+   "headH": 49,
+   "center": "37.090240,128.496094,5",
+   "focusVisible": false
+  }
+ },
+ {
+  "name": "390 누르기 뒤 자리 그대로",
+  "ok": true,
+  "info": {
+   "before": {
+    "x": 318,
+    "l": 318,
+    "t": 720,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": false,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 0,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   },
+   "s": {
+    "x": 318,
+    "l": 318,
+    "t": 720,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": false,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 0,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   }
+  }
+ },
+ {
+  "name": "390 40px 끌기: 대화창 안 열림, 오른쪽 가장자리에 붙음(16px), 세로는 놓은 자리",
+  "ok": true,
+  "info": {
+   "s": {
+    "x": 318,
+    "l": 318,
+    "t": 680,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "318px",
+    "top": "680px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": false,
+    "moved": true,
+    "snap": false,
+    "open": false,
+    "stored": "{\"side\":\"right\",\"y\":0.8389}",
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 0,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   },
+   "wantTop": 680
+  }
+ },
+ {
+  "name": "390 왼쪽 절반에 놓으면 왼쪽 가장자리(16px)에 붙음, 세로 420 둘레",
+  "ok": true,
+  "info": {
+   "x": 16,
+   "l": 16,
+   "t": 392,
+   "w": 56,
+   "h": 56,
+   "ow": 56,
+   "oh": 56,
+   "svg": 52,
+   "left": "16px",
+   "top": "392px",
+   "opacity": 1,
+   "transform": "none",
+   "origin": "0px 28px",
+   "cursor": "pointer",
+   "scrolling": false,
+   "moved": true,
+   "snap": false,
+   "open": false,
+   "stored": "{\"side\":\"left\",\"y\":0.4976}",
+   "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+   "vw": 390,
+   "vh": 844,
+   "doc": 390,
+   "scrollY": 0,
+   "tabsTop": 788,
+   "headH": 49,
+   "center": "37.090240,128.496094,5",
+   "focusVisible": false
+  }
+ },
+ {
+  "name": "390 헤더 위·탭 줄 아래·화면 밖으로 끌어도 범위 안(헤더 아래 8px, 탭 줄 위 8px, 좌우 8px 안)에 멈춤",
+  "ok": true,
+  "info": [
+   {
+    "to": {
+     "x": 200,
+     "y": -30
+    },
+    "l": 318,
+    "t": 57,
+    "b": 113,
+    "r": 374,
+    "ok": true
+   },
+   {
+    "to": {
+     "x": 200,
+     "y": 900
+    },
+    "l": 318,
+    "t": 724,
+    "b": 780,
+    "r": 374,
+    "ok": true
+   },
+   {
+    "to": {
+     "x": -40,
+     "y": 400
+    },
+    "l": 16,
+    "t": 372,
+    "b": 428,
+    "r": 72,
+    "ok": true
+   },
+   {
+    "to": {
+     "x": 450,
+     "y": 400
+    },
+    "l": 318,
+    "t": 372,
+    "b": 428,
+    "r": 374,
+    "ok": true
+   }
+  ]
+ },
+ {
+  "name": "390 지도 위에서 멍이를 끄는 동안·뒤 지도 중심·확대 그대로, 페이지 스크롤 없음",
+  "ok": true,
+  "info": {
+   "center0": "37.090240,128.496094,5",
+   "during": "37.090240,128.496094,5",
+   "after": "37.090240,128.496094,5"
+  }
+ },
+ {
+  "name": "390 시트 위로 끄는 동안·뒤 시트 높이(손잡이 자리)·지도 높이·페이지 스크롤 그대로",
+  "ok": true,
+  "info": {
+   "sheet0": {
+    "head": 457,
+    "map": 422,
+    "y": 0
+   },
+   "sheet1": {
+    "head": 457,
+    "map": 422,
+    "y": 0
+   },
+   "sheet2": {
+    "head": 457,
+    "map": 422,
+    "y": 0
+   }
+  }
+ },
+ {
+  "name": "390 다시 불러와도 놓은 자리(같은 저장값·같은 좌표)",
+  "ok": true,
+  "info": {
+   "kept": [
+    318,
+    672,
+    "{\"side\":\"right\",\"y\":0.8294}"
+   ],
+   "s": [
+    318,
+    672,
+    "{\"side\":\"right\",\"y\":0.8294}"
+   ]
+  }
+ },
+ {
+  "name": "390 → 768 → 390: 멍이가 화면 안, 저장값 그대로, 돌아오면 같은 자리",
+  "ok": true,
+  "info": [
+   {
+    "w": 768,
+    "l": 650,
+    "t": 821,
+    "r": 706,
+    "b": 877,
+    "vw": 768,
+    "vh": 1024,
+    "stored": "{\"side\":\"right\",\"y\":0.8294}"
+   },
+   {
+    "w": 390,
+    "l": 318,
+    "t": 672,
+    "r": 374,
+    "b": 728,
+    "vw": 390,
+    "vh": 844,
+    "stored": "{\"side\":\"right\",\"y\":0.8294}"
+   }
+  ]
+ },
+ {
+  "name": "390 콘솔 오류 없음(끌기)",
+  "ok": true,
+  "info": []
+ },
+ {
+  "name": "390 페이지 스크롤: is-scrolling(불투명도 .35, 0.85배), 계속 스크롤하면 유지, 멈추고 약 400ms 뒤 떨어짐, 레이아웃 자리(left/top) 그대로",
+  "ok": true,
+  "info": {
+   "s0": {
+    "x": 318,
+    "l": 318,
+    "t": 720,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": false,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 0,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   },
+   "s1": {
+    "x": 326,
+    "l": 326,
+    "t": 724,
+    "w": 48,
+    "h": 48,
+    "ow": 56,
+    "oh": 56,
+    "svg": 44,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 0.35,
+    "transform": "matrix(0.85, 0, 0, 0.85, 0, 0)",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": true,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 250,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   },
+   "s1b": {
+    "x": 326,
+    "l": 326,
+    "t": 724,
+    "w": 48,
+    "h": 48,
+    "ow": 56,
+    "oh": 56,
+    "svg": 44,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 0.35,
+    "transform": "matrix(0.85, 0, 0, 0.85, 0, 0)",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": true,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 430,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   },
+   "s2": {
+    "x": 318,
+    "l": 318,
+    "t": 720,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "318px",
+    "top": "720px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "56px 28px",
+    "cursor": "pointer",
+    "scrolling": false,
+    "moved": false,
+    "snap": false,
+    "open": false,
+    "stored": null,
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 390,
+    "vh": 844,
+    "doc": 390,
+    "scrollY": 250,
+    "tabsTop": 788,
+    "headH": 49,
+    "center": "37.090240,128.496094,5",
+    "focusVisible": false
+   }
+  }
+ },
+ {
+  "name": "390 흐려질 때 기준점이 붙은 가장자리(오른쪽): 오른쪽 끝 자리 그대로",
+  "ok": true,
+  "info": {
+   "s0": [
+    318,
+    56
+   ],
+   "s1": [
+    326,
+    48,
+    "56px 28px"
+   ]
+  }
+ },
+ {
+  "name": "390 시트 안 종 카드 줄 스크롤에도 흐려지고 돌아옴",
+  "ok": true,
+  "info": {
+   "s3": true,
+   "s4": false
+  }
+ },
+ {
+  "name": "390 흐려진 동안 누르기: 누르는 순간 원래대로, 대화창 열림",
+  "ok": true,
+  "info": {
+   "s5": true,
+   "s5b": [
+    false,
+    1
+   ],
+   "open": true
+  }
+ },
+ {
+  "name": "390 지도를 손가락으로 끌거나 확대해도 is-scrolling 안 붙음",
+  "ok": true,
+  "info": {
+   "any": false,
+   "z": false
+  }
+ },
+ {
+  "name": "390 멍이에 키보드 포커스(:focus-visible)가 있으면 스크롤해도 흐려지지 않음",
+  "ok": true,
+  "info": {
+   "x": 318,
+   "l": 318,
+   "t": 720,
+   "w": 56,
+   "h": 56,
+   "ow": 56,
+   "oh": 56,
+   "svg": 52,
+   "left": "318px",
+   "top": "720px",
+   "opacity": 1,
+   "transform": "none",
+   "origin": "56px 28px",
+   "cursor": "pointer",
+   "scrolling": false,
+   "moved": false,
+   "snap": false,
+   "open": false,
+   "stored": null,
+   "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+   "vw": 390,
+   "vh": 844,
+   "doc": 390,
+   "scrollY": 200,
+   "tabsTop": 788,
+   "headH": 49,
+   "center": "38.134557,132.011719,6",
+   "focusVisible": true
+  }
+ },
+ {
+  "name": "390 가로 넘침 없음",
+  "ok": true,
+  "info": ""
+ },
+ {
+  "name": "390 콘솔 오류 없음",
+  "ok": true,
+  "info": []
+ },
+ {
+  "name": "localStorage를 막아도 오류 없이 기본 자리로 뜨고, 끌기는 이 탭에서 됨",
+  "ok": true,
+  "info": {
+   "s": [
+    318,
+    720
+   ],
+   "d": [
+    16,
+    372
+   ],
+   "errs": []
+  }
+ },
+ {
+  "name": "움직임 줄이기: 놓으면 바로 붙음(.bbc-snap 없음), 스크롤 때 크기 그대로·불투명도만 .35",
+  "ok": true,
+  "info": {
+   "s": [
+    false,
+    16
+   ],
+   "f": [
+    true,
+    "none",
+    0.35
+   ]
+  }
+ },
+ {
+  "name": "1440 기본: 56×56, 그림 52px, 아래 16px, 커서 grab",
+  "ok": true,
+  "info": {
+   "x": 939,
+   "l": 939,
+   "t": 828,
+   "w": 56,
+   "h": 56,
+   "ow": 56,
+   "oh": 56,
+   "svg": 52,
+   "left": "938.812px",
+   "top": "828px",
+   "opacity": 1,
+   "transform": "none",
+   "origin": "56px 28px",
+   "cursor": "grab",
+   "scrolling": false,
+   "moved": false,
+   "snap": false,
+   "open": false,
+   "stored": null,
+   "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+   "vw": 1440,
+   "vh": 900,
+   "doc": 1440,
+   "scrollY": 0,
+   "tabsTop": null,
+   "headH": 64,
+   "center": "35.657296,128.825684,6",
+   "focusVisible": false
+  }
+ },
+ {
+  "name": "1440 마우스 끌기: 끄는 동안 grabbing·1.08배, 놓으면 왼쪽 가장자리에 붙고 대화창 안 열림, 지도 그대로, 글자 선택 없음",
+  "ok": true,
+  "info": {
+   "during": {
+    "cur": "grabbing",
+    "drag": true,
+    "scale": "matrix(1.07646, 0, 0, 1.07646, 0, 0)",
+    "sel": ""
+   },
+   "s": {
+    "x": 16,
+    "l": 16,
+    "t": 472,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 52,
+    "left": "16px",
+    "top": "472px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "0px 28px",
+    "cursor": "grab",
+    "scrolling": false,
+    "moved": true,
+    "snap": false,
+    "open": false,
+    "stored": "{\"side\":\"left\",\"y\":0.5556}",
+    "label": "사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 1440,
+    "vh": 900,
+    "doc": 1440,
+    "scrollY": 0,
+    "tabsTop": null,
+    "headH": 64,
+    "center": "35.657296,128.825684,6",
+    "focusVisible": false
+   }
+  }
+ },
+ {
+  "name": "1440 3px 누르기는 열기, 왼쪽의 멍이 대화창은 멍이 왼쪽 끝에 맞춰 오른쪽으로 펼침(화면 안)",
+  "ok": true,
+  "info": {
+   "s": {
+    "x": 16,
+    "l": 16,
+    "t": 472,
+    "w": 56,
+    "h": 56,
+    "ow": 56,
+    "oh": 56,
+    "svg": 0,
+    "left": "16px",
+    "top": "472px",
+    "opacity": 1,
+    "transform": "none",
+    "origin": "0px 28px",
+    "cursor": "grab",
+    "scrolling": false,
+    "moved": true,
+    "snap": false,
+    "open": true,
+    "stored": "{\"side\":\"left\",\"y\":0.5556}",
+    "label": "사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다",
+    "vw": 1440,
+    "vh": 900,
+    "doc": 1440,
+    "scrollY": 0,
+    "tabsTop": null,
+    "headH": 64,
+    "center": "35.657296,128.825684,6",
+    "focusVisible": false
+   },
+   "pan": {
+    "l": 16,
+    "r": 376,
+    "t": 8,
+    "b": 460
+   }
+  }
+ },
+ {
+  "name": "1440 대화창이 열린 채 끌기 시작하면 대화창이 닫힘",
+  "ok": true,
+  "info": {
+   "wasOpen": false,
+   "s": false
+  }
+ },
+ {
+  "name": "1440 키보드: Shift+↑ 16px 위, Shift+↓ 16px 아래, Shift+→ 오른쪽(기본 자리 줄), Shift+← 왼쪽, Shift+Home 기본 자리·저장값 지움, 대화창 안 열림",
+  "ok": true,
+  "info": {
+   "k0": [
+    16,
+    422
+   ],
+   "k1": [
+    16,
+    406
+   ],
+   "k2": [
+    16,
+    438
+   ],
+   "k3": [
+    939,
+    438
+   ],
+   "k4": [
+    16,
+    438
+   ],
+   "k5": [
+    939,
+    828,
+    null
+   ],
+   "def": 445
+  }
+ },
+ {
+  "name": "1440 Enter는 그대로 열기",
+  "ok": true,
+  "info": true
+ },
+ {
+  "name": "1440 지도 마우스 끌기·휠 확대에는 흐려지지 않음",
+  "ok": true,
+  "info": {
+   "mapDrag": false,
+   "wheel": false
+  }
+ },
+ {
+  "name": "1440 페이지 스크롤에도 흐려지고 멈추면 돌아옴",
+  "ok": true,
+  "info": {
+   "p1": true,
+   "p2": false
+  }
+ },
+ {
+  "name": "1440 콘솔 오류 없음",
+  "ok": true,
+  "info": []
+ },
+ {
+  "name": "360~1440 세 탭 가로 넘침 없음, 멍이 화면 안",
+  "ok": true,
+  "info": []
+ },
+ {
+  "name": "세 탭 textContent가 고치기 전(main)과 같음",
+  "ok": true,
+  "info": []
+ }
+]
