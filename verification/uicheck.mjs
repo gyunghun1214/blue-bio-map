@@ -1427,6 +1427,10 @@ try{
       setView('explore');await wait(200);return r})()`);
     check('Wide 1440px (mobile-dedupe): no 자세히 보기 button, the nine English eyebrow labels and every repeated sentence drawn as before',
       pc.see.length===4&&pc.see.every(d=>d==='none')&&pc.mtk.length===9&&pc.dup.length>=9&&pc.dup.every(d=>d!=='none')&&pc.howto&&pc.why,JSON.stringify(pc));
+    // 2026-10-26 휴대폰 출처 ⓘ (map-attribution.css, verification/2026-10-26-map-attribution-info): 넓은 화면은 단추가 없고 출처 줄이 늘 보인다
+    const wa=await evaluate(`(()=>{const a=document.querySelector('#map .leaflet-control-attribution'),b=a.querySelector('.attr-toggle'),t=a.querySelector('.attr-text'),r=a.getBoundingClientRect(),m=document.getElementById('map').getBoundingClientRect();
+      return {btn:getComputedStyle(b).display,text:getComputedStyle(t).display,label:a.textContent,pos:getComputedStyle(a).position,bottom:Math.round(m.bottom-r.bottom),h:Math.round(r.height)}})()`);
+    check('Wide 1440px (map attribution): no ⓘ button, the credit line shows at the map bottom as before',wa.btn==='none'&&wa.text!=='none'&&/^Leaflet \| OBIS · GBIF/.test(wa.label)&&wa.pos!=='absolute'&&wa.bottom===0&&wa.h>0&&wa.h<=24,JSON.stringify(wa));
   }
 
   // ---------- Mobile 390px first screen and stability ----------
@@ -1465,6 +1469,23 @@ try{
   const mfBack=s=>!s.full&&s.pressed==='false'&&s.y===0&&s.map===mf.base.map&&s.head===mf.base.head&&s.leaflet===s.map&&s.label==='종 목록·상세 펼치기';
   check('Mobile map full: dragging the sheet handle down leaves the handle and species name above the tab bar and grows the map; dragging up, the map button, a tap on the handle and ↓/↑ on the handle switch it the same way',
     mfBack(mf.base)&&mf.base.btn===40&&mfFull(mf.down)&&mfBack(mf.up)&&mfFull(mf.btnOn)&&mfBack(mf.handleTap)&&mfFull(mf.keyDown)&&mfBack(mf.keyUp)&&mf.down.doc<=390,JSON.stringify(mf));
+  // 2026-10-26 (LKH) 휴대폰 배경 지도 출처: 출처 줄이 종 시트 가장자리 위로 삐져나오던 것을 ⓘ 단추로 접는다. 접힘이 기본, 누르면 단추 위
+  // 말풍선(13px 이상), Esc·지도 빈 곳·다시 누르기로 접힘. 단추는 시트 윗선 위, 범례·확대/축소·지도 크게 보기와 겹치지 않는다. 위성 ↔ 수심에
+  // 따라 출처 글이 바뀐다(Leaflet). 시트 중간·지도 크게 보기·WebKit은 verification/2026-10-26-map-attribution-info/check.mjs.
+  const ma=await evaluate(`(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms)),q=s=>document.querySelector(s),b=q('#map .attr-toggle'),t=q('#map .attr-text');
+    const box=e=>{const x=e.getBoundingClientRect();return {l:Math.round(x.left),t:Math.round(x.top),r:Math.round(x.right),b:Math.round(x.bottom)};},apart=(a,c)=>a.r<=c.l||c.r<=a.l||a.b<=c.t||c.b<=a.t;
+    const st=()=>({exp:b.getAttribute('aria-expanded'),shown:getComputedStyle(t).display!=='none',text:t.textContent});
+    const r={label:b.getAttribute('aria-label'),controls:b.getAttribute('aria-controls')===t.id,closed:st(),btn:box(b),head:box(q('#sheet-head')),zoom:box(q('.leaflet-control-zoom')),full:box(q('.map-full-ctl')),legend:box(q('#explore .map-ui-bl'))};
+    r.clear=r.btn.b<=r.head.t&&[r.zoom,r.full,r.legend].every(c=>apart(r.btn,c))&&r.btn.r-r.btn.l>=44&&r.btn.b-r.btn.t>=44;
+    b.click();await wait(100);r.open=st();const bub=box(t);r.bubble={...bub,fs:parseFloat(getComputedStyle(t).fontSize),inside:bub.l>=16&&bub.r<=innerWidth-16&&bub.b<=r.head.t&&bub.t>=box(q('#explore .map-stage')).t};
+    document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));await wait(100);r.esc=st();r.focus=document.activeElement===b;
+    b.click();await wait(100);map.fire('click',{latlng:map.getCenter()});await wait(100);r.mapTap=st();
+    b.click();b.click();await wait(100);r.twice=st();
+    b.click();q('[data-basemap="depth"]').click();r.depth=st();q('[data-basemap="satellite"]').click();r.sat=st();b.click();
+    r.doc=document.documentElement.scrollWidth;return r})()`);
+  check('Mobile map attribution: credits folded under an ⓘ button (배경 지도 출처 보기, aria-expanded) above the sheet edge, clear of 범례 and the zoom buttons; tap opens a ≥13px bubble inside the map, Esc / map tap / second tap close it; the text follows 위성 ↔ 수심',
+    ma.label==='배경 지도 출처 보기'&&ma.controls&&ma.closed.exp==='false'&&!ma.closed.shown&&ma.clear&&ma.open.exp==='true'&&ma.open.shown&&ma.bubble.inside&&ma.bubble.fs>=13
+    &&ma.esc.exp==='false'&&!ma.esc.shown&&ma.focus&&ma.mapTap.exp==='false'&&ma.twice.exp==='false'&&/GEBCO_2026/.test(ma.depth.text)&&ma.depth.shown&&/NASA GIBS/.test(ma.sat.text)&&ma.doc<=390,JSON.stringify(ma));
   // BBVI 통합 가중치 on a phone: the panel and the matrix badge fit 390px, no sideways scroll
   const wm=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s);setView('compare');setCompareMode('matrix');q('#cmp-basis-toggle').click();
     setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-wline').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());
