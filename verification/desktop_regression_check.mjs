@@ -23,7 +23,7 @@ const server=http.createServer((q,r)=>{
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const base=`http://127.0.0.1:${server.address().port}/`;
 const rows=[];let failed=0,harnessFailed=false;
-const check=(name,ok,detail)=>{rows.push({name,ok,detail});if(!ok)failed++;console.log(`${ok?'PASS':'FAIL'} ${name}${ok?'':' '+JSON.stringify(detail).slice(0,1200)}`);};
+const check=(name,ok,detail)=>{rows.push({name,ok,detail});if(!ok)failed++;console.log(`${ok?'PASS':'FAIL'} ${name}${ok?'':' '+JSON.stringify(detail??null).slice(0,1200)}`);};
 const measure=rootSelector=>{
   const root=document.querySelector(rootSelector),broken=[];
   const visible=e=>{for(let p=e;p;p=p.parentElement){const s=getComputedStyle(p);if(p.hidden||p.inert||s.display==='none'||s.visibility==='hidden'||s.opacity==='0')return false;if(p.tagName==='DETAILS'&&!p.open&&!p.querySelector(':scope > summary')?.contains(e))return false;}return true;};
