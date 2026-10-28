@@ -89,7 +89,8 @@ try{
           for(const step of [0,5,10,15,20]){await page.evaluate(k=>setBbviStep(k),step);await page.waitForTimeout(50);}
           check(`${tag}: weight drag leaves hidden explore DOM alone`,await page.evaluate(()=>window.__hiddenWrites===0),await page.evaluate(()=>window.__hiddenWrites));
           await page.evaluate(()=>{window.__auditObserver.disconnect();setView('explore');});
-          check(`${tag}: latest weight appears after returning to map`,await page.evaluate(()=>document.querySelector('.sp-bbvi .sp-num')?.textContent===scoreText(selected,'BBVI',pilotScore(selected,'BBVI'))));
+          const latestWeight=await page.waitForFunction(()=>document.querySelector('.sp-bbvi .sp-num')?.textContent===scoreText(selected,'BBVI',pilotScore(selected,'BBVI')),null,{timeout:5000}).then(()=>true,()=>false);
+          check(`${tag}: latest weight appears after returning to map`,latestWeight);
           await page.goto(`${base}expedition.html?lang=${lang}#view=cards`);
           await page.waitForFunction(()=>!document.body.classList.contains('is-loading'));
           await page.evaluate(()=>document.fonts.ready);
