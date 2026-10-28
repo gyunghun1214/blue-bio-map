@@ -73,6 +73,13 @@ try{
           if(width>1100){
             const b=await page.locator('#cmp-compare-go').boundingBox();
             check(`${tag}: compare action visible after adding species`,b&&b.y>=0&&b.y+b.height<=height,b);
+            const clear=await page.locator('#cmp-compare-go').evaluate(button=>{
+              const b=button.getBoundingClientRect();
+              return [...document.querySelectorAll('.bbc-fab,.bbc-hint:not([hidden])')].every(e=>{
+                const r=e.getBoundingClientRect();return r.right<=b.left||r.left>=b.right||r.bottom<=b.top||r.top>=b.bottom;
+              });
+            });
+            check(`${tag}: mascot and hint leave compare action clear`,clear);
           }
           await capture('compare','#compare');
           await page.evaluate(()=>openCompareDialog());
