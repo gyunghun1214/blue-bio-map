@@ -1033,8 +1033,10 @@ void main(){
       if(G.failed||!G.gl)loadStill(true);else loadStill(); // the turning globe may still come; the picture is asked for beside it
       render();kick();setTimeout(()=>{if(!opened&&!left)tick(performance.now());},INTRO_TIMELINE.timeout+40);
     });
-    q('.gate-skip').addEventListener('click',()=>{try{store?.setItem(GATE_KEY,'1');}catch{}fail();scrollTo(0,0);dispatchEvent(new Event('resize'));
-      const m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true});}});
+    // also the phone's '지도 바로 열기' under the piece (2026-10-28): a tap opens the map at once, without waiting for the globe
+    const openMap=()=>{try{store?.setItem(GATE_KEY,'1');}catch{}fail();scrollTo(0,0);dispatchEvent(new Event('resize'));
+      const m=document.querySelector('main');if(m){m.tabIndex=-1;m.focus({preventScroll:true});}};
+    q('.gate-skip').addEventListener('click',openMap);q('.gate-quick')?.addEventListener('click',openMap);
     // the switch: still stops the turning at once (the start pose, no frames); moving again picks up the sway, no entry
     const motion=q('.gate-motion'),setMotion=(v,keep)=>{
       reduce=v;motion.setAttribute('aria-checked',String(v));el.classList.toggle('is-still',v);

@@ -116,3 +116,9 @@
   .bbc-head strong{font-size:15px}
   .bbc-form button{font-size:14px}
 }
+/* ---------- 2026-10-28 입력창 16px (모바일 점검 M04) ---------- */
+/* 아이폰 Safari는 글자가 16px보다 작은 입력창을 누르면 화면을 확대한다(검색 13.5px, 생물군 14px, 비교 검색 15px, 눕힌 휴대폰의
+   멍이 입력 14px). 휴대폰과 눕힌 휴대폰에서만 16px로 둔다. 확대 막기(maximum-scale)는 쓰지 않는다. */
+@media (max-width:740px),(max-height:500px) and (max-width:1024px) and (orientation:landscape){
+  #search,#explore #species-group,#compare .cmp-search input,.bbc .bbc-input{font-size:16px}
+}

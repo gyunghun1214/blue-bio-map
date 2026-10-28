@@ -1512,8 +1512,9 @@ try{
     return {base,down,up,btnOn,handleTap,keyDown,keyUp};})();
   const mfFull=s=>s.full&&s.pressed==='true'&&s.y===0&&s.name<=s.tabs&&s.head>=s.tabs-100&&s.map>=mf.base.map+200&&s.leaflet===s.map&&s.label==='종 목록·상세 다시 올리기';
   const mfBack=s=>!s.full&&s.pressed==='false'&&s.y===0&&s.map===mf.base.map&&s.head===mf.base.head&&s.leaflet===s.map&&s.label==='종 목록·상세 펼치기';
+  // 2026-10-28: '지도 크게 보기' 단추는 휴대폰 누르는 범위 기준에 맞춰 40 → 44px(mobile-compact.css)
   check('Mobile map full: dragging the sheet handle down leaves the handle and species name above the tab bar and grows the map; dragging up, the map button, a tap on the handle and ↓/↑ on the handle switch it the same way',
-    mfBack(mf.base)&&mf.base.btn===40&&mfFull(mf.down)&&mfBack(mf.up)&&mfFull(mf.btnOn)&&mfBack(mf.handleTap)&&mfFull(mf.keyDown)&&mfBack(mf.keyUp)&&mf.down.doc<=390,JSON.stringify(mf));
+    mfBack(mf.base)&&mf.base.btn>=44&&mfFull(mf.down)&&mfBack(mf.up)&&mfFull(mf.btnOn)&&mfBack(mf.handleTap)&&mfFull(mf.keyDown)&&mfBack(mf.keyUp)&&mf.down.doc<=390,JSON.stringify(mf));
   // 2026-10-26 (LKH) 휴대폰 배경 지도 출처: 출처 줄이 종 시트 가장자리 위로 삐져나오던 것을 ⓘ 단추로 접는다. 접힘이 기본, 누르면 단추 위
   // 말풍선(13px 이상), Esc·지도 빈 곳·다시 누르기로 접힘. 단추는 시트 윗선 위, 범례·확대/축소·지도 크게 보기와 겹치지 않는다. 위성 ↔ 수심에
   // 따라 출처 글이 바뀐다(Leaflet). 시트 중간·지도 크게 보기·WebKit은 verification/2026-10-26-map-attribution-info/check.mjs.

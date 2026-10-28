@@ -88,6 +88,7 @@ jobs:
           python scripts/i18n_data_strings.py --check
           python scripts/build_species_names_en.py --check
           node --check verification/offline_check.mjs
+          node --check verification/mobile_overflow_check.mjs
           python scripts/build_expedition_stops.py --check
           python -m unittest discover -s verification -p 'test_*.py'
 
@@ -136,7 +137,6 @@ jobs:
             if (-not $ready) { throw 'Local site did not start on port 8765' }
             node verification/uicheck.mjs verification/ci-ui
             if ($LASTEXITCODE -ne 0) { throw "UI checks failed with exit code $LASTEXITCODE" }
-
           } finally {
             Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
           }
@@ -182,7 +182,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [expedition_check, i18n_layout_check]
+        suite: [expedition_check, i18n_layout_check, mobile_overflow_check]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v7
@@ -191,7 +191,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Run expedition or language layout checks
+      - name: Run page and responsive layout checks
         shell: pwsh
         env:
           FIXTURE: dist/live-snapshot.json
