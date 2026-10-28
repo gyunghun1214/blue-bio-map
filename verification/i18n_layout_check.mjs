@@ -6,13 +6,13 @@
 //       matrix dots count as boxes too (a dot over a quadrant name hides letters)
 //   (나) clipped: overflow hidden/clip or ellipsis boxes whose text is wider than the box (allow-listed scrollers excepted)
 //   (다) off screen: text past the right edge of the window, or the page scrolls sideways
-//   (라) broken word: a text node takes more lines than it has words (a word was split, e.g. '0– / 100 / scale')
+//   (라) broken word: the Range of an individual Korean/Latin word spans more than one line
 //   (마) English wording: no space before '(' ('LC(Least Concern)') or Korean corner quotes 「」『』 in English text
 //   (차) English species names: see namesCheck below
 //   (가′) text under a fixed bar or a panel over the map: listed, never failed
 // Not counted: .sr-only, visibility:hidden, opacity 0, matrix .hidden-label, closed <details>, KO-marked originals.
 // Usage: node verification/i18n_layout_check.mjs <output-directory> [--report]   (site served at URL0, default http://127.0.0.1:8765/)
-//   --report: print and save the counts, never fail. Without it: English (가)(다)(마) must be 0 and Korean counts must not
+//   --report: print and save the counts, never fail. Without it: English overlap/off/wording/names/clip/broken must be 0 and Korean counts must not
 //   grow past verification/i18n-layout-ko-baseline.json.
 import {spawn} from 'node:child_process';
 import fs from 'node:fs'; import path from 'node:path'; import os from 'node:os'; import {fileURLToPath} from 'node:url';
@@ -71,9 +71,12 @@ const collect=`((roots,scrollers)=>{
       const eb=el.getBoundingClientRect();if(eb.width<=2||eb.height<=2)continue; // visually hidden (1px clip) text
       const rg=document.createRange();rg.selectNodeContents(n);
       const rs=[...rg.getClientRects()].filter(r=>r.width>1&&r.height>1);if(!rs.length)continue;
-      const lines=new Set(rs.map(r=>Math.round(r.top/4))).size, words=t.split(' ').length;
       nodes.push({n,el,t,rs});
-      if(lines>words&&t.length>1)out.broken.push({sel:sel(el),text:t.slice(0,80),lines});
+      for(const word of n.nodeValue.matchAll(/[A-Za-z가-힣][A-Za-z가-힣0-9]+/g)){
+        const wr=document.createRange();wr.setStart(n,word.index);wr.setEnd(n,word.index+word[0].length);
+        const lines=new Set([...wr.getClientRects()].filter(r=>r.width>1&&r.height>1).map(r=>Math.round(r.top/4))).size;
+        if(lines>1)out.broken.push({sel:sel(el),text:word[0],lines});
+      }
       let cut=0;
       for(const r of rs){const v=clipOf(el,r);if(!v)continue;boxes.push({...v,k:nodes.length-1});
         if((v.r<r.right-2||v.l>r.left+2)&&!inScroller(el))cut=Math.max(cut,Math.round(r.right-v.r+v.l-r.left));
@@ -204,7 +207,8 @@ finally{
   fs.writeFileSync(path.join(OUT,'i18n-layout.md'),`# 영어 화면 글자 배치 검사\n\n${JSON.stringify(total)} · ${secs}s\n\n${md.join('\n')}\n`);
   console.log('Total',JSON.stringify(total),`${secs}s`);
   if(!REPORT&&!failed){
-    const e=total.en;if(e.overlap||e.off||e.wording||e.names){console.log(`FAIL English (가)${e.overlap} (다)${e.off} (마)${e.wording} (차)${e.names} must be 0`);failed=true;}
+    const e=total.en;if(e.overlap||e.off||e.wording||e.names||e.clip||e.broken){console.log(`FAIL English overlap=${e.overlap} off=${e.off} wording=${e.wording} names=${e.names} clip=${e.clip} broken=${e.broken} must be 0`);failed=true;}
+    if(total.ko.broken){console.log(`FAIL Korean broken=${total.ko.broken} must be 0`);failed=true;}
     if(fs.existsSync(BASE)){const b=JSON.parse(fs.readFileSync(BASE,'utf8'));
       for(const [k,v] of Object.entries(total.ko))if(v>(b[k]??0)){console.log(`FAIL Korean ${k} ${v} > baseline ${b[k]}`);failed=true;}}
   }

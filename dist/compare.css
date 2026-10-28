@@ -918,6 +918,13 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .ct-go small{max-width:220px;color:var(--cs-sand);font-size:12.5px;text-align:left}
 
 /* ---------- type cards: four in a row ---------- */
+/* On desktop, the selected basket stays reachable while reading a tall species profile. */
+@media (min-width:1101px){
+  #compare .cmp-tray:not(.empty){position:sticky;bottom:16px;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  #compare :is(button,a){scroll-margin-block:120px}
+  #compare .ct-name{flex-direction:column;align-items:flex-start;gap:2px}
+  #compare .ct-name :is(b,em){white-space:normal;word-break:keep-all;overflow-wrap:normal}
+}
 #compare .matrix-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:10px}
 #compare .mt-card{min-width:0;padding:14px 18px 16px;border:1px solid var(--cs-line);border-radius:12px;background:#081c2a}
 #compare .mt-top{display:flex;align-items:center;gap:8px 14px}
