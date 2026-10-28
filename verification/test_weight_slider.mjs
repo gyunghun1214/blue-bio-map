@@ -98,3 +98,25 @@ at(.7,()=>{T.writeHash();assert.ok(lastHash.includes('&w=0.70'),lastHash);});
 at(.35,()=>{T.writeHash();assert.ok(lastHash.includes('&w=0.35'),lastHash);});
 
 console.log('PASS: weights add up to 1.00 at 21 steps · w 0/0.5/1 = MBPI/report BBVI/MFPI and 0.25/0.75 = report sensitivity ±0.1 (all BBVI species) · held BBVI stays held · official value only off the official weight · moved-type list = independent count · floor line · link w read and written');
+
+// A drag must not rebuild the hidden exploration pane or table; entering either view flushes it once.
+ctx.drawCalls=[];ctx.window.scrollTo=()=>{};
+vm.runInContext(`
+  renderList=()=>drawCalls.push('list');renderDetail=()=>drawCalls.push('detail');renderMap=()=>drawCalls.push('map');
+  renderComparison=()=>drawCalls.push('table');renderCompareProfile=()=>drawCalls.push('profile');
+  toggleSimulation=()=>drawCalls.push('matrix');
+  syncWeightControl=()=>{};writeHash=()=>{};loadCompareStops=()=>{};
+  syncComparison=()=>{};applyCompareFilter=()=>{};
+  currentView='compare';cmpMode='matrix';mapMode='value';redrawForWeight();redrawForWeight();
+`,ctx);
+assert.deepEqual(ctx.drawCalls,['profile','matrix','profile','matrix']);
+ctx.drawCalls.length=0;
+vm.runInContext("setCompareMode('table');setCompareMode('table');",ctx);
+assert.deepEqual(ctx.drawCalls,['table'],'first table visit flushes the latest weight once');
+ctx.drawCalls.length=0;
+vm.runInContext("setView('explore');setView('explore');",ctx);
+assert.deepEqual(ctx.drawCalls,['list','detail','map'],'explore visit refreshes scores, verdicts and value cells once');
+ctx.drawCalls.length=0;
+vm.runInContext("redrawForWeight();",ctx);
+assert.deepEqual(ctx.drawCalls,['list','detail','map','profile','matrix'],'visible explore stays current');
+console.log('PASS: hidden weight views deferred; table and exploration refreshed exactly once when opened');
