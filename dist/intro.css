@@ -309,3 +309,12 @@ html.gate-leaving .gate{opacity:0;transition:opacity .6s ease .2s}
   /* the globe's credit line is longer in English and ran past the right edge (1440): it wraps inside the card's width */
   html.lang-en .gate-legend .gate-credit{white-space:normal}
 }
+
+/* 2026-10-28 phones (and a short landscape phone): '지도 바로 열기' under the piece, from the first paint until the entry screen is
+   up (.is-ready brings its own buttons). A tap opens the map at once, as the failed screen's .gate-skip (intro.js openMap). */
+.gate-quick{display:none}
+@media (max-width:760px),(max-height:500px) and (max-width:1024px) and (orientation:landscape){
+  .gate:not(.is-ready) .gate-quick{display:block;position:absolute;z-index:3;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);min-height:44px;padding:0 22px;border:1px solid rgba(244,243,238,.45);border-radius:99px;background:rgba(4,16,27,.6);color:var(--g-ink);font:inherit;font-size:15px;font-weight:500;white-space:nowrap;cursor:pointer}
+  .gate-quick:focus-visible{outline:2px solid var(--g-teal);outline-offset:3px}
+  .gate-motion{min-height:44px}
+}
