@@ -1656,7 +1656,7 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* 영어 화면: 학명 이름표가 국명보다 길어, 자리가 없어 숨긴 이름표가 휴대폰 화면 밖으로 폭을 늘리지 않게 한다(가리키거나 초점이 오면 보임) */
 html.lang-en .matrix-point .point-label.hidden-label{display:none}
 html.lang-en .matrix-point:hover .point-label.hidden-label,html.lang-en .matrix-point:focus-visible .point-label.hidden-label{display:block}
-/* 영어 화면: 종 이름 자리에 긴 학명이 오므로, 그림이 없는 종의 분류 아이콘 칸은 아이콘 폭만 쓰고, 그래도 긴 한 단어는 칸 안에서 줄을 바꾼다 */
+/* 영어 화면: 종 이름 자리에 긴 학명이 오므로, 그림이 없는 종의 분류 아이콘 칸은 아이콘 폭만 쓰고, 긴 단어는 나누지 않고 다음 줄로 보낸다 */
 html.lang-en #explore .sp-art.sp-art-icon{width:auto;margin-right:0}
 html.lang-en #explore #sp-name{overflow-wrap:normal;hyphens:none}
 /* Keep words intact in ordinary prose; technical strings retain their own scrollable containers. */
@@ -1723,3 +1723,12 @@ html.lang-en .gloss-paren{margin-left:.3em} /* 'LC (Least Concern)': English put
 }
 /* 영어 화면 상세 머리: 일반명 출처 줄(Common name: …)은 아이콘 칸이 아니라 머리 전체 폭에 */
 html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}
+
+/* Whole source names stay readable; wide source tables scroll within their panel. */
+.cell-table,.citation,.decision-detail{word-break:keep-all;overflow-wrap:normal;hyphens:none;min-width:0;max-width:100%;overflow-x:auto}
+.detail-pane .evidence-item>b,.detail-pane .evidence-item>span:last-child{word-break:keep-all;overflow-wrap:normal;min-width:0}
+@media (max-width:740px){
+  /* Let the status text yield to the logo and language switch, including its touch halo. */
+  .header .status-chips{flex:0 1 auto;min-width:0}
+  .header .status-chip#notice-chip{max-width:100%}
+}
