@@ -73,6 +73,8 @@ jobs:
           node --check dist/expedition.js
           node --check verification/expedition_check.mjs
           node --check verification/i18n_layout_check.mjs
+          node --check verification/desktop_regression_check.mjs
+          node --check verification/desktop_lighthouse.mjs
           node --check verification/period_chip_check.mjs
           node verification/test_expedition_ui.mjs
           node verification/test_sea_frame_loop.mjs
@@ -178,4 +180,44 @@ jobs:
           name: ui-check-results
           path: verification/ci-ui/
           if-no-files-found: warn
+          retention-days: 3
+
+  desktop-regression:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    needs: unit
+    timeout-minutes: 20
+    concurrency:
+      group: desktop-regression-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: .audit-base
+      - name: Install existing browser audit tools (CI only)
+        run: npm install --no-save --no-package-lock playwright@1.63.0 lighthouse@13.5.0
+      - name: Capture baseline (known defects are reported)
+        env:
+          ENGINES: chromium
+          SOURCE_DIST: .audit-base/dist
+        run: node verification/desktop_regression_check.mjs verification/ci-ui/desktop-before --report
+      - name: Check Korean and English words, responsive layout and rendering lifecycle
+        run: node verification/desktop_regression_check.mjs verification/ci-ui/desktop-after
+      - name: Compare mobile Lighthouse (three runs per version and page)
+        if: always()
+        continue-on-error: true
+        run: node verification/desktop_lighthouse.mjs verification/ci-ui/lighthouse
+      - name: Upload before and after evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: desktop-regression-results
+          path: |
+            verification/ci-ui/desktop-before
+            verification/ci-ui/desktop-after
+            verification/ci-ui/lighthouse
           retention-days: 3
