@@ -952,7 +952,7 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
 #compare .cdr-sec{padding:14px 0;border-bottom:1px solid var(--cs-line)}
 #compare .cdr-sec h3{margin:0 0 8px;color:var(--cs-ink);font-size:16px;font-weight:700}
 #compare .cdr-sec h3:focus{outline:none}
-#compare .cdr-sec p{margin:6px 0 0;color:#c7d4dc;font-size:13.5px;line-height:1.6;overflow-wrap:anywhere}
+#compare .cdr-sec p{margin:6px 0 0;color:#c7d4dc;font-size:13.5px;line-height:1.6;overflow-wrap:normal;word-break:keep-all;hyphens:none}
 #compare .cdr-type{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 #compare .cdr-type b{color:var(--qt,var(--cs-ink));font-size:16px}
 #compare .cdr-type .cp-shape{width:16px;height:16px}

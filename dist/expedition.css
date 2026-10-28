@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0;height:100%}
-body{font-family:var(--font);background:var(--sea);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;letter-spacing:-.005em}
+body{font-family:var(--font);background:var(--sea);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;letter-spacing:-.005em;word-break:keep-all;overflow-wrap:normal;hyphens:none}
 a{color:var(--teal)}
 button{font:inherit;color:inherit;cursor:pointer}
 button:disabled{opacity:.35;cursor:default}
@@ -103,6 +103,10 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-art span{font-size:var(--fs-min);color:var(--ink2);line-height:1.3}
 .x-name{margin:0;font-size:clamp(30px,3vw,40px);line-height:1.1;letter-spacing:-.02em}
 .x-sci{margin:6px 0 0;font-size:13px;color:var(--ink2)}
+/* Scientific names used as English names need the whole card width, including on phones. */
+html.lang-en .x-species{grid-template-columns:minmax(0,1fr)}
+html.lang-en .x-art{justify-self:start}
+html.lang-en .x-name{font-size:clamp(24px,2.5vw,34px)}
 .x-type{display:inline-block;margin:8px 0 0;padding:3px 10px;border-radius:99px;background:rgba(240,138,75,.16);color:#ffd2b5;font-size:12px;font-weight:600}
 .x-scores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .x-scores.is-small{margin-top:10px;padding-top:0;border:0}
@@ -148,7 +152,7 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-detail p{margin:.4em 0}
 .x-detail .x-fine{color:var(--paper-ink2)}
 .x-detail .x-missing{color:#a2400c}
-.x-detail a{color:var(--paper-teal);word-break:break-word}
+.x-detail a{color:var(--paper-teal);word-break:keep-all;overflow-wrap:normal}
 .x-nutrients{list-style:none;margin:8px 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .x-nutrients li{display:grid;padding:10px;border:1px solid var(--paper-line);border-radius:10px;background:#fff}
 .x-nutrients span{font-size:12px;color:var(--paper-ink2)}
@@ -156,7 +160,7 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-nutrients small{font-size:var(--fs-min);color:var(--paper-ink2)}
 .x-dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:8px 0}
 .x-dl dt{color:var(--paper-ink2);font-size:13px}
-.x-dl dd{margin:0;font-weight:600;word-break:break-all}
+.x-dl dd{margin:0;min-width:0;font-weight:600;word-break:keep-all;overflow-wrap:normal;overflow-x:auto}
 .x-cites{margin:8px 0 0;padding-left:18px;font-size:13.5px}
 .x-src{font-size:13.5px}
 .x-sources{margin-top:22px;padding:12px 14px;border:1px solid var(--paper-line);border-radius:12px;background:#fff}
