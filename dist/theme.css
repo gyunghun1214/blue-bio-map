@@ -1729,6 +1729,7 @@ html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}
 .detail-pane .evidence-item>b,.detail-pane .evidence-item>span:last-child{word-break:keep-all;overflow-wrap:normal;min-width:0}
 @media (max-width:740px){
   /* Let the status text yield to the logo and language switch, including its touch halo. */
+  .header .brand-mark{width:26px}
   .header .status-chips{flex:0 1 auto;min-width:0}
   .header .status-chip#notice-chip{max-width:100%}
 }
