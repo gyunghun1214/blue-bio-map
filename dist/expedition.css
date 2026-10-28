@@ -234,3 +234,37 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
   html.lang-en .x-lang button[aria-pressed="true"]{display:none}
 }
 .i18n-ko{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid currentColor;border-radius:4px;font-size:12px;line-height:1.35;opacity:.7}
+/* 2026-10-28 휴대폰 손질(모바일 점검 M02·M03·M05·M07). 모두 휴대폰 조건 안에서만: PC 화면은 그대로다. */
+@media (max-width:760px){
+  /* 390px에서 '바다 탐험'이 '바다 탐/험'으로 낱말 중간에서 줄이 바뀌었다 */
+  .x-brand{white-space:nowrap}
+  /* 메뉴 단추(33px)는 보이는 크기는 그대로 두고 누르는 범위만 위아래로 넓힌다(44px 이상). 두 줄 사이도 그만큼 띄운다.
+     언어 단추 묶음(.x-lang)은 안의 단추가 눌려야 하므로 넓히지 않는다. 항로 진행 점(8px)은 그대로 두고 같은 이동을 '탐사 지점' 목록이 맡는다. */
+  .x-nav{row-gap:12px}
+  .x-nav>:not(.x-lang){position:relative}
+  .x-nav>:not(.x-lang)::after{content:"";position:absolute;inset:-6px 0}
+  .x-lang button{min-height:36px}
+  .x-close{width:44px;height:44px}
+  .x-lead{font-size:16px}
+  /* 상세 시트: 아이폰 주소창이 보일 때도 닫기 단추가 화면 안에 있게(지원하지 않는 브라우저는 앞의 92vh) */
+  .x-detail{height:92dvh}
+  /* viewport-fit=cover라 홈 바 영역까지 그려진다: 아래 조작 막대와 상세 글 끝을 그만큼 띄운다 */
+  .x-steer{bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+  .x-detail #detail-body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+}
+/* 가로로 눕힌 휴대폰(높이 500px 이하): 첫 화면 글이 화면보다 길어 제목이 메뉴·진행 점과 겹치고 '항해 시작'이 화면 밖으로 나갔다.
+   위에서부터 쌓고 첫 화면 안에서 스크롤되게 한다. 키보드 안내 세 줄은 세로 휴대폰처럼 숨긴다. 노치는 왼쪽·오른쪽 여백으로 피한다. */
+@media (max-height:500px) and (max-width:1024px) and (orientation:landscape){
+  .x-bar{padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+  .x-progress{top:56px}
+  .x-intro{justify-content:flex-start;overflow-y:auto;overscroll-behavior:contain;padding:84px max(24px,env(safe-area-inset-right,0px)) calc(64px + env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px))}
+  /* 스크롤한 글은 머리글 밑으로 들어갈 때 흐려지며 사라진다(머리글 글자와 겹쳐 보이지 않게) */
+  .x-intro{-webkit-mask-image:linear-gradient(transparent 70px,#000 90px);mask-image:linear-gradient(transparent 70px,#000 90px)}
+  .x-intro h1{font-size:30px}
+  .x-lead{margin-top:14px;font-size:16px}
+  .x-howto{margin-top:14px}
+  .x-howto li:not(.x-howto-touch){display:none}
+  .x-intro-actions{margin-top:18px}
+  .x-route-note{left:max(16px,env(safe-area-inset-left,0px))}
+  .x-steer{bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+}
