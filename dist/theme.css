@@ -10,7 +10,7 @@
   --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526b7b' stroke-width='1.6'/%3E%3C/svg%3E");
 }
 html{scroll-padding-top:var(--chrome)}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;letter-spacing:-.005em;-webkit-font-smoothing:antialiased;word-break:keep-all;hyphens:none}
 select{font:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--teal-fill);outline-offset:2px}
 main{max-width:none;margin:0;padding:0}
@@ -1656,9 +1656,19 @@ body:has(#explore.active) footer strong{color:#eaf2f6}
 /* 영어 화면: 학명 이름표가 국명보다 길어, 자리가 없어 숨긴 이름표가 휴대폰 화면 밖으로 폭을 늘리지 않게 한다(가리키거나 초점이 오면 보임) */
 html.lang-en .matrix-point .point-label.hidden-label{display:none}
 html.lang-en .matrix-point:hover .point-label.hidden-label,html.lang-en .matrix-point:focus-visible .point-label.hidden-label{display:block}
-/* 영어 화면: 종 이름 자리에 긴 학명이 오므로, 그림이 없는 종의 분류 아이콘 칸은 아이콘 폭만 쓰고, 그래도 긴 한 단어는 칸 안에서 줄을 바꾼다 */
+/* 영어 화면: 종 이름 자리에 긴 학명이 오므로, 그림이 없는 종의 분류 아이콘 칸은 아이콘 폭만 쓰고, 긴 단어는 나누지 않고 다음 줄로 보낸다 */
 html.lang-en #explore .sp-art.sp-art-icon{width:auto;margin-right:0}
-html.lang-en #explore #sp-name{overflow-wrap:anywhere}
+html.lang-en #explore #sp-name{overflow-wrap:normal;hyphens:none}
+/* Keep words intact in ordinary prose; technical strings retain their own scrollable containers. */
+:is(.detail-pane,.detail-more-body,.species-card em,#comparison tbody th small,.ax-note.ax-evidence){word-break:keep-all;overflow-wrap:normal;hyphens:none}
+@media (min-width:1180px){
+  /* The name gets the full panel width. The taxon icon sits beside the Latin subtitle, below it. */
+  html.lang-en #explore .sp-names{display:contents}
+  html.lang-en #explore #sp-name{grid-column:1/-1;font-size:clamp(30px,2.5vw,38px)}
+  html.lang-en #explore .sp-latin{grid-column:1;min-width:0}
+  html.lang-en #explore .sp-art.sp-art-icon{grid-column:2;grid-row:2;margin-top:6px}
+  html.lang-en #explore .sp-actions .detail-act{white-space:normal;word-break:keep-all;overflow-wrap:normal;text-align:center}
+}
 /* 영어 화면 휴대폰: 비교 탭 분류 버튼 다섯 개가 화면 여백 안에 들도록 버튼 안쪽 여백만 좁힌다(글자 크기는 그대로) */
 @media (max-width:740px){html.lang-en #compare .cmp-groups button{padding:0 10px}}
 /* 2026-10-24 언어 버튼 자리: 1180~1439px 머리글은 칸 사이를 조금 좁히고(46→34px) 언어 버튼은 지금 언어를 숨겨 다른 언어 하나만 보인다.
@@ -1713,3 +1723,17 @@ html.lang-en .gloss-paren{margin-left:.3em} /* 'LC (Least Concern)': English put
 }
 /* 영어 화면 상세 머리: 일반명 출처 줄(Common name: …)은 아이콘 칸이 아니라 머리 전체 폭에 */
 html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}
+
+/* Whole source names stay readable; wide source tables scroll within their panel. */
+.cell-table,.citation,.decision-detail{word-break:keep-all;overflow-wrap:normal;hyphens:none;min-width:0;max-width:100%;overflow-x:auto}
+.detail-pane .evidence-item>b,.detail-pane .evidence-item>span:last-child{word-break:keep-all;overflow-wrap:normal;min-width:0}
+@media (max-width:740px){
+  /* Let the status text yield to the logo and language switch, including its touch halo. */
+  .header .brand-mark{width:26px}
+  .header .status-chips{flex:0 1 auto;min-width:0}
+  .header .status-chip#notice-chip{max-width:100%}
+}
+
+/* English taxon labels use their full word width instead of clipping at 52px. */
+html.lang-en .group-icon{min-width:max-content;padding-inline:6px}
+html.lang-en .group-icon small{max-width:none;overflow:visible}

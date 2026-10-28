@@ -404,10 +404,13 @@ if(typeof document!=='undefined')(function(){
     return !mobile()&&document.querySelector('#explore.active')&&visible(z)?Math.max(16,document.documentElement.clientWidth-z.getBoundingClientRect().left+12):16;
   }
   function movedPos(){
-    if(!posSaved)return null;
-    const v=view(),size=fabSize(),p=chatbotClampFab(chatbotFabFromSide(posSaved,size,v,{right:defaultRight()}),size,v);
-    // 휴대폰 비교 탭의 담기 트레이(화면 아래 고정, 멍이 기본 자리 왼쪽)와 겹치면 그 위로 비킨다
-    const t=document.getElementById('cmp-tray'),r=visible(t)&&getComputedStyle(t).position==='fixed'?t.getBoundingClientRect():null;
+    const t=document.getElementById('cmp-tray'),position=visible(t)?getComputedStyle(t).position:null;
+    const r=position==='fixed'||position==='sticky'?t.getBoundingClientRect():null;
+    // Preserve the phone's default position; on desktop both the mascot and its hint clear the sticky comparison tray.
+    if(!posSaved&&position!=='sticky')return null;
+    const v=view(),size=fabSize(),anchor=posSaved?chatbotFabFromSide(posSaved,size,v,{right:defaultRight()}):
+      {x:v.w-defaultRight()-size,y:v.h-v.inset.bottom-16-size};
+    const p=chatbotClampFab(anchor,size,v);
     if(r&&r.left<p.x+size&&r.right>p.x&&r.top<p.y+size)p.y=Math.max(v.inset.top+CHATBOT_DRAG.margin,Math.round(r.top-CHATBOT_DRAG.margin-size));
     return p;
   }

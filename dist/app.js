@@ -141,9 +141,10 @@ const MOVED_LINKS = {
   'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
   'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
 };
-const sourceLink = (url,label) => {const text=esc(label);return MOVED_LINKS[url]
-  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}"${enAttr(text)}>${escL(label)}</a> <small class="moved-link">원문 이동됨</small>`
-  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener"${enAttr(text)}>${escL(label)}</a>`;};
+// Dataset identifiers may wrap after separators, never in the middle of a word. Escape before inserting markup.
+const sourceLink = (url,label) => {const text=esc(label),labelHtml=escL(label).replace(/_/g,'_<wbr>');return MOVED_LINKS[url]
+  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}"${enAttr(text)}>${labelHtml}</a> <small class="moved-link">원문 이동됨</small>`
+  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener"${enAttr(text)}>${labelHtml}</a>`;};
 const recordLabel = s => !s.noOccurrences&&Number.isSafeInteger(s.recordCount) ? s.recordCount.toLocaleString()+'건' : '—';
 // Evidence stages are independent of the operational DB's old inventory counters.
 // A paper or a search with no matching assessment never becomes a scored input.
@@ -2072,6 +2073,7 @@ function setView(view,toTop=true) {
   currentView=view;
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
+  flushWeightViews();
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
   if(view==='compare'){if(data)syncComparison();loadCompareStops();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
@@ -4126,12 +4128,15 @@ function declutterPointLabels(){
   const sel=b=>b.getAttribute('aria-current')==='true';
   // soft: rectangles only the unselected labels avoid (English screen: the quadrant names, since scientific names are long)
   const placeLabels=(pts,extra,soft=[])=>{
-    const taken=[...all.map(b=>b.getBoundingClientRect()),...extra];
+    // Point positions are stable during this pass. Measure once, outside the sort comparator.
+    const pointRects=new Map(all.map(b=>[b,b.getBoundingClientRect()]));
+    const taken=[...pointRects.values(),...extra];
     const blocked=(r,b)=>r.left<frame.left||r.right>frame.right||r.top<frame.top||r.bottom>frame.bottom||
       taken.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top)||
       (!sel(b)&&soft.some(o=>r.left<o.right&&r.right>o.left&&r.top<o.bottom&&r.bottom>o.top));
     // crowded points choose first, so the free space near a cluster goes to the cluster
-    const near=b=>{const c=b.getBoundingClientRect();return pts.filter(o=>{const d=o.getBoundingClientRect();return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length;};
+    const neighbours=new Map(pts.map(b=>{const c=pointRects.get(b);return [b,pts.filter(o=>{const d=pointRects.get(o);return Math.abs(d.x-c.x)<90&&Math.abs(d.y-c.y)<40;}).length];}));
+    const near=b=>neighbours.get(b);
     for(const b of pts.slice().sort((a,c)=>sel(c)-sel(a)||near(c)-near(a)||a.dataset.b-c.dataset.b)){
       const l=b.querySelector('.point-label');if(!l)continue;
       l.classList.remove('hidden-label');
@@ -4375,6 +4380,7 @@ function syncClusterDims(){
 function setCompareMode(mode){
   cmpMode=mode==='table'?'table':'matrix';
   $('cmp-matrix-view').hidden=cmpMode!=='matrix';$('cmp-table-view').hidden=cmpMode!=='table';
+  flushWeightViews();
   if($('compare')?.dataset)$('compare').dataset.cmpMode=cmpMode;placeWeightSlider();
   document.querySelectorAll('[data-cmp-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cmpMode===cmpMode)));
   applyCompareFilter();
@@ -4592,6 +4598,16 @@ function renderCompare(){renderCompareProfile();renderCompareTray();syncCompareM
 // The report's food_weight is the official weight; any other step is an exploratory view and is marked as such everywhere
 // a re-mixed BBVI is shown. MFPI·MBPI·MCUI, the thresholds and the unexplored candidates (report values) never move.
 let weightFrame=0;
+let weightExploreDirty=false,weightTableDirty=false;
+function flushWeightViews(){
+  if(!data)return;
+  if(currentView==='explore'&&weightExploreDirty){
+    weightExploreDirty=false;renderList();renderDetail();if(mapMode==='value')renderMap();
+  }
+  if(currentView==='compare'&&cmpMode==='table'&&weightTableDirty){
+    weightTableDirty=false;renderComparison();
+  }
+}
 function setBbviStep(k){
   k=Number(k);k=Number.isFinite(k)?Math.max(0,Math.min(W_STEPS,Math.round(k))):weightStep(officialWeight());
   bbviWeight=k/W_STEPS;syncWeightControl();
@@ -4599,13 +4615,15 @@ function setBbviStep(k){
   if(data&&!weightFrame)weightFrame=(globalThis.requestAnimationFrame||(f=>setTimeout(f,16)))(()=>{weightFrame=0;redrawForWeight();});
 }
 function redrawForWeight(){
-  const before=matrixPositions();
-  renderList();renderComparison();renderDetail();toggleSimulation(simulated);renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();if(mapMode==='value')renderMap(); // cell types move with the weight; explore cards carry 활용 and the verdict
+  const matrixVisible=currentView==='compare'&&cmpMode==='matrix';
+  const before=matrixVisible?matrixPositions():null;
+  weightExploreDirty=true;weightTableDirty=true;flushWeightViews();
+  renderCompareProfile();if($('cmp-dialog').open)renderCompareDialog();
+  if($('cmp-drawer').open&&selected)renderCompareDrawer(selected);
   updateBasisNow();syncWeightControl();writeHash();
-  // the profile and weight lines above changed the panel's height, and with it the plot's: place the labels, group boxes and
-  // quadrant names again on the plot as it now is (same task, nothing is painted in between)
-  if(currentView==='compare'&&cmpMode==='matrix'&&!simulated)declutterPointLabels();
-  slideMatrixPoints(before);
+  // Build and lay out the matrix once, after all content that can change its height.
+  toggleSimulation(simulated);
+  if(matrixVisible)slideMatrixPoints(before);
 }
 // The panel, the badges and the list of species whose type differs from the official one.
 function syncWeightControl(){

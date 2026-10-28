@@ -415,10 +415,10 @@ try{
     r.moved=moved.length>0&&q('#bbvi-weight-moved').textContent.startsWith('공식값과 유형이 다른 종 '+moved.length+'종')&&document.querySelectorAll('#matrix-points .matrix-point.w-moved').length===moved.filter(assessedForMatrix).length;
     const pt=q('#matrix-points [data-aphia="241776"]');r.point=!!pt&&pt.style.left!==left0&&pt.title.includes('공식 ');
     r.hash=/[#&]w=0\\.75(&|$)/.test(location.hash);
-    r.profile=q('#cmp-profile').textContent.includes('공식 72')&&!q('#cmp-profile').textContent.includes('공식 71.9');r.cards=q('#species-list [data-species="241776"]').textContent.includes(scoreText(data.species.find(x=>x.aphiaID===241776),'BBVI',pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')))&&pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')!==36.1;
+    r.profile=q('#cmp-profile').textContent.includes('공식 72')&&!q('#cmp-profile').textContent.includes('공식 71.9');
     setCompareMode('table');r.table=q('#comparison').innerHTML.includes('class="cv-official">(공식 ')&&off();setCompareMode('matrix');
     r.cells=cellTypes()!==cells0;
-    setView('explore');setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.25 · MFPI 0.75');
+    setView('explore');r.cards=q('#species-list [data-species="241776"]').textContent.includes(scoreText(data.species.find(x=>x.aphiaID===241776),'BBVI',pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')))&&pilotScore(data.species.find(x=>x.aphiaID===241776),'BBVI')!==36.1;setMapMode('value');await wait(300);r.mapBadge=vis(q('#value-weight-badge'))&&q('#value-weight-badge').textContent.includes('MBPI 0.25 · MFPI 0.75');
     r.candidates=document.getElementById('layer-unexplored-count')?.textContent===cand0;
     q('#value-weight-badge [data-w-reset]').click();await wait(250);r.mapReset=!vis(q('#value-weight-badge'))&&bbviWeight===.5;
     setMapMode('occurrence');setView('compare');setCompareMode('matrix');
@@ -1551,13 +1551,13 @@ try{
 
   for(const [aphia,name] of [[241776,'mobile-sea-cucumber'],[836033,'mobile-oyster']]){
     await pick(aphia);await detailEl();
-    const ov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");
+    const ov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length,wideNodes:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).map(e=>({tag:e.tagName,id:e.id,cls:e.className,text:e.textContent.slice(0,80)}))})");
     check(`Mobile 390px ${name}: no horizontal overflow`,ov.doc<=ov.vw&&ov.wide===0,JSON.stringify(ov));
     await shot(name);
   }
   await pick(494972);await evaluate("document.querySelector('.map-pane').scrollIntoView();1");await sleep(1500);await shot('mobile-live-hijiki-map',false);
   await detailEl();
-  const pov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length})");
+  const pov=await evaluate("({doc:document.documentElement.scrollWidth,vw:window.innerWidth,wide:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).length,wideNodes:[...document.querySelectorAll('#detail *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+1).map(e=>({tag:e.tagName,id:e.id,cls:e.className,text:e.textContent.slice(0,80)}))})");
   check('Mobile 390px 톳 with cells: no horizontal overflow',pov.doc<=pov.vw&&pov.wide===0,JSON.stringify(pov));
   await shot('mobile-live-hijiki');
 

@@ -27,7 +27,7 @@ assert.match(body('declutterPointLabels'),/syncClusterDims\(\);placeQuadrantName
 assert.match(body('applyCompareFilter'),/placeQuadrantNames\(\);[^\n]*\n\}$/,'a filter places the names again');
 assert.match(body('markBasketPoints'),/placeQuadrantNames\(\)/,'a basket change places the names again');
 assert.match(app,/if\(!value\)declutterPointLabels\(\);else placeQuadrantNames\(\);/,'the simulated example places the names');
-assert.match(body('redrawForWeight'),/declutterPointLabels\(\);\n  slideMatrixPoints\(before\);/,'a weight change lays the matrix out again on its new height');
+assert.match(body('redrawForWeight'),/renderCompareProfile\(\)[\s\S]*syncWeightControl\(\)[\s\S]*toggleSimulation\(simulated\);/,'a weight change lays the matrix out after the profile and weight lines');
 
 // how: four corners of its own quadrant (its own first), 6px clear of points (+2px), buttons, shown names and tick numbers;
 // else outside the plot; one measurement, no loop over positions, the plot height kept

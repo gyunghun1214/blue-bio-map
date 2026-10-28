@@ -212,6 +212,16 @@ const licenseNote=t=>LICENSE_CUT.reduce((s,[re,to])=>s.replace(re,to),String(t??
 // An aquaculture method note: what the source describes; a clause that only says what it leaves undescribed is left out
 const methodNote=t=>String(t??'').replace(/; [^;()]*\bnot described\b[^;()]*\)/g,')').replace(/ \([^()]*\bnot described\b[^()]*\)/g,'').trim();
 
+// One cancellable frame chain. Repeated starts cannot create parallel render loops.
+function seaFrameLoop(draw,request,cancel){
+  let active=false,pending=null;
+  const frame=now=>{pending=null;if(!active)return;draw(now);if(active)pending=request(frame);};
+  return {
+    start(){if(active)return;active=true;pending=request(frame);},
+    stop(){active=false;if(pending!==null)cancel(pending);pending=null;}
+  };
+}
+
 // ---- browser ----
 const $=id=>document.getElementById(id);
 // 영어 화면(i18n.js의 LANG): 종 이름은 영어 일반명(species-names-en.json, 확인된 이름만)이 있으면 그것, 없으면 학명. 한국어 화면은 국명 그대로.
@@ -460,6 +470,8 @@ function setCards(on,reason){
   $('view-toggle').textContent=on?'항해 화면':'카드 목록';
   $('cards-reason').textContent=reason||'';
   if(on){leaveIntro();renderCards();}
+  if(!on)scene?.snap();
+  scene?.syncActivity();
   render();save();
 }
 
@@ -758,10 +770,19 @@ function buildSea(THREE,geo){
     $('progress').style.setProperty('--t',STATE.t.toFixed(4));
     // A slow device keeps working; it is offered the card list once.
     frames++;fpsT+=dt;if(!lowFps&&fpsT>4){if(frames/fpsT<18){lowFps=true;renderer.setPixelRatio(1);toast('화면이 느리면 상단의 "카드 목록"으로 같은 내용을 볼 수 있습니다.');}frames=0;fpsT=0;}
-    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
-  return {snap,catchUp,renderer};
+  const loop=seaFrameLoop(frame,requestAnimationFrame,cancelAnimationFrame);
+  function syncActivity(){
+    if(document.hidden||document.body.classList.contains('is-cards')){loop.stop();return;}
+    // Time spent reading cards or in a background tab is not sailing time or a low-FPS sample.
+    last=performance.now();frames=0;fpsT=0;
+    loop.start();
+  }
+  document.addEventListener('visibilitychange',syncActivity);
+  addEventListener('pagehide',()=>loop.stop());
+  addEventListener('pageshow',syncActivity);
+  syncActivity();
+  return {snap,catchUp,renderer,syncActivity};
 }
 
 /* ---------- boot ---------- */
