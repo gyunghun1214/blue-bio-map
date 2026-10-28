@@ -20,7 +20,7 @@ await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const summary=[];
 try{
   for(const page of ['index.html','expedition.html'])for(let run=1;run<=3;run++)for(const version of ['before','after']){
-    const chrome=await launch({chromePath:chromium.executablePath(),chromeFlags:['--headless','--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+    const chrome=await launch({chromePath:chromium.executablePath(),chromeFlags:['--headless','--no-sandbox','--disable-dev-shm-usage','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
     try{
       const {lhr}=await lighthouse(`http://127.0.0.1:${server.address().port}/${version}/${page}`,{port:chrome.port,logLevel:'error',onlyCategories:['performance'],output:'json',blockedUrlPatterns:['*supabase.co*','*gibs.earthdata.nasa.gov*']});
       fs.writeFileSync(path.join(OUT,`${version}-${page}-${run}.json`),JSON.stringify(lhr));

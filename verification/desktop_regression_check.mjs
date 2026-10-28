@@ -22,11 +22,11 @@ const server=http.createServer((q,r)=>{
 });
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const base=`http://127.0.0.1:${server.address().port}/`;
-const rows=[];let failed=0;
+const rows=[];let failed=0,harnessFailed=false;
 const check=(name,ok,detail)=>{rows.push({name,ok,detail});if(!ok)failed++;console.log(`${ok?'PASS':'FAIL'} ${name}${ok?'':' '+JSON.stringify(detail).slice(0,1200)}`);};
 const measure=rootSelector=>{
   const root=document.querySelector(rootSelector),broken=[];
-  const visible=e=>{for(let p=e;p;p=p.parentElement){const s=getComputedStyle(p);if(p.hidden||p.inert||s.display==='none'||s.visibility==='hidden'||s.opacity==='0')return false;}return true;};
+  const visible=e=>{for(let p=e;p;p=p.parentElement){const s=getComputedStyle(p);if(p.hidden||p.inert||s.display==='none'||s.visibility==='hidden'||s.opacity==='0')return false;if(p.tagName==='DETAILS'&&!p.open&&!p.querySelector(':scope > summary')?.contains(e))return false;}return true;};
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
   for(let n=walker.nextNode();n;n=walker.nextNode()){
     const e=n.parentElement;
@@ -82,7 +82,7 @@ try{
           for(const step of [0,5,10,15,20]){await page.evaluate(k=>setBbviStep(k),step);await page.waitForTimeout(50);}
           check(`${tag}: weight drag leaves hidden explore DOM alone`,await page.evaluate(()=>window.__hiddenWrites===0),await page.evaluate(()=>window.__hiddenWrites));
           await page.evaluate(()=>{window.__auditObserver.disconnect();setView('explore');});
-          check(`${tag}: latest weight appears after returning to map`,await page.evaluate(()=>Math.abs(pilotScore(selected,'BBVI')-pilotScore(selected,'MFPI'))<1e-9));
+          check(`${tag}: latest weight appears after returning to map`,await page.evaluate(()=>document.querySelector('.sp-bbvi .sp-num')?.textContent===scoreText(selected,'BBVI',pilotScore(selected,'BBVI'))));
           await page.goto(`${base}expedition.html?lang=${lang}#view=cards`);
           await page.waitForFunction(()=>!document.body.classList.contains('is-loading'));
           await page.evaluate(()=>document.fonts.ready);
@@ -121,8 +121,8 @@ try{
       }
     }finally{await browser.close();}
   }
-}catch(e){check('Harness completed',false,e.stack);}
+}catch(e){harnessFailed=true;check('Harness completed',false,e.stack);}
 finally{
   server.close();fs.writeFileSync(path.join(OUT,'results.json'),JSON.stringify({failed,reportOnly,rows},null,2));
 }
-if(failed&&!reportOnly)process.exitCode=1;
+if(harnessFailed||(failed&&!reportOnly))process.exitCode=1;
