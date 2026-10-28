@@ -1732,3 +1732,7 @@ html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}
   .header .status-chips{flex:0 1 auto;min-width:0}
   .header .status-chip#notice-chip{max-width:100%}
 }
+
+/* English taxon labels use their full word width instead of clipping at 52px. */
+html.lang-en .group-icon{min-width:max-content;padding-inline:6px}
+html.lang-en .group-icon small{max-width:none;overflow:visible}

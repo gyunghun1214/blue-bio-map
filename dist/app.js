@@ -141,9 +141,10 @@ const MOVED_LINKS = {
   'https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx':'https://openknowledge.fao.org/server/api/core/bitstreams/11bf98db-a942-43ff-9271-6b8adf1166c9/content',
   'https://www.fao.org/3/I6655EN/i6655en.pdf':'https://openknowledge.fao.org/server/api/core/bitstreams/d48eb825-b91f-431f-8374-f882c1d647a4/content'
 };
-const sourceLink = (url,label) => {const text=esc(label);return MOVED_LINKS[url]
-  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}"${enAttr(text)}>${escL(label)}</a> <small class="moved-link">원문 이동됨</small>`
-  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener"${enAttr(text)}>${escL(label)}</a>`;};
+// Dataset identifiers may wrap after separators, never in the middle of a word. Escape before inserting markup.
+const sourceLink = (url,label) => {const text=esc(label),labelHtml=escL(label).replace(/_/g,'_<wbr>');return MOVED_LINKS[url]
+  ? `<a href="${esc(MOVED_LINKS[url])}" target="_blank" rel="noopener" title="원래 주소: ${esc(url)}"${enAttr(text)}>${labelHtml}</a> <small class="moved-link">원문 이동됨</small>`
+  : `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener"${enAttr(text)}>${labelHtml}</a>`;};
 const recordLabel = s => !s.noOccurrences&&Number.isSafeInteger(s.recordCount) ? s.recordCount.toLocaleString()+'건' : '—';
 // Evidence stages are independent of the operational DB's old inventory counters.
 // A paper or a search with no matching assessment never becomes a scored input.
