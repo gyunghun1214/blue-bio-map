@@ -243,7 +243,10 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
   .x-nav{row-gap:12px}
   .x-nav>:not(.x-lang){position:relative}
   .x-nav>:not(.x-lang)::after{content:"";position:absolute;inset:-6px 0}
-  .x-lang button{min-height:36px}
+  .x-lang button{position:relative;min-height:36px}
+  .x-lang button::after{content:"";position:absolute;inset:-4px 0}
+  .x-brand{position:relative}
+  .x-brand::after{content:"";position:absolute;inset:-11px -4px}
   .x-close{width:44px;height:44px}
   .x-lead{font-size:16px}
   /* 상세 시트: 아이폰 주소창이 보일 때도 닫기 단추가 화면 안에 있게(지원하지 않는 브라우저는 앞의 92vh) */

@@ -106,3 +106,24 @@
 }
 @keyframes mg-up{from{transform:translateY(100%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.map-guide .mg-panel{animation:none}}
+/* 2026-10-28 누르는 범위 44px (모바일 점검 M06). 높이 40px 안팎이던 지도·비교 단추를 44px로 올린다. 머리글의 작은 단추(로고, EN)와
+   멍이 대화창의 닫기·질문 단추는 보이는 크기는 그대로 두고 누르는 범위만 넓힌다. 글자·색·순서는 그대로다. 목록 시트 손잡이(24px)는
+   넓히면 바로 위 지도 범례 단추를 덮어서 그대로 둔다(시트는 손잡이 줄 전체를 끌어도 움직인다). */
+@media (max-width:740px){
+  #explore :is(.map-mode,.basemap-switch,.period-filter) button{min-height:44px}
+  #explore .basemap-switch button{min-width:44px}
+  #explore .use-chip{min-height:44px}
+  #explore .search,#explore .species-filters select{height:44px}
+  #explore .map-full-btn{width:44px;height:44px}
+  #explore .leaflet-control-zoom a{width:44px!important;height:44px!important;line-height:44px!important}
+  #compare .cmp-mode button{height:44px}
+  #compare .cmp-tools>div>.cmp-ghost,#compare #cmp-read-toggle{min-height:44px}
+  #compare .cmp-search{height:44px}
+  .header .brand,.lang-switch button,.bbc-chips button{position:relative}
+  .header .brand::after{content:"";position:absolute;inset:-10px 0}
+  .lang-switch button::after{content:"";position:absolute;inset:-10px -5px}
+  .bbc-chips{row-gap:10px}
+  .bbc-chips button::after{content:"";position:absolute;inset:-5px 0}
+  .bbc-hint-x,.bbc-close{position:relative}
+  .bbc-hint-x::after,.bbc-close::after{content:"";position:absolute;inset:-8px}
+}
