@@ -2753,15 +2753,21 @@ function seaSeasonBadge(s,d){
 const seaSeasonTag=s=>seaSeasonNow(s).length?'<span class="sc-season"><b>지금 금어기</b></span>':'';
 const INAT_UPLOAD='https://www.inaturalist.org/observations/upload';
 const seaObserveOk=s=>!!s&&!(s.cells||[]).some(c=>c.sizeDeg>=4)&&s.info?.map?.status!=='held_sensitivity_review';
+// 2026-10-30 (LKH 휴대폰 점검 5: 칸 끝 작은 한 줄이라 참고 자료로만 보였다): 바다 정화 활동은 '지금 금어기' 바로 아래 큰 카드로,
+// 두 곳을 손가락 크기 단추로 둔다. 링크만 있고 우리 사이트가 신청을 받거나 바깥 사이트를 불러오지 않는다.
+const SEA_CLEAN=[['https://www.caresea.kr/','반려해변 ↗','해변 한 곳을 맡아 꾸준히 돌보는 정화 활동'],
+  ['https://www.1365.go.kr/','1365 자원봉사포털 ↗','사는 곳 가까운 바다·해변 정화 봉사 찾기']];
+const seaClean=()=>'<section class="sea-clean"><h3>바다 정화 활동에 함께하기</h3><p>해변 쓰레기를 함께 주우며 이 생물이 사는 바다를 돌볼 수 있습니다.</p>'+
+  '<div class="sea-clean-acts">'+SEA_CLEAN.map(([u,t,d])=>`<a class="sea-clean-btn" href="${esc(u)}" target="_blank" rel="noopener"><b>${esc(t)}</b><span>${esc(d)}</span></a>`).join('')+'</div></section>';
 function seaCare(s,d){
   const r=SEA_RULES[s?.aphiaID];
-  const rules=!r?'':seaSeasonBadge(s,d)+'<h3>이 종의 보호 기준</h3>'+(r[0]?row('금어기',r[0]):'')+(r[1]?row('잡지 않는 크기',r[1]):'')+
+  const rules=!r?'':'<h3>이 종의 보호 기준</h3>'+(r[0]?row('금어기',r[0]):'')+(r[1]?row('잡지 않는 크기',r[1]):'')+
     '<p class="fine">이 기간과 크기는 사지 않고 잡지 않는 것만으로도 지킬 수 있습니다.</p>'+
     `<p class="fine">${sourceLink(SEA_RULES_URL,'해양수산부 금어기·금지체장 기준 ↗')} · <span>수산자원관리법 시행령 별표 1·2</span> · <span>확인 ${SEA_RULES_CHECKED}</span></p>`;
   const observe=!seaObserveOk(s)?'':'<h3>만난 관찰을 이 지도에 더하기</h3>'+
     '<p>바다나 갯벌에서 이 생물을 만나면 사진과 함께 iNaturalist에 관찰로 남길 수 있습니다. 이용 허락(CC)을 붙인 연구 등급 관찰은 GBIF로 공유되고, 이 지도는 GBIF 공개 기록으로 칸을 만듭니다.</p>'+
     `<p class="sea-care-act">${sourceLink(INAT_UPLOAD,'iNaturalist에 관찰 남기기 ↗')}</p>`;
-  return `<div class="sea-care">${rules}${observe}<p class="fine sea-care-links">바다 정화 활동 · ${sourceLink('https://www.caresea.kr/','반려해변 ↗')} · ${sourceLink('https://www.1365.go.kr/','1365 자원봉사포털 ↗')}</p></div>`;
+  return `<div class="sea-care">${r?seaSeasonBadge(s,d):''}${seaClean()}${rules}${observe}</div>`;
 }
 const seaCareFold=(more,s)=>more('이 생물이 사는 바다 지키기',seaCare(s)).replace('<details class="detail-more"','<details class="detail-more sea-care-fold"');
 function institutionChecks(s){
@@ -2863,9 +2869,11 @@ function dotsPerDegree(records){
 const DOT_RED='#ff6464';
 const dotStyle=()=>({color:'#ffffff',weight:.65,opacity:.9,fillColor:DOT_RED,fillOpacity:.88});
 // Smaller schematic marks reveal the grid pattern; zoom caps and cell click areas stay independent.
-function dotRadius(spacingDeg){
+// 2026-10-30 (LKH 휴대폰 점검 2: 점 크기가 칸마다 달라 보임): one radius per zoom for every cell. Record bands show as dot spacing
+// only; the radius is the one the densest band (10 a degree, never closer than 6 px: drawCellDots) can take without fusing.
+function dotRadius(){
   const z=map.getZoom(), pxPerDeg=256*2**z/360;
-  return Math.max(1.1,Math.min([1.5,1.5,1.8,2.2,2.6,3][Math.max(0,Math.min(5,z-3))],spacingDeg*pxPerDeg*.27));
+  return Math.max(1.1,Math.min([1.5,1.5,1.8,2.2,2.6,3][Math.max(0,Math.min(5,z-3))],Math.max(6,pxPerDeg/10)*.3));
 }
 let dotCells=[]; // cells whose dot pattern is redrawn on zoom (reset with the overlay in renderMap)
 function addCellDots(lat0,lon0,size,records){
@@ -2884,7 +2892,7 @@ function drawCellDots(lat0,lon0,size,records){
   for(let row=0;row<cols;row++)for(let col=0;col<cols;col++){
     const lat=lat0+step*(row+.5), lon=lon0+step*(col+(row%2?.75:.25));
     if(nearLand&&onLand(lat,lon))continue; // Natural Earth coast approximation; no marks on mapped land.
-    const dot=L.circleMarker([lat,lon],{renderer:dotRenderer,radius:dotRadius(step),...dotStyle(),interactive:false});
+    const dot=L.circleMarker([lat,lon],{renderer:dotRenderer,radius:dotRadius(),...dotStyle(),interactive:false});
     dot._schematicDot=true;dot.addTo(overlay);
   }
 }
@@ -4568,9 +4576,9 @@ function renderCompareDialog(){
   const go=s=>['MFPI','MBPI','BBVI','MCUI','OCC'].map(k=>`<button type="button" class="cmp-chip" data-dlg-aphia="${s.aphiaID}" data-dlg-axis="${k}">${k==='OCC'?'출현 기록 지도':k}</button>`).join('');
   body.innerHTML=`<p class="cd-note">담은 순서대로 놓았습니다. 막대는 같은 척도의 값끼리 그립니다.</p><div class="cd-scroll"><table class="cd-table"><caption class="sr-only">선택한 생물 ${list.length}종 비교</caption>`+
     `<thead><tr><td></td>${list.map(s=>`<th scope="col">${cmpIcon(s)}<b>${esc(s.label)}</b><em>${esc(latinOf(s))}</em>${matrixType(s)?`<span class="cp-type" style="--tc:${matrixTypeColour[matrixType(s)]}">${esc(matrixTypeLabel(matrixType(s)))}</span>`:''}</th>`).join('')}</tr></thead><tbody>`+
-    `<tr class="cd-sec use"><th scope="rowgroup" colspan="${list.length+1}">활용가치</th></tr>`+row('BBVI','활용가치 BBVI','use')+row('MFPI','식량 MFPI','use')+row('MBPI','생리활성 MBPI','use')+
+    `<tr class="cd-sec use"><th scope="rowgroup" colspan="${list.length+1}"><span>활용가치</span></th></tr>`+row('BBVI','활용가치 BBVI','use')+row('MFPI','식량 MFPI','use')+row('MBPI','생리활성 MBPI','use')+
     text('MFPI 비교집단',s=>cmpCohort(s)?esc(cmpCohortLabel(cmpCohort(s)))+' 고정 비교집단':'—','use')+
-    `<tr class="cd-sec con"><th scope="rowgroup" colspan="${list.length+1}">보전 시급성</th></tr>`+row('MCUI','보전 시급성 MCUI','con')+
+    `<tr class="cd-sec con"><th scope="rowgroup" colspan="${list.length+1}"><span>보전 시급성</span></th></tr>`+row('MCUI','보전 시급성 MCUI','con')+
     text('MCUI 평가 기반',s=>pilotScore(s,'MCUI')===null?'—':esc(mcuiBasisLabel(s)),'con')+text('근거 보기',go)+`</tbody></table></div>`;
   body.querySelectorAll('[data-dlg-aphia]').forEach(b=>b.addEventListener('click',()=>{const sel=`#cmp-dialog-body [data-dlg-aphia="${b.dataset.dlgAphia}"][data-dlg-axis="${b.dataset.dlgAxis}"]`;
     $('cmp-dialog').close();openEvidence(Number(b.dataset.dlgAphia),b.dataset.dlgAxis,sel);}));
@@ -5192,9 +5200,12 @@ if(phoneSheet()){
   document.querySelectorAll('details.map-notes[open]').forEach(d=>{d.open=false;});
 }
 $('legend-toggle').addEventListener('click',e=>{const folded=e.currentTarget.parentElement.classList.toggle('legend-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!folded));e.currentTarget.title=e.currentTarget.ariaLabel=folded?'범례 펼치기':'범례 접기';});
+// 2026-10-30 (LKH 휴대폰 점검 8: 유형 색을 눌렀다 다시 눌러 꺼도 그 색 칸만 진하게 남음): iPhone은 손가락 탭의 click에도 pointerType 'mouse'를
+// 주어, 다시 그린 뒤 그 유형만 남기고 흐리게 하는 줄이 돌았다. 흐림은 마우스가 실제로 올라와 있는 단추(hovered)나 키보드 포커스일 때만.
+let vmHovered=null;
 document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
-  b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')dimTypes(b.dataset.type);});
-  b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')dimTypes(null);});
+  b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){vmHovered=b;dimTypes(b.dataset.type);}});
+  b.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){if(vmHovered===b)vmHovered=null;dimTypes(null);}});
   b.addEventListener('focus',()=>{if(b.matches(':focus-visible'))dimTypes(b.dataset.type);});
   b.addEventListener('blur',()=>dimTypes(null));
   b.addEventListener('click',e=>{
@@ -5202,7 +5213,7 @@ document.querySelectorAll('.vm-grid [data-key]').forEach(b=>{
     if(ownView()){valueView='all';typeFilter.clear();} // species view: open the all-species view on this type
     if(!typeFilter.delete(id))typeFilter.add(id);
     b.setAttribute('aria-pressed',String(typeFilter.has(id)));
-    renderMap();if(e.pointerType==='mouse'||b.matches(':focus-visible'))dimTypes(id); // the redraw drops the hover dim
+    renderMap();if(vmHovered===b||b.matches(':focus-visible'))dimTypes(id); // the redraw drops the hover dim
   });
 });
 $('value-info').addEventListener('click',()=>setValueInfo($('value-legend').hidden));

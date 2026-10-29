@@ -108,6 +108,9 @@
     const fab=document.querySelector('.bbc-fab'),root=fab?.closest('.bbc');
     if(!fab||!root||!shown(fab)||root.classList.contains('bbc-dragging'))return;
     const cur=parseFloat(root.style.getPropertyValue('--bbc-dodge'))||0,r=fab.getBoundingClientRect();
+    // 2026-10-30 (LKH 휴대폰 점검 1: 스크롤이 멈출 때마다 멍이가 위로 옮겨 다녀 따라 움직이는 것처럼 보였다): 손가락 기기와 휴대폰 폭에서는
+    // 비켜 앉지 않고 늘 같은 자리(탭 줄 위 오른쪽 또는 사용자가 옮긴 자리)에 둔다. 페이지 아래 여백·종 카드 줄 끝 여백(meongi.css)이 멍이 몫을 비워 둔다.
+    if(coarse||matchMedia('(max-width:740px)').matches){if(cur)root.style.setProperty('--bbc-dodge','0px');return;}
     // PC: 대화창이 열렸거나 사용자가 옮긴 자리면 비켜 앉지 않는다
     if(fab.getAttribute('aria-expanded')==='true'||!coarse&&root.classList.contains('bbc-moved')){if(!coarse&&cur)root.style.setProperty('--bbc-dodge','0px');return;}
     const base={left:r.left,right:r.right,top:r.top-cur,bottom:r.bottom-cur};

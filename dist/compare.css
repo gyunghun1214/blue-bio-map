@@ -1145,3 +1145,5 @@ body:has(#compare.active){background:linear-gradient(180deg,var(--bbm-bg-top,#0B
    margin keeps the text exactly where it was */
 #compare .matrix .q-name{position:relative;z-index:2;display:flex;flex-direction:column;align-self:flex-start;align-items:flex-start;gap:3px;margin:-2px -6px;padding:2px 6px;border-radius:6px;background:rgba(8,29,46,.7);background:color-mix(in srgb,var(--cs-panel) 70%,transparent);pointer-events:none}
 #compare .matrix :is(.q2,.q4) .q-name{align-self:flex-end;align-items:flex-end}
+/* 2026-10-30 LKH 휴대폰 점검 6: '+ 비교 담기'(위쪽 오른쪽, 높이 34px)가 종 그림 칸 위쪽 14px을 덮었다(휴대폰·PC 모두). 그림 칸을 단추 아래로 내린다. */
+#compare .cp-art{margin-top:44px}

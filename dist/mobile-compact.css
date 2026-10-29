@@ -163,3 +163,32 @@
 @media (max-height:500px) and (min-width:741px) and (pointer:coarse){
   .bbc:not(.bbc-moved) .bbc-panel{top:8px;bottom:8px;right:calc(var(--bbc-right,16px) + 64px);height:auto!important;max-height:none!important}
 }
+/* 2026-10-30 LKH 휴대폰 점검 8건 (verification/2026-10-30-mobile-eight/README.md) */
+/* 3: 종 상세 '근거 자세히 보기'를 펼치면 첫 칸(정식 산출 묶음)이 위 여백 20px과 가로줄 뒤에서 시작해, 펼친 칸이 비어 있고 그 아래가 다른 칸처럼 보였다.
+   펼친 내용을 제목 바로 밑에 붙이고(모든 폭), 휴대폰에서는 펼친 동안 제목을 강조색으로 둔다. */
+.detail-more-body>.verified-scores:first-child{margin-top:0;padding-top:0;border-top:0}
+.detail-more-body>.verified-scores:first-child>h3:first-child{margin-top:2px}
+@media (max-width:740px){
+  .detail-pane .detail-more[open]>summary{color:var(--teal-ink)}
+  /* 4: 활용 특성 칩(항당뇨 등)을 고르면 카드에 화합물·시험값 줄이 붙는데, 카드 글 칸이 'auto'라 끊을 수 없는 긴 이름·doi만큼 넓어져
+     카드(220px) 밖으로 글과 점수 칸이 빠져나가고 칸 줄이 어긋났다. 글 칸을 카드 안 폭으로 묶고 긴 낱말은 칸 끝에서 줄을 바꾼다. */
+  #explore .species-card,#explore .species-card+.species-card{grid-template-columns:8px minmax(0,1fr)}
+  #explore .species-card .use-line{min-width:0;overflow-wrap:anywhere}
+  #explore .species-card .card-scores{min-width:0}
+  /* 7: '선택한 생물 비교'는 창 전체(세로)와 표(가로)가 따로 스크롤해, 옆으로 밀면 창이 위아래로 움직이거나 조금만 밀렸다.
+     표 칸 하나가 위아래·옆을 모두 맡고, 왼쪽 항목 이름 칸은 붙어 있으며, 옆으로 밀면 종 칸 단위로 멈춘다. */
+  #compare .cmp-dialog[open]{display:flex;flex-direction:column;max-height:calc(100dvh - 16px);overflow:hidden}
+  #compare .cmp-dialog-head{flex:none;padding:12px 14px}
+  #compare #cmp-dialog-body{display:flex;flex:1 1 auto;flex-direction:column;min-height:0}
+  #compare .cd-note{flex:none;margin:10px 14px 4px}
+  #compare .cd-scroll{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    padding:0 0 16px;scroll-snap-type:x proximity;scroll-padding-left:96px}
+  #compare .cd-table{width:max-content;min-width:100%;table-layout:auto}
+  #compare .cd-table thead td{width:96px;min-width:96px}
+  #compare .cd-table thead th{width:148px;min-width:148px;max-width:148px;scroll-snap-align:start}
+  #compare .cd-table td{max-width:148px;overflow-wrap:anywhere}
+  #compare .cd-table thead td,#compare .cd-table tbody th[scope=row]{position:sticky;left:0;z-index:1;background:#0a2335}
+  #compare .cd-table tbody th[scope=row]{width:96px;min-width:96px;max-width:96px;padding:10px 8px 10px 14px;word-break:keep-all;overflow-wrap:anywhere;box-shadow:1px 0 0 var(--cs-line)}
+  #compare .cd-table tr.cd-sec th{padding-left:14px}
+  #compare .cd-table tr.cd-sec th>span{position:sticky;left:14px}
+}

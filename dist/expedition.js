@@ -290,7 +290,8 @@ function scoreHtml(stop,k,big){
 const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
 const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
 // 2026-10-25 (LKH, 팀원 제안): 항로 마지막 지점과 카드 모아 보기 끝에, 지도로 만난 바다를 돌보는 활동 링크 한 줄(바깥 사이트로는 링크만).
-const careLine=()=>`<p class="x-fine x-care"><span>지도로 만난 바다를 직접 돌보고 싶다면</span> · <a href="https://www.caresea.kr/" target="_blank" rel="noopener">반려해변 ↗</a> · <a href="https://www.1365.go.kr/" target="_blank" rel="noopener">1365 자원봉사포털 ↗</a></p>`;
+// 2026-10-30 (LKH 휴대폰 점검 5): 바다 정화 활동을 작은 한 줄 대신 강조 칸과 단추 둘로(expedition.css .x-care)
+const careLine=()=>`<div class="x-care"><b>바다 정화 활동에 함께하기</b><span>지도로 만난 바다를 직접 돌보고 싶다면</span><div class="x-care-acts"><a href="https://www.caresea.kr/" target="_blank" rel="noopener">반려해변 ↗</a><a href="https://www.1365.go.kr/" target="_blank" rel="noopener">1365 자원봉사포털 ↗</a></div></div>`;
 function cardHtml(stop,i,level,mode){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
   const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
