@@ -122,3 +122,13 @@
 @media (max-width:740px),(max-height:500px) and (max-width:1024px) and (orientation:landscape){
   #search,#explore #species-group,#compare .cmp-search input,.bbc .bbc-input{font-size:16px}
 }
+/* ---------- 2026-10-29 휴대폰 다시 점검 4·12 (verification/2026-10-29-mobile-recheck) ---------- */
+/* 한국어 낱말이 중간에서 끊겼다('보전 연구 우선 검/토', '어획/량', '표시합/니다'). 첫 화면(intro.css)과 근거와 방법(method.css)에만
+   있던 낱말 단위 줄바꿈을 휴대폰 전체로 넓힌다. 칸보다 긴 낱말·주소는 칸 끝에서만 꺾는다(break-word는 칸 폭 계산을 바꾸지 않는다).
+   마지막 줄에 한두 글자만 남지 않게 문단 줄을 고르게 나눈다(text-wrap:pretty, 지원하지 않는 브라우저는 전과 같다).
+   눕힌 휴대폰(높이 500px 이하·손가락)도 같다. 마우스 PC는 그대로. */
+@media (max-width:740px),(max-height:500px) and (pointer:coarse){
+  body{word-break:keep-all;overflow-wrap:break-word}
+  :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note){text-wrap:pretty}
+  #all-sources,.citation,.foot-ops a{overflow-wrap:anywhere}
+}

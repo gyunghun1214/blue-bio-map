@@ -362,8 +362,9 @@ function detailHtml(stop,i){
     :`<p>항로 밖 지점 · 점수와 근거는 아래와 같습니다.</p>
     <p class="x-fine">이 종의 공개 셀 ${esc(stop.public_cells)}개 · 기록 합계 ${esc(stop.public_records)}건 (공개 사본 기준일 ${esc(snapshot)}).</p>`;
   const version=String(DATA.method_version||'').replace(/^verified-/,'');
+  // 2026-10-29: 항로 밖 지점은 위 칩이 이미 '항로 밖'이라 같은 꼬리표를 또 달지 않는다(두 번 보였다)
   return `<header class="x-detail-head"><p class="x-chips">${chips}</p>
-    ${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 id="detail-title">${nameOf(stop)===stop.scientific_name?'':esc(nameOf(stop))+' '}<i>${esc(stop.scientific_name)}</i></h2>
+    <h2 id="detail-title">${nameOf(stop)===stop.scientific_name?'':esc(nameOf(stop))+' '}<i>${esc(stop.scientific_name)}</i></h2>
     ${type?`<p class="x-type">${esc(type)}</p>`:''}</header>
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtAxis(stop,'MFPI')??'—'}</small></h3>${foodHtml(stop.food)}</section>

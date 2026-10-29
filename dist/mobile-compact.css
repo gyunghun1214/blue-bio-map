@@ -127,3 +127,33 @@
   .bbc-hint-x,.bbc-close{position:relative}
   .bbc-hint-x::after,.bbc-close::after{content:"";position:absolute;inset:-8px}
 }
+/* ---------- 2026-10-29 휴대폰 다시 점검 (verification/2026-10-29-mobile-recheck) ---------- */
+@media (max-width:740px){
+  /* 5: 종 상세의 분류 꼬리표가 56px 칸에서 '기타 무척추동/물'처럼 칸 밖으로 넘쳤다(영어 'Seawee/d'). 칸을 글자만큼 넓힌다. */
+  #explore .detail-head{grid-template-columns:auto minmax(0,1fr)}
+  #explore .detail-head .group-icon{width:auto;min-width:56px;padding:0 6px}
+  #explore .detail-head .group-icon small{max-width:none;overflow:visible;white-space:nowrap}
+  /* 5: 점수 펼침 줄은 왼쪽 이름과 오른쪽 값이 한 줄에 몰려 둘 다 낱말 중간에서 끊겼다('생리활/성', '(펩타/이드)').
+     둘이 한 줄에 다 들어가지 않으면 값이 다음 줄 오른쪽으로 내려간다. */
+  .score-disclosure summary{flex-wrap:wrap;row-gap:2px}
+  .score-disclosure summary>span,.score-disclosure summary>b{flex:0 0 auto;max-width:100%}
+  .score-disclosure summary>b{flex:1 0 auto;max-width:calc(100% - 22px)}
+  /* 13: 전체 출처 목록은 화면 안의 작은 스크롤 상자(46vh)여서 페이지를 내리다 상자 스크롤로 바뀌어 멈춘 듯했다. 휴대폰에서는 펼친 만큼
+     페이지와 함께 내려간다(접힌 칸 안이라 열기 전에는 길어지지 않는다). */
+  #method #all-sources,#all-sources{max-height:none;overflow:visible}
+}
+/* 9: 360px에서 탐색 지도 검색창 안내 글이 '종 이름 또는 학명 검'에서 잘렸다(글 141px, 칸 139px). 돋보기 쪽 여백을 줄인다. */
+@media (max-width:380px){
+  #explore .search{gap:4px;padding-left:8px;padding-right:6px}
+}
+/* 눕힌 휴대폰(741~1179px · 높이 500px 이하): 넓은 화면 배치로 열린다. */
+@media (min-width:741px) and (max-width:1179px) and (max-height:500px){
+  /* 1: 왼쪽 '탐색 후보' 칸이 화면 높이(326px)로 고정되고 넘친 부분을 숨겨, 활용 칩 아래 종 카드 목록에 손이 닿지 않았다.
+     칸 안에서 스크롤해 목록 끝까지 내려가게 하고, 목록은 칸 안에서 다 펼친다. */
+  .species-pane,#explore .species-pane{overflow-y:auto;overscroll-behavior:contain}
+  .species-pane .species-list,#explore .species-pane .species-list{flex:none;overflow:visible;max-height:none;min-height:0}
+  /* 11: 종 상세 '바다 지키기' 단추가 '바다/지키/기' 세 줄로 끊겼다 */
+  #explore .sp-actions .detail-act,.detail-act{word-break:keep-all}
+  /* 11: 페이지 끝에서 멍이가 아래 '의견 보내기'·'alt F4 · 2026' 위에 앉았다 */
+  footer{padding-right:96px}
+}
