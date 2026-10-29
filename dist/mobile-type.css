@@ -131,4 +131,5 @@
   body{word-break:keep-all;overflow-wrap:break-word}
   :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note){text-wrap:pretty}
   #all-sources,.citation,.foot-ops a{overflow-wrap:anywhere}
+  .i18n-ko{font-size:13px} /* 영어 화면의 한국어 원문 꼬리표(theme.css 12px) */
 }

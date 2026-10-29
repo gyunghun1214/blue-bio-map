@@ -5,11 +5,20 @@
   "observability": {
     "enabled": true
   },
-  // Static site only: every file in dist/ is served as-is. No Worker script
-  // (the guide chatbot answers only from its fixed FAQ; the Workers AI /api/ask route was removed 2026-10-15).
+  // dist/ is served as-is. Only /api/* runs the Worker (the guide helper's AI answer, worker/index.mjs, added back 2026-10-29).
+  "main": "worker/index.mjs",
   "assets": {
-    "directory": "dist"
+    "directory": "dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
   },
+  // Claude Haiku 5.5 through the Anthropic API. The key is only the Worker secret ANTHROPIC_API_KEY (Cloudflare dashboard →
+  // blue-bio-map → Settings → Variables and Secrets), never in this repo. Without it /api/ask says ai:false and the chat keeps its fixed answers.
+  // 5 questions per IP per minute, and 30 per minute in total as a cost ceiling.
+  "ratelimits": [
+    { "name": "ASK_IP_LIMIT", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+    { "name": "ASK_ALL_LIMIT", "namespace_id": "1002", "simple": { "limit": 30, "period": 60 } }
+  ],
   // Explicit opt-in required by Workers Builds for non-production branches.
   "previews": {},
   // Public URL: https://blue-bio-map.blue-bio-map.workers.dev

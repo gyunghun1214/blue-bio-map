@@ -275,7 +275,7 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 @media (max-width:760px){
   /* 3: 본 화면(mobile-type.css)처럼 휴대폰 글씨는 13px 이상. var(--fs-min)을 쓰는 글(꼬리표·점수 설명·영양소 등)과 따로 12px·12.5px를 준 글. */
   :root{--fs-min:13px}
-  .x-nav>*,.x-lang button,.x-route-note,.x-step-label,.x-type,.x-axis,.x-axis em,.x-val small,.x-fine,.x-kicker,.x-list span,.x-list button span,.x-list h3,.x-intro-note,.x-list em,.x-howto kbd,.x-detail h3 small,.x-nutrients span{font-size:13px}
+  .x-nav>*,.x-lang button,.x-route-note,.x-step-label,.x-type,.x-axis,.x-axis em,.x-val small,.x-fine,.x-kicker,.x-list span,.x-list button span,.x-list h3,.x-intro-note,.x-list em,.x-howto kbd,.x-detail h3 small,.x-nutrients span,.i18n-ko{font-size:13px}
   /* 4: 한국어 낱말이 중간에서 끊겼다('관/측 기록', '생리/활성') */
   body{word-break:keep-all;overflow-wrap:break-word}
   :is(p,li,dd,small,h3){text-wrap:pretty}
