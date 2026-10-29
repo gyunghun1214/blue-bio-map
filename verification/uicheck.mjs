@@ -204,7 +204,7 @@ try{
         {now:true,k:'지금',t:`한반도 주변 ${total}종 공개`,tag:''},
         {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'목표 2027 상반기'},
         {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'목표 2027 하반기'},
-        {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'목표 2028'}])&&next.steps.every(s=>s.box[0]>=0&&s.box[1]<=next.vw),JSON.stringify(next));
+        {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 흩어진 자료의 연계(표준화) 서비스',tag:'목표 2028'}])&&next.steps.every(s=>s.box[0]>=0&&s.box[1]<=next.vw),JSON.stringify(next));
     await shot('gate-uses-desktop',false);
     await evaluate("document.querySelector('#site-gate .gate-hero').scrollTop=0;document.getElementById('gate-enter').focus();1");await sleep(500);
     await pressEnter();await sleep(1100);

@@ -579,7 +579,7 @@ assert.match(read('intro.css'),/\.gate-problems li:only-child:before\{content:no
 // challenges line under the kicker was taken off the first screen on 2026-10-26 (LKH)
 assert.ok(gateHtml.includes('<p class="gate-kicker">한반도 주변 바다의 해양생물 근거 지도</p><h1 class="gate-title">'));
 assert.ok(!gateHtml.includes('gate-task')&&!gateHtml.includes('해양 10대 과제'),'no contest challenges line on the first screen');
-assert.match(why,/<p class="gate-lead">[^]*?<\/p><p class="gate-connect"><span class="gate-connect-lead">흩어진 자료를 잇고, 오늘의 이용과 다음 세대의 바다를 잇는 지도 · <\/span>2026 세계해양포럼 대주제 「해양, 잇다」 · UN Ocean Decade ‘과학 기반 정책 연계’<\/p><\/div>$/);
+assert.match(why,/<p class="gate-lead">[^]*?<\/p><p class="gate-connect"><span class="gate-connect-lead">흩어진 자료를 이어 이용과 보전을 함께 보는 지도 · <\/span>2026 세계해양포럼 대주제 「해양, 잇다」 · UN Ocean Decade ‘과학 기반 정책 연계’<\/p><\/div>$/);
 assert.match(html,/<p class="fine mt-context">첫 화면의 대회 주제 연결: Ocean 20 Challenge 모집공고 첨부 1 「우리가 풀어갈 해양 10대 과제」[^<]*<a href="https:\/\/v\.daum\.net\/v\/20260304182211655" target="_blank" rel="noopener">부산일보 2026-03-04 보도 ↗<\/a>\)\.<\/p>/);
 // 2026-10-19 (LKH, prompt 7/10): the count is named '근거 출처'; the method tab's list says how it relates to its own total,
 // counting with the same uses as evidenceSourceCount. Since 2026-10-21 (prompt 11) it heads the way into that list, hidden and
@@ -657,7 +657,7 @@ assert.deepEqual(steps,[
   {now:true,k:'지금',t:'한반도 주변 N종 공개'},
   {now:false,k:'종·해역 확대',t:'같은 속 후보 종으로 확대 · 동아시아 연해로 해역 확대',tag:'목표 2027 상반기'},
   {now:false,k:'기관 연계',t:'국가 조사·평가 자료와 연결해 갱신 · 해양보호구역 논의 자료',tag:'목표 2027 하반기'},
-  {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 자료 연계(표준화) 서비스 · 흩어진 자료를 잇는 연결이 핵심',tag:'목표 2028'}],'지금 as it is, each planned step tagged with its target');
+  {now:false,k:'서비스',t:'기관·기업 맞춤 분석과 흩어진 자료의 연계(표준화) 서비스',tag:'목표 2028'}],'지금 as it is, each planned step tagged with its target');
 assert.match(browser,/if\(total\)for\(const b of el\.querySelectorAll\('\.gate-total'\)\)b\.textContent=String\(total\);/,'the species total fills the solution line and 지금 alike');
 const nextText=nextHtml.replace(/<b class="gate-total">\d+<\/b>/,'').replace(/<p class="gate-next-tag">목표 20\d\d(?: [상하]반기)?<\/p>/g,'').replace(/<[^>]+>/g,' ');
 assert.ok(!/\d/.test(nextText),'no number typed into the steps but the targets in the tags');
