@@ -271,3 +271,38 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
   .x-route-note{left:max(16px,env(safe-area-inset-left,0px))}
   .x-steer{bottom:calc(10px + env(safe-area-inset-bottom,0px))}
 }
+/* 2026-10-29 휴대폰 다시 점검 2·3·4·8 (verification/2026-10-29-mobile-recheck). 휴대폰 폭에서만: PC 화면은 그대로다. */
+@media (max-width:760px){
+  /* 3: 본 화면(mobile-type.css)처럼 휴대폰 글씨는 13px 이상. var(--fs-min)을 쓰는 글(꼬리표·점수 설명·영양소 등)과 따로 12px·12.5px를 준 글. */
+  :root{--fs-min:13px}
+  .x-nav>*,.x-lang button,.x-route-note,.x-step-label,.x-type,.x-axis,.x-axis em,.x-val small,.x-fine,.x-kicker,.x-list span,.x-list button span,.x-list h3,.x-intro-note,.x-list em,.x-howto kbd,.x-detail h3 small,.x-nutrients span,.i18n-ko{font-size:13px}
+  /* 4: 한국어 낱말이 중간에서 끊겼다('관/측 기록', '생리/활성') */
+  body{word-break:keep-all;overflow-wrap:break-word}
+  :is(p,li,dd,small,h3){text-wrap:pretty}
+  /* 2: 머리글 메뉴가 두 줄(영어 360px은 세 줄)로 접혀 작은 제목·'탐험 연출 항로'와 겹치고, 지점 목록 창이 둘째 줄 단추를 가렸다.
+     한 줄로 두고 넘치는 메뉴는 옆으로 밀어 본다(오른쪽 끝이 흐려져 더 있다는 표시). 언어 단추는 앞에 둔다. */
+  .x-bar{align-items:center}
+  .x-brand{flex:none}
+  .x-nav{flex:1 1 auto;min-width:0;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+    padding:6px 24px 6px 2px;margin:-6px 0;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .x-nav::-webkit-scrollbar{display:none}
+  .x-nav>*{flex:none;white-space:nowrap}
+  .x-nav{gap:6px;padding-right:16px}
+  .x-nav>*{padding:6px 9px}
+  /* 언어 단추는 영어 화면처럼 지금 언어는 숨기고 다른 언어 하나만 둔다(한국어 화면은 'EN'만) */
+  .x-lang button[aria-pressed="true"]{display:none}
+  .x-dl dd,.x-detail a{word-break:keep-all;overflow-wrap:anywhere}
+  .x-progress{top:64px}
+  .x-route-note{top:88px}
+  .x-list{top:60px}
+  /* 8: 지점 카드가 아래 막대 위에서 잘려 카드 안에서 따로 스크롤됐고(390px: 660px 중 437px), MFPI 점수 숫자가 첫 화면에 나오지 않았다.
+     카드를 조금 더 키우고, 칸의 범위 설명(위경도·집계 기준 한 줄)은 상세에도 있으니 휴대폰 카드에서는 뺀다. */
+  .x-stop{max-height:60vh;max-height:60dvh}
+  .x-stop .x-r[data-r="1"] .x-fine{display:none}
+  .x-toast{bottom:calc(60vh + 76px)}
+  /* 첫 화면 글이 화면보다 길면(영어 360) 아래에 붙인 글의 윗부분이 머리 밑으로 밀려 닿지 않았다. 위에서부터 쌓되 짧으면
+     아래에 붙도록 첫 줄에 auto 여백을 두고, 길면 첫 화면 안에서 스크롤한다. 스크롤한 글은 머리 밑에서 흐려진다(가로 화면과 같은 방식). */
+  .x-intro{justify-content:flex-start;overflow-y:auto;overscroll-behavior:contain;padding-top:124px;
+    -webkit-mask-image:linear-gradient(transparent 108px,#000 124px);mask-image:linear-gradient(transparent 108px,#000 124px)}
+  .x-intro>:first-child{margin-top:auto}
+}

@@ -89,3 +89,66 @@
   mq.addEventListener?.('change',()=>{if(!phone())closeGuide(false);syncFolds();syncOpeners();});
   syncFolds();syncOpeners();
 })();
+// 2026-10-29 휴대폰 다시 점검 6·7 (verification/2026-10-29-mobile-recheck). 손가락 기기(pointer:coarse)에서만: 마우스 PC는 그대로다.
+// (3) 멍이 비켜 앉기: 스크롤이 멈추면(안쪽 칸 스크롤 포함) 멍이 버튼 밑에 다른 단추·링크·접는 제목이 있는지 보고, 있으면 그것이 드러날
+//     만큼 56px씩 위로 비켜 앉는다(단추 가운데를 덮거나 40% 넘게 덮을 때만)(meongi.css의 translate: --bbc-dodge, 머리글 밑으로는 가지 않는다). 대화창이 열렸거나 끄는 중이면
+//     그대로 둔다. 데이터 표 카드의 펼침 단추·종 카드·페이지 끝 '의견 보내기'를 덮던 것.
+// (4) 지도 지명 정리: 나라·바다 이름(.geo-label·.sea-label)이 버블·셀·지도 위 단추와 겹치거나 지도 가장자리에서 잘리면 그 이름만
+//     숨긴다. 지도가 움직이거나 줌할 때마다 다시 잰다('대한민국'이 버블 밑, '일본'이 전체화면 단추 밑에 깔리던 것).
+(()=>{
+  if(!matchMedia('(pointer:coarse)').matches)return;
+  const over=(a,b,m)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>m&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>m;
+  const shown=e=>{if(!e.getClientRects().length)return false;const s=getComputedStyle(e);return s.visibility!=='hidden'&&+s.opacity>.05;};
+  // ---- (3) 멍이 비켜 앉기
+  const CTRL='button,a[href],summary,input,select,textarea,[role=button]';
+  let dodgeT=0;
+  function dodge(){
+    const fab=document.querySelector('.bbc-fab'),root=fab?.closest('.bbc');
+    if(!fab||!root||!shown(fab)||root.classList.contains('bbc-dragging')||fab.getAttribute('aria-expanded')==='true')return;
+    const cur=parseFloat(root.style.getPropertyValue('--bbc-dodge'))||0,r=fab.getBoundingClientRect();
+    const base={left:r.left,right:r.right,top:r.top-cur,bottom:r.bottom-cur};
+    const head=document.querySelector('.header,.x-bar')?.getBoundingClientRect().bottom||0;
+    const ctrls=[...document.querySelectorAll(CTRL)].filter(e=>!root.contains(e)&&!e.closest('.tabs,#site-gate,.leaflet-control-attribution'))
+      .map(e=>e.getBoundingClientRect()).filter(b=>b.width>0&&b.bottom>head&&b.top<innerHeight);
+    let pick=0;
+    for(let d=0;d>=-224;d-=56){
+      const c={left:base.left,right:base.right,top:base.top+d,bottom:base.bottom+d};
+      if(c.top<head+8)break;
+      // 단추 가운데를 덮거나 단추의 40% 넘게 덮을 때만 비킨다(카드처럼 큰 단추의 가장자리에 걸친 정도로는 움직이지 않는다)
+      const blocks=b=>{const cx=(b.left+b.right)/2,cy=(b.top+b.bottom)/2;if(cx>c.left-4&&cx<c.right+4&&cy>c.top-4&&cy<c.bottom+4)return true;
+        const w=Math.min(b.right,c.right)-Math.max(b.left,c.left),h=Math.min(b.bottom,c.bottom)-Math.max(b.top,c.top);return w>0&&h>0&&w*h>.4*b.width*b.height;};
+      if(!ctrls.some(blocks)){pick=d;break;}
+    }
+    if(pick!==cur)root.style.setProperty('--bbc-dodge',pick+'px');
+  }
+  const later=()=>{clearTimeout(dodgeT);dodgeT=setTimeout(dodge,450);};
+  addEventListener('scroll',later,{capture:true,passive:true});
+  addEventListener('resize',later);
+  document.addEventListener('click',()=>setTimeout(later,60),true);
+  setTimeout(dodge,2500);
+  // ---- (4) 지도 지명 정리
+  let tidyT=0,watched=null;
+  function tidy(){
+    const m=document.getElementById('map');if(!m)return;
+    const labs=[...m.querySelectorAll('.geo-label,.sea-label')];if(!labs.length)return;
+    for(const l of labs)l.style.visibility='';
+    const mr=m.getBoundingClientRect(),area=mr.width*mr.height;
+    const stage=m.closest('.map-stage')||m.parentElement;
+    const obs=[...m.querySelectorAll('path.leaflet-interactive,.leaflet-marker-icon:not(.geo-label):not(.sea-label)'),
+      ...stage.querySelectorAll('button,select,.leaflet-control,.map-chip')].filter(shown)
+      .map(e=>e.getBoundingClientRect()).filter(b=>b.width>0&&b.width*b.height<area*.4);
+    const kept=[];
+    for(const l of labs.sort((a,b)=>a.classList.contains('sea-label')-b.classList.contains('sea-label'))){
+      const g=document.createRange();g.selectNodeContents(l);const t=g.getBoundingClientRect();
+      if(!t.width)continue;
+      const out=t.left<mr.left||t.right>mr.right||t.top<mr.top||t.bottom>mr.bottom;
+      if(out||obs.some(b=>over(b,t,2))||kept.some(b=>over(b,t,1)))l.style.visibility='hidden';else kept.push(t);
+    }
+  }
+  const tidyLater=list=>{if(list&&list.every(x=>x.target.classList?.contains('geo-label')||x.target.classList?.contains('sea-label')))return;
+    clearTimeout(tidyT);tidyT=setTimeout(tidy,180);};
+  const watch=()=>{const m=document.getElementById('map');if(!m||watched===m)return;watched=m;
+    new MutationObserver(tidyLater).observe(m,{subtree:true,childList:true,attributes:true,attributeFilter:['style','d','class']});tidyLater();};
+  watch();addEventListener('resize',()=>tidyLater());document.addEventListener('click',()=>{watch();tidyLater();},true);
+  setTimeout(()=>{watch();tidyLater();},3000);
+})();

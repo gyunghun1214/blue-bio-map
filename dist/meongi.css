@@ -37,3 +37,6 @@
   .bbc:not(.bbc-moved) .bbc-hint{bottom:calc(12px + var(--bbc-bar,0px) + 56px + 8px)}
   #compare .cmp-tray{right:80px}
 }
+/* 2026-10-29 휴대폰 다시 점검 6: 손가락 기기에서 스크롤이 멈추면 멍이 밑에 단추·링크가 있는지 보고, 있으면 위로 비켜 앉는다
+   (mobile-compact.js가 .bbc에 --bbc-dodge를 준다). transform(흐려질 때 0.85배)과 따로 움직이도록 translate를 쓴다. */
+.bbc-fab{translate:0 var(--bbc-dodge,0px)}
