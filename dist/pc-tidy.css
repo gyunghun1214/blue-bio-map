@@ -23,7 +23,7 @@
    휴대폰(mobile-type.css)과 같은 낱말 단위 줄바꿈을 넓은 화면에도 준다. 칸보다 긴 낱말·주소는 칸 끝에서만 꺾는다. */
 @media (min-width:741px){
   body{word-break:keep-all;overflow-wrap:break-word}
-  :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note):not(#site-gate *){text-wrap:pretty}  /* 첫 화면은 intro.css 그대로 */
+  :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note):not(#site-gate *){text-wrap-style:pretty}  /* 첫 화면은 intro.css 그대로. text-wrap 줄임말은 nowrap까지 풀어 버리므로 style만 */
   #all-sources,.citation,.foot-ops a,.mt-ck-rec a{overflow-wrap:anywhere}
 }
 

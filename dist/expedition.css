@@ -312,7 +312,7 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
   :root{--fs-min:13px}
   .x-nav>*,.x-lang button,.x-route-note,.x-step-label,.x-type,.x-axis,.x-axis em,.x-val small,.x-fine,.x-kicker,.x-list span,.x-list button span,.x-list h3,.x-intro-note,.x-list em,.x-howto kbd,.x-detail h3 small,.x-nutrients span,.x-obs small,.moved-link,.x-brand span,.i18n-ko{font-size:13px}
   body{word-break:keep-all;overflow-wrap:break-word}
-  :is(p,li,dd,small,h3){text-wrap:pretty}
+  :is(p,li,dd,small,h3){text-wrap-style:pretty}
   .x-dl dd,.x-detail a,.x-src,.x-cites{overflow-wrap:anywhere}
 }
 /* M4: 가로로 든 휴대폰에서 첫 화면 안내 글이 길어 왼쪽 아래 '탐험 연출 항로' 칩과 겹쳤다. 같은 말('항로와 배는 탐험 연출입니다')이 안내 글에 있으니
