@@ -1713,3 +1713,17 @@ html.lang-en .gloss-paren{margin-left:.3em} /* 'LC (Least Concern)': English put
 }
 /* 영어 화면 상세 머리: 일반명 출처 줄(Common name: …)은 아이콘 칸이 아니라 머리 전체 폭에 */
 html.lang-en #explore .detail-head>p.fine{grid-column:1/-1;margin:8px 0 0}
+/* 2026-10-30 LKH 휴대폰 점검 5: '바다 정화 활동'이 칸 끝 작은 한 줄이라 참고 자료로만 보였다. '지금 금어기' 바로 아래 강조 카드와 큰 단추 둘,
+   종 상세의 '바다 지키기' 단추와 접는 칸 제목도 강조색으로 (verification/2026-10-30-mobile-eight/README.md) */
+.sea-clean{margin:4px 0 16px;padding:16px;border:1.5px solid var(--teal);border-radius:14px;background:linear-gradient(135deg,rgba(68,215,192,.16),rgba(68,215,192,.04))}
+.sea-clean h3{margin:0 0 4px;color:var(--teal-ink);font-size:18px;font-weight:800;line-height:1.3}
+.sea-clean>p{margin:0 0 12px;color:var(--ink);font-size:14px;line-height:1.55}
+.sea-clean-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.sea-clean-btn{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:56px;padding:10px 14px;border-radius:10px;background:var(--teal);color:#fff;text-decoration:none;line-height:1.35}
+.sea-clean-btn b{font-size:16px;font-weight:800}
+.sea-clean-btn span{font-size:13px;font-weight:600;opacity:.85}
+.sea-clean-btn:hover{filter:brightness(1.08)}
+#explore .sea-clean-btn,#explore .sea-clean-btn:visited{color:#04121e}
+.sea-clean-btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.detail-pane .detail-more.sea-care-fold>summary{color:var(--teal-ink);font-weight:800}
+.detail-act[data-sea-care],#explore .detail-act[data-sea-care],#explore .sp-actions .detail-act[data-sea-care]{border-color:var(--teal);background:rgba(68,215,192,.14);color:var(--teal-ink)}

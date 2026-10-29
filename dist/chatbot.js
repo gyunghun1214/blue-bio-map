@@ -604,7 +604,10 @@ if(typeof document!=='undefined')(function(){
     if(now){fab.style.transition='none';fab.classList.remove('is-scrolling');void fab.offsetWidth;fab.style.transition='';}
     else fab.classList.remove('is-scrolling');
   }
+  // 2026-10-30 (LKH 휴대폰 점검 1: 스크롤할 때 흐려지고 같이 움직여 보임): 손가락 기기·휴대폰 폭에서는 흐려지지 않고 그 자리에 그대로 있는다(PC만 흐려진다)
+  const touchy=()=>phone()||matchMedia('(pointer:coarse)').matches;
   function fade(){
+    if(touchy())return;
     clearTimeout(fadeTimer);fadeTimer=setTimeout(unfade,FADE_MS);
     if(fadeFrame||faded())return;
     fadeFrame=requestAnimationFrame(()=>{

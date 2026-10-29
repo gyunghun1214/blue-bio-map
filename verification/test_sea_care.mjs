@@ -63,7 +63,8 @@ for(const [id,name] of ours){
   assert.equal(h.includes('이 종의 보호 기준'),ids.includes(id),`${name}: rules paragraph only with rules`);
   if(ids.includes(id))assert.ok(h.includes(X.SEA_RULES_URL),`${name}: source link`);
   assert.equal(h.includes(X.INAT_UPLOAD),!wide.has(id),`${name}: observation link only for species published at 1°`);
-  assert.match(h,/바다 정화 활동 · <a href="https:\/\/www\.caresea\.kr\/"[^>]*>반려해변 ↗<\/a> · <a href="https:\/\/www\.1365\.go\.kr\/"[^>]*>1365 자원봉사포털 ↗<\/a><\/p><\/div>$/,`${name}: the outside activities as one last line`);
+  // 2026-10-30 (LKH 휴대폰 점검 5): the clean-up activities are a highlighted card with two buttons right under '지금 금어기', not a last line
+  assert.match(h,/^<div class="sea-care">(<p class="sea-now">.*?<\/p>)?<section class="sea-clean"><h3>바다 정화 활동에 함께하기<\/h3><p>[^<]+<\/p><div class="sea-clean-acts"><a class="sea-clean-btn" href="https:\/\/www\.caresea\.kr\/" target="_blank" rel="noopener"><b>반려해변 ↗<\/b><span>[^<]+<\/span><\/a><a class="sea-clean-btn" href="https:\/\/www\.1365\.go\.kr\/" target="_blank" rel="noopener"><b>1365 자원봉사포털 ↗<\/b><span>[^<]+<\/span><\/a><\/div><\/section>/,`${name}: the clean-up card first (after 지금 금어기)`);
   // no weakness words, no claims of effect or of a tie-in that does not exist
   for(const w of ['없음','없습니다','준비 중','미연결','연결하지','보호 기준 없','지킵니다','늘어','효과','바로 신청','연계'])assert.ok(!h.includes(w),`${name}: '${w}' on screen`);
 }
@@ -71,8 +72,9 @@ assert.ok(!X.seaCare({aphiaID:836033,cells:[{sizeDeg:1}],info:{map:{status:'held
 
 // (4) outside links: new tab, noopener, links only (no outside fetch/img, so dist/_headers stays as it is)
 const h=X.seaCare({aphiaID:1061762,cells:[{sizeDeg:1}]},new Date('2026-07-01T03:00:00Z'));
-const hosts=[...h.matchAll(/<a href="(https:[^"]+)" target="_blank" rel="noopener">/g)].map(m=>new URL(m[1]).origin);
-assert.equal(hosts.join(' '),'https://www.mof.go.kr https://www.inaturalist.org https://www.caresea.kr https://www.1365.go.kr');
+const hosts=[...h.matchAll(/<a (?:class="[^"]+" )?href="(https:[^"]+)" target="_blank" rel="noopener">/g)].map(m=>new URL(m[1]).origin);
+assert.equal(hosts.join(' '),'https://www.caresea.kr https://www.1365.go.kr https://www.mof.go.kr https://www.inaturalist.org');
+assert.equal((h.match(/<a /g)||[]).length,4,'every link opens in a new tab with noopener');
 for(const o of ['caresea','1365','inaturalist'])assert.ok(!read('_headers').includes(o),'links only: the CSP needs no new host');
 assert.ok(!/fetch\([^)]*(caresea|1365)/.test(app+exp),'nothing is fetched from the outside sites');
 assert.match(app,/class="detail-act" data-sea-care>/,'the 바다 지키기 button');
