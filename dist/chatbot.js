@@ -1,6 +1,8 @@
 'use strict';
-// 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답만 한다. AI나 서버는 쓰지 않는다.
-// 2026-10-15까지 FAQ가 못 찾은 질문을 보내던 /api/ask(Workers AI)는 지웠고, 이제는 '아래 탭에서 직접 찾아보거나…' 안내와 세 탭 바로가기를 보인다.
+// 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 먼저 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답을 한다.
+// 2026-10-29: FAQ가 못 찾은 질문만 /api/ask(worker/index.mjs, Claude Haiku 5.5)에 보내 화면 글과 FAQ만 근거로 짧게 답한다('AI 답변' 표시).
+// 종의 점수·근거 같은 값은 AI가 말하지 않고 FAQ 자리표시(chatbotFact)로만 나온다. AI를 쓸 수 없으면(키 없음·정적 서버·오프라인 시연·오류·
+// 한도 초과·답 검사 탈락) '아래 탭에서 직접 찾아보거나…' 안내와 세 탭 바로가기를 보인다.
 // 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
 // 화면 이동은 상태를 직접 바꾸지 않고 기존 버튼을 .click()해서 앱의 처리 로직을 그대로 탄다.
 // app.js와 같은 전역 렉시컬 범위를 쓰므로 최상위 이름은 모두 CHATBOT_/chatbot 접두어를 붙인다.
@@ -505,6 +507,31 @@ if(typeof document!=='undefined')(function(){
     const row=m.closest('.bbc-row')||m;
     log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
+  // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 입력창 위 표기를 바꾼다.
+  // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
+  const noteEl=root.querySelector('.bbc-note'),NOTE_FIXED=noteEl.textContent;
+  let aiReady=Promise.resolve(false);
+  function checkAi(){
+    const note=on=>{if(on||noteEl.dataset.ai){noteEl.textContent=on?chatbotT('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'):NOTE_FIXED;noteEl.dataset.ai=on?'1':'';}};
+    if(globalThis.BBVM_OFFLINE===true){aiReady=Promise.resolve(false);note(false);return;}
+    aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
+    aiReady.then(note);
+  }
+  // FAQ가 못 찾은 질문만 AI에 묻는다. 답이 없거나 실패하면 unknown()으로 돌아간다.
+  async function askAi(text){
+    if(globalThis.BBVM_OFFLINE===true||!(await aiReady))return unknown();
+    const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');log.scrollTop=log.scrollHeight;
+    let reply=null;
+    try{
+      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko'}),signal:AbortSignal.timeout(15000)});
+      if(r.ok)reply=(await r.json())?.answer;
+    }catch{}
+    wait.closest('.bbc-row')?.remove();
+    if(typeof reply!=='string'||!reply.trim())return unknown();
+    const m=add('bbc-bot bbc-ai',reply.trim(),'ai');
+    const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent=chatbotT('AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요');m.append(tag);
+    log.scrollTop=log.scrollHeight;
+  }
   // FAQ가 못 찾은 질문: 탭에서 찾아보라는 안내와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
   function unknown(){
     add('bbc-bot','아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.','unknown');
@@ -522,12 +549,12 @@ if(typeof document!=='undefined')(function(){
   function ask(text,id){
     add('bbc-user',text);
     const f=id?byId(id):chatbotMatch(text);
-    if(f)answer(f);else unknown();
+    if(f)answer(f);else if(id)unknown();else askAi(text);
   }
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
     dismissHint();unfade();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다');fabFace(true);
-    if(!log.childElementCount){add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
+    if(!log.childElementCount){checkAi();add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
     place();
     // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
     // 추천 질문 묶음의 첫 단추(없으면 닫기)로 포커스를 옮기고, 입력칸은 사람이 누를 때 키보드가 뜬다. 넓은 화면은 그대로 입력칸.

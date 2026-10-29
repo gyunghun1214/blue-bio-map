@@ -107,7 +107,7 @@ try{
   const reply=await evaluate(`(async()=>{document.querySelector('.bbc-fab').click();await new Promise(r=>setTimeout(r,300));
     const i=document.querySelector('.bbc-input');i.value='오늘 부산 날씨와 환율 알려줘';document.querySelector('.bbc-form').requestSubmit();
     await new Promise(r=>setTimeout(r,500));return [...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1)?.textContent||'';})()`);
-  check('O-7 chatbot: a question the FAQ cannot match gets the fixed no-answer note, no server request',reply.startsWith('아래 탭에서 직접 찾아보거나')&&!localPaths.some(p=>p.startsWith('/api/')),reply);
+  check('O-7 chatbot: a question the FAQ cannot match gets the fixed no-answer note, no server request (the AI answer at /api/ask is never asked offline)',reply.startsWith('아래 탭에서 직접 찾아보거나')&&!localPaths.some(p=>p.startsWith('/api/')),reply);
 
   // ---------- 3. The address again without the flag: still offline in this tab; tiles present ----------
   fakeTiles=true;localPaths.length=0;
