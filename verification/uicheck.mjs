@@ -1820,11 +1820,13 @@ try{
     check('M-6 phone 390px: 멍이 is 56px; a finger drag moves 멍이 to the nearer side edge without scrolling the page, a tap opens the bottom sheet, no horizontal overflow',
       !m.moved&&m.right===16&&m.w===56&&t.moved&&!t.open&&t.x===16&&t.y===300-28&&t.scrollY===m.scrollY&&JSON.parse(t.stored).side==='left'&&
       tap.open&&tap.panel.l===0&&tap.panel.r===tap.vw&&Math.abs(tap.panel.b-tap.vh)<=1&&tap.doc<=tap.vw,JSON.stringify({m,t,tap}));
-    // 2026-10-26 (verification/2026-10-26-meongi-bigger-draggable, was 2026-10-25's tuck to the edge): while the page scrolls 멍이 stays in its place,
-    // dims to .35 and shrinks to 0.85 toward its edge (.is-scrolling); a tap on it still opens the chat at once; 0.4 s after the scrolling stops it is back.
+    // 2026-10-26 (verification/2026-10-26-meongi-bigger-draggable, was 2026-10-25's tuck to the edge): while the page scrolls 멍이 stayed in its place,
+    // dimmed to .35 and shrank to 0.85 toward its edge (.is-scrolling). 2026-10-30 (verification/2026-10-30-mobile-eight, LKH: on the phone it dimmed and
+    // seemed to move with the page): on a touch phone 멍이 no longer dims, shrinks or moves aside while or after scrolling; a tap still opens the chat.
     await evaluate("document.querySelector('.bbc-close').click();document.activeElement.blur();document.querySelector('.bbc-reset').click();document.activeElement.blur();window.scrollTo(0,0);1");await sleep(1100);
     const fadeState=()=>evaluate(`(()=>{const f=document.querySelector('.bbc-fab'),d=document.documentElement,cs=getComputedStyle(f);return {fading:f.classList.contains('is-scrolling'),
-      left:cs.left,top:cs.top,right:Math.round(d.clientWidth-f.getBoundingClientRect().right),opacity:+cs.opacity,open:!document.querySelector('.bbc-panel').hidden,doc:d.scrollWidth,vw:d.clientWidth}})()`);
+      left:cs.left,top:cs.top,right:Math.round(d.clientWidth-f.getBoundingClientRect().right),opacity:+cs.opacity,open:!document.querySelector('.bbc-panel').hidden,doc:d.scrollWidth,vw:d.clientWidth,
+      dodge:parseFloat(f.closest('.bbc').style.getPropertyValue('--bbc-dodge'))||0}})()`);
     const fd0=await fadeState();
     await evaluate("window.scrollBy(0,300);1");await sleep(250);
     const fd=await fadeState();
@@ -1834,8 +1836,8 @@ try{
     await evaluate("window.scrollBy(0,200);1");await sleep(900);
     const fdBack=await fadeState();
     await shot('mascot-mobile-faded',false);
-    check('M-6b phone 390px: scrolling dims 멍이 in place (same left/top, right edge kept, no horizontal overflow); a tap on it opens the chat at once; it is back 0.4 s after scrolling stops',
-      fd.fading&&Math.abs(fd.opacity-.35)<.05&&fd.left===fd0.left&&fd.top===fd0.top&&fd.right===16&&fd.doc<=fd.vw&&fdTap.open&&!fdTapF.fading&&!fdBack.fading&&fdBack.opacity===1&&fdBack.left===fd0.left&&fdBack.top===fd0.top,JSON.stringify({fd0,fd,fdTap:fdTap.open,fdBack}));
+    check('M-6b phone 390px: scrolling leaves 멍이 as it is (not dimmed, same left/top, right edge kept, no horizontal overflow, no move aside after the scroll); a tap on it opens the chat at once',
+      !fd.fading&&fd.opacity===1&&fd.left===fd0.left&&fd.top===fd0.top&&fd.right===16&&fd.doc<=fd.vw&&fdTap.open&&!fdTapF.fading&&!fdBack.fading&&fdBack.opacity===1&&fdBack.left===fd0.left&&fdBack.top===fd0.top&&fdBack.dodge===0,JSON.stringify({fd0,fd,fdTap:fdTap.open,fdBack}));
     await evaluate("document.querySelector('.bbc-close').click();localStorage.removeItem('bbMeongiPos');window.scrollTo(0,0);1");
     await send('Emulation.setTouchEmulationEnabled',{enabled:false});
 
