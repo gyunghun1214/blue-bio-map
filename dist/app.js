@@ -1647,7 +1647,7 @@ function verifiedBioTrace(s){
     `<p class="fine">집계: 코호트 안 조정값 중 ${cfg.primary_aggregation==='max'?'최댓값':escL(cfg.primary_aggregation||'미기재')} · 민감도 ${escL((cfg.sensitivity_aggregations||[]).join('·')||'미기재')}${a.sensitivity?.range_from_aggregation?' 범위 '+escL(a.sensitivity.range_from_aggregation.join('–')):''}</p>`+
     `<p class="fine">읽는 법: 백분위는 ${scope} ${chemblLimit}이 생물에서 나온 물질의 ${antiRule?'암세포주 증식 억제 농도(IC50)':ampRule?'세균 배양 억제 농도(MIC)':ch?'시험관·세포·병원체 시험값':'세포 밖(효소) 시험값'}입니다.</p>`+
     (xoRule?`<p class="fine">비교집단 출처: ${verifiedSource(xoRule.cohort_source_id,(data.assessmentInfo?.sources?.[xoRule.cohort_source_id]?.provider)||'문헌 비교집단')}</p>`+(best.cohort_members?.length?`<details class="fine"><summary>비교집단 회원 ${best.cohort_members.length}개 보기(서열 · IC50 µM · DOI)</summary><p lang="en">${best.cohort_members.map(m=>escL(m.sequence)+' '+escL(m.ic50_uM)+' · '+m.dois.map(doiLink).join(', ')).join('<br>')}</p></details>`:''):'')+
-    (rxBest?`<p class="fine">비교집단 출처: ${verifiedSource(rxBest.cohort_source_id,(data.assessmentInfo?.sources?.[rxBest.cohort_source_id]?.provider)||'ChEMBL')} · 활동 ID 전체와 pChEMBL 값은 공개 스냅숏에 있고, 이 화면은 함께 실린 pChEMBL ${escL(best.cohort_records)}건으로 백분위를 다시 계산해 검사합니다.</p>`+((best.other_targets||[]).length?`<p class="fine">다른 표적: ${best.other_targets.map(t=>escL(`${t.target_name} ${t.standard_type} ${num(t.value)} ${t.unit} · 백분위 ${t.percentile} (기록 ${t.cohort_records}건)`)).join(' / ')} — 백분위가 가장 높은 표적 하나만 점수에 씁니다.</p>`:''):'')+
+    (rxBest?`<p class="fine">비교집단 출처: ${verifiedSource(rxBest.cohort_source_id,(data.assessmentInfo?.sources?.[rxBest.cohort_source_id]?.provider)||'ChEMBL')} · 활동 ID 전체와 pChEMBL 값은 공개 스냅숏에 있고, 이 화면은 함께 실린 pChEMBL ${escL(best.cohort_records)}건으로 백분위를 다시 계산해 검사합니다.</p>`+((best.other_targets||[]).length?`<p class="fine">다른 표적: ${best.other_targets.map(t=>escL(`${t.target_name} ${t.standard_type} ${num(t.value)} ${t.unit} · 백분위 ${t.percentile} (기록 ${t.cohort_records}건)`)).join(' / ')}. 백분위가 가장 높은 표적 하나만 점수에 씁니다.</p>`:''):'')+
     (ampRule?`<p class="fine">비교집단 출처: ${verifiedSource(ampRule.cohort_source_id||'dbaasp_amp',(data.assessmentInfo?.sources?.[ampRule.cohort_source_id||'dbaasp_amp']?.provider)||'DBAASP')}</p>`:'')+
     (ch&&rule3?`<p class="fine">출처: ${rule3.source_ids.map(id=>{const src=data.assessmentInfo?.sources?.[id];return `${verifiedSource(id,(src?.provider||id)+' ↗')} (${orig(src?.license||'—')}, 조회 ${escL(src?.accessed||'미기재')})`;}).join(' · ')} · ID와 값만 저장했습니다.</p>`:'')+
     (pep?`<p class="fine">비교집단 출처: ${verifiedSource(pep.cohort_source_id,(pepSrc?.provider||'AHTPDB')+' ↗')} · ${`<span${enAttr(esc(pepSrc?.citation||'인용 미기재'))}>${escL(pepSrc?.citation||'인용 미기재')}</span>`} · 이용조건 ${orig(pepSrc?.license||'—')} · 행 ID와 IC50 값만 써서 백분위로 가공했습니다.</p>`:'');
@@ -1713,7 +1713,7 @@ function verifiedNationalFactBody(s){
       `<p class="fine">IUCN·한국 국가·서식국 국가·지방 목록 어디에도 이 종의 점수가 되는 범주가 없어 쓰는 마지막 근거입니다(방법 결정 2026-10-05).${r.official_unscored?.length?' 이름은 있지만 점수 범주가 아닌 공식 목록 기록은 아래에 따로 적었습니다.':''} GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${escL(r.native_box.lat.join('–'))}°, 경도 ${escL(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했고, OBIS 보고율 추세는 ${escL(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}입니다. `+
       `${(ps.limitations||[]).map(esc).join(' ')} IUCN 기반 MCUI와 비교·순위에 쓰지 않고 매트릭스에는 회색 점선 점으로 따로 놓습니다.</p>`+subNationalReference(sub)+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${escL(b.n)}종): ${escL(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
-        `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. ${escL(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
+        `${b.false_lc_for_threatened?.length?` · LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. ${escL(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
   if(substituteMcui(s)&&sub){
     const r=sub.record;
@@ -1730,7 +1730,7 @@ function verifiedNationalFactBody(s){
       `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${escL(r.native_box.lat.join('–'))}°, 경도 ${escL(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${escL(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}. `+
       `공식 IUCN 평가가 아니며, 어획 등에 따른 감소(기준 A)는 OBIS 추세로만 확인했습니다. MCUI 점수·매트릭스·지도 색·순위에 쓰지 않습니다.</p>`+
       (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${escL(b.n)}종): ${escL(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}`+
-        `${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. ${escL(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
+        `${b.false_lc_for_threatened?.length?` · LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. ${escL(b.reason)}</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
   // 4.11 (prereg 5.2): the OBIS reporting-rate ratio reached the decline threshold, so the met Rapid LC check gives no MCUI.
   if(pilotScore(s,'MCUI')===null&&sub?.result==='decline_ratio_reached'){
@@ -1752,7 +1752,7 @@ function preliminaryBasisDetail(s,sub){
       `AOO ${escL(r.aoo_km2.toLocaleString())} km²(10 km 격자 ${escL(r.aoo_cells)}칸, 기준 ${escL(t.aoo_km2?.toLocaleString())} 초과) · 좌표 기록 ${escL(r.records)}건(기준 ${escL(t.records)}건 이상) · ${verifiedSource(r.method_source_id,'Rapid LC 방법 ↗')}</p>`+
       `<p class="fine">GBIF·OBIS의 1990년 이후 원서식 범위(위도 ${escL(r.native_box.lat.join('–'))}°, 경도 ${escL(r.native_box.lon.join('–'))}°) 좌표 기록으로 계산했습니다. OBIS 보고율 추세: ${escL(data.assessmentInfo?.method?.conservation?.trend?.labels?.[r.trend_class]||r.trend_class||'없음')}.${obisRatioNote(s)}</p>`+
       subNationalReference(sub)+
-      (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${escL(b.n)}종): ${escL(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}${b.false_lc_for_threatened?.length?` — LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. 공식 평가가 나오면 그 값으로 바꿉니다.</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
+      (b=>b?`<p class="fine">방법 역검증(이미 평가가 있는 ${escL(b.n)}종): ${escL(b.agreement)}종 일치 · ${b.result==='passed'?'기준 통과':'기준 미충족'}${b.false_lc_for_threatened?.length?` · LC로 판정한 위협 범주 종: ${escL(b.false_lc_for_threatened.join('·'))}`:''}. 공식 평가가 나오면 그 값으로 바꿉니다.</p>`:'')(data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary);
   }
   return `<p><b>${escL(label)} · ${escL(koEn(r.country_ko,r.country)||'서식국')} 국가 평가</b>: ${escL(r.category_as_published)} → ${value}${r.rank_out?' (평가했으나 위협 범주 없음 → LC 상당 · 방법 결정 2026-10-04)':''} · 게재명 ${orig(r.name_as_published)} · ${orig(r.list)} · 범위 ${escL(r.scope)} · ${verifiedSource(r.source_id,'원목록 ↗')}</p>`+
     (r.continuity||r.limitations?`<p class="fine">${escL(screenKo(r.continuity||'').replace(/\.$/,''))}${r.continuity?'. ':''}${escL(r.limitations||'')}</p>`:'')+subNationalReference(sub);
@@ -2496,7 +2496,7 @@ function liveEvidence(s) {
       +row('정량 활성 자료',c.quantitative_bioactivity_count===0?'확인한 자료에서 없음':count(c.quantitative_bioactivity_count))
       +(c.note?`<p class="fine">${esc(c.note)}</p>`:'')
       +(CASE_NOTES[s.aphiaID]?`<p class="fine"><b>별도 원문 조사 · 지표 입력 아님</b> ${esc(CASE_NOTES[s.aphiaID].detail)} ${sourceLink(CASE_NOTES[s.aphiaID].url,CASE_NOTES[s.aphiaID].title+' ↗')}</p>`:'')
-      +`<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'} — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`
+      +`<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'}. 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`
     : row('보고 화합물',c.status==='not_collected'?'미수집':'정보 없음','pending'));
   const conservation=indexReviewRow(s,'MCUI','보전평가')||{
     withheld_insufficient_evidence:row('보전평가','근거 부족으로 보류','pending')+row('검토 기록',`IUCN 검색 기록 ${count(k.search_record_count)} · 평가 ${count(k.assessment_count)}`)+(k.note?`<p class="fine">${esc(k.note)}</p>`:''),
@@ -2512,7 +2512,7 @@ function liveCompounds(s){
   const cmnpd=s.sources.find(x=>x.id==='cmnpd-1.0'), study=CASE_NOTES[s.aphiaID];
   return `<h3>화합물 근거</h3>${row('보고 화합물',count(c.compound_count,'개'),'done')}`+
     (study?`<p class="fine"><b>원문 조사 사례 · 참고 자료</b> ${esc(study.detail)} ${sourceLink(study.url,study.title+' ↗')}</p>`:'')+
-    `<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'} — 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`;
+    `<p class="fine">출처 ${cmnpd?sourceLink(cmnpd.url,'CMNPD ↗'):'CMNPD'} · ${cmnpd?sourceLink(cmnpd.licenseUrl,'CC BY-NC-SA 4.0'):'CC BY-NC-SA 4.0'}. 비상업 이용·출처 표시·동일조건 변경허락이 이 요약에도 적용됩니다.</p>`;
 }
 
 // The profile's record_count/period describe its own collection run. Only a gbif_*map_* run is the map's record set;
@@ -3033,7 +3033,7 @@ function cellShape(lat,lon,size,style){
   return new CellShape([[lat,lon],[lat+size,lon+size]],{sea,wide},style);
 }
 // First line of a 4° cell's tooltip or popup: the cell is wide on purpose, and land inside it is not where the species lives.
-const wideCellNote=names=>`<b>${esc(names)} · 민감종 보호</b> — 채취 압력이 있어 4° 단위로 공개합니다(넓게 묶은 관측 지역). 테두리 안 바다에 기록이 있는 칸입니다.`;
+const wideCellNote=names=>`<b>${esc(names)} · 민감종 보호</b> 채취 압력이 있어 4° 단위로 공개합니다(넓게 묶은 관측 지역). 테두리 안 바다에 기록이 있는 칸입니다.`;
 function setMapLegend(s){
   // Species without published cells only show the query extent (studyBounds).
   const extentOnly=s&&!s.cells.length, size=s?.cells?.[0]?.sizeDeg||1;

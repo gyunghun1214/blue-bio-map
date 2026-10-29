@@ -99,7 +99,7 @@ const wide=rectangles.at(-1);
 assert.deepEqual(JSON.parse(JSON.stringify(wide.bounds)),[[32,124],[36,128]]);
 assert.equal(wide.options.fillOpacity,0);assert.equal(wide.options.fill,true,'no fill, but the whole square still takes the click');
 assert.equal(wide.options.dashArray,'9 6');assert.equal(wide.options.weight,2.5);assert.equal(wide.options.color,'#ff6464');
-assert.match(popup[0],/시험 종 · 민감종 보호<\/b> — 채취 압력이 있어 4° 단위로 공개합니다\(넓게 묶은 관측 지역\)\. 테두리 안 바다에 기록이 있는 칸입니다\./);
+assert.match(popup[0],/시험 종 · 민감종 보호<\/b> 채취 압력이 있어 4° 단위로 공개합니다\(넓게 묶은 관측 지역\)\. 테두리 안 바다에 기록이 있는 칸입니다\./);
 // any later style (hover, dim) keeps a 4° cell unfilled; a 1° cell's sea part takes the fill, the square keeps a faint edge
 assert.equal(context.cellStyles(null,true,{color:'#ffd166',fillOpacity:.6})[0].fillOpacity,0);
 const sea={type:'Polygon',coordinates:[],seaFraction:.5};
