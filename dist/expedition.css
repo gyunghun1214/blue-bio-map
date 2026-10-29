@@ -306,3 +306,18 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
     -webkit-mask-image:linear-gradient(transparent 108px,#000 124px);mask-image:linear-gradient(transparent 108px,#000 124px)}
   .x-intro>:first-child{margin-top:auto}
 }
+/* 2026-10-29 PC 다시 점검 M1·M4 (verification/2026-10-29-pc-recheck). 넓은 화면(761px 이상): 지점 카드·목록·상세의 작은 글씨가 12px(지점 수 '(지점 4곳)'은
+   11.7px)라 프로젝터에서 읽기 어려웠고, 한국어 낱말이 중간에서 끊겼다('생리활성(잠/재력)', '실/험 결과', '(민감/종 보호)'). 휴대폰과 같은 13px·keep-all로 맞춘다. */
+@media (min-width:761px){
+  :root{--fs-min:13px}
+  .x-nav>*,.x-lang button,.x-route-note,.x-step-label,.x-type,.x-axis,.x-axis em,.x-val small,.x-fine,.x-kicker,.x-list span,.x-list button span,.x-list h3,.x-intro-note,.x-list em,.x-howto kbd,.x-detail h3 small,.x-nutrients span,.x-obs small,.moved-link,.x-brand span,.i18n-ko{font-size:13px}
+  body{word-break:keep-all;overflow-wrap:break-word}
+  :is(p,li,dd,small,h3){text-wrap-style:pretty}
+  .x-dl dd,.x-detail a,.x-src,.x-cites{overflow-wrap:anywhere}
+}
+/* M4: 가로로 든 휴대폰에서 첫 화면 안내 글이 길어 왼쪽 아래 '탐험 연출 항로' 칩과 겹쳤다. 같은 말('항로와 배는 탐험 연출입니다')이 안내 글에 있으니
+   첫 화면 동안만 칩을 숨긴다. 항해를 시작하면 다시 보인다. 지점 카드의 점수 칸은 설명 글 유무와 상관없이 위에서부터 쌓는다(L3). */
+@media (max-height:500px) and (max-width:1024px) and (orientation:landscape){body.is-intro .x-route-note{display:none}}
+.x-score{align-content:start}
+/* L4: 넓은 화면 상세의 닫기(×)가 화면 오른쪽 위 모서리에 거의 붙어 있었다 */
+@media (min-width:761px){.x-close{margin:18px 18px 0 0}}

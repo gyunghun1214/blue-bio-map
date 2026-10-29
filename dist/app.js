@@ -2455,7 +2455,8 @@ function foldDetail(){}
 // the species pane's selects and 활용 특성 chips fold the same way under '필터 더 보기' (selected chips stay in #use-extra)
 let filtersOpen=false;
 function syncFolds(){
-  const wide=wideLayout();
+  // 2026-10-29 PC 다시 점검 M5: from 741px (it was 1180px), so at 1024px the 활용 특성 chips no longer push every species card below the fold
+  const wide=!!globalThis.matchMedia?.('(min-width:741px)').matches;
   const ff=$('filter-fold'),ft=$('filter-toggle');
   if(ff&&ft){const folded=wide&&!filtersOpen;ff.classList.toggle('folded',folded);ff.inert=folded;ft.setAttribute('aria-expanded',String(!folded));}
 }
@@ -3092,10 +3093,12 @@ function renderCellMap(s,color){
   // Not animated: Leaflet 1.1 drops a fit requested while another zoom animation runs (quick species switches).
   // 2026-10-17 (LKH): the first view of every species is bubbles, so the fit stops at the last bubble zoom (it was 7, one past it:
   // few or close cells, or a wide screen, opened on dots). A shared link's own zoom (applyHash) still wins.
+  // 2026-10-29 PC 다시 점검 M3: the chip is filled before the fit, so fitPad reads its real height (on the first species it was still
+  // empty and a 1280px fit put the northern bubble under the chip)
+  setMapChip(s,chipCells(s),`기록 연도 ${cellYears(s)}`);
   if(s.aphiaID!==lastFitted){lastFitted=s.aphiaID;map.fitBounds(s.cells.flatMap(c=>[[c.lat0,c.lon0],[c.lat0+c.sizeDeg,c.lon0+c.sizeDeg]]),{...fitPad(40),maxZoom:BUBBLE_MAX_ZOOM,animate:false});}
   drawOccurrence();
   $('map-count').textContent=cellRecords(s).toLocaleString();$('map-cells').textContent=spatialCells(s).length;$('map-years').textContent=cellYears(s);
-  setMapChip(s,chipCells(s),`기록 연도 ${cellYears(s)}`);
 }
 // The same cell evidence as the popups, as a table: reachable by keyboard and screen readers, and without the map.
 let cellLayers=[];
@@ -5034,6 +5037,7 @@ function syncWide(){
   map?.invalidateSize();
 }
 globalThis.matchMedia?.('(min-width:1180px)').addEventListener?.('change',syncWide);
+globalThis.matchMedia?.('(min-width:741px)').addEventListener?.('change',syncFolds); // the filter fold starts at 741px (2026-10-29 M5)
 $('filter-toggle')?.addEventListener('click',()=>{filtersOpen=!filtersOpen;syncFolds();});
 syncWide(); // fold the filters before the data arrives, so the list does not jump when it renders
 // From 1180px the occurrence key sits under the floating species list, which ends above it whatever the key's height (open,

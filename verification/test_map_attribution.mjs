@@ -7,7 +7,7 @@ const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8').repl
 const html=read('index.html'),css=read('map-attribution.css'),app=read('app.js'),headers=read('_headers'),en=read('i18n-en.js');
 
 // (1) 불러오기: mobile-dedupe.css 바로 다음(그 뒤에는 2026-10-26 멍이 meongi.css만, 모든 스타일시트 중 마지막), ?v= 해시, 1년 캐시
-const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]).filter(f=>f!=='meongi.css');
+const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]).filter(f=>f!=='meongi.css'&&f!=='pc-tidy.css'); // 2026-10-29 pc-tidy.css(넓은 화면)도 map-attribution.css 뒤
 assert.equal(sheets.at(-1),'map-attribution.css',`map-attribution.css is the last stylesheet before meongi.css: ${sheets}`);
 assert.equal(sheets.at(-2),'mobile-dedupe.css','right after mobile-dedupe.css');
 assert.match(html,/<link rel="stylesheet" href="map-attribution\.css\?v=[0-9a-f]{10}">/);

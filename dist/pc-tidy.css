@@ -1,0 +1,43 @@
+/* 2026-10-29 휴대폰·PC 다시 점검 (verification/2026-10-29-pc-recheck/README.md). 넓은 화면(741px 이상)을 고치는 규칙.
+   index.html이 map-attribution.css 뒤, meongi.css 앞에 불러온다(meongi.css가 맨 끝). 글자는 바꾸지 않는다. */
+
+/* H1: 자료 연결이 안 돼 '⚠ 저장 사본 · 날짜 기준' 칩이 함께 뜨면 1280px 머리글에서 칩이 오른쪽 44px 밖으로 나가고 페이지가 옆으로 밀렸다.
+   그때만 1180–1599px 머리글 칸 사이를 22px로 좁히고, 그래도 모자라면 칩 글자만 '…'로 줄인다(⚠·▾는 남긴다).
+   '연구 프로토타입' 칩이 먼저 줄고 저장 사본 날짜는 되도록 다 보인다. */
+@media (min-width:1180px) and (max-width:1599px){.header:has(#alert-chip:not([hidden])){gap:22px}}
+@media (min-width:741px){
+  .header:has(#alert-chip:not([hidden])) .status-chips{flex:0 1 auto;min-width:0;margin-left:auto}
+  .header:has(#alert-chip:not([hidden])) .status-chip{min-width:0;overflow:visible}
+  .header:has(#alert-chip:not([hidden])) .status-chip>[aria-hidden]{flex:none}
+  .header:has(#alert-chip:not([hidden])) #alert-chip{flex-shrink:.3}
+  .header:has(#alert-chip:not([hidden])) :is(#notice-chip-text,#alert-chip-text){min-width:0;overflow:hidden;text-overflow:ellipsis}
+}
+
+/* H2: 넓은 화면에서 멍이(오른쪽 아래 16px, 56px)가 '나란히 비교 →' 끝을 덮고(1440 비교와 지표), 페이지 끝에서 바닥글 'alt F4 · 2026' 위에 앉았다.
+   단추는 mobile-compact.js가 PC에서도 비켜 앉게 하고(--bbc-dodge), 바닥글은 오른쪽에 멍이 자리만큼 비운다. 대화창이 열리면 비켜 앉은 자리를 바로 푼다
+   (PC 대화창은 멍이 바로 위에 붙는다). 끌거나 키보드로 옮긴 멍이는 그 자리 그대로 둔다(비켜 앉지 않는다). */
+@media (min-width:741px){footer{padding-right:max(20px,calc(var(--bbc-right,16px) + 72px))}}
+@media (pointer:fine){.bbc-fab[aria-expanded=true],.bbc-moved .bbc-fab{translate:none}}
+
+/* M2: PC에서도 한국어 낱말이 중간에서 끊겼다(지도 범례 '버/블이 클수록'·'넓/게 공개한 범위'·'100–999/건', 종 카드 '생리활/성'(1024)).
+   휴대폰(mobile-type.css)과 같은 낱말 단위 줄바꿈을 넓은 화면에도 준다. 칸보다 긴 낱말·주소는 칸 끝에서만 꺾는다. */
+@media (min-width:741px){
+  body{word-break:keep-all;overflow-wrap:break-word}
+  :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note):not(#site-gate *){text-wrap-style:pretty}  /* 첫 화면은 intro.css 그대로. text-wrap 줄임말은 nowrap까지 풀어 버리므로 style만 */
+  #all-sources,.citation,.foot-ops a,.mt-ck-rec a{overflow-wrap:anywhere}
+}
+
+/* M5: 741–1179px(1024 태블릿 가로·작은 노트북)에서는 '필터 더 보기' 접기가 없어 분류군·활용 특성 칩이 왼쪽 칸을 다 차지하고 첫 종 카드가
+   화면 맨 아래(약 700px)에서야 나왔다. 1180px 이상과 같이 접어 두고 '필터 더 보기'로 연다(app.js syncFolds). 단추 모양은 theme.css 1180px 이상 규칙 그대로. */
+@media (min-width:741px) and (max-width:1179px){
+  #explore .filter-toggle{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 0;padding:10px 4px 10px 6px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:none;color:var(--ink2);font:inherit;font-size:13px;font-weight:600;text-align:left;cursor:pointer}
+  #explore .filter-toggle:hover{color:var(--ink)}
+  #explore .filter-toggle svg{flex:none;width:16px;height:16px;color:var(--muted)}
+  #explore .filter-toggle small{padding:1px 8px;border-radius:99px;background:var(--teal-soft);color:var(--teal-ink);font-size:var(--fs-min);font-weight:700}
+  #explore .filter-toggle::after{content:"";flex:none;width:7px;height:7px;margin:0 6px 0 auto;border-right:1.8px solid var(--muted);border-bottom:1.8px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
+  #explore .filter-toggle[aria-expanded=true]::after{transform:rotate(45deg)}
+  #explore .filter-fold:not(.folded){flex:none;max-height:45%;overflow-y:auto;overscroll-behavior:contain;padding-bottom:10px;border-bottom:1px solid var(--line);scrollbar-width:thin}
+}
+
+/* L2: 1180–1439px에서 톳 카드만 '보전 10.0 (LC·예비)'가 둘째 줄로 내려가 카드 높이가 들쭉날쭉했다. 활용·보전 사이를 22 → 14px로 좁힌다. */
+@media (min-width:1180px) and (max-width:1439px){#explore .species-card .card-line{column-gap:14px}}

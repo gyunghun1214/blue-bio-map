@@ -157,3 +157,9 @@
   /* 11: 페이지 끝에서 멍이가 아래 '의견 보내기'·'alt F4 · 2026' 위에 앉았다 */
   footer{padding-right:96px}
 }
+/* 2026-10-29 PC 다시 점검 M4 (verification/2026-10-29-pc-recheck): 가로로 든 휴대폰(높이 500px 이하·손가락)에서 멍이 대화창이 PC 모양(높이 상한
+   화면 높이 − 머리글 − 92px)으로 떠서 대화 칸이 약 100px뿐이었다(첫 인사만 보이고 추천 질문이 안 보임). 멍이 버튼 왼쪽에 위아래 8px만 남기고 세운다.
+   옮겨 둔 멍이(.bbc-moved)는 chatbot.js가 정한 자리 그대로. */
+@media (max-height:500px) and (min-width:741px) and (pointer:coarse){
+  .bbc:not(.bbc-moved) .bbc-panel{top:8px;bottom:8px;right:calc(var(--bbc-right,16px) + 64px);height:auto!important;max-height:none!important}
+}
