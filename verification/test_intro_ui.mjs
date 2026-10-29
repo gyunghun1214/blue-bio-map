@@ -272,7 +272,7 @@ assert.ok(gateMarkup.includes('</div></div><canvas class="gate-ripple" aria-hidd
 const logoPath=gateMarkup.match(/<p class="gate-brand"><svg[^>]*>([\s\S]*?)<\/svg>/)[1];
 assert.ok(loader.includes(logoPath),'the loader shows the site logo itself (the bar\'s mark)');
 assert.match(loader,/<span>Blue-bio <strong>Value<\/strong> Map<\/span>/);
-assert.match(loader,/<p class="gate-motto"><span>바다의 가능성,<\/span> <span>근거에서부터\.<\/span><\/p>/);
+assert.match(loader,/<p class="gate-motto"><span>바다의 가능성,<\/span> <span>근거에서부터<\/span><\/p>/);
 assert.ok(loader.includes(`<p class="gate-step">${ctx.GATE_STEPS[0][1]}</p>`),'the first step is in the first paint');
 for(const old of ['gate-orbit','gate-ring','gate-arc','gate-spin','gate-spark','gateFraction','rippleArc','rippleLives','rippleReveal','--gf'])
   assert.ok(![html,css,intro].some(t=>t.includes(old)),`the old loaders are gone: ${old}`);
