@@ -89,14 +89,16 @@
   mq.addEventListener?.('change',()=>{if(!phone())closeGuide(false);syncFolds();syncOpeners();});
   syncFolds();syncOpeners();
 })();
-// 2026-10-29 휴대폰 다시 점검 6·7 (verification/2026-10-29-mobile-recheck). 손가락 기기(pointer:coarse)에서만: 마우스 PC는 그대로다.
+// 2026-10-29 휴대폰 다시 점검 6·7 (verification/2026-10-29-mobile-recheck). 처음에는 손가락 기기(pointer:coarse)에서만 돌았고,
+// 같은 날 PC 다시 점검 H2·M3(verification/2026-10-29-pc-recheck)부터 마우스 PC에서도 돈다('나란히 비교 →'를 덮던 것, 1280 지도 '북한'이 단추 밑).
+// PC에서는 대화창이 멍이 바로 위에 열리므로, 대화창이 열리면 비켜 앉은 자리를 원래대로 돌린다.
 // (3) 멍이 비켜 앉기: 스크롤이 멈추면(안쪽 칸 스크롤 포함) 멍이 버튼 밑에 다른 단추·링크·접는 제목이 있는지 보고, 있으면 그것이 드러날
 //     만큼 56px씩 위로 비켜 앉는다(단추 가운데를 덮거나 40% 넘게 덮을 때만)(meongi.css의 translate: --bbc-dodge, 머리글 밑으로는 가지 않는다). 대화창이 열렸거나 끄는 중이면
 //     그대로 둔다. 데이터 표 카드의 펼침 단추·종 카드·페이지 끝 '의견 보내기'를 덮던 것.
 // (4) 지도 지명 정리: 나라·바다 이름(.geo-label·.sea-label)이 버블·셀·지도 위 단추와 겹치거나 지도 가장자리에서 잘리면 그 이름만
 //     숨긴다. 지도가 움직이거나 줌할 때마다 다시 잰다('대한민국'이 버블 밑, '일본'이 전체화면 단추 밑에 깔리던 것).
 (()=>{
-  if(!matchMedia('(pointer:coarse)').matches)return;
+  const coarse=matchMedia('(pointer:coarse)').matches;
   const over=(a,b,m)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>m&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>m;
   const shown=e=>{if(!e.getClientRects().length)return false;const s=getComputedStyle(e);return s.visibility!=='hidden'&&+s.opacity>.05;};
   // ---- (3) 멍이 비켜 앉기
@@ -104,11 +106,12 @@
   let dodgeT=0;
   function dodge(){
     const fab=document.querySelector('.bbc-fab'),root=fab?.closest('.bbc');
-    if(!fab||!root||!shown(fab)||root.classList.contains('bbc-dragging')||fab.getAttribute('aria-expanded')==='true')return;
+    if(!fab||!root||!shown(fab)||root.classList.contains('bbc-dragging'))return;
     const cur=parseFloat(root.style.getPropertyValue('--bbc-dodge'))||0,r=fab.getBoundingClientRect();
+    if(fab.getAttribute('aria-expanded')==='true'){if(!coarse&&cur)root.style.setProperty('--bbc-dodge','0px');return;}
     const base={left:r.left,right:r.right,top:r.top-cur,bottom:r.bottom-cur};
     const head=document.querySelector('.header,.x-bar')?.getBoundingClientRect().bottom||0;
-    const ctrls=[...document.querySelectorAll(CTRL)].filter(e=>!root.contains(e)&&!e.closest('.tabs,#site-gate,.leaflet-control-attribution'))
+    const ctrls=[...document.querySelectorAll(CTRL)].filter(e=>!root.contains(e)&&!e.closest('.tabs,#site-gate,.leaflet-control-attribution,[inert]')&&shown(e))
       .map(e=>e.getBoundingClientRect()).filter(b=>b.width>0&&b.bottom>head&&b.top<innerHeight);
     let pick=0;
     for(let d=0;d>=-224;d-=56){
@@ -116,7 +119,7 @@
       if(c.top<head+8)break;
       // 단추 가운데를 덮거나 단추의 40% 넘게 덮을 때만 비킨다(카드처럼 큰 단추의 가장자리에 걸친 정도로는 움직이지 않는다)
       const blocks=b=>{const cx=(b.left+b.right)/2,cy=(b.top+b.bottom)/2;if(cx>c.left-4&&cx<c.right+4&&cy>c.top-4&&cy<c.bottom+4)return true;
-        const w=Math.min(b.right,c.right)-Math.max(b.left,c.left),h=Math.min(b.bottom,c.bottom)-Math.max(b.top,c.top);return w>0&&h>0&&w*h>.4*b.width*b.height;};
+        const w=Math.min(b.right,c.right)-Math.max(b.left,c.left),h=Math.min(b.bottom,c.bottom)-Math.max(b.top,c.top);return w>0&&h>0&&(w*h>.4*b.width*b.height||!coarse&&w>8&&h>8);};  // PC: 단추 끝(화살표)을 8px 넘게 덮어도 비킨다
       if(!ctrls.some(blocks)){pick=d;break;}
     }
     if(pick!==cur)root.style.setProperty('--bbc-dodge',pick+'px');
@@ -124,7 +127,8 @@
   const later=()=>{clearTimeout(dodgeT);dodgeT=setTimeout(dodge,450);};
   addEventListener('scroll',later,{capture:true,passive:true});
   addEventListener('resize',later);
-  document.addEventListener('click',()=>setTimeout(later,60),true);
+  // 누른 뒤 탭이 바뀌면 화면이 한동안 그려지므로(비교와 지표 매트릭스 등) 1.6초 뒤에 한 번 더 잰다
+  document.addEventListener('click',()=>{setTimeout(later,60);setTimeout(dodge,1600);},true);
   setTimeout(dodge,2500);
   // ---- (4) 지도 지명 정리
   let tidyT=0,watched=null;

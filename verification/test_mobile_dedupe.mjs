@@ -8,7 +8,7 @@ const html=read('index.html'),css=read('mobile-dedupe.css'),js=read('mobile-dedu
 
 // (1) 불러오기: CSS는 mobile-compact.css 바로 다음(2026-10-26부터 그 뒤에는 휴대폰 지도 출처 ⓘ의 map-attribution.css와 멍이 meongi.css만 온다),
 // 스크립트는 mobile-compact.js 바로 다음. 1년 캐시.
-const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]).filter(f=>f!=='map-attribution.css'&&f!=='meongi.css');
+const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]).filter(f=>f!=='map-attribution.css'&&f!=='pc-tidy.css'&&f!=='meongi.css');
 assert.equal(sheets.at(-1),'mobile-dedupe.css',`mobile-dedupe.css is the last stylesheet (before map-attribution.css, meongi.css): ${sheets}`);
 assert.equal(sheets.at(-2),'mobile-compact.css','right after mobile-compact.css');
 assert.match(html,/<script defer src="mobile-compact\.js\?v=[0-9a-f]{10}"><\/script><script defer src="mobile-dedupe\.js\?v=[0-9a-f]{10}"><\/script>/);

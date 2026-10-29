@@ -2706,7 +2706,8 @@ Object.assign(I18N_EN,{
 "성분코드 조회: 식품원료 성분명(한글), 성분학명":"Ingredient code lookup: food raw-material ingredient name (Korean), ingredient scientific name",
 "국가생물적색자료집(국립생물자원관 {0}) {1}":"National Red Data Book of Korea (NIBR {0}) {1}",
 "종 설명 페이지의 石川県カテゴリー 칸을 직접 읽음.":"Read directly from the 石川県カテゴリー column on the species description page.",
-"{0}년 이전 {1}건":"{1} {1|record|records} before {0}"
+"{0}년 이전 {1}건":"{1} {1|record|records} before {0}",
+"안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.":"Hello! I'm Meongi, the Guide helper. I'll show you how to use this map with prepared answers, and without a prepared answer, AI (Claude) answers from the site text. Pick a question below or type your own."
 });
 // @section 안내 도우미(chatbot.js)
 Object.assign(I18N_EN,{

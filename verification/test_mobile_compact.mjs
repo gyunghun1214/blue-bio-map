@@ -11,7 +11,7 @@ const html=read('index.html'),css=read('mobile-compact.css'),js=read('mobile-com
 const head=html.slice(0,html.indexOf('</head>'));
 const sheets=[...html.replace(/<noscript>[^]*?<\/noscript>/g,'').matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map(m=>m[1]);
 // 2026-10-25 휴대폰 반복 설명 정리(mobile-dedupe.css), 2026-10-26 휴대폰 지도 출처 ⓘ(map-attribution.css)·멍이(meongi.css)만 이 파일 뒤에 온다
-assert.equal(sheets.filter(f=>!['mobile-dedupe.css','map-attribution.css','meongi.css'].includes(f)).at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet (before mobile-dedupe.css, map-attribution.css, meongi.css): ${sheets}`);
+assert.equal(sheets.filter(f=>!['mobile-dedupe.css','map-attribution.css','pc-tidy.css','meongi.css'].includes(f)).at(-1),'mobile-compact.css',`mobile-compact.css is the last stylesheet (before mobile-dedupe.css, map-attribution.css, meongi.css): ${sheets}`);
 assert.ok(sheets.indexOf('mobile-compact.css')>sheets.indexOf('intro.css'));
 if(sheets.includes('mobile-type.css'))assert.match(html,/<link rel="stylesheet" href="mobile-type\.css\?v=[0-9a-f]{10}"><link rel="stylesheet" href="mobile-compact\.css\?v=[0-9a-f]{10}">/,'right after mobile-type.css');
 assert.match(head,/<script defer src="app\.js\?v=[0-9a-f]{10}"><\/script><script defer src="mobile-compact\.js\?v=[0-9a-f]{10}"><\/script>/);

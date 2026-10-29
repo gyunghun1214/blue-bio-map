@@ -510,9 +510,14 @@ if(typeof document!=='undefined')(function(){
   // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 입력창 위 표기를 바꾼다.
   // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
   const noteEl=root.querySelector('.bbc-note'),NOTE_FIXED=noteEl.textContent;
+  const WELCOME='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.';
   let aiReady=Promise.resolve(false);
   function checkAi(){
-    const note=on=>{if(on||noteEl.dataset.ai){noteEl.textContent=on?chatbotT('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'):NOTE_FIXED;noteEl.dataset.ai=on?'1':'';}};
+    // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꿔 아래 표기와 맞춘다
+    const note=on=>{
+      const w=log.querySelector('[data-welcome]');
+      if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;
+      if(on||noteEl.dataset.ai){noteEl.textContent=on?chatbotT('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'):NOTE_FIXED;noteEl.dataset.ai=on?'1':'';}};
     if(globalThis.BBVM_OFFLINE===true){aiReady=Promise.resolve(false);note(false);return;}
     aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
     aiReady.then(note);
@@ -554,7 +559,7 @@ if(typeof document!=='undefined')(function(){
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
     dismissHint();unfade();panel.hidden=false;fab.setAttribute('aria-expanded','true');fab.setAttribute('aria-label','사용법 안내 닫기. 끌거나 Shift와 방향키로 옮길 수 있습니다');fabFace(true);
-    if(!log.childElementCount){checkAi();add('bbc-bot','안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.','welcome');buttons(CHATBOT_STARTERS);}
+    if(!log.childElementCount){add('bbc-bot',WELCOME,'welcome').dataset.welcome='1';checkAi();buttons(CHATBOT_STARTERS);}
     place();
     // 2026-10-25 휴대폰(740px 이하): 입력칸에 바로 포커스를 주면 화면 키보드가 올라와 추천 질문을 가린다. 휴대폰에서는 마지막
     // 추천 질문 묶음의 첫 단추(없으면 닫기)로 포커스를 옮기고, 입력칸은 사람이 누를 때 키보드가 뜬다. 넓은 화면은 그대로 입력칸.
