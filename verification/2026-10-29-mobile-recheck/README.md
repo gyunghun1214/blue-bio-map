@@ -29,7 +29,7 @@ LKH 요청: 휴대폰 화면을 직접 둘러보고 글씨 배치·넘침과 쓰
 ## 지킨 것
 
 - PC 화면은 그대로: 바꾼 규칙은 모두 휴대폰 폭(740·760px 이하), 가로 휴대폰(741–1179px × 높이 500px 이하), 손가락 기기
-  (`pointer:coarse`) 안에만 있다. `verification/2026-10-25-mobile-ux/pc-diff.mjs`로 1440×900·1280×720을 main과 픽셀 비교했다(아래).
+  (`pointer:coarse`) 안에만 있다. `verification/2026-10-25-mobile-ux/pc-diff.mjs`로 1440×900·1280×720을 main(#282 병합본)과 픽셀 비교했다. 탐색 지도·비교와 지표(매트릭스·데이터 표)·근거와 방법, 첫 화면·전체 길이, 움직임 줄이기·보통 32장 × 2라운드에서 고정된 차이 0.
 - 글자는 바꾸지 않았다(10번 꼬리표 하나를 뺀 것뿐). i18n 기준 파일 그대로.
 - CSS 순서 그대로(mobile-type → mobile-compact → mobile-dedupe → map-attribution → meongi.css 맨 끝). 새 글씨 13px 이상.
 - `?v=`는 파일 내용 해시 앞 10자로 다시 찍음(test_client_outdated).
