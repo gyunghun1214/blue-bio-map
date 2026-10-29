@@ -108,7 +108,8 @@
     const fab=document.querySelector('.bbc-fab'),root=fab?.closest('.bbc');
     if(!fab||!root||!shown(fab)||root.classList.contains('bbc-dragging'))return;
     const cur=parseFloat(root.style.getPropertyValue('--bbc-dodge'))||0,r=fab.getBoundingClientRect();
-    if(fab.getAttribute('aria-expanded')==='true'){if(!coarse&&cur)root.style.setProperty('--bbc-dodge','0px');return;}
+    // PC: 대화창이 열렸거나 사용자가 옮긴 자리면 비켜 앉지 않는다
+    if(fab.getAttribute('aria-expanded')==='true'||!coarse&&root.classList.contains('bbc-moved')){if(!coarse&&cur)root.style.setProperty('--bbc-dodge','0px');return;}
     const base={left:r.left,right:r.right,top:r.top-cur,bottom:r.bottom-cur};
     const head=document.querySelector('.header,.x-bar')?.getBoundingClientRect().bottom||0;
     const ctrls=[...document.querySelectorAll(CTRL)].filter(e=>!root.contains(e)&&!e.closest('.tabs,#site-gate,.leaflet-control-attribution,[inert]')&&shown(e))

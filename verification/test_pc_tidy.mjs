@@ -16,14 +16,14 @@ const bare=css.replace(/\/\*[^]*?\*\//g,'');
 let depth=0,outside='';for(const ch of bare){if(ch==='{')depth++;if(depth===0)outside+=ch;if(ch==='}')depth--;}
 for(const q of outside.split('}').map(x=>x.trim()).filter(Boolean))assert.match(q,/^@media \((min-width:(741|1180)px|pointer:fine)\)/,`top-level rule outside a wide/mouse media query: ${q}`);
 for(const m of css.matchAll(/font-size:([^;}]+)/g))assert.ok(!/(^|[^0-9.])([0-9]|1[01])(\.\d+)?px/.test(m[1]),`font-size under 12px: ${m[1]}`);
-// H1 저장 사본 칩, H2 바닥글·대화창, M2 낱말 단위, M5 필터 접기, L1 학명 줄바꿈
+// H1 저장 사본 칩, H2 바닥글·대화창, M2 낱말 단위, M5 필터 접기, 옮긴 멍이
 assert.match(css,/\.header:has\(#alert-chip:not\(\[hidden\]\)\)\{gap:22px\}/);
 assert.match(css,/:is\(#notice-chip-text,#alert-chip-text\)\{min-width:0;overflow:hidden;text-overflow:ellipsis\}/);
 assert.match(css,/footer\{padding-right:max\(20px,calc\(var\(--bbc-right,16px\) \+ 72px\)\)\}/);
-assert.match(css,/\.bbc-fab\[aria-expanded=true\]\{translate:none\}/);
+assert.match(css,/\.bbc-fab\[aria-expanded=true\],\.bbc-moved \.bbc-fab\{translate:none\}/);
 assert.match(css,/body\{word-break:keep-all;overflow-wrap:break-word\}/);
 assert.match(css,/@media \(min-width:741px\) and \(max-width:1179px\)\{\n  #explore \.filter-toggle\{display:flex/);
-assert.match(css,/#explore \.species-card>em\{white-space:normal/);
+assert.doesNotMatch(css,/species-card>em\{white-space:normal/);  // 종 카드 한 높이(2026-10-18 규칙) 때문에 학명은 한 줄 그대로
 
 // (3) mobile-compact.js: 멍이 비켜 앉기·지도 지명 정리가 마우스 PC에서도 돈다. 닫힌 근거 서랍(inert)·안 보이는 단추는 세지 않는다
 assert.ok(!/if\(!matchMedia\('\(pointer:coarse\)'\)\.matches\)return;/.test(js),'no coarse-only early return');
@@ -31,6 +31,7 @@ assert.match(js,/const coarse=matchMedia\('\(pointer:coarse\)'\)\.matches;/);
 assert.match(js,/\.leaflet-control-attribution,\[inert\]'\)&&shown\(e\)/);
 assert.match(js,/!coarse&&w>8&&h>8/);
 assert.match(js,/setTimeout\(dodge,1600\)/);
+assert.match(js,/!coarse&&root\.classList\.contains\('bbc-moved'\)/);  // 옮긴 멍이는 PC에서 비켜 앉지 않는다
 
 // (4) app.js: 지도 이름표를 채운 뒤 맞춘다(M3), 필터 접기는 741px부터(M5)
 const cell=app.slice(app.indexOf('function renderCellMap'),app.indexOf('// The same cell evidence as the popups'));
