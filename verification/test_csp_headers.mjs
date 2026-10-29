@@ -46,6 +46,9 @@ for(const o of tiles)assert.ok(dir['img-src'].includes(o),`img-src allows map ti
 const beacon=/\.src='(https:\/\/[^']+)'/.exec(read('analytics.js'))?.[1];
 for(const d of ['script-src','script-src-elem'])assert.ok(beacon&&dir[d].includes(origin(beacon)),`${d} allows the beacon ${beacon}`);
 assert.ok(dir['connect-src'].includes('https://cloudflareinsights.com'),'connect-src lets the beacon send');
+// the guide helper's AI answer (chatbot.js → worker/index.mjs): a relative same-origin path, so connect-src 'self' covers it
+const ask=[...read('chatbot.js').matchAll(/fetch\('([^']+)'/g)].map(m=>m[1]);
+assert.ok(ask.length&&ask.every(u=>u==='api/ask')&&dir['connect-src'].includes("'self'"),`chatbot.js asks only the same-origin api/ask (${ask})`);
 for(const [k,v] of Object.entries({'object-src':["'none'"],'frame-ancestors':["'none'"],'base-uri':["'self'"]}))assert.deepEqual(dir[k],v,k);
 
 // (3) the features turned off

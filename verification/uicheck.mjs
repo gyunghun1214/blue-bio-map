@@ -1880,7 +1880,9 @@ try{
     const puzzled=await until(s=>/bbc-m-unknown/.test(s.row),3000);
     check('M-9 reduced motion: a press opens the chat at once with no hop or talking and no running animation; an unknown answer still shows the drooped siphons',
       calm.open&&calm.talking===0&&/bbc-m-welcome/.test(calm.head)&&calm.headAll==='none'&&/bbc-m-unknown/.test(puzzled.head)&&puzzled.rowSL&&puzzled.rowSL!=='none'&&puzzled.talking===0,JSON.stringify({calm,puzzled}));
-    // ---------- 사용법 안내 도우미 (2026-10-15): 정해진 답만, 심사 예상 질문의 값은 화면 자료에서, 답이 없으면 세 탭 바로가기 ----------
+    // ---------- 사용법 안내 도우미 (2026-10-15, AI 보조 2026-10-29): 정해진 답 먼저, 심사 예상 질문의 값은 화면 자료에서, 답이 없으면 세 탭 바로가기 ----------
+    // 이 정적 서버에는 /api/ask가 없어(404) AI를 쓸 수 없다: 표기는 그대로이고 질문은 보내지 않는다. api/ask 요청은 방법(GET·POST)별로 센다.
+    await evaluate("window.__ask=[];window.fetch=(o=>(u,i)=>{if(String(u).includes('api/ask'))window.__ask.push(i?.method||'GET');return o(u,i);})(window.__fetch0=window.fetch);1");
     const askBot=q=>evaluate(`(async()=>{const i=document.querySelector('.bbc-input');i.value=${JSON.stringify(q)};document.querySelector('.bbc-form').requestSubmit();
       await new Promise(r=>setTimeout(r,200));const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {text:m?.childNodes[0]?.textContent||'',
         tabs:[...(m?.closest('.bbc-row')?.nextElementSibling?.querySelectorAll('button[data-tab]')||[])].map(b=>b.dataset.tab+'|'+b.textContent)};})()`);
@@ -1889,14 +1891,35 @@ try{
         rule:matrixRule().bbvi_threshold,head:document.querySelector('#bbc-title').textContent,note:document.querySelector('.bbc-note').textContent}})()`);
     const judge={same:await askBot('참굴 10점과 고등어 10점은 같은 뜻이에요?'),squid:await askBot('살오징어는 IUCN에서 LC인데 왜 60점이에요?'),
       line:await askBot('50점은 누가 정했어요?'),missing:await askBot('미역은 왜 매트릭스에 없어요?'),none:await askBot('zqxj 오늘 점심 메뉴 추천')};
-    const apiCalls=await evaluate("performance.getEntriesByType('resource').filter(e=>e.name.includes('/api/')).length");
-    check('M-10 guide helper: fixed answers only (no /api/ request), judge questions read values from the page data, an unmatched question points to the three tabs (아래 탭에서 직접 찾아보거나…) with three tab links',
+    const apiCalls=await evaluate("window.__ask.filter(m=>m==='POST').length");
+    check('M-10 guide helper without AI (no /api/ask here): no question sent, judge questions read values from the page data, an unmatched question points to the three tabs (아래 탭에서 직접 찾아보거나…) with three tab links',
       facts.head==='사용법 안내 도우미'&&facts.note==='미리 준비한 답변으로 안내해요'&&apiCalls===0&&Object.values(judge).every(r=>!/[{}]/.test(r.text))&&
       judge.same.text.includes(`참굴 MCUI(${facts.oyster}점)`)&&judge.same.text.includes(`고등어 MCUI(${facts.mackerel}점)`)&&judge.squid.text.includes(`${facts.squid}점이 됐어요`)&&
       judge.line.text.includes(`각각 ${facts.rule} 이상`)&&judge.missing.text.includes(`${facts.n}종`)&&(facts.placed===facts.n?judge.missing.text.includes('모두'):judge.missing.text.includes(`${facts.placed}종이 놓여`))&&
       judge.none.text.startsWith('아래 탭에서 직접 찾아보거나')&&judge.none.tabs.map(t=>t.split('|')[0]).join()==='explore,compare,method',JSON.stringify({facts,judge,apiCalls}));
     await evaluate("[...document.querySelectorAll('.bbc-log button[data-tab=\"compare\"]')].at(-1).click();1");await sleep(400);
     check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
+    // M-12 (2026-10-29): /api/ask를 가짜로 바꿔 AI가 켜진 상태. 새 대화에서 표기가 바뀌고, FAQ 질문은 보내지 않으며, 못 찾은 질문만 보내
+    // 'AI 답변' 표시와 함께 답한다. AI가 답을 못 찾으면(no_answer) 세 탭 바로가기로 돌아간다. 끝나면 원래 fetch로 돌리고 새 대화에서 표기가 돌아온다.
+    await evaluate(`window.__askReply={answer:'지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'};window.__ask=[];window.fetch=(u,i)=>String(u).includes('api/ask')?(window.__ask.push((i?.method||'GET')+(i?.body?' '+i.body:'')),
+      Promise.resolve(new Response(JSON.stringify(i?.method==='POST'?window.__askReply:{ai:true}),{status:200,headers:{'content-type':'application/json'}}))):window.__fetch0(u,i);
+      document.querySelector('.bbc-close').click();${freshChat}`);await sleep(300);
+    await press();await sleep(300);
+    const aiNote=await evaluate("document.querySelector('.bbc-note').textContent");
+    const aiFaq=await askBot('50점은 누가 정했어요?'),aiNew=await askBot('zqxj 멍이 AI 시험');await sleep(300);
+    const aiBubble=await evaluate("(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {ai:m.classList.contains('bbc-ai'),text:m.childNodes[0].textContent,tag:m.querySelector('.bbc-ai-tag')?.textContent||'',waits:document.querySelectorAll('.bbc-wait').length};})()");
+    await evaluate("window.__askReply={answer:null,reason:'no_answer'};1");
+    const aiNone=await askBot('zqxj 답 없는 질문');await sleep(300);
+    const aiNoneTabs=await evaluate("[...document.querySelectorAll('.bbc-log .bbc-tabs')].at(-1)?.querySelectorAll('button[data-tab]').length||0");
+    const aiCalls=await evaluate('window.__ask');
+    await evaluate("window.fetch=window.__fetch0;document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
+    await press();await sleep(500);
+    const backNote=await evaluate("document.querySelector('.bbc-note').textContent");
+    check('M-12 guide helper with AI (mocked /api/ask): note says AI answers when no prepared answer, FAQ first (no question sent), an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the note returns without AI',
+      aiNote==='준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'&&aiFaq.text.includes(`각각 ${facts.rule} 이상`)&&aiBubble.ai&&aiBubble.text==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&
+      aiBubble.tag==='AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'&&aiBubble.waits===0&&aiNone.text.startsWith('아래 탭에서 직접 찾아보거나')&&aiNoneTabs===3&&
+      JSON.stringify(aiCalls)===JSON.stringify(['GET','POST {"q":"zqxj 멍이 AI 시험","lang":"ko"}','POST {"q":"zqxj 답 없는 질문","lang":"ko"}'])&&backNote==='미리 준비한 답변으로 안내해요',
+      JSON.stringify({aiNote,aiFaq,aiNew,aiBubble,aiNone,aiNoneTabs,aiCalls,backNote}));
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }

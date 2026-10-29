@@ -40,8 +40,12 @@ for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing
   ['검증은 통과했어요?','validation'],['지표 검증 통과했나요','validation'],
   ['MCUI는 뭐예요','mcui'],['매트릭스 점은 어떻게 읽어요','matrix']])
   assert.equal(match(q)?.id,id,`심사 질문 "${q}" → ${match(q)?.id}`);
-// (3c) 정해진 답만: AI·서버 호출 없음, 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
-assert.ok(!/fetch\(|['"]\/?api\/|Workers AI로/.test(js),'chatbot.js가 서버나 AI에 질문을 보내면 안 됨');
+// (3c) 정해진 답 먼저: FAQ가 찾은 질문과 칩은 서버에 묻지 않고, 못 찾은 입력만 같은 사이트의 api/ask(worker/index.mjs, Claude Haiku 5.5)로.
+// 오프라인 시연이거나 AI를 쓸 수 없으면 묻지 않는다. 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
+assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'","'api/ask'"],'chatbot.js는 같은 사이트의 api/ask에만 묻는다(GET 상태 + POST 질문)');
+assert.ok(js.includes('if(f)answer(f);else if(id)unknown();else askAi(text);'),'FAQ가 먼저, 칩(id)은 AI로 가지 않음');
+assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\|\|!\(await aiReady\)\)return unknown\(\);/.test(js),'오프라인 시연·AI 없음이면 바로 정해진 안내');
+assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return unknown();"),'AI 실패·답 없음이면 정해진 안내');
 assert.ok(js.includes('<p class="bbc-note">미리 준비한 답변으로 안내해요</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
 assert.ok(js.includes("'아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.'"),'매칭 실패 문구');
 assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
@@ -63,6 +67,7 @@ const NEG=/아님|아닙니다|아니에요|아니라|아니고|아니요|않음
 const chipIds=[...new Set(faq.flatMap(f=>f.next||[]))];
 const shown=[...faq.map(f=>[f.id,f.a]),...chipIds.map(id=>[`${id} 칩`,faq.find(f=>f.id===id).q[0]]),...starters.map(([id,l])=>[`${id} 시작 질문`,l]),
   ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),['입력창 표기',js.match(/<p class="bbc-note">([^<]*)<\/p>/)[1]],
+  ...['준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요','멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
   ...[['matrix'],['score','참굴:MCUI'],['basis','참굴'],['mcuiwhy','살오징어']].map(a=>[`대체 문구 ${a[0]}`,fact(...a)]),['판단문 대체 문구',vm.runInContext("chatbotPlain('x')",ctx)]];
 for(const [where,text] of shown){
   for(const w of BANNED)assert.ok(!text.includes(w),`${where}: 금지 낱말 '${w}'`);
@@ -135,4 +140,4 @@ for(const s of Object.keys(moods))for(const crop of [false,true]){
   }
 }
 assert.ok(mascot('unknown',40,true).includes('class="bbc-m-sweat"'),'잘 모르겠어요: 땀방울 클래스');
-console.log(`PASS: chatbot FAQ ${faq.length}개 · 심사 질문 매칭 · AI 호출 없음 · 값 자리표시 · 약점 낱말·'아님' 안내 없음 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);
+console.log(`PASS: chatbot FAQ ${faq.length}개 · 심사 질문 매칭 · FAQ 먼저·못 찾은 질문만 api/ask · 값 자리표시 · 약점 낱말·'아님' 안내 없음 · id 고유 · 선택자 존재 · 매칭/모르겠어요 · 이름 하드코딩 없음 · ?v= 해시 · 멍이 ${Object.keys(moods).length}상태 · 부위·표정 바꾸기`);
