@@ -22,8 +22,12 @@ const ui=Object.entries(X.I18N_EN), dat=Object.entries(data.by_text), all=[...ui
 {const k={location:{search:''},URLSearchParams,localStorage:{getItem:()=>null}};vm.createContext(k);vm.runInContext(read('i18n.js')+';globalThis.Y={LANG,T_,TX_,fmtNum};',k);
   assert.equal(k.Y.LANG,'ko');assert.equal(k.Y.T_('  {n}종  ',{n:3}),'  3종  ','ko keeps the original exactly');assert.equal(k.Y.TX_('가'),'가');
   assert.equal(k.Y.fmtNum(1234),(1234).toLocaleString());assert.equal(k.Y.fmtNum(1234,'ko-KR'),(1234).toLocaleString('ko-KR'));
-  const j={location:{search:'?lang=xx'},URLSearchParams,localStorage:{getItem:()=>'en'}};vm.createContext(j);vm.runInContext(read('i18n.js')+';globalThis.Y={LANG};',j);
-  assert.equal(j.Y.LANG,'en','an unknown ?lang= is ignored, localStorage decides');}
+  const j={location:{search:'?lang=xx'},URLSearchParams,sessionStorage:{getItem:()=>'en'}};vm.createContext(j);vm.runInContext(read('i18n.js')+';globalThis.Y={LANG};',j);
+  assert.equal(j.Y.LANG,'en','an unknown ?lang= is ignored, the tab\'s sessionStorage decides');
+  // 예전처럼 localStorage에 남은 'en'은 첫 화면을 영어로 만들지 않고 지워진다(새 방문은 늘 한국어).
+  const gone=[],o={location:{search:''},URLSearchParams,localStorage:{getItem:()=>'en',removeItem:x=>gone.push(x)},sessionStorage:{getItem:()=>null}};
+  vm.createContext(o);vm.runInContext(read('i18n.js')+';globalThis.Y={LANG};',o);
+  assert.equal(o.Y.LANG,'ko','a leftover localStorage lang=en no longer opens the site in English');assert.deepEqual(gone,['lang'],'the leftover localStorage lang is removed');}
 assert.equal(X.i18nFill('{n} {n|record|records}',{n:1}),'1 record');assert.equal(X.i18nFill('{n} {n|record|records}',{n:2}),'2 records');
 assert.equal(X.T_('사전에 없는 문장 {n}',{n:1}),'사전에 없는 문장 1','a missing key falls back to the Korean');
 

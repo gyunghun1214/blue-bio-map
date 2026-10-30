@@ -1,7 +1,9 @@
 'use strict';
 // 한국어 / English 화면 전환 (2026-10-24). 번역은 미리 만든 사전(정적 파일)으로만 한다. 화면을 여는 순간 기계 번역을 부르지 않는다.
 // <head>에서 intro.js보다 먼저, defer 없이 읽는다(시작 화면이 이 사전을 쓴다). 한국어 화면에서는 이 파일 하나(몇 KB)만 받는다.
-// - 언어(LANG): 주소 ?lang= → localStorage 'lang' → 'ko'. en·ko 말고는 무시한다. 브라우저 언어로 자동 전환하지 않는다(심사 화면 보호).
+// - 언어(LANG): 주소 ?lang= → sessionStorage 'lang'(이 탭에서 고른 언어) → 'ko'. en·ko 말고는 무시한다. 브라우저 언어로 자동 전환하지 않는다(심사 화면 보호).
+//   새로 들어오면 늘 한국어(2026-10-30): 고른 언어를 localStorage에 남기던 때는 EN을 한 번 누른 브라우저가 다음 방문에도 영어 첫 화면으로 열렸다.
+//   그때 남은 localStorage 'lang'은 읽지 않고 지운다.
 // - 화면 사전(I18N_EN): i18n-en.js. 영어일 때만 문서 파싱 중에 불러온다(document.write라서 app.js보다 먼저 실행된다).
 // - 자료 사전(I18N_DATA): i18n-data-en.json(자료 파일 안 한국어 문장 → 영어). 영어일 때만 받고, app.js가 첫 그림 전에 기다린다.
 // - T_(ko,vars): 한국어 원문 자체가 키다(앞뒤 공백을 지우고 연속 공백은 하나로). ko면 원문, en이면 I18N_EN[키], 없으면 원문.
@@ -14,8 +16,9 @@ const I18N_LANGS=['ko','en'];
 const LANG=(()=>{
   let q=null,s=null;
   try{q=new URLSearchParams(location.search).get('lang');}catch{}
+  try{localStorage.removeItem('lang');}catch{}
   if(I18N_LANGS.includes(q))return q;
-  try{s=localStorage.getItem('lang');}catch{}
+  try{s=sessionStorage.getItem('lang');}catch{}
   return I18N_LANGS.includes(s)?s:'ko';
 })();
 const I18N_EN={}, I18N_DATA={}, I18N_MISS=new Set();
@@ -152,11 +155,11 @@ function i18nMarkKo(root){
 }
 // 숫자 표시: 자릿수·소수점 규칙은 부르는 쪽 그대로, 구분 기호만 언어에 맞춘다(ko는 예전 호출과 같다).
 const fmtNum=(v,loc)=>v.toLocaleString(LANG==='en'?'en-US':loc);
-// 언어 버튼(.lang-switch): 누르면 localStorage에 저장(ko도 저장)하고, 주소의 lang을 바꿔 다시 불러온다.
+// 언어 버튼(.lang-switch): 누르면 sessionStorage에 저장(ko도 저장, 이 탭 안에서만)하고, 주소의 lang을 바꿔 다시 불러온다.
 // 선택한 종·탭·지도 모드는 주소 #s=&v=&b=&t=에 있어 그대로 살아난다. ko는 주소에 lang을 붙이지 않는다.
 function i18nGo(l){
   if(!I18N_LANGS.includes(l)||l===LANG)return;
-  try{localStorage.setItem('lang',l);}catch{}
+  try{sessionStorage.setItem('lang',l);}catch{}
   let q;try{q=new URLSearchParams(location.search);}catch{q=new URLSearchParams();}
   if(l==='en')q.set('lang','en');else q.delete('lang');
   const s=q.toString();location.assign(location.pathname+(s?'?'+s:'')+location.hash);

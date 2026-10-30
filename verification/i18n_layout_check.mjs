@@ -192,7 +192,7 @@ try{
     await until("document.readyState==='complete'&&!document.body.classList.contains('is-loading')",40000);await sleep(2500);
     add(lang,size,'expedition',await measure(['body']));await shot(`${lang}-${size}-expedition`);}
   }
-  await evaluate("try{localStorage.removeItem('lang')}catch{};1");
+  await evaluate("try{sessionStorage.removeItem('lang')}catch{};1");
 }catch(e){console.error('Harness',e.stack);failed=true;}
 finally{
   const secs=Math.round((Date.now()-t0)/1000);
