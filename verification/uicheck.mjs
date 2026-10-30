@@ -2172,7 +2172,7 @@ try{
   const xr=await evaluate("({lang:document.documentElement.lang,doc:document.documentElement.scrollWidth,vw:innerWidth})");
   check('L-2 1440 바다 탐험: English screen, no sideways scroll',xr.lang==='en'&&xr.doc<=xr.vw,JSON.stringify(xr));
   await shot('lang-en-1440-expedition',false);
-  await evaluate("try{localStorage.removeItem('lang')}catch{};1");
+  await evaluate("try{sessionStorage.removeItem('lang')}catch{};1");
   await send('Page.navigate',{url:URL0});await loaded();
   await viewport(1560,900,false);await evaluate("setView('explore');1");
   check('No uncaught page errors or console.error',errors.length===0,errors.join(' | '));
