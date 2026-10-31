@@ -101,10 +101,9 @@
   #method .mt-ix .mt-ix-w{font-size:13px!important}
   #method .mt-origins li b{font-size:15px}
   #method .mt-sec-head.row p{font-size:14px}
-  #method .mt-ck-table,#method .type-table,#method .mt-nat-table{font-size:14px}
-  #method .mt-ck-table thead th,#method .mt-ck-table :is(th,td) small,#method .mt-ck-table .mt-ck-fig,#method .mt-ck-pill,#method .mt-ck-table td:before{font-size:13px}
+  #method .type-table,#method .mt-nat-table{font-size:14px}
   #method .mt-nat-table thead th,#method .mt-nat-table tbody th>small,#method .mt-nat-src,#method .mt-nat-table td:before{font-size:13px}
-  #method .mt-ck-foot,#method .flow-wrap figcaption{font-size:14px}
+  #method .flow-wrap figcaption{font-size:14px}
   #method .mt-nat-lead{font-size:15px}
   /* the flow diagram's SVG text is laid out in SVG coordinates (boxes, arrows): it keeps its sizes, so the token above does
      not reach it */

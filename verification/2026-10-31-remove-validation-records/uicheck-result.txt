@@ -1,0 +1,303 @@
+Using fixture dist/live-snapshot.json
+PASS Desktop live: connection state names the species total (API + catalog counts add up; no 운영 발행/조사 후보 split on screen) 
+PASS G-1 first open: entry screen over the map, map and chatbot inert, loader finished with the species total, counts read from the loaded data 
+PASS G-2 entry button has focus (Enter and Space act on it) and sits inside the first screen 
+PASS G-1b entry screen: the problem sentence alone, unnumbered → the solution naming the species total → the buttons, all in the first screen; 근거 출처 N (from license-matrix.json) heads the way into the source list 
+PASS G-1c no example cards on the entry screen: no .gate-ex or [data-ex] in the DOM, none of their lines in the first screen's text 
+PASS G-1d the globe stays where the title and the buttons put it (the problem → solution block does not push it) 
+PASS G-1e under the first screen: 이렇게 쓸 수 있습니다, four cards (who → what they look at → what they choose) with their ways in, the line under them 
+PASS G-1f the pill under the first screen scrolls down to 이렇게 쓸 수 있습니다 (all of it on screen, its heading focused), the globe riding up with the first screen 
+PASS G-1g 다음 단계 after the uses: 지금 with the species total, then three steps each tagged with its target, all on screen at the end of the scroll 
+PASS G-3 Enter opens the map: entry screen gone, nothing inert, focus in the species search, remembered for this tab 
+PASS Live note uses the loaded species total (not a fixed 2종), no 운영 발행/조사 후보 split 
+PASS List: sea cucumber card shows map records and cells (same numbers as panel) 
+PASS 3.9 MEXT row (맛조개) and 3.15 name-linked RDA rows (고등어·참문어) pass the browser re-check (no 기술 오류) 
+PASS Ecklonia candidate: MBPI 56.8 (shown 57, 4.16) from the ChEMBL dieckol record (4.11: the paper-local ACE cohort is below the stratum minimum) without spatial or combined scores 
+PASS Oyster right panel: 패류 group icon like 홍합, no picture, same icon size and place 
+PASS Oyster: nutrition inventory (144 / 107 / 37 / AFCD 25 / unit 4 / basis 144) stays in the published profile; the detail shows the MFPI line 
+PASS Oyster: aquaculture evidence count 4 stays in the published profile (not drawn, never as production); the MFPI section names the aquaculture stage 
+PASS Oyster: conservation follows the index report (MCUI 10.0), not the older profile 보류 
+PASS Oyster: compounds follow the index report (MBPI 72, 4.16 whole number), separate OBIS 26 kept in details 
+PASS Oyster: MCUI 10 labelled as Korean national assessment with page, never compared with IUCN MCUI 
+PASS Oyster: MBPI 72.2 with origin paper; the potency replication (Miyoshi 1991, synthetic, other origin) stays in the report, not drawn 
+PASS Oyster: MBPI 72 with paper value and AHTPDB attribution (developer-confirmed public database) 
+PASS Sea cucumber: 122 compounds; the quantitative-activity count (0) stays in the profile, not drawn 
+PASS Sea cucumber: no efficacy claim 
+PASS Sea cucumber: CMNPD source and NC-SA terms visible in compound summary 
+PASS Sea cucumber: published occurrence records, 4-degree generalization 
+PASS Sea cucumber: conservation MCUI 80.0 and nutrition MFPI 63.5 from the index report, no stale 미수집/보류 
+PASS Sea cucumber live: reviewed 2026 IUCN EN A2bd is current, 2010 superseded; pilot MCUI 80 with original grade beside it 
+PASS Sea cucumber map: broad 4° cells shown without claiming full distribution 
+PASS Squid: index report replaces the older profile 미수집/미검토 (MFPI 46.1, MBPI 56.9 shown 57 (4.16), MCUI 60.0: 4.12 KOSIS stock-decline signal over IUCN LC 10) 
+PASS No CMNPD raw data / coordinates in page 
+PASS Wakame/Sea cucumber/Squid: cell line and withheld reasons follow the index report, not the older profile 미검토/미수집 
+PASS Compare table: no preliminary-assessment words (4.17: named only in the species detail) 
+PASS Compare table (all pages): every assessments.json score (operating and candidate) plus each value's basis and evidence links; the evidence labels stay in the report 
+PASS Comparison (dark data table): dark panel and header, how-to-read line, no coverage column, keyboard return 
+PASS Compare tab: matrix first, a species picked on the explore map shows in the profile and the ring, point click rings it and fills the profile, basket holds 3 without repeats, mode switch keeps state, filter dims points and counts 
+PASS Compare tab: side-by-side view draws bars only on a shared scale, says 비교집단별 값 / 평가 기반별 값 otherwise, no total or pick; evidence returns to the dialog and to the profile 
+PASS BBVI weight slider: MBPI + MFPI = 1.00 at 21 steps, presets, 탐색 보기 badges (panel, matrix, table, value map), official value beside a re-mix, explore cards follow, moved-type list and dashed points, cell colours follow, unexplored count fixed, link w, official weight restores the first screen 
+PASS MBPI evidence kind: badge (의약 표적 / 기능성 펩타이드 + ACE·XO share) and MBPI-Rx row under MBPI in the profile's 근거 자세히 보기 drawer (final design 2026-10-15), — for no value, inside the drawer 
+PASS Data table (dark, 2026-10-13): one weight slider moves to the tool row and back (MBPI + MFPI = 1.00), four type cards count the filtered species at the current weight and keep only their type (with the group), group counts in the table only, the expanded row sums BBVI at that weight, BBVI sort follows, keyboard toggles a card and a row 
+PASS BBVI weight link: #…&w=0.70 opens at MBPI 0.30 · MFPI 0.70 with the badge; w=abc opens at the official weight and drops w 
+PASS Method tab: the source list is one fold, closed at first and titled 전체 출처 목록 with its entry count, what the entries are and how 근거 출처 relates to them; 자료 출처 보기 opens it and focuses the list 
+PASS Sources: AFCD/CMNPD show their own change notes, not OBIS labels 
+PASS Map view contains every published cell, even on quick species switches 
+PASS 4° cells keep 1° dot density (not a few point-like dots) 
+PASS Live map: every species has a spatial layer 
+PASS Overview zoom shows regional bubbles only; clicking one zooms in to red dots; no per-cell BBVI tag; the map chip names the species, cells, records and years once (type-colour dot); the legend line follows the zoom 
+PASS Every species opens on bubbles (first fit stops at the last bubble zoom); one step in shows dots 
+PASS Species cards (design 2, shape A): 활용 BBVI · 보전 MCUI · verdict on every assessed card from the app’s values and types; MCUI at or over the line in red; the verdict tooltip names the research class; no single-paper mark (the BBVI label stays in the report) 
+PASS Species cards (2026-10-15): no grey evidence lines on the 탐색 후보 cards (items · independent papers · replication · related papers · MBPI stratum) 
+PASS Species cards fit: every card’s text stays inside its border and the species list has no horizontal scroll 
+PASS Species cards keep their padding (2026-10-18): at 1920 and 1586px no text runs into a card’s right padding, the type words sit on their own line uncut, cards share one height, the latin name has its full name as title 
+PASS Detail type chip (design 2): the verdict first, then the type name; its tooltip names the research class 
+PASS Legend (design 2 · 2026-10-15 시안): two rows (the mark and its meaning, then 조사량 and ‘ⓘ 범례’), the rest inside ‘범례’, bottom-left of the free map area beside the species list on its baseline; the map chip sits in the free part, takes no clicks, is not a live region 
+PASS Cell popup opens with confirmed / usable / conservation-priority species counts (three tiles) 
+PASS Value map cell panel shows the same three species counts 
+PASS Live map title names the public-criteria collection 
+PASS Map chip follows the species and the period filter (해삼 4° cells, a candidate without public cells (simulated), one period of 참굴 and back), equal to the numbers under the map 
+PASS Oyster live: map section explains why publishable, exclusions, OBIS 26 shown apart 
+PASS Oyster: text matches its published cell (no "instead of cells" contradiction) 
+PASS Institution checklist: record share by country metadata, Korean ABS act, ABS/BBNJ links, a guide to what to check 
+PASS Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it 
+PASS Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates, ending with the outside feedback link 
+PASS Footer: operator, update rule and the outside feedback link; no form on the site but the guide's question box 
+PASS Method tab: no validation scorecard, no fold 05 (application promise table), no change-history fold and no MCUI SCALE card; folds 01–03; the hero is the first block 
+PASS Method tab: no fold 04 검증 기록 (no table, no 검증 기록 words, folds end at 03, posthoc-scorecard.json not requested); the species detail keeps its MBPI check and preliminary MCUI lines without the 검증 기록 보기 button 
+PASS Sea cucumber detail: checked bioactivity case shown as a source-paper case 
+PASS Core regression: oyster top = map GBIF records · cells · years of the published cells; OBIS 26건/2008–2014 not mixed in 
+PASS Detail: five disclosures closed by default, keyboard-focusable summaries 
+PASS Oyster details: separate OBIS 26건 2008–2014 labelled as a separate collection; no removed OBIS demo comparison 
+PASS Counts agree: footer, list card and panel show the same map record total 
+PASS Matrix: 배치 현황 summarises published vs placed, the four types and the MCUI basis, all counted from the data 
+PASS Matrix: 배치 현황 shows one line instead of the summary in the simulated A–D example 
+PASS Use chips: counts come from adopted evidence (ACE 14 since 4.11 drops 감태's paper-local ACE cohort, virus 6, antibacterial 5 from the 3.18/3.19/4.1/4.13 AMP stratum, resistant 1 from its MRSA rows, anticancer 3 from the 3.21 stratum, antifungal 0, pain 0, omega-3 9 from the 3.17 EPA+DHA rows) plus display-only rows (antioxidant 2, antidiabetic 2), and a trait with none stays a grey disabled 0 chip 
+PASS Use chip filter: the antibacterial chip leaves 꽃게 (4.1), 피조개, 조피볼락, 참굴 and 넙치 (4.13), counts the hidden species and clears back to all 30 
+PASS Display-only chip: 항산화 shows 감태 and 참조기, each card says 참고 표시 and the note 표시 전용 근거 
+PASS Use chips AND: 혈압×고단백 8, 고단백×오메가-3 7, 바이러스×미네랄 5, 혈압×고단백×오메가-3 3, 바이러스×기생충 0 with a turn-last-off button (→ 6) that keeps the map species; badges show what adding a chip leaves; 전체 해제 returns all 30 and the species and map view from before 
+PASS Food chips 8: 고단백 16, 미네랄 11, 칼슘 3, 철분 10, 아연 3, 오메가-3 9, 가식부 100% 9, 상업 양식 18, 시험·연구 양식 9 in that order (2026-10-15: the old 양식 가능 27 split by dist/aquaculture-tier.json); 칼슘 shows 참굴·꼬시래기·멸치 with the rest counted as 기준 미달/근거 미확인; AND 철분×오메가-3 2, 가식부×미네랄 4, 상업 양식×고단백 10, 시험·연구 양식×고단백 3; searching 칼슘 points at the 칼슘 chip; u=calcium_mg,whole restores both chips 
+PASS MBPI strata: chips in three rows (신약 · 기능성(식품 소재) · 식량) with ids and counts (혈압 14 from 4.11, 항산화 2), u=ace / u=antioxidant / u=ace,omega3 links still turn the same chips on; all 30 assessed species have an MBPI stratum (13 ACE 펩타이드; 4.11: 감태 leads with a ChEMBL compound), shown in the detail, not on the 탐색 후보 card (2026-10-15); 미역 detail opens with the AHTPDB stratum and keeps the 19.6–89.2 aggregation range (2026-10-17: the post-hoc result stays in posthoc-scorecard.json); the compare profile's 근거 자세히 보기 drawer names the selected species' stratum too 
+PASS MBPI-Rx (4.10, secondary, exploratory): 참굴 detail line right under MBPI reads 63 · 항균 펩타이드 (62.6, a whole number like MBPI since 2026-10-19) and opens to the criterion; 미역 reads — (never 0); the compare table has one sortable MBPI-Rx column after MBPI (20 values, 10 —, — last both ways); #method-03 names it; the species profile shows it beside MBPI (2026-10-15, checked below); no card, basket, dialog, matrix or map text mentions it 
+PASS Method tab source list names DBAASP and links it (its terms ask for attribution wherever derived data is published) 
+PASS Reference combination: no longer shown; the 18 single-paper BBVI are labelled scores (3.15-3.26 showed 16 reference values; 3.28: 톳 replicated) 
+PASS Axis pairs box removed: the matrix shows every placed species (2026-10-08) 
+PASS OG tags present, absolute og:image, og.png loads 1200x630 ≤300KB 
+PASS BBVI 30 species (1 replicated: 미역 + 29 carrying the single-paper label): weight slider enabled 
+PASS Oyster: no status card list (2026-10-17); its matrix point names only its published matrix type, no evidence-label words 
+PASS No old label words (검증 미통과, 단일 논문, 2026-10-12 any 미통과 such as the MBPI reason's 기준 미통과, 4.16 근거 논문 1편) on any tab 
+PASS Method change ledger: no ledger fold, 방법 결정 link or 팀장 결정 on screen; the record keeps every version (newest = current) and the pre-registered ones; the header chip’s popover shows the freeze date 
+PASS Comparison table: 참굴 MBPI 72 and BBVI 72 (4.16 whole numbers of 72.2/71.9) with the plain label; the report keeps its evidence labels 
+PASS Oyster: placed as a national-MCUI point (tooltip and per-type list) with its type, not listed as a follow-up chip 
+PASS Collection note: no stale "점수는 아직 발행하지 않았습니다" 
+PASS Header/initial copy: one status chip on one line (연구 프로토타입; 2026-10-15 시안: the version in its popover, no "0.2"), no separate team or version badge, no "첫 버전"/"점수를 산출하지 않아" 
+PASS Release stamp: 발표 기준판 2026-10-27 · 커밋 abc1234 once release.json has a commit; the method version while it is empty 
+PASS Empty matrix note links straight to the simulated example (still labelled not real); a placed matrix states its count instead 
+PASS B-1 effort layer off on first open and not in the link; the 조사량 box turns it on 
+PASS Effort shading lighter than before (legend .07/.15/.25/.37 · layer ≤.14) 
+PASS Method tab: back-test cases (3.27) kept in the report and the research snapshot, not on the screen 
+PASS Method tab: no outdated grid-centre wording; cells are 기록이 있는 칸의 위치(넓게 묶음) 
+PASS Merged PR #1: map section reachable; no coverage row or caution box on the detail, the five coverage stages still computed 
+PASS Cell popup: period, sea area, source, licence, spatial resolution 
+PASS Cells are faint dashed hit areas, dots drawn on a non-clickable pane 
+PASS Clicking on a dot opens the cell evidence popup (not blocked by dots) 
+PASS Two periods in one cell: one hit area, click shows both periods with counts, sites and sources 
+PASS Live 미역 N33E126: both published periods in one popup 
+PASS Sea cucumber with valid recheck: pilot MCUI with its basis, the recheck in the drawer evidence and the record, no contradictory or not-Korea wording 
+PASS Sea cucumber with impossible check date: MCUI withheld on the detail and in the drawer, 2026 current-assessment wording kept in the record 
+PASS Cell table: one row per spatial cell, both periods of the shared cell listed 
+PASS Keyboard: Enter on "지도에서 열기" opens the cell popup and moves focus into it 
+PASS A-1 top summary: map records, three axis statuses under 근거 상태, limit line; publish date kept in sources 
+PASS A-2 coverage: no bar on the detail; evidenceCoverage still gives 5 checks, each with a known stage 
+PASS A-4 IUCN: superseded 2013 assessment no longer flagged Needs updating; 2026 assessment cited 
+PASS A-3 popup: GBIF generalisation vocabulary and 4° sensitivity note 
+PASS B-1 popup: effort reference line, read apart from the species records 
+PASS B-1 effort layer drawn from snapshot, non-clickable, dated 
+PASS B-1 effort toggle hides and restores the layer 
+PASS A-5 period filter: 미역 has 전체+2 periods; filtering reduces cells and table; hash records it 
+PASS Period filter relabels the panel summary (selected period vs 전체 기간) 
+PASS A-5 CSV: BOM, header + one line per published period row 
+PASS A-6 info panel and copy-link control present 
+PASS Map wheel: a plain wheel over the map is not taken (page scroll stays) and leaves the zoom 
+PASS Map wheel: a plain wheel shows one hint per burst (Ctrl + 스크롤로 지도를 확대합니다), hidden from screen readers and clicks 
+PASS Map wheel: the hint goes after 1.5 s and is not shown after 3 times 
+PASS Map wheel: Ctrl + wheel over the map is taken (no page zoom) and zooms in one step, the hash m= follows 
+PASS Map wheel: the zoom centres on the cursor (the place under it stays put) 
+PASS Map wheel: ten small touchpad deltas (8 px) add up to one step out 
+PASS Map wheel: a one-line Firefox wheel (deltaMode 1) is one step, ⌘ (metaKey) works too 
+PASS Map wheel: zoom stays within 3–8 (taken at the ends, no page zoom) 
+PASS Map wheel: Ctrl + wheel over the legend floating on the map zooms the map too 
+PASS Map wheel: Ctrl(⌘) + wheel outside the map is left to the browser (page zoom) and keeps the map zoom 
+PASS Map pinch (Safari gesture events, touchpad): scale 1.3 is one step in, a ctrlKey wheel during the gesture adds none 
+PASS Map pinch: gesture events while fingers are down (iPhone/iPad) are left to Leaflet touchZoom (no second zoom) 
+PASS Map wheel (DevTools input): Ctrl + wheel zooms the map, a plain wheel does not, the page scale is unchanged 
+PASS Map wheel: no hint on a touch device 
+PASS Map zoom is described: map aria-label and 그 밖의 기능 list name Ctrl(⌘) + 스크롤 · 터치패드 핀치 · +/− · keyboard; Leaflet keyboard and touch zoom on, scrollWheelZoom off 
+PASS A shared t=value link opens the species view of that species 
+FAIL A-5 shared link restores species, tab and basemap {"s":241776,"v":"compare","b":"basic"}
+PASS Tab change resets the page to the top: compare scrolled down, then the 근거와 방법 tab opens at scrollY 0 
+PASS Species list: no 근거 상태 filter on screen; the 운영 발행 / 조사 후보 split in data.species adds up to all species, every species listed 
+PASS ↻ reload keeps the selected species, use chip and tab 
+PASS A-2 comparison table: one row per species, no coverage column and no 근거 수준 line in the row panels, all species covered; evidence labels still computed 
+PASS Comparison labels remain visible after horizontal scroll and the row panel lines wrap 
+PASS Legend: red dots are a schematic of published cells, not discovery coordinates 
+PASS Legend fold: open on load, the button folds the occurrence legend; value mode shows only the corner icon, ⓘ opens the full legend, Esc and an outside click close it 
+PASS 톳 live: published cells, nutrition/compounds/conservation from the index report 
+PASS Sea cucumber live: published 4-degree cells visible 
+PASS Page shows no raw coordinates 
+PASS Map mode button → value: pressed state, value legend, cell panel, no effort layer, hash t=value 
+PASS Value map opens on the species view: the selected species’ cells only, in its type colour with a dashed border (no yellow), its own chip and numbers; the icon counts the drawn colour; the key line names verdict and type; a card hover outlines that species’ cells 
+PASS Species view per type: 우뭇가사리 red, 홍합 blue, 멍게 in its type colour (4.19: Rapid LC as a preliminary assessment), each only its own cells, never yellow or red dots; ‘모든 종 겹쳐 보기’ pressed twice comes back to the species view 
+PASS Value map cells share one tone: with nothing clicked no cell of any species is drawn as chosen (one border, one fill); a clicked cell gets only a heavier border and keeps the fill, in both views; another species drops the mark 
+PASS ‘모든 종 겹쳐 보기’ (pressed) brings back every species’ cells, the selected species’ cells in yellow; the chip and the key line say so (the checks below run on this view) 
+PASS Value map (3.2): figure-5 legend, type-coloured cells, no 우선 조사 대상 layer on the map (the report keeps the flags) 
+PASS Value map (3.2): the candidate layer label counts the candidates and those on the map; no no-cell list on screen (the file keeps each record status) 
+PASS Value map icon: the 2×2 key bottom-left beside the species list, rows of 44px or more, the legend’s own counts and colours; hover dims the other types and names the type; clicks filter one or two types and clear; the wheel leaves the map alone 
+PASS Value map (4.0): 30종 밖 같은 속 친척 종 list and one purple marker per public cell; each candidate listed by name, record statuses kept in the file 
+PASS Value mode + candidate 시카메굴 with NIBR-point cells: stays in value mode, no no-cell alert 
+PASS Map mode button → occurrence: pressed state, occurrence legend, panel hidden, hash t=occurrence, 시카메굴 cells drawn once 
+PASS B-1 effort layer stays on for a candidate species in occurrence mode 
+PASS Back in occurrence mode: live species redraws cells and the effort layer 
+PASS 피조개: every reviewed 4° cell drawn once, worded as cells with records 
+PASS 피조개 pre-2000 cell popup: historical record marked, outside-EEZ flag as in the release 
+PASS All 22 candidates: detail opens and the map draws exactly the reviewed cells or states the withheld reasons 
+PASS Repeated toggling leaves a single consistent value state 
+PASS Back to occurrence mode restores the live map 
+PASS Shared link with t=value restores the value map and its pressed button 
+PASS Comparison table: one row per species, header sorts by mouse and keyboard (aria-sort, focus kept, high ↔ low → default), sort survives a redraw, sticky header and first column, a picked species is scrolled into the box and highlighted 
+PASS Basemap switch: only 위성 and 수심, no 기본 button 
+FAIL Satellite basemap: NASA GIBS tiles load, cells kept, bright style 
+FAIL Depth basemap: GEBCO tiles load, cells kept 
+PASS Tile failure falls back to the 1:10m outline map with a message: no external tiles, no button pressed, cells kept 
+FAIL A browser that stored 기본 before 2026-10-03 opens satellite, the default 
+PASS Page width 390px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page) 
+PASS Design 2 390px: the header fits; the map chip is hidden (the sheet head shows the species) 
+PASS Matrix 390px: '활용가치 BBVI →' on one line under the plot and '보전 시급성 MCUI ↑' left of it (above it on phones), each ≥8px from every tick number, the plot and the 가상 예시 flag 
+PASS Compare 390px (design 3): plain and formal names in all 4 quadrants, no overlapping label/button/'N종 밀집' box (참굴, 살오징어 picked), a box button (when drawn) opens its list and a row picks that species, empty basket is one row of 3 free slots in the page clear of 멍이 
+PASS Page width 768px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page) 
+PASS Design 2 768px: the header fits; the map chip shows in one line, clear of the map controls and panels 
+PASS Matrix 768px: '활용가치 BBVI →' on one line under the plot and '보전 시급성 MCUI ↑' left of it (above it on phones), each ≥8px from every tick number, the plot and the 가상 예시 flag 
+PASS Page width 1280px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page) 
+PASS Design 2 1280px: the header fits; the map chip shows in one line, clear of the map controls and panels 
+PASS Matrix 1280px: '활용가치 BBVI →' on one line under the plot and '보전 시급성 MCUI ↑' left of it (above it on phones), each ≥8px from every tick number, the plot and the 가상 예시 flag 
+PASS Page width 1560px: explore/compare/method never wider than the viewport; table scrolls in its own box (no overflow-x:hidden on page) 
+PASS Design 2 1560px: the header fits; the map chip shows in one line, clear of the map controls and panels 
+PASS Matrix 1560px: '활용가치 BBVI →' on one line under the plot and '보전 시급성 MCUI ↑' left of it (above it on phones), each ≥8px from every tick number, the plot and the 가상 예시 flag 
+PASS Compare 1560px (design 3): plain and formal names in all 4 quadrants, no overlapping label/button/'N종 밀집' box (참굴, 살오징어 picked), a box button (when drawn) opens its list and a row picks that species, empty basket is one row of 3 free slots in the page clear of 멍이 
+PASS Matrix quadrant names 360px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click 
+PASS Matrix quadrant names 390px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click 
+PASS Matrix quadrant names 768px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click 
+PASS Matrix quadrant names 1100px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click 
+PASS Matrix quadrant names 1440px (5 groups × 2 weights): both lines whole, clear of points/group buttons/shown names, in their quadrant or outside the plot, unmoved when their corner is clear, points and text unchanged, never take a click 
+PASS Flow 1 desktop: 참굴 MFPI 71.6 above the map and in the panel 
+PASS Flow 2 desktop: 해삼 MCUI 80, IUCN EN, published 4° cells 
+PASS Flow 3 desktop: 피조개 reviewed 4° cells worded as cells with records, pre-2000 records flagged 
+PASS Flow 4 desktop: 시카메굴 draws its NIBR-point cells and credits NIBR 
+PASS Flow 5 desktop: comparison shows all 30 species in one table, page never overflows 
+PASS Flow 6 desktop: map mode value → occurrence keeps selection and scroll position 
+PASS Evidence desktop: all 30×5 comparison buttons open their own evidence (incl. the last columns) and return to scroll and focus 
+PASS Evidence desktop: last-column MBPI evidence scrolled into view 
+PASS Evidence desktop: occurrence button draws the cells and lists period, sea area, source, licence and CSV columns 
+PASS Flow 1 mobile: 참굴 MFPI 71.6 above the map and in the panel 
+PASS Flow 2 mobile: 해삼 MCUI 80, IUCN EN, published 4° cells 
+PASS Flow 3 mobile: 피조개 reviewed 4° cells worded as cells with records, pre-2000 records flagged 
+PASS Flow 4 mobile: 시카메굴 draws its NIBR-point cells and credits NIBR 
+PASS Flow 5 mobile: comparison shows all 30 species in one table, page never overflows 
+PASS Flow 6 mobile: map mode value → occurrence keeps selection and scroll position 
+PASS Evidence mobile: all 30×5 comparison buttons open their own evidence (incl. the last columns) and return to scroll and focus 
+PASS Evidence mobile: last-column MBPI evidence scrolled into view 
+PASS Evidence mobile: occurrence button draws the cells and lists period, sea area, source, licence and CSV columns 
+PASS Wide 1440px (mobile-compact): every fold open with no 더 보기 button, map notes in place, 읽는 법 ⓘ opens its popup and no sheet 
+PASS Wide 1440px (mobile-dedupe): no 자세히 보기 button, the nine English eyebrow labels and every repeated sentence drawn as before 
+PASS Wide 1440px (map attribution): no ⓘ button, the credit line shows at the map bottom as before 
+PASS Mobile 390×844 first screen: map ≥200px, then the sheet with the selected summary, search, 활용 특성 chips (species cards just below); warning kept; legend folded; tabs = fixed bottom bar with full names + icons, 바다 탐험 beside them 
+PASS Mobile sheet: the handle button opens the sheet over the pinned map and closes it again (aria-expanded follows), no horizontal overflow 
+PASS Mobile map full: dragging the sheet handle down leaves the handle and species name above the tab bar and grows the map; dragging up, the map button, a tap on the handle and ↓/↑ on the handle switch it the same way 
+PASS Mobile map attribution: credits folded under an ⓘ button (배경 지도 출처 보기, aria-expanded) above the sheet edge, clear of 범례 and the zoom buttons; tap opens a ≥13px bubble inside the map, Esc / map tap / second tap close it; the text follows 위성 ↔ 수심 
+PASS BBVI weight panel at 390px: popover, presets and the weight status line stay inside the screen, no horizontal overflow 
+PASS Mobile: switching species keeps list/page scroll, selection and open disclosures; mode round-trip does not jump 
+PASS Mobile 390px mobile-sea-cucumber: no horizontal overflow 
+PASS Mobile 390px mobile-oyster: no horizontal overflow 
+PASS Mobile 390px 톳 with cells: no horizontal overflow 
+PASS Mobile 390px 근거와 방법: scrolled 1500px down, the bottom tab bar and 바다 탐험 stay at the bottom of the screen 
+PASS Mobile 390px map cell popup: inside the map stage, close (×) ≥40px and not covered, map buttons hidden only while it is open 
+PASS Mobile 390px species detail sheet: the summary button opens the evidence sheet over the whole screen (focus on ✕, page not moved); Esc closes it and focus returns 
+PASS Mobile 390px data table: one card per species, no cell outside the screen, no sideways scroll in its box or the page 
+PASS Mobile 390px map guide: the four notes are out of the flow under the map; ⓘ 범례 opens the 지도 읽는 법 sheet (dialog, ≤75% high, ✕ ≥44px) with all four shown 
+PASS Mobile 390px map guide: Esc closes it, the notes go back where they were (explore text as before), focus returns to ⓘ 범례 
+PASS Mobile 390px map guide (활용 × 보전): 읽는 법 ⓘ opens the sheet with the type key, Tab stays inside, ✕ and the backdrop close it with focus back on ⓘ 
+PASS Mobile 390px folds (비교와 지표 · 근거와 방법): all closed at first, named 더 보기 with no text of their own, ≥44px, tap opens (더 보기 → 접기) 
+PASS Mobile 390px Korean (mobile-dedupe): no English eyebrow label left (only index/source names and numbers), MFPI·MBPI·MCUI chips and step numbers 01–03 still shown 
+PASS Mobile 390px Korean (mobile-dedupe): every dedupe group shows its sentence at most once per screen, hidden copies 0, the base place still shows it 
+PASS Mobile 390px Korean (mobile-dedupe): the four 자세히 보기 buttons have a name and ≥44px, open the target tab with the target in view (folded text opened, flash), the map one opens the 지도 읽는 법 sheet; no URL hash 
+PASS M-1 멍이 default place unchanged (bottom 16px, left of the zoom control on the map tab); keyboard Enter opens, Esc closes and returns focus 
+PASS M-2 mouse drag moves 멍이 to the drop height at the nearer side edge without opening the chat or moving the map 
+PASS M-3 a press that moves under the threshold still opens the chat, beside 멍이, on screen and not covering it 
+PASS M-4 the drop point survives a reload; a small window keeps 멍이 at the same height share inside, a big one puts it back, the saved value unchanged 
+PASS M-5 "멍이 원래 자리로" returns to the default place, clears the saved value, hides itself and keeps the chat open 
+PASS M-5b keyboard: Shift+↑ moves 멍이 16px up, Shift+← to the left edge, Shift+Home back to the default place with the saved value cleared; the chat stays shut 
+PASS M-6 phone 390px: 멍이 is 56px; a finger drag moves 멍이 to the nearer side edge without scrolling the page, a tap opens the bottom sheet, no horizontal overflow 
+PASS M-6b phone 390px: scrolling leaves 멍이 as it is (not dimmed, same left/top, right edge kept, no horizontal overflow, no move aside after the scroll); a tap on it opens the chat at once 
+PASS M-7 멍이 breathes and blinks in the button; a press plays the hop first and opens the chat after it, where the welcome is spoken (header and its bubble) 
+PASS M-8 an FAQ answer: header and the newest bubble talk (only that bubble moves, the welcome one stops), then hop smiling, then the plain answer face breathing again 
+PASS M-9 reduced motion: a press opens the chat at once with no hop or talking and no running animation; an unknown answer still shows the drooped siphons 
+PASS M-10 guide helper without AI (no /api/ask here): no question sent, judge questions read values from the page data, an unmatched question points to the three tabs (아래 탭에서 직접 찾아보거나…) with three tab links 
+PASS M-11 guide helper: a tab link opens that tab 
+PASS M-12 guide helper with AI (mocked /api/ask): note says AI answers when no prepared answer, FAQ first (no question sent), an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the note returns without AI 
+PASS Flow 8 desktop: API unreachable → "연결 실패" with the dated saved snapshot and separate counts 
+PASS API failure and no snapshot: "자료를 불러오지 못했어요 · ↻ 다시 시도" with the cause, no stale data, and the retry button reloads 
+PASS Flow 7 desktop: empty API (200 []) → connected, the 22 shown are the public-data species (none published from the API); no snapshot, no failure 
+PASS v2 keys absent: falls back to production_summary, no fake 0/미수집 
+PASS Flow 8 mobile: API unreachable → "연결 실패" with the dated saved snapshot and separate counts 
+PASS Flow 7 mobile: empty API (200 []) → connected, the 22 shown are the public-data species (none published from the API); no snapshot, no failure 
+PASS G-4 a shared link (#s=…) opens the map directly, even in a tab that never entered 
+PASS G-11 F5 on 비교와 지표: the entry screen from the loader (not ready in its first seconds), not entered yet, the address keeps the species and the map view but not the tab, the page behind at the top 
+PASS G-11 the reload runs the whole first-visit piece (8 s from its first paint) and the screen stays up until it is ready 
+PASS G-11 Enter (바다 탐색하기) after the reload: 탐색 지도 with the species and the map view from before, entered again, the scroll given back 
+PASS G-11 F5 on 탐색 지도, then 지표 살펴보기: 비교와 지표 with the same species (the way in picks the tab) 
+PASS G-11 after entering, another page and Back: the map directly, no entry screen 
+PASS G-11 the app's own reload (its one-time mark) opens the map as the load before it did, no entry screen, the mark used up 
+PASS G-5 phone 390px: entry screen shown, button inside the first screen, no horizontal overflow 
+PASS G-5e phone 390px: the contest line (세계해양포럼) is hidden, its words still in the page; no challenges line 
+PASS G-5c phone 390px: 이렇게 쓸 수 있습니다 after the globe, before the source strip, the cards inside the width, nothing sideways 
+PASS G-5d phone 390px: 다음 단계 after the uses and before the source strip, the four steps one under another inside the width 
+PASS G-5 phone: the button opens the map 
+PASS G-9 phone 375×667: the problem sentence, the solution and the button inside the first screen, no sideways scroll 
+PASS G-5b 전체 출처·방법 보기 opens 근거와 방법 with the source fold open and the list focused 
+PASS G-8 no example cards: the entry screen holds no species link (#s=…) and no card list 
+PASS G-10 use card: ‘보전 연구 우선 검토’ 표 보기 opens 비교와 지표 as the data table of that type, scrolled to it, and leaves the entry screen 
+PASS G-10 use card: ‘활용 연구 검토’ 표 보기 opens 비교와 지표 as the data table of that type, scrolled to it, and leaves the entry screen 
+PASS G-6 failed load: entry screen still opens, says so, and Enter still enters 
+PASS G-6 failed load: after Enter the map page shows its own error 
+PASS G-7 logo: one link round the mark and the words, pointer cursor, named for where it goes 
+PASS G-7 explore (sea cucumber chosen, shared-link hash): clicking the logo mark shows the globe entry screen, not the map; the chosen species is gone 
+PASS G-7 Enter from that screen opens the map as on a first visit (no species from before, explore tab) 
+PASS G-7 비교와 지표: clicking the logo words shows the globe entry screen 
+PASS G-7 근거와 방법: the logo by keyboard (focus, Enter) shows the globe entry screen 
+PASS G-7 the logo signal is used once: the address opened again after coming back opens the map directly 
+PASS G-7 phone 390px (비교와 지표): tapping the logo shows the globe entry screen 
+PASS T-1 390px entry screen: text under 18px is only 13·14·15·16·17px, none under 13px 
+PASS R-1 390px explore: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS R-1 390px compare: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS R-1 390px method: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS R-1 1440px explore: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS R-1 1440px compare: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS R-1 1440px method: no text under 12px, English originals in lang blocks, first MFPI·MBPI·BBVI·MCUI named in Korean 
+PASS T-1 390px explore: text under 18px is only 13·14·15·16·17px, none under 13px 
+PASS T-1 390px compare: text under 18px is only 13·14·15·16·17px, none under 13px 
+PASS T-1 390px method: text under 18px is only 13·14·15·16·17px, none under 13px 
+PASS T-2 390px matrix: point names are hidden except the selected one; tapping a point shows only its name, on the same place; a basket point shows its name 
+PASS L-1 1440 explore: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 1440 compare: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 1440 method: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 1280x720 explore: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 1280x720 compare: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 1280x720 method: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 390 explore: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 390 compare: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 390 method: English screen (lang=en, EN pressed), no sideways scroll, no text under 12px 
+PASS L-1 390 English (mobile-dedupe): nine eyebrow labels shown, no 자세히 보기 button, no repeated sentence hidden 
+PASS L-2 1440 바다 탐험: English screen, no sideways scroll 
+PASS No uncaught page errors or console.error 
+296 PASS / 4 FAIL
+EXIT 1
