@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320" role="img" aria-labelledby="t d" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+<title id="t">날마다 main 브랜치에 들어간 커밋 (2026-09-22 ~ 10-30, 합계 1,097개)</title>
+<desc id="d">하루 최대 169개(10-15). 표시한 날: 09/25 첫 공개 배포, 10/02 첫 사후 검증, 10/04 첫 사전 등록, 10/15 검증 기록 표, 10/27 발표 기준판.</desc>
+<rect width="900" height="320" fill="#ffffff"/>
+<text x="44" y="34" font-size="17" font-weight="700" fill="#1f2328">날마다 main 브랜치에 들어간 커밋</text>
+<text x="44" y="58" font-size="13" fill="#59636e">2026-09-22 ~ 10-30 · 커밋 1,097개 · 병합된 PR 239개 · 한국 시간 기준</text>
+<line x1="44" x2="884" y1="270.0" y2="270.0" stroke="#d1d9e0" stroke-width="1"/>
+<text x="36" y="274.0" font-size="12" text-anchor="end" fill="#818b98">0</text>
+<line x1="44" x2="884" y1="230.5" y2="230.5" stroke="#d1d9e0" stroke-width="1"/>
+<text x="36" y="234.5" font-size="12" text-anchor="end" fill="#818b98">50</text>
+<line x1="44" x2="884" y1="191.0" y2="191.0" stroke="#d1d9e0" stroke-width="1"/>
+<text x="36" y="195.0" font-size="12" text-anchor="end" fill="#818b98">100</text>
+<line x1="44" x2="884" y1="151.5" y2="151.5" stroke="#d1d9e0" stroke-width="1"/>
+<text x="36" y="155.5" font-size="12" text-anchor="end" fill="#818b98">150</text>
+<line x1="44" x2="884" y1="112.0" y2="112.0" stroke="#d1d9e0" stroke-width="1"/>
+<text x="36" y="116.0" font-size="12" text-anchor="end" fill="#818b98">200</text>
+<line x1="119.4" x2="119.4" y1="89" y2="270" stroke="#9198a1" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="123.4" y="84" font-size="12" text-anchor="start" fill="#59636e">9/25 첫 공개 배포</text>
+<line x1="270.2" x2="270.2" y1="89" y2="270" stroke="#9198a1" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="274.2" y="84" font-size="12" text-anchor="start" fill="#59636e">10/2 첫 사후 검증</text>
+<line x1="313.2" x2="313.2" y1="105" y2="270" stroke="#9198a1" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="317.2" y="100" font-size="12" text-anchor="start" fill="#59636e">10/4 첫 사전 등록</text>
+<line x1="550.2" x2="550.2" y1="89" y2="270" stroke="#9198a1" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="554.2" y="84" font-size="12" text-anchor="start" fill="#59636e">10/15 검증 기록 표</text>
+<line x1="808.6" x2="808.6" y1="89" y2="270" stroke="#9198a1" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="804.6" y="84" font-size="12" text-anchor="end" fill="#59636e">10/27 발표 기준판</text>
+<path d="M46.0,270.0 V270.0 Q46.0,269.2 46.8,269.2 H62.7 Q63.5,269.2 63.5,270.0 V270.0 Z" fill="#2a78d6"><title>09-22 커밋 1개</title></path>
+<path d="M67.5,270.0 V270.0 Q67.5,269.2 68.3,269.2 H84.3 Q85.1,269.2 85.1,270.0 V270.0 Z" fill="#2a78d6"><title>09-23 커밋 1개</title></path>
+<path d="M89.1,270.0 V251.1 Q89.1,247.1 93.1,247.1 H102.6 Q106.6,247.1 106.6,251.1 V270.0 Z" fill="#2a78d6"><title>09-24 커밋 29개</title></path>
+<path d="M110.6,270.0 V221.9 Q110.6,217.9 114.6,217.9 H124.2 Q128.2,217.9 128.2,221.9 V270.0 Z" fill="#2a78d6"><title>09-25 커밋 66개</title></path>
+<path d="M132.2,270.0 V251.9 Q132.2,247.9 136.2,247.9 H145.7 Q149.7,247.9 149.7,251.9 V270.0 Z" fill="#2a78d6"><title>09-26 커밋 28개</title></path>
+<path d="M153.7,270.0 V230.6 Q153.7,226.6 157.7,226.6 H167.2 Q171.2,226.6 171.2,230.6 V270.0 Z" fill="#2a78d6"><title>09-27 커밋 55개</title></path>
+<path d="M175.2,270.0 V270.0 Q175.2,267.6 177.6,267.6 H190.4 Q192.8,267.6 192.8,270.0 V270.0 Z" fill="#2a78d6"><title>09-28 커밋 3개</title></path>
+<path d="M196.8,270.0 V270.0 Q196.8,268.4 198.3,268.4 H212.7 Q214.3,268.4 214.3,270.0 V270.0 Z" fill="#2a78d6"><title>09-29 커밋 2개</title></path>
+<path d="M218.3,270.0 V270.0 Q218.3,266.1 222.3,266.1 H231.9 Q235.8,266.1 235.8,270.0 V270.0 Z" fill="#2a78d6"><title>09-30 커밋 5개</title></path>
+<path d="M239.8,270.0 V223.4 Q239.8,219.4 243.8,219.4 H253.4 Q257.4,219.4 257.4,223.4 V270.0 Z" fill="#2a78d6"><title>10-01 커밋 64개</title></path>
+<path d="M261.4,270.0 V201.3 Q261.4,197.3 265.4,197.3 H274.9 Q278.9,197.3 278.9,201.3 V270.0 Z" fill="#2a78d6"><title>10-02 커밋 92개</title></path>
+<path d="M282.9,270.0 V255.0 Q282.9,251.0 286.9,251.0 H296.5 Q300.5,251.0 300.5,255.0 V270.0 Z" fill="#2a78d6"><title>10-03 커밋 24개</title></path>
+<path d="M304.5,270.0 V250.3 Q304.5,246.3 308.5,246.3 H318.0 Q322.0,246.3 322.0,250.3 V270.0 Z" fill="#2a78d6"><title>10-04 커밋 30개</title></path>
+<path d="M326.0,270.0 V252.7 Q326.0,248.7 330.0,248.7 H339.5 Q343.5,248.7 343.5,252.7 V270.0 Z" fill="#2a78d6"><title>10-05 커밋 27개</title></path>
+<path d="M347.5,270.0 V266.1 Q347.5,262.1 351.5,262.1 H361.1 Q365.1,262.1 365.1,266.1 V270.0 Z" fill="#2a78d6"><title>10-06 커밋 10개</title></path>
+<path d="M369.1,270.0 V270.0 Q369.1,268.4 370.7,268.4 H385.0 Q386.6,268.4 386.6,270.0 V270.0 Z" fill="#2a78d6"><title>10-07 커밋 2개</title></path>
+<path d="M390.6,270.0 V235.3 Q390.6,231.3 394.6,231.3 H404.2 Q408.2,231.3 408.2,235.3 V270.0 Z" fill="#2a78d6"><title>10-08 커밋 49개</title></path>
+<path d="M412.2,270.0 V266.9 Q412.2,262.9 416.2,262.9 H425.7 Q429.7,262.9 429.7,266.9 V270.0 Z" fill="#2a78d6"><title>10-09 커밋 9개</title></path>
+<path d="M433.7,270.0 V270.0 Q433.7,269.2 434.5,269.2 H450.4 Q451.2,269.2 451.2,270.0 V270.0 Z" fill="#2a78d6"><title>10-10 커밋 1개</title></path>
+<path d="M455.2,270.0 V247.9 Q455.2,243.9 459.2,243.9 H468.8 Q472.8,243.9 472.8,247.9 V270.0 Z" fill="#2a78d6"><title>10-11 커밋 33개</title></path>
+<path d="M476.8,270.0 V270.0 Q476.8,268.4 478.3,268.4 H492.7 Q494.3,268.4 494.3,270.0 V270.0 Z" fill="#2a78d6"><title>10-12 커밋 2개</title></path>
+<path d="M498.3,270.0 V244.0 Q498.3,240.0 502.3,240.0 H511.8 Q515.8,240.0 515.8,244.0 V270.0 Z" fill="#2a78d6"><title>10-13 커밋 38개</title></path>
+<path d="M519.8,270.0 V232.9 Q519.8,228.9 523.8,228.9 H533.4 Q537.4,228.9 537.4,232.9 V270.0 Z" fill="#2a78d6"><title>10-14 커밋 52개</title></path>
+<path d="M541.4,270.0 V140.5 Q541.4,136.5 545.4,136.5 H554.9 Q558.9,136.5 558.9,140.5 V270.0 Z" fill="#2a78d6"><title>10-15 커밋 169개</title></path>
+<path d="M562.9,270.0 V265.3 Q562.9,261.3 566.9,261.3 H576.5 Q580.5,261.3 580.5,265.3 V270.0 Z" fill="#2a78d6"><title>10-16 커밋 11개</title></path>
+<path d="M584.5,270.0 V256.6 Q584.5,252.6 588.5,252.6 H598.0 Q602.0,252.6 602.0,256.6 V270.0 Z" fill="#2a78d6"><title>10-17 커밋 22개</title></path>
+<path d="M606.0,270.0 V240.8 Q606.0,236.8 610.0,236.8 H619.5 Q623.5,236.8 623.5,240.8 V270.0 Z" fill="#2a78d6"><title>10-18 커밋 42개</title></path>
+<path d="M627.5,270.0 V267.7 Q627.5,263.7 631.5,263.7 H641.1 Q645.1,263.7 645.1,267.7 V270.0 Z" fill="#2a78d6"><title>10-19 커밋 8개</title></path>
+<path d="M649.1,270.0 V260.6 Q649.1,256.6 653.1,256.6 H662.6 Q666.6,256.6 666.6,260.6 V270.0 Z" fill="#2a78d6"><title>10-20 커밋 17개</title></path>
+<path d="M670.6,270.0 V239.2 Q670.6,235.2 674.6,235.2 H684.2 Q688.2,235.2 688.2,239.2 V270.0 Z" fill="#2a78d6"><title>10-21 커밋 44개</title></path>
+<path d="M692.2,270.0 V268.5 Q692.2,264.5 696.2,264.5 H705.7 Q709.7,264.5 709.7,268.5 V270.0 Z" fill="#2a78d6"><title>10-22 커밋 7개</title></path>
+<path d="M735.2,270.0 V264.5 Q735.2,260.5 739.2,260.5 H748.8 Q752.8,260.5 752.8,264.5 V270.0 Z" fill="#2a78d6"><title>10-24 커밋 12개</title></path>
+<path d="M756.8,270.0 V207.6 Q756.8,203.6 760.8,203.6 H770.3 Q774.3,203.6 774.3,207.6 V270.0 Z" fill="#2a78d6"><title>10-25 커밋 84개</title></path>
+<path d="M778.3,270.0 V249.5 Q778.3,245.5 782.3,245.5 H791.8 Q795.8,245.5 795.8,249.5 V270.0 Z" fill="#2a78d6"><title>10-26 커밋 31개</title></path>
+<path d="M821.4,270.0 V268.5 Q821.4,264.5 825.4,264.5 H834.9 Q838.9,264.5 838.9,268.5 V270.0 Z" fill="#2a78d6"><title>10-28 커밋 7개</title></path>
+<path d="M842.9,270.0 V266.1 Q842.9,262.1 846.9,262.1 H856.5 Q860.5,262.1 860.5,266.1 V270.0 Z" fill="#2a78d6"><title>10-29 커밋 10개</title></path>
+<path d="M864.5,270.0 V266.1 Q864.5,262.1 868.5,262.1 H878.0 Q882.0,262.1 882.0,266.1 V270.0 Z" fill="#2a78d6"><title>10-30 커밋 10개</title></path>
+<text x="550.2" y="130.5" font-size="12" font-weight="700" text-anchor="middle" fill="#1f2328">169</text>
+<line x1="44" x2="884" y1="270" y2="270" stroke="#818b98" stroke-width="1"/>
+<text x="54.8" y="290" font-size="12" text-anchor="middle" fill="#818b98">9/22</text>
+<text x="184.0" y="290" font-size="12" text-anchor="middle" fill="#818b98">9/28</text>
+<text x="334.8" y="290" font-size="12" text-anchor="middle" fill="#818b98">10/5</text>
+<text x="485.5" y="290" font-size="12" text-anchor="middle" fill="#818b98">10/12</text>
+<text x="636.3" y="290" font-size="12" text-anchor="middle" fill="#818b98">10/19</text>
+<text x="787.1" y="290" font-size="12" text-anchor="middle" fill="#818b98">10/26</text>
+<text x="884" y="312" font-size="12" text-anchor="end" fill="#818b98">git log에서 만듦 · docs/images/build_activity_chart.py</text>
+</svg>

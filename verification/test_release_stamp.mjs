@@ -21,8 +21,9 @@ assert.equal(t({...rel,commit:'def5678',note:'11-02 오탈자 수정'}),'발표 
 assert.match(app,/function renderPopVersion\(\)\{\n  const info=data\?\.assessmentInfo;\n  \$\('pop-version'\)\.textContent=releaseText\(releaseInfo\)\|\|\(data&&info\?\.version\?`\$\{released\(info\)\?'':'시범 '\}\$\{methodName\(info\.version\)\}/,'the method version by its Korean name (site v4 08)');
 assert.match(app,/fetch\('release\.json'\)\.then\(r=>r\.ok\?r\.json\(\):null\)\.then\(r=>\{releaseInfo=r;renderPopVersion\(\);\},\(\)=>\{\}\);/);
 assert.equal((app.match(/renderPopVersion\(\);/g)||[]).length,2,'drawn with the status chips and when the file arrives');
-// README: the steps before submission (one file) and the freeze after it; the tag is the team's to make
-const readme=fs.readFileSync(new URL('../README.md',import.meta.url),'utf8');
+// Development log (README until 2026-10-31, now docs/development-log.md): the steps before submission (one file) and the
+// freeze after it; the tag is the team's to make
+const readme=fs.readFileSync(new URL('../docs/development-log.md',import.meta.url),'utf8');
 const sec=readme.slice(readme.indexOf('## 발표 기준판과 제출 뒤 동결'),readme.indexOf('## 자료 사용'));
-for(const w of ['dist/release.json','final-2026-10-27','main에 병합하지 않는다','"note"','?fresh='])assert.ok(sec.includes(w),`README freeze section names ${w}`);
+for(const w of ['dist/release.json','final-2026-10-27','main에 병합하지 않는다','"note"','?fresh='])assert.ok(sec.includes(w),`development log freeze section names ${w}`);
 console.log('PASS: release stamp from release.json (empty commit: the method version as before), its format, README steps and freeze');

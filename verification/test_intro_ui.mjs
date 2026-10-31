@@ -331,7 +331,8 @@ assert.match(xjs,/closest\?\.\('a\.x-brand'\)[\s\S]{0,140}sessionStorage\.setIte
 const gateHtml=html.slice(html.indexOf('<div id="site-gate"'),html.indexOf('<header'));
 const text=gateHtml.replace(/<[^>]+>/g,' ')+intro.match(/'[^']*[가-힣][^']*'|`[^`]*[가-힣][^`]*`/g).join(' ');
 for(const w of ['서식','살고 있','분포한','최초','완벽','모든 해양생물','OceanX','oceanx'])assert.ok(!text.includes(w),`no "${w}" in the entry screen`);
-const readme=fs.readFileSync(new URL('../README.md',import.meta.url),'utf8');
+// the development log: README until 2026-10-31, now docs/development-log.md (the same text)
+const readme=fs.readFileSync(new URL('../docs/development-log.md',import.meta.url),'utf8');
 // 2026-10-13: names may be links, and a name may come from the method tab (국가표준식품성분 DB is named there and in
 // assessments.json, not in README/app.js); still only sources the site really cites, still at least four
 const method=html.slice(html.indexOf('<section id="method"'),html.indexOf('</section>',html.indexOf('<section id="method"')));
