@@ -325,3 +325,8 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-score{align-content:start}
 /* L4: 넓은 화면 상세의 닫기(×)가 화면 오른쪽 위 모서리에 거의 붙어 있었다 */
 @media (min-width:761px){.x-close{margin:18px 18px 0 0}}
+/* 2026-10-31 도연 피드백 3: 카드 이름 아래 이 생물이 무엇인지 1~2문장(이름과 같은 단계에 나타나고 점수는 그다음). 두 칸 격자의
+   그림 밑으로 끼지 않게 카드 폭 전체를 쓴다. 자세히 보기의 '어떤 생물인가요' 칸은 같은 글과 출처 링크. */
+.x-about{grid-column:1/-1;margin:0;font-size:15px;line-height:1.6;color:var(--ink)}
+.x-about-sec p{margin:0}
+.x-about-sec .x-src{margin-top:8px}

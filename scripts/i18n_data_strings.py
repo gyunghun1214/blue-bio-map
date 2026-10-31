@@ -28,7 +28,8 @@ DICT = DIST / "i18n-data-en.json"
 REVIEW = ROOT / "docs" / "i18n-review.csv"
 CODE = ("app.js", "live-data.js", "intro.js", "operations.js", "expedition.js", "chatbot.js")
 # 한국어 화면 전용 사전(영어 원문 → 한국어)과 언어 사전 자체는 대상이 아니다
-SKIP = {"screen-text-ko.json", "source-terms-ko.json", "i18n-data-en.json", "species-names-en.json"}
+# expedition-about.json(2026-10-31, 바다 탐험 생물 설명)은 한 항목에 한국어(ko)·영어(en)를 함께 담아 화면이 언어로 고른다
+SKIP = {"screen-text-ko.json", "source-terms-ko.json", "i18n-data-en.json", "species-names-en.json", "expedition-about.json"}
 HANGUL = re.compile("[가-힣]")
 SCHEMA = "i18n-data-en-1"
 NOTE = ("영어 화면 자료 사전. 키 = 정규화한 한국어 원문(자료 파일), 값 = 영어. scripts/i18n_data_strings.py가 관리한다. "

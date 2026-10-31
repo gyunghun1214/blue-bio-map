@@ -78,6 +78,7 @@ jobs:
           node --check verification/i18n_layout_check.mjs
           node --check verification/period_chip_check.mjs
           node verification/test_expedition_ui.mjs
+          node verification/test_expedition_about.mjs
           node --check dist/intro.js
           node verification/test_intro_ui.mjs
           node verification/test_shared_link.mjs

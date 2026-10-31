@@ -1803,10 +1803,13 @@ function stockSpark(d,rule){
   const band=years=>{const i=ys.indexOf(years[0]),k=ys.indexOf(years.at(-1));return `<rect class="sd-win" x="${(x(i)-3).toFixed(1)}" y="${T-4}" width="${(x(k)-x(i)+6).toFixed(1)}" height="${H-T-B+8}" rx="3"/>`;};
   const pts=c.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
   const last=`${x(n-1).toFixed(1)},${y(c[n-1]).toFixed(1)}`;
+  // 2026-10-31 (도연 피드백 1) 연도 간격이 22.4라 가운데 맞춤인 마지막 연도(폭 약 31)와 '25p'(약 23)가 4px 겹쳤다. 잠정치가 있을 때만
+  // 마지막 연도 글자를 그 점에서 6 오른쪽에 오른쪽 끝을 맞춰 둔다(13px에서 간격 약 5). 잠정치가 없으면 전과 같다.
+  const lastYear=Number.isFinite(ref)?`<text x="${(x(n-1)+6).toFixed(1)}" y="${H-3}" text-anchor="end">${ys.at(-1)}</text>`:`<text x="${x(n-1).toFixed(1)}" y="${H-3}" text-anchor="middle">${ys.at(-1)}</text>`;
   const p25=Number.isFinite(ref)?`<polyline class="sd-ref" points="${last} ${x(n).toFixed(1)},${y(ref).toFixed(1)}"/><circle class="sd-refdot" cx="${x(n).toFixed(1)}" cy="${y(ref).toFixed(1)}" r="2.6"/><text x="${x(n).toFixed(1)}" y="${H-3}" text-anchor="middle">25p</text>`:'';
   return `<svg class="sd-spark${d.score!==null?' scored':''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="연근해 어획량 ${ys[0]}–${ys.at(-1)}년 ${c.map(v=>v.toLocaleString()).join(', ')}톤${Number.isFinite(ref)?`, 2025년 잠정치 ${ref.toLocaleString()}톤(점수 미사용)`:''}">`+
     band(rule.baseline_years)+band(rule.recent_years)+`<polyline class="sd-line" points="${pts}"/>${p25}`+
-    `<text x="${x(0).toFixed(1)}" y="${H-3}">${ys[0]}</text><text x="${x(n-1).toFixed(1)}" y="${H-3}" text-anchor="middle">${ys.at(-1)}</text></svg>`;
+    `<text x="${x(0).toFixed(1)}" y="${H-3}">${ys[0]}</text>${lastYear}</svg>`;
 }
 // 2026-10-21 (site v4 05): for a species farmed far more than caught, the last year's farming and coastal catch beside the
 // averages, read from the same KOSIS series (assessments.json, built from data/raw/kosis_DT_1EW0004_*); any gap hides the line
@@ -3061,7 +3064,8 @@ function fitPad(p){
   const i=mapInsets(),m=document.getElementById?.('map')?.getBoundingClientRect?.(),edge={top:0,bottom:0};
   for(let [sel,side] of [['.map-ui-tl','top'],['.map-ui-bl','bottom'],['#map-chip','top']]){
     const b=document.querySelector?.(sel)?.getBoundingClientRect();if(!b?.height)continue;
-    if(m?.height){if(b.right<=m.left+i.left+1||b.left>=m.right-i.right-1)continue;side=b.top+b.height/2<m.top+m.height/2?'top':'bottom';}
+    // 2026-10-31: 휴대폰 범례는 시트를 따라 지도 위쪽 절반까지 올라가도 아래 칸이다(맞춤 여백이 위로 옮겨 가지 않게)
+    if(m?.height){if(b.right<=m.left+i.left+1||b.left>=m.right-i.right-1)continue;if(sel!=='.map-ui-bl')side=b.top+b.height/2<m.top+m.height/2?'top':'bottom';}
     // the summary chip sits below the mode bar from 741 to 1280px: keep fitted cells clear of its lower edge, not just its height
     edge[side]=Math.max(edge[side],m?.height&&sel==='#map-chip'?(side==='top'?b.bottom-m.top:m.bottom-b.top):b.height);
   }
@@ -4831,11 +4835,18 @@ function openPhoneSheet(target,from){
   d.querySelector('.evd-close')?.focus({preventScroll:true});
 }
 function sheetSync(){
-  const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');if(!h||!b||!stage||!phoneSheet())return;
+  const h=$('sheet-head'),b=$('sheet-handle'),stage=document.querySelector('.map-stage');
+  if(stage&&!phoneSheet())stage.style.removeProperty('--legend-lift');
+  if(!h||!b||!stage||!phoneSheet())return;
   const open=h.getBoundingClientRect().top<stage.getBoundingClientRect().bottom-40,state=open?'open':mapFull?'full':'closed';
   // 시트가 지도 아래를 덮은 높이: 출처 ⓘ 단추가 이만큼 위에 앉는다. 시트가 더 올라오면 펼친 출처는 접는다.
   const cover=Math.max(0,Math.round(stage.getBoundingClientRect().bottom-h.getBoundingClientRect().top));
   stage.style.setProperty('--sheet-cover',cover+'px');
+  // 2026-10-31 (도연 피드백 2) 왼쪽 아래 범례(활용 × 보전의 셀 색 칸도 같은 상자)도 출처 ⓘ처럼 시트 윗선 4px 위를 따라 올라간다.
+  // 위 모드·기간 묶음(.map-ui-tl) 아래 8px에서 멈추고, 그 뒤로는 시트가 덮는다(지도가 위 버튼 줄만 남는 때). map-attribution.css가 읽는다.
+  const key=stage.querySelector('.map-ui-bl'),bar=stage.querySelector('.map-ui-tl');
+  if(key&&bar){const s=stage.getBoundingClientRect(),room=s.height-(bar.getBoundingClientRect().bottom-s.top)-key.offsetHeight-8;
+    stage.style.setProperty('--legend-lift',Math.round(Math.max(0,Math.min(cover+4,room)))+'px');}
   if(cover>attrCoverAtOpen+8)setAttrOpen(false);
   if(b.dataset.sheet!==state){b.dataset.sheet=state;b.setAttribute('aria-expanded',String(open));
     b.setAttribute('aria-label',open?'종 목록·상세 접고 지도 보기':mapFull?'종 목록·상세 다시 올리기':'종 목록·상세 펼치기');}
@@ -5052,7 +5063,8 @@ syncWide(); // fold the filters before the data arrives, so the list does not ju
 // folded to its button, details open, hidden in the value mode): theme.css reads --key-h.
 // 2026-10-13 design 2: the key is attached to the list (no gap) unless it is folded to its button.
 {const key=document.querySelector('.map-ui-bl');
-  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight,gap=key.classList.contains('legend-collapsed')&&$('value-key').hidden?12:0;$('explore').style.setProperty('--key-h',h?h+gap+'px':'0px');}).observe(key);}
+  // 2026-10-31: 범례를 접고 펼치면 높이가 바뀌므로 휴대폰 범례 높이 상한(sheetSync의 --legend-lift)도 다시 잰다
+  if(key&&globalThis.ResizeObserver)new ResizeObserver(()=>{const h=key.offsetHeight,gap=key.classList.contains('legend-collapsed')&&$('value-key').hidden?12:0;$('explore').style.setProperty('--key-h',h?h+gap+'px':'0px');sheetSync();}).observe(key);}
 // From 741 to 1280px the summary chip sits under the mode and period bar, whatever its height (theme.css reads --tl-h).
 {const bar=document.querySelector('.map-ui-tl');
   if(bar&&globalThis.ResizeObserver)new ResizeObserver(()=>$('explore').style.setProperty('--tl-h',bar.offsetHeight+'px')).observe(bar);}

@@ -217,6 +217,11 @@ const $=id=>document.getElementById(id);
 // 영어 화면(i18n.js의 LANG): 종 이름은 영어 일반명(species-names-en.json, 확인된 이름만)이 있으면 그것, 없으면 학명. 한국어 화면은 국명 그대로.
 const X_EN=()=>typeof LANG!=='undefined'&&LANG==='en';
 const nameOf=st=>X_EN()?st.en_name||st.scientific_name||st.korean_name:st.korean_name;
+// 2026-10-31 (도연 피드백 3) 이 생물이 무엇인지 1~2문장(expedition-about.json, AphiaID별 한국어·영어와 확인한 출처). 없으면 줄째 뺀다.
+let ABOUT={};
+const aboutOf=st=>{const a=ABOUT[st.aphia_id];return a?(X_EN()?a.en:a.ko)||'':'';};
+const aboutSrc=st=>{const a=ABOUT[st.aphia_id];if(!a?.source_url||!a.source_title)return '';const t=esc(a.source_title);
+  return `<a href="${esc(a.source_url)}" target="_blank" rel="noopener"${X_EN()&&/[가-힣]/.test(a.source_title)?' lang="ko"':''}>${t} ↗</a>`;};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https?:\/\//i.test(String(u||''))?u:null;
 // Sources whose publisher moved the file for good (reports/link-check, 2026-10-15); same list as app.js.
@@ -305,7 +310,7 @@ function cardHtml(stop,i,level,mode){
   <div class="x-r" data-r="1">${where}</div>
   <div class="x-r x-species" data-r="2"><div class="x-art">${art(stop)}<span>직접 그린 일러스트</span></div>
     <div>${badges(stop)?`<p class="x-badges">${badges(stop)}</p>`:''}<h2 class="x-name">${esc(nameOf(stop))}</h2><p class="x-sci">${nameOf(stop)===stop.scientific_name?'':`<i>${esc(stop.scientific_name)}</i> · `}AphiaID ${esc(stop.aphia_id)}</p>
-    ${type?`<p class="x-type">${esc(type)}</p>`:''}</div></div>
+    ${type?`<p class="x-type">${esc(type)}</p>`:''}</div>${aboutOf(stop)?`<p class="x-about">${esc(aboutOf(stop))}</p>`:''}</div>
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
     <div class="x-actions"><button type="button" class="x-primary" data-detail="${i}">자세히 보기</button><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a></div>
@@ -367,6 +372,7 @@ function detailHtml(stop,i){
   return `<header class="x-detail-head"><p class="x-chips">${chips}</p>
     <h2 id="detail-title">${nameOf(stop)===stop.scientific_name?'':esc(nameOf(stop))+' '}<i>${esc(stop.scientific_name)}</i></h2>
     ${type?`<p class="x-type">${esc(type)}</p>`:''}</header>
+  ${aboutOf(stop)?`<section class="x-about-sec"><h3>어떤 생물인가요</h3><p>${esc(aboutOf(stop))}</p>${aboutSrc(stop)?`<p class="x-src">출처 ${aboutSrc(stop)}</p>`:''}</section>`:''}
   <section><h3>관측 위치·기간</h3>${obs}</section>
   <section><h3>식량 가치 근거 <small>MFPI ${fmtAxis(stop,'MFPI')??'—'}</small></h3>${foodHtml(stop.food)}</section>
   <section><h3>생리활성 근거 <small>MBPI ${fmtAxis(stop,'MBPI')??'—'}</small></h3>${bioHtml(stop.bio)}</section>
@@ -768,9 +774,11 @@ function buildSea(THREE,geo){
 
 /* ---------- boot ---------- */
 async function boot(){
+  const about=fetch('expedition-about.json').then(r=>r.ok?r.json():null).catch(()=>null);
   const res=await fetch('expedition-stops.json').catch(()=>null);
   DATA=res?.ok?await res.json().catch(()=>null):null;
   if(X_EN()&&Array.isArray(DATA?.stops)){const n=await fetch('species-names-en.json').then(r=>r.ok?r.json():{}).catch(()=>({}));for(const st of DATA.stops)st.en_name=n?.[st.aphia_id]?.en||'';}
+  {const a=await about;ABOUT=a?.schema==='expedition-about-1'&&a.species&&typeof a.species==='object'?a.species:{};}
   const route=Array.isArray(DATA?.stops)?routeStops(DATA.stops):[];
   // stops off the route must follow the route stops, so one index works for both (build_expedition_stops.py checks it)
   if(DATA?.schema_version!=='expedition-stops-2'||!route.length||DATA.stops.slice(0,route.length).some((s,i)=>s!==route[i])){

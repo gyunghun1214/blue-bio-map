@@ -28,4 +28,9 @@
     padding:7px 10px;border-radius:10px;background:rgba(11,31,45,.95);border:1px solid var(--nv-edge,rgba(156,178,194,.22));
     box-shadow:0 4px 14px rgba(0,0,0,.4);color:var(--ink2,#c6d5df);font-size:max(13px,var(--fs-min));line-height:1.45;white-space:normal;overflow-wrap:anywhere}
   #explore .attr-open .attr-text a{color:var(--ink,#eaf2f6)}
+  /* 2026-10-31 도연 피드백 2: 시트를 올리면 왼쪽 아래 범례(.map-ui-bl, 활용 × 보전의 셀 색 칸 #value-key도 그 안)가 시트에 덮였다.
+     범례도 출처 ⓘ처럼 시트 윗선 4px 위를 따라 올라간다. 높이는 app.js sheetSync가 --legend-lift로 쓴다(위 버튼 줄 8px 아래가 상한).
+     범례 상자가 넓으면(펼친 범례·영어·활용 × 보전 셀 색 칸) 오른쪽 출처 ⓘ 동그라미를 덮어 i가 가려졌다.
+     범례 오른쪽 끝을 ⓘ 단추(누르는 범위 44px, 지도 오른쪽 끝에서 58~102px) 왼쪽 끝까지로 줄인다(왼쪽 10 + 너비 + 102). 넓은 화면(741px 이상)은 전과 같다. */
+  #explore .map-ui-bl{bottom:var(--legend-lift,18px);max-width:calc(100% - 112px)}
 }

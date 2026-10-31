@@ -2955,5 +2955,6 @@ Object.assign(I18N_EN,{
 "탐사 지점 자료를 불러오지 못했습니다. <a href=\"index.html\">탐색 지도</a>에서 같은 자료를 볼 수 있습니다.":"Could not load the survey stop data. The same data is on the <a href=\"index.html\">Explore map</a>.",
 "개 · 기록 합계 {0}건":" · {0} {0|record|records} in total",
 "팀 규칙 v{0}":"team rule v{0}",
-"탐사 지점 <b id=\"intro-count\">29</b>곳에 도착할 때마다 그 해역의 공개 관측 기록과 한 종의 식량·생리활성·보전 가치, 그리고 근거 논문을 차례로 확인합니다. <span id=\"intro-off\"></span>":"At each of the <b id=\"intro-count\">29</b> survey stops, we look in turn at the public observation records of that sea area, one species' food·bioactivity·conservation value, and the papers behind it. <span id=\"intro-off\"></span>"
+"탐사 지점 <b id=\"intro-count\">29</b>곳에 도착할 때마다 그 해역의 공개 관측 기록과 한 종의 식량·생리활성·보전 가치, 그리고 근거 논문을 차례로 확인합니다. <span id=\"intro-off\"></span>":"At each of the <b id=\"intro-count\">29</b> survey stops, we look in turn at the public observation records of that sea area, one species' food·bioactivity·conservation value, and the papers behind it. <span id=\"intro-off\"></span>",
+"어떤 생물인가요":"What is this species?"
 });

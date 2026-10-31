@@ -1,0 +1,946 @@
+[
+ {
+  "n": "360 ko cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 ko cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 ko cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "360 ko cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "360 ko cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "360 ko reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 ko reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 ko reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "360 ko reduced-motion cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "360 ko reduced-motion cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "360 en cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 en cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 en cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "360 en cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "360 en cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "360 en reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 en reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "360 en reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "360 en reduced-motion cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "360 en reduced-motion cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "390 ko cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 ko cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 ko cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "390 ko cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "390 ko cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "390 ko reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 ko reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 ko reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "390 ko reduced-motion cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "390 ko reduced-motion cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "390 en cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 en cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 en cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "390 en cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "390 en cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "390 en reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 en reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "390 en reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "390 en reduced-motion cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "390 en reduced-motion cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "430 ko cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 ko cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 ko cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "430 ko cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "430 ko cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "430 ko reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 ko reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 ko reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "430 ko reduced-motion cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "430 ko reduced-motion cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "430 en cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 en cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 en cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "430 en cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "430 en cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "430 en reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 en reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "430 en reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "430 en reduced-motion cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "430 en reduced-motion cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "1440 ko cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 ko cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 ko cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "1440 ko cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "1440 ko cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "1440 ko reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 ko reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 ko reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "1440 ko reduced-motion cards: Korean text from the file",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": true
+   }
+  ]
+ },
+ {
+  "n": "1440 ko reduced-motion cards: detail starts with 어떤 생물인가요 + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "어떤 생물인가요",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "어떤 생물인가요",
+   "second": "관측 위치·기간",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "1440 en cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 en cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 en cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "1440 en cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "1440 en cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ },
+ {
+  "n": "1440 en reduced-motion cards: 30 cards each with a description",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 en reduced-motion cards: description full card width, under the name, above the scores, step 2, visible",
+  "ok": true,
+  "i": []
+ },
+ {
+  "n": "1440 en reduced-motion cards: font ≥ 15px on phone (≥ 12 anywhere)",
+  "ok": true,
+  "i": [
+   15,
+   15,
+   15
+  ]
+ },
+ {
+  "n": "1440 en reduced-motion cards: English, no Hangul",
+  "ok": true,
+  "i": [
+   {
+    "i": 0,
+    "has": true,
+    "text": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   },
+   {
+    "i": 1,
+    "has": true,
+    "text": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+    "fs": 15,
+    "full": true,
+    "order": true,
+    "r": "2",
+    "visible": true,
+    "hangul": false
+   }
+  ]
+ },
+ {
+  "n": "1440 en reduced-motion cards: detail starts with What is this species? + source link, then observation",
+  "ok": true,
+  "i": {
+   "has": true,
+   "h": "What is this species?",
+   "href": "https://www.fishbase.se/summary/1663",
+   "first": "What is this species?",
+   "second": "Observation location·period",
+   "target": "_blank"
+  }
+ }
+]
