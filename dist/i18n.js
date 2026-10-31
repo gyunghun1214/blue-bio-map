@@ -23,7 +23,12 @@ const LANG=(()=>{
 })();
 const I18N_EN={}, I18N_DATA={}, I18N_MISS=new Set();
 const I18N_HANGUL=/[ㄱ-ㆎ가-힣]/;
-const i18nKey=s=>String(s??'').replace(/\s+/g,' ').trim();
+// 이미 정규화된 문장(빈칸이 아닌 공백 문자·겹친 빈칸·앞뒤 빈칸이 없음)은 그대로 돌려준다(같은 결과, 영어 화면에서 가장 자주 불린다).
+const I18N_KEY_RAW=/[^\S ]| {2}|^ | $/;
+const i18nKey=s=>{s=String(s??'');return I18N_KEY_RAW.test(s)?s.replace(/\s+/g,' ').trim():s;};
+// 앞뒤 빈칸 나누기: x.match(/^(\s*)([\s\S]*?)(\s*)$/)와 같은 [앞, 가운데, 뒤]. 그 식은 긴 문장에서 글자 수의 제곱만큼 돌아 영어 첫 화면을
+// 늦췄다(2026-10-31 렉 점검). \s와 trim이 지우는 글자는 같은 묶음(WhiteSpace·LineTerminator)이다. 빈칸뿐이면 [x,'',''].
+const i18nWs=x=>{const a=x.length-x.trimStart().length;if(a===x.length)return [x,'',''];const b=x.trimEnd().length;return [x.slice(0,a),x.slice(a,b),x.slice(b)];};
 const i18nFill=(s,v)=>v?s.replace(/\{(\w+)(?:\|([^|{}]*)\|([^|{}]*))?\}/g,(m,k,one,many)=>Object.hasOwn(v,k)?(one!==undefined?(Number(String(v[k]).replace(/,/g,''))===1?one:many):String(v[k])):m):s;
 // 사전에 없는 문구는 개발용으로 한 번만 남긴다(화면에는 원문이 그대로 나온다).
 const i18nMiss=k=>{if(!I18N_MISS.has(k)){I18N_MISS.add(k);try{console.debug('[i18n] 사전에 없음:',k);}catch{}}};
@@ -58,9 +63,18 @@ function i18nPats(){
   }
   I18N_PAT.sort((a,b)=>b.len-a.len||b.ko-a.ko);return I18N_PAT;
 }
+// 2026-10-31 렉 점검: 영어 첫 화면이 사전에 없는 문장마다 틀 856개를 다 훑어 1.7–2.6초 멈췄다. i18nMatch는 문장이 틀의 첫 고정 글자로
+// 시작하지 않으면 아무것도 하지 않고 바로 null이므로, 첫 글자가 같은 틀(+ 자리로 시작하는 틀)만 같은 순서로 골라 둔다. 결과는 예전과 같다.
+// (끝 글자로 미리 거르면 안 된다: 맞지 않는 틀도 중간 자리를 먼저 찾아 보며 I18N_CACHE를 채우고, 그 값이 뒤 문장의 결과를 바꾼다.)
+const I18N_PAT_BY=new Map();
+function i18nPatsFor(k){
+  const c=k[0]||'';let a=I18N_PAT_BY.get(c);
+  if(!a){a=i18nPats().filter(p=>p.st[0]===''||p.st[0][0]===c);I18N_PAT_BY.set(c,a);}
+  return a;
+}
 const I18N_SEPS=[/( · | \/ | \| |; |, |: | \+ | = | → | — | – | - |\. )/,/(\s*(?<![\w.])[-+−]?\d[\d,.:~–/-]*(?:%|°|‰)?(?![\w])\s*)/,/([()（）［］\[\]]|·|：)/];
 // 틀 맞추기: 자리마다 다음 고정 글자가 나오는 곳을 앞에서부터 차례로 시험한다(한국어가 든 자리는 다 옮겨져야 한다). 붙은 자리({3}{4})는 앞 자리를 비운다
-function i18nHole(x,d){if(!I18N_HANGUL.test(x))return x;const w=x.match(/^(\s*)[\s\S]*?(\s*)$/),y=i18nTr(i18nKey(x),d+1);return y==null||I18N_HANGUL.test(y)?null:w[1]+y+w[2];}
+function i18nHole(x,d){if(!I18N_HANGUL.test(x))return x;const w=i18nWs(x),y=i18nTr(i18nKey(x),d+1);return y==null||I18N_HANGUL.test(y)?null:w[0]+y+w[2];}
 function i18nMatch(k,st,d){
   if(!k.startsWith(st[0]))return null;
   const n=st.length-1,out=[];let tries=0;
@@ -82,7 +96,7 @@ function i18nTr(k,d=0){
   if(!I18N_HANGUL.test(k)||d>6)return null;
   const c=I18N_CACHE.get(k);if(c!==undefined)return c;
   let r=null;
-  for(const p of i18nPats()){
+  for(const p of i18nPatsFor(k)){
     if(p.anchor&&!k.includes(p.anchor))continue;
     const m=i18nMatch(k,p.st,d);if(!m)continue;
     const v={};p.ids.forEach((id,i)=>{if(!Object.hasOwn(v,id))v[id]=m[i];});
@@ -115,14 +129,14 @@ function i18nSeg(k,d){
   for(const [j,sep] of I18N_SEPS.entries()){
     const bits=k.split(sep);if(bits.length<2)continue;
     let hit=false,miss=false;
-    const out=bits.map((b,i)=>{if(i%2||!I18N_HANGUL.test(b))return b;const m=b.match(/^(\s*)([\s\S]*?)(\s*)$/),y=i18nTr(m[2],d+1);if(y==null||I18N_HANGUL.test(y)){miss=true;return b;}hit=true;return m[1]+y+m[3];});
+    const out=bits.map((b,i)=>{if(i%2||!I18N_HANGUL.test(b))return b;const m=i18nWs(b),y=i18nTr(m[1],d+1);if(y==null||I18N_HANGUL.test(y)){miss=true;return b;}hit=true;return m[0]+y+m[2];});
     if(hit&&!(miss&&j>0))return out.join('');
   }
   return null;
 }
 function i18nText(n){
   const v=n.nodeValue;if(!I18N_HANGUL.test(v))return;
-  const e=i18nTr(i18nKey(v));if(e!=null){const m=v.match(/^(\s*)[\s\S]*?(\s*)$/);n.nodeValue=m[1]+e+m[2];}
+  const e=i18nTr(i18nKey(v));if(e!=null){const m=i18nWs(v);n.nodeValue=m[0]+e+m[2];}
 }
 function i18nAttr(el,a){const v=el.getAttribute(a);if(v&&I18N_HANGUL.test(v)){const e=i18nTr(i18nKey(v));if(e!=null)el.setAttribute(a,e);}}
 function i18nEl(el){

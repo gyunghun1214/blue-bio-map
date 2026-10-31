@@ -2021,7 +2021,7 @@ function setView(view,toTop=true) {
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
   document.querySelectorAll('[data-view]').forEach(el=>{el.classList.toggle('active',el.dataset.view===view);if(el.dataset.view===view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   if(view==='explore' && map) requestAnimationFrame(()=>map.invalidateSize());
-  if(view==='compare'){if(data)syncComparison();loadCompareStops();requestAnimationFrame(declutterPointLabels);}
+  if(view==='compare'){if(data){if(comparisonStale)renderComparison();else syncComparison();}loadCompareStops();requestAnimationFrame(declutterPointLabels);}
   // A real tab change starts at the top. Callers that then scroll to their own target (source list, evidence) pass
   // toTop=false, so the page does not jump up first and then travel the whole way back down.
   if(changed&&view!=='explore'&&phoneSheet()&&drawerIsOpen())closeDrawer(false); // 2026-10-25: 휴대폰 상세 시트는 다른 탭으로 가면 닫는다
@@ -2303,7 +2303,7 @@ function renderList() {
 function selectSpecies(id) {
   const item=data?.species.find(s=>s.aphiaID===id);
   if(!item)throw new Error('목록에 없는 종입니다.');
-  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';pickedValueCell=null;renderList();renderDetail();renderMap();renderComparison();syncCompareSelection();writeHash();
+  selected=item;comparisonFocus=item.aphiaID;periodFilter='all';pickedValueCell=null;renderList();renderDetail();renderMap();renderComparisonSoon();syncCompareSelection();writeHash();
 }
 
 function renderDetail() {
@@ -2781,10 +2781,26 @@ function mapSection(s){
 // The public datasets contain only 1° (sea cucumber: 4°) aggregates. Dots are fixed schematic marks,
 // not observations, and never encode individual record coordinates or a 1:1 count.
 let landPolygons=[], dotRenderer, effortRenderer;
-function pointInRing(lon,lat,ring){
-  let inside=false;
+// 2026-10-31 렉 점검: the China outline alone has 8249 points and a box over nearly the whole map, so every sea dot ran the
+// full ring on each zoom (about 0.2–0.4 s a zoom). ringBands files each edge under the 0.25° latitude bands it spans; an edge
+// outside the dot's band can never pass the crossing test below, so the answer is the same, with the same arithmetic.
+const RING_BAND=.25, ringBandCache=new WeakMap();
+function ringBands(ring){
+  let b=ringBandCache.get(ring);if(b)return b;
+  let lo=Infinity;for(const p of ring)lo=Math.min(lo,p[1]);
+  const bands=[];
   for(let i=0,j=ring.length-1;i<ring.length;j=i++){
-    const [xi,yi]=ring[i],[xj,yj]=ring[j];
+    const a=ring[i][1],c=ring[j][1];
+    for(let k=Math.floor((Math.min(a,c)-lo)/RING_BAND),e=Math.floor((Math.max(a,c)-lo)/RING_BAND);k<=e;k++)(bands[k]||(bands[k]=[])).push(i,j);
+  }
+  b={lo,bands};ringBandCache.set(ring,b);return b;
+}
+function pointInRing(lon,lat,ring){
+  const {lo,bands}=ringBands(ring), edges=bands[Math.floor((lat-lo)/RING_BAND)];
+  if(!edges)return false;
+  let inside=false;
+  for(let n=0;n<edges.length;n+=2){
+    const [xi,yi]=ring[edges[n]],[xj,yj]=ring[edges[n+1]];
     if((yi>lat)!==(yj>lat) && lon<(xj-xi)*(lat-yi)/(yj-yi)+xi)inside=!inside;
   }
   return inside;
@@ -3737,7 +3753,12 @@ function initWheelZoom(){
   stage.addEventListener('gestureend',e=>{if(!gesture)return;e.preventDefault();gesture=null;},{passive:false});
 }
 
+// 2026-10-31 렉 점검: a species picked on the map tab redrew the hidden comparison table too (about 0.1 s of each 0.25–0.4 s
+// pick). The table is drawn again as the comparison tab opens (setView), so what that tab shows is the same.
+let comparisonStale=false;
+function renderComparisonSoon(){if(currentView==='compare')renderComparison();else comparisonStale=true;}
 function renderComparison(){
+  comparisonStale=false;
   const compared=cmpSorted(), keep=$('comparison').scrollLeft, keepTop=$('comparison').scrollTop;
   const pending=t=>`<span class="pending">${escRaw(t)}</span>`;
   const v2=(s,fn,fallback)=>s.v2?fn(s.info):pending(fallback);
