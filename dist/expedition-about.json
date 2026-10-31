@@ -1,0 +1,246 @@
+{
+ "schema": "expedition-about-1",
+ "note": "바다 탐험 카드의 생물 설명. AphiaID별 한국어·영어 1~2문장과 확인한 출처(source_name은 출처가 쓴 학명, WoRMS에서 같은 종으로 확인). checked = 출처를 열어 본 날.",
+ "species": {
+  "219984": {
+   "ko": "바다 표면 가까이에서 큰 떼를 지어 다니는 작은 물고기로, 요각류 같은 플랑크톤을 먹는다. 날것이나 소금에 절여 판다.",
+   "en": "A small fish that swims in large schools near the sea surface and feeds on plankton such as copepods. It is sold fresh or salted.",
+   "source_title": "FishBase · Engraulis japonicus, Japanese anchovy",
+   "source_url": "https://www.fishbase.se/summary/1663",
+   "source_name": "Engraulis japonicus",
+   "checked": "2026-10-31"
+  },
+  "1061762": {
+   "ko": "모래나 모래펄 바닥에 사는 게로, 조개·작은 갑각류·물고기를 잡아먹는다. 어업으로 잡아 비싼 값에 팔린다.",
+   "en": "A crab of sandy and sandy-mud bottoms that preys on clams, small crustaceans and fish. It is caught commercially and sells at a high price.",
+   "source_title": "SeaLifeBase · Portunus trituberculatus, Gazami crab",
+   "source_url": "https://sealifebase.ca/summary/Portunus-trituberculatus.html",
+   "source_name": "Portunus trituberculatus",
+   "checked": "2026-10-31"
+  },
+  "231750": {
+   "ko": "색과 무늬가 제각각인 단단한 껍데기의 조개로, 모래·펄·자갈 갯벌에 산다. 갯벌에 어린 조개를 뿌려 기르고 국이나 볶음으로 먹는다.",
+   "en": "A clam with a solid shell in widely varying colours and patterns, living in sand, mud and gravel flats. It is farmed by sowing young clams on tidal flats and eaten in soups or stir-fries.",
+   "source_title": "FAO Cultured Aquatic Species · Ruditapes philippinarum",
+   "source_url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesecarpetshell.htm",
+   "source_name": "Ruditapes philippinarum",
+   "checked": "2026-10-31"
+  },
+  "275816": {
+   "ko": "가자미목에 속하는 넙치류 물고기로, 수심 10~200m 바다 밑바닥에 산다. 바다에서 잡기도 하고 양식으로도 기른다.",
+   "en": "A flatfish of the order Pleuronectiformes that lives on the seabed at 10–200 m depth. It is both caught at sea and raised on farms.",
+   "source_title": "FishBase · Paralichthys olivaceus, Bastard halibut",
+   "source_url": "https://www.fishbase.org/summary/1351",
+   "source_name": "Paralichthys olivaceus",
+   "checked": "2026-10-31"
+  },
+  "274849": {
+   "ko": "연안 바위 바닥에 사는 물고기로, 알을 몸속에서 부화시켜 새끼를 낳는다. 바다에서 잡고 양식으로도 기른다.",
+   "en": "A fish of rocky inshore bottoms that hatches its eggs inside its body and gives birth to live young. It is both caught and farmed.",
+   "source_title": "FishBase · Sebastes schlegelii, Korean rockfish",
+   "source_url": "https://fishbase.se/summary/SpeciesSummary.php?id=6534",
+   "source_name": "Sebastes schlegelii",
+   "checked": "2026-10-31"
+  },
+  "281273": {
+   "ko": "민어과에 속하는 물고기로, 수심 120m까지의 얕은 바다에서 모래펄 바닥 가까이에 산다. 상업 어업으로 잡는다.",
+   "en": "A croaker (family Sciaenidae) living near sandy-mud bottoms in shallow seas down to about 120 m. It is caught in commercial fisheries.",
+   "source_title": "FishBase · Larimichthys polyactis, Yellow croaker",
+   "source_url": "https://www.fishbase.org/summary/416",
+   "source_name": "Larimichthys polyactis",
+   "checked": "2026-10-31"
+  },
+  "145086": {
+   "ko": "스펀지처럼 말랑하고 가지가 둘씩 갈라지는 녹조류로, 겉이 벨벳처럼 보드랍다. 바닷가 바위 웅덩이에서 자란다.",
+   "en": "A spongy green seaweed whose branches fork in pairs, with a soft, velvety surface. It grows in rock pools on the shore.",
+   "source_title": "AlgaeBase Seaweed Site · Codium fragile",
+   "source_url": "https://seaweed.algaebase.org/descriptions/Codium_fragile.html",
+   "source_name": "Codium fragile",
+   "checked": "2026-10-31"
+  },
+  "127022": {
+   "ko": "연안 바다에서 떼를 지어 헤엄치는 물고기로, 작은 갑각류·물고기·오징어를 먹는다. 생물·냉동·소금절임으로 팔린다.",
+   "en": "A fish that swims in schools in coastal waters, feeding on small crustaceans, fish and squid. It is sold fresh, frozen or salted.",
+   "source_title": "FishBase · Scomber japonicus, Chub mackerel",
+   "source_url": "https://www.fishbase.org/summary/117",
+   "source_name": "Scomber japonicus",
+   "checked": "2026-10-31"
+  },
+  "494972": {
+   "ko": "바닷가 바위의 조간대에 빽빽이 붙어 자라는 갈조류로, 줄기에서 여러 가지가 뻗는다. 한국과 중국에서 양식해 먹는다.",
+   "en": "A brown seaweed that grows in dense stands on intertidal rocks, with several main branches. It is farmed in Korea and China and eaten as food.",
+   "source_title": "Yoshida & Shimabukuro 2017, Journal of Applied Phycology 29: 639–648",
+   "source_url": "https://link.springer.com/article/10.1007/s10811-016-0951-z",
+   "source_name": "Sargassum fusiforme",
+   "checked": "2026-10-31"
+  },
+  "504357": {
+   "ko": "꼬막과 같은 돌조개과의 조개로, 펄 바닥에 산다. 어린 조개를 바닥에 뿌리거나 바닷속에 매달아 기른다.",
+   "en": "An ark clam (family Arcidae) that lives on muddy bottoms. It is farmed by sowing young clams on the seabed or hanging them in the water.",
+   "source_title": "최규정 2000, 전남대학교 수산과학연구소 논문집 9: 122–127",
+   "source_url": "https://scholar.kyobobook.co.kr/article/detail/4010025905637",
+   "source_name": "Scapharca broughtonii",
+   "checked": "2026-10-31"
+  },
+  "836033": {
+   "ko": "아래 껍데기는 깊게 오목하고 위 껍데기는 납작한 굴로, 하구의 바위나 껍데기에 붙어 산다. 줄에 매달거나 갯벌에서 기른다.",
+   "en": "An oyster with a deeply cupped lower shell and a flat upper shell, living cemented to rocks and shells in estuaries. It is farmed on hanging lines or on tidal flats.",
+   "source_title": "FAO Cultured Aquatic Species · Crassostrea gigas",
+   "source_url": "https://www.fao.org/fishery/docs/DOCUMENT/aquaculture/CulturedSpecies/file/en/en_pacificcuppedoyster.htm",
+   "source_name": "Crassostrea gigas",
+   "checked": "2026-10-31"
+  },
+  "234476": {
+   "ko": "속이 빈 관 모양 몸에 가는 가지가 많이 돋는 녹조류로, 작은 부착기로 붙어 곧게 선다. 바다와 강어귀의 짠물에서 자란다.",
+   "en": "A green seaweed with a hollow, tube-like body bearing many slender branchlets, standing upright on a small holdfast. It grows in the sea and in brackish water.",
+   "source_title": "Marine Biodiversity of Bangladesh · Ulva prolifera",
+   "source_url": "https://marinebiodiversity.org.bd/species/ulva-prolifera/",
+   "source_name": "Ulva prolifera",
+   "checked": "2026-10-31"
+  },
+  "836041": {
+   "ko": "다 자라도 6cm 안팎인 작은 굴이지만 껍데기가 깊게 오목하다. 바닷가 바위의 조간대에 붙어 살며, 맛으로 찾는 양식 굴이다.",
+   "en": "A small oyster, about 6 cm when fully grown, with a deeply cupped shell. It lives on intertidal rocks and is farmed for its flavour.",
+   "source_title": "Smithsonian NEMESIS · Magallana sikamea",
+   "source_url": "https://invasions.si.edu/nemesis/species_summary/-692",
+   "source_name": "Magallana sikamea",
+   "checked": "2026-10-31"
+  },
+  "413600": {
+   "ko": "맛조개 무리에 속하는 조개로, 갯벌의 펄이나 모래펄 속 깊이 파고들어 산다. 어린 조개를 갯벌에 뿌려 기른다.",
+   "en": "A razor clam that burrows deep into muddy or sandy-mud tidal flats. It is farmed by scattering young clams over the flats.",
+   "source_title": "FAO · Sinonovacula constricta (razor clam culture)",
+   "source_url": "https://www.fao.org/4/ab736e/AB736E05.htm",
+   "source_name": "Sinonovacula constricta",
+   "checked": "2026-10-31"
+  },
+  "342067": {
+   "ko": "먼바다와 연안의 표층을 헤엄쳐 다니는 오징어로, 멸치 같은 작은 물고기와 갑각류를 먹는다. 낚시 기계와 그물로 잡는다.",
+   "en": "A squid that roams the surface waters of the open ocean and coasts, feeding on small fish such as anchovies and on crustaceans. It is caught with jigging machines and nets.",
+   "source_title": "SeaLifeBase · Todarodes pacificus, Japanese flying squid",
+   "source_url": "https://sealifebase.ca/summary/Todarodes-pacificus.html",
+   "source_name": "Todarodes pacificus",
+   "checked": "2026-10-31"
+  },
+  "1666974": {
+   "ko": "수심 10~150m 바다에 사는 갑오징어로, 때로 바닥을 파고들어 몸을 숨긴다. 그물과 낚시로 잡는다.",
+   "en": "A cuttlefish living at 10–150 m depth that sometimes burrows into the seabed. It is caught with trawls, nets and hook and line.",
+   "source_title": "SeaLifeBase · Sepia esculenta, Golden cuttlefish",
+   "source_url": "https://www.sealifebase.ca/summary/Sepia-esculenta",
+   "source_name": "Sepia esculenta",
+   "checked": "2026-10-31"
+  },
+  "145721": {
+   "ko": "가운데 줄기와 깃 모양 잎을 가진 한해살이 갈조류로, 보통 1m 안팎까지 자란다. 줄에 붙여 길러 날것이나 말려서 먹는다.",
+   "en": "An annual brown seaweed with a central midrib and feather-like blades, usually growing to about 1 m. It is grown on ropes and eaten fresh or dried.",
+   "source_title": "FAO Fisheries fact sheet · Undaria pinnatifida",
+   "source_url": "https://www.marineagronomy.org/sites/default/files/FAO%20Fisheries%20fact%20sheet%20-%20Undaria.pdf",
+   "source_name": "Undaria pinnatifida",
+   "checked": "2026-10-31"
+  },
+  "506159": {
+   "ko": "껍데기가 10cm쯤까지 자라는 홍합 무리 조개로, 주로 수심 20m보다 얕은 바닥에 산다. 바다에서 잡기도 하고 양식도 한다.",
+   "en": "A mussel growing to about 10 cm in shell length, mostly living on the bottom in water shallower than 20 m. It is both harvested and farmed.",
+   "source_title": "SeaLifeBase · Mytilus coruscus, Far Eastern mussel",
+   "source_url": "https://sealifebase.org/summary/83784",
+   "source_name": "Mytilus coruscus",
+   "checked": "2026-10-31"
+  },
+  "241776": {
+   "ko": "바닥 퇴적물 속 유기물을 먹고 사는 해삼으로, 얕은 바다의 모래펄이나 자갈 바닥에 산다. 잡기도 하고 양식도 한다.",
+   "en": "A sea cucumber that feeds on organic matter in bottom sediment, living on sandy-mud or gravel seabeds. It is both harvested from the wild and farmed.",
+   "source_title": "SeaLifeBase · Apostichopus japonicus, Japanese sea cucumber",
+   "source_url": "https://www.sealifebase.ca/summary/Apostichopus-japonicus",
+   "source_name": "Apostichopus japonicus",
+   "checked": "2026-10-31"
+  },
+  "254538": {
+   "ko": "대륙붕과 그 비탈의 바닥 가까이에 사는 물고기로, 물고기·문어·갑각류를 먹는다. 생물·냉동이나 말리고 절여서 판다.",
+   "en": "A fish living near the bottom of the continental shelf and upper slope, feeding on fish, octopus and crustaceans. It is sold fresh, frozen, dried or salted.",
+   "source_title": "FishBase · Gadus macrocephalus, Pacific cod",
+   "source_url": "https://www.fishbase.se/summary/308",
+   "source_name": "Gadus macrocephalus",
+   "checked": "2026-10-31"
+  },
+  "250680": {
+   "ko": "멍게류(피낭동물)로 바다 파인애플이라고도 불린다. 줄에 유생을 붙여 기르며, 한국과 일본에서 양식해 먹는다.",
+   "en": "A sea squirt (tunicate), also called the sea pineapple. It is farmed in Korea and Japan by settling larvae on ropes, and eaten as food.",
+   "source_title": "Lambert et al. 2016, Management of Biological Invasions 7: 59–66",
+   "source_url": "https://repository.library.noaa.gov/view/noaa/40746/noaa_40746_DS26.pdf",
+   "source_name": "Halocynthia roretzi",
+   "checked": "2026-10-31"
+  },
+  "276651": {
+   "ko": "무리 지어 다니는 물고기로, 어린 물고기는 떠다니는 해조류 사이에서 지낸다. 어린 고기를 잡아 길러 회로 먹는다.",
+   "en": "A fish that swims in shoals; its young live among floating seaweed. Young fish are caught and raised on farms, and it is eaten as sashimi.",
+   "source_title": "FishBase · Seriola quinqueradiata, Japanese amberjack",
+   "source_url": "https://www.fishbase.se/summary/381",
+   "source_name": "Seriola quinqueradiata",
+   "checked": "2026-10-31"
+  },
+  "236157": {
+   "ko": "가늘고 긴 가지가 불규칙하게 뻗는 붉은 갈색의 홍조류로, 보통 10~30cm다. 잔잔한 만과 강어귀의 펄 바닥에서 자란다.",
+   "en": "A dark red to red-brown seaweed with long, slender, irregular branches, usually 10–30 cm. It grows on muddy bottoms in sheltered bays and estuaries.",
+   "source_title": "AlgaeBase Seaweed Site · Gracilaria vermiculophylla",
+   "source_url": "https://seaweed.algaebase.org/descriptions/Gracilaria_vermiculophylla.html",
+   "source_name": "Gracilaria vermiculophylla",
+   "checked": "2026-10-31"
+  },
+  "393716": {
+   "ko": "지름 10~22cm의 둥근 껍데기를 가진 가리비로, 찬 바다의 모래 바닥에 산다. 그물에 넣어 매달거나 바닥에 뿌려 기른다.",
+   "en": "A scallop with a round shell 10–22 cm across, living on sandy bottoms in cold seas. It is farmed in hanging nets or by sowing on the seabed.",
+   "source_title": "FAO Cultured Aquatic Species · Patinopecten yessoensis",
+   "source_url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_yessoscallop.htm",
+   "source_name": "Patinopecten yessoensis",
+   "checked": "2026-10-31"
+  },
+  "377084": {
+   "ko": "띠 모양의 긴 잎과 짧은 줄기, 뿌리 같은 부착기를 가진 갈조류로, 찬 바다 바위에 붙어 자란다. 뗏목에 매단 줄에서 기른다.",
+   "en": "A brown seaweed with a long, belt-shaped blade, a short stipe and a root-like holdfast, growing on rocks in cold seas. It is farmed on ropes hung from rafts.",
+   "source_title": "FAO Cultured Aquatic Species · Laminaria japonica",
+   "source_url": "https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_japanesekelp.htm",
+   "source_name": "Laminaria japonica",
+   "checked": "2026-10-31"
+  },
+  "397082": {
+   "ko": "고둥과 같은 복족류에 속하는 전복으로, 수심 30m보다 얕은 연안 바닥에 산다. 어업으로 잡아 비싼 값에 팔린다.",
+   "en": "An abalone, a sea snail (gastropod) living on the bottom of coastal waters shallower than 30 m. It is caught commercially and sells at a high price.",
+   "source_title": "SeaLifeBase · Haliotis discus, Japanese abalone",
+   "source_url": "https://sealifebase.org/summary/83743",
+   "source_name": "Haliotis discus",
+   "checked": "2026-10-31"
+  },
+  "371986": {
+   "ko": "다시마목에 속하는 큰 갈조류(켈프)로, 얕은 바닷속에서 빽빽하게 무리 지어 띠를 이루며 자란다.",
+   "en": "A large brown seaweed of the kelp order (Laminariales) that grows in dense belts in shallow subtidal waters.",
+   "source_title": "Kang et al. 2001, Algae 16(2): 209–215",
+   "source_url": "https://sciwatch.kiost.ac.kr/handle/2020.kiost/5886",
+   "source_name": "Ecklonia cava",
+   "checked": "2026-10-31"
+  },
+  "494853": {
+   "ko": "모자반과의 갈조류로, 얕은 바닷속 암초에 붙어 자라다 떨어져 나가면 바다에 떠다니며 큰 무리를 이룬다.",
+   "en": "A brown seaweed of the family Sargassaceae that grows on shallow subtidal reefs; pieces that break off float and gather into large drifting mats.",
+   "source_title": "Wu et al. 2023, Journal of Marine Science and Engineering 11(1): 9",
+   "source_url": "https://www.mdpi.com/2077-1312/11/1/9",
+   "source_name": "Sargassum horneri",
+   "checked": "2026-10-31"
+  },
+  "372119": {
+   "ko": "우뭇가사리목에 속하는 홍조류로, 한천을 만드는 원료로 쓴다. 바닷속 바위 같은 단단한 바닥에 붙어 자란다.",
+   "en": "A red seaweed of the order Gelidiales, used as a raw material for agar. It grows attached to hard surfaces such as rock under the sea.",
+   "source_title": "Tsuchiya et al. 2009, Nippon Suisan Gakkaishi 75(6): 1051–1060",
+   "source_url": "https://www.miyagi.kopas.co.jp/JSFS/jsfs-english/E-PUB/75-6/p1051.html",
+   "source_name": "Gelidium elegans",
+   "checked": "2026-10-31"
+  },
+  "534443": {
+   "ko": "동아시아에 사는 문어로, 오랫동안 대서양·지중해 문어와 같은 종으로 여겨지다 2016년에 따로 이름이 정리됐다. 값어치 있는 어획물이다.",
+   "en": "The East Asian common octopus, long treated as the same species as the Atlantic–Mediterranean common octopus until its own name was settled in 2016. It is a commercially valuable catch.",
+   "source_title": "Gleadall 2016, Species Diversity 21(1): 31–42",
+   "source_url": "https://www.jstage.jst.go.jp/article/specdiv/21/1/21_31/_article",
+   "source_name": "Octopus sinensis",
+   "checked": "2026-10-31"
+  }
+ }
+}

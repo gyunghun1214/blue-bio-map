@@ -1532,6 +1532,19 @@ try{
   check('Mobile map attribution: credits folded under an ⓘ button (배경 지도 출처 보기, aria-expanded) above the sheet edge, clear of 범례 and the zoom buttons; tap opens a ≥13px bubble inside the map, Esc / map tap / second tap close it; the text follows 위성 ↔ 수심',
     ma.label==='배경 지도 출처 보기'&&ma.controls&&ma.closed.exp==='false'&&!ma.closed.shown&&ma.clear&&ma.open.exp==='true'&&ma.open.shown&&ma.bubble.inside&&ma.bubble.fs>=13
     &&ma.esc.exp==='false'&&!ma.esc.shown&&ma.focus&&ma.mapTap.exp==='false'&&ma.twice.exp==='false'&&/GEBCO_2026/.test(ma.depth.text)&&ma.depth.shown&&/NASA GIBS/.test(ma.sat.text)&&ma.doc<=390,JSON.stringify(ma));
+  // 2026-10-31 (도연 피드백 1) 어획량 그래프(stockSpark): 잠정치가 있는 종 모두 마지막 연도 글자와 '25p'가 2px 이상 떨어진다
+  const sk=await evaluate(`(()=>{const rule=data.assessmentInfo.method.mcui_stock_decline,h=document.createElement('div');h.style.cssText='position:fixed;left:0;top:0;width:358px;visibility:hidden';document.body.append(h);const rows=[];
+    for(const s of data.species){const d=s.assessment?.stock_decline;if(!d||d.match_level==='none'||!Number.isFinite(d.reference_2025p?.coastal_t))continue;h.innerHTML=stockSpark(d,rule);
+      const t=[...h.querySelectorAll('text')].map(x=>({s:x.textContent,b:x.getBoundingClientRect()})),a=t.find(x=>x.s===String(d.years.at(-1))),b=t.find(x=>x.s==='25p');rows.push(+(b.b.left-a.b.right).toFixed(1));}
+    h.remove();return {count:rows.length,minGap:Math.min(...rows)}})()`);
+  check('Catch trend sparkline: the last year label and 25p never overlap (gap ≥ 2px for every species with a 2025 provisional value)',sk.count>0&&sk.minGap>=2,JSON.stringify(sk));
+  // 2026-10-31 (도연 피드백 2) 휴대폰 범례: 페이지를 올려 시트가 지도를 덮어도 범례가 시트 윗선 위에 남아 눌리고, 위 버튼 줄·확대/축소·출처 ⓘ와 겹치지 않는다
+  const lg=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s),y0=scrollY,out=[];
+    const box=e=>{const x=e.getBoundingClientRect();return {l:x.left,t:x.top,r:x.right,b:x.bottom};},apart=(a,c)=>a.r<=c.l+0.5||c.r<=a.l+0.5||a.b<=c.t+0.5||c.b<=a.t+0.5;
+    for(const y of [0,80,160]){scrollTo(0,y);await wait(400);const bl=q('#explore .map-ui-bl'),L=box(bl),H=box(q('#sheet-head')),tl=box(q('#explore .map-ui-tl')),z=box(q('.leaflet-control-zoom')),at=box(q('#map .attr-toggle'));
+      const e=document.elementFromPoint((L.l+L.r)/2,(L.t+L.b)/2);out.push({y,above:L.b<=H.t+0.5,hit:!!e&&bl.contains(e),clear:L.t>=tl.b-0.5&&apart(L,z)&&apart(L,at),lift:q('#explore .map-stage').style.getPropertyValue('--legend-lift')});}
+    scrollTo(0,y0);await wait(300);return out})()`);
+  check('Mobile legend follows the sheet edge: at page scroll 0/80/160 it stays above the sheet, can be tapped, and keeps clear of the mode bar, zoom buttons and ⓘ',lg.every(r=>r.above&&r.hit&&r.clear),JSON.stringify(lg));
   // BBVI 통합 가중치 on a phone: the panel and the matrix badge fit 390px, no sideways scroll
   const wm=await evaluate(`(async()=>{const wait=ms=>new Promise(f=>setTimeout(f,ms)),q=s=>document.querySelector(s);setView('compare');setCompareMode('matrix');q('#cmp-basis-toggle').click();
     setBbviStep(16);await wait(300);const pop=q('#cmp-basis-pop').getBoundingClientRect(),badge=q('#cmp-wline').getBoundingClientRect(),pre=[...document.querySelectorAll('[data-w-preset]')].map(b=>b.getBoundingClientRect());

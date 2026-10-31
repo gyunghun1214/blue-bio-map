@@ -1,0 +1,10098 @@
+{
+ "base": "http://127.0.0.1:8765/",
+ "spark": [],
+ "legend": [
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 324.5,
+      "r": 82.5,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 284.5,
+      "r": 82.5,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 244.5,
+      "r": 82.5,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 204.5,
+      "r": 82.5,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 164.5,
+      "r": 82.5,
+      "b": 204.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 82.5,
+      "b": 164.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 82.5,
+      "b": 163.5
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "170px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 264.6,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 224.6,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 184.6,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 144.6,
+      "r": 258,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 123.6,
+      "r": 258,
+      "b": 223.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "110px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 123.6,
+      "r": 258,
+      "b": 223.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "110px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.6,
+      "r": 258,
+      "b": 223.5
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "110px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 269,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 269,
+      "r": 258,
+      "b": 364.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 229,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 229,
+      "r": 258,
+      "b": 324.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 189,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 189,
+      "r": 258,
+      "b": 284.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 149,
+      "r": 258,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 149,
+      "r": 258,
+      "b": 244.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 269,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 269,
+      "r": 258,
+      "b": 364.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 229,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 229,
+      "r": 258,
+      "b": 324.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 189,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 189,
+      "r": 258,
+      "b": 284.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 149,
+      "r": 258,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 149,
+      "r": 258,
+      "b": 244.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124,
+      "r": 258,
+      "b": 219.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "114px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 324.5,
+      "r": 105.7,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 284.5,
+      "r": 105.7,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 244.5,
+      "r": 105.7,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 204.5,
+      "r": 105.7,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 164.5,
+      "r": 105.7,
+      "b": 204.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 105.7,
+      "b": 164.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 105.7,
+      "b": 163.5
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "170px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 229.5,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 189.5,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 149.5,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 258,
+      "b": 258.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "75px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 258,
+      "b": 258.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "75px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 258,
+      "b": 258.5
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "75px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 258,
+      "b": 258.5
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "75px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.34165619279593,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "en",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 249.1,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 249.1,
+      "r": 258,
+      "b": 364.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 209.1,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 209.1,
+      "r": 258,
+      "b": 324.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 169.1,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 169.1,
+      "r": 258,
+      "b": 284.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 129.1,
+      "r": 258,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 129.1,
+      "r": 258,
+      "b": 244.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 360,
+   "h": 667,
+   "lang": "en",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 368.5,
+     "legend": {
+      "l": 10,
+      "t": 249.1,
+      "r": 258,
+      "b": 364.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 249.1,
+      "r": 258,
+      "b": 364.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 304,
+      "t": 250.5,
+      "r": 350,
+      "b": 340.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 320.5,
+      "r": 302,
+      "b": 364.5
+     },
+     "full": {
+      "l": 304,
+      "t": 194.5,
+      "r": 350,
+      "b": 240.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 360,
+      "b": 382.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 328.5,
+     "legend": {
+      "l": 10,
+      "t": 209.1,
+      "r": 258,
+      "b": 324.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 209.1,
+      "r": 258,
+      "b": 324.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 304,
+      "t": 210.5,
+      "r": 350,
+      "b": 300.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 280.5,
+      "r": 302,
+      "b": 324.5
+     },
+     "full": {
+      "l": 304,
+      "t": 154.5,
+      "r": 350,
+      "b": 200.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 360,
+      "b": 342.5
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 288.5,
+     "legend": {
+      "l": 10,
+      "t": 169.1,
+      "r": 258,
+      "b": 284.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 169.1,
+      "r": 258,
+      "b": 284.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 240.5,
+      "r": 302,
+      "b": 284.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 248.5,
+     "legend": {
+      "l": 10,
+      "t": 129.1,
+      "r": 258,
+      "b": 244.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 129.1,
+      "r": 258,
+      "b": 244.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 200.5,
+      "r": 302,
+      "b": 244.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 208.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 160.5,
+      "r": 302,
+      "b": 204.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "125px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 168.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 120.5,
+      "r": 302,
+      "b": 164.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "165px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 68.5,
+     "legend": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 123.1,
+      "r": 258,
+      "b": 238.5
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 304,
+      "t": 201.5,
+      "r": 350,
+      "b": 291.5
+     },
+     "attr": {
+      "l": 258,
+      "t": 20.5,
+      "r": 302,
+      "b": 64.5
+     },
+     "full": {
+      "l": 304,
+      "t": 145.5,
+      "r": 350,
+      "b": 191.5
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 360,
+      "b": 333.5
+     },
+     "cover": "265px",
+     "lift": "95px",
+     "collapsed": true,
+     "mapZoom": 3,
+     "mapCenter": {
+      "lat": 38.330076457222546,
+      "lng": 127.533203125
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 366,
+      "r": 82.5,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 326,
+      "r": 82.5,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 286,
+      "r": 82.5,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 246,
+      "r": 82.5,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 206,
+      "r": 82.5,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 166,
+      "r": 82.5,
+      "b": 206
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 82.5,
+      "b": 164
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "211px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 306.1,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 266.1,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 226.1,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 186.1,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 146.1,
+      "r": 288,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124.1,
+      "r": 288,
+      "b": 224
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "151px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124.1,
+      "r": 288,
+      "b": 224
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "151px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 310.5,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 310.5,
+      "r": 288,
+      "b": 406
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 270.5,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 270.5,
+      "r": 288,
+      "b": 366
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 230.5,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 230.5,
+      "r": 288,
+      "b": 326
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 190.5,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 190.5,
+      "r": 288,
+      "b": 286
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 150.5,
+      "r": 288,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 150.5,
+      "r": 288,
+      "b": 246
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "155px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "155px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 310.5,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 310.5,
+      "r": 288,
+      "b": 406
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 270.5,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 270.5,
+      "r": 288,
+      "b": 366
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 230.5,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 230.5,
+      "r": 288,
+      "b": 326
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 190.5,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 190.5,
+      "r": 288,
+      "b": 286
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 150.5,
+      "r": 288,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 150.5,
+      "r": 288,
+      "b": 246
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "155px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 220
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "155px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 366,
+      "r": 105.7,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 326,
+      "r": 105.7,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 286,
+      "r": 105.7,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 246,
+      "r": 105.7,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 206,
+      "r": 105.7,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 166,
+      "r": 105.7,
+      "b": 206
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 105.7,
+      "b": 164
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "211px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 271,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 231,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 191,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 151,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 288,
+      "b": 259
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "116px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 288,
+      "b": 259
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "116px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124,
+      "r": 288,
+      "b": 259
+     },
+     "hit": false,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "116px",
+     "collapsed": false,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 38.30718056188316,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "en",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 309.5,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 309.5,
+      "r": 288,
+      "b": 406
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 269.5,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 269.5,
+      "r": 288,
+      "b": 366
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 229.5,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 229.5,
+      "r": 288,
+      "b": 326
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 189.5,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 189.5,
+      "r": 288,
+      "b": 286
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 149.5,
+      "r": 288,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 149.5,
+      "r": 288,
+      "b": 246
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "154px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "154px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 390,
+   "h": 750,
+   "lang": "en",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 410,
+     "legend": {
+      "l": 10,
+      "t": 309.5,
+      "r": 288,
+      "b": 406
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 309.5,
+      "r": 288,
+      "b": 406
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 334,
+      "t": 292,
+      "r": 380,
+      "b": 382
+     },
+     "attr": {
+      "l": 288,
+      "t": 362,
+      "r": 332,
+      "b": 406
+     },
+     "full": {
+      "l": 334,
+      "t": 236,
+      "r": 380,
+      "b": 282
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 390,
+      "b": 424
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 370,
+     "legend": {
+      "l": 10,
+      "t": 269.5,
+      "r": 288,
+      "b": 366
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 269.5,
+      "r": 288,
+      "b": 366
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 334,
+      "t": 252,
+      "r": 380,
+      "b": 342
+     },
+     "attr": {
+      "l": 288,
+      "t": 322,
+      "r": 332,
+      "b": 366
+     },
+     "full": {
+      "l": 334,
+      "t": 196,
+      "r": 380,
+      "b": 242
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 390,
+      "b": 384
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 330,
+     "legend": {
+      "l": 10,
+      "t": 229.5,
+      "r": 288,
+      "b": 326
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 229.5,
+      "r": 288,
+      "b": 326
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 282,
+      "r": 332,
+      "b": 326
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 290,
+     "legend": {
+      "l": 10,
+      "t": 189.5,
+      "r": 288,
+      "b": 286
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 189.5,
+      "r": 288,
+      "b": 286
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 242,
+      "r": 332,
+      "b": 286
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 250,
+     "legend": {
+      "l": 10,
+      "t": 149.5,
+      "r": 288,
+      "b": 246
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 149.5,
+      "r": 288,
+      "b": 246
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 202,
+      "r": 332,
+      "b": 246
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 210,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 162,
+      "r": 332,
+      "b": 206
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "165px",
+     "lift": "154px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    },
+    {
+     "scrollY": 300,
+     "head": 110,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "hit": false,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 288,
+      "b": 221
+     },
+     "vkHit": false,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 334,
+      "t": 243,
+      "r": 380,
+      "b": 333
+     },
+     "attr": {
+      "l": 288,
+      "t": 62,
+      "r": 332,
+      "b": 106
+     },
+     "full": {
+      "l": 334,
+      "t": 187,
+      "r": 380,
+      "b": 233
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 390,
+      "b": 375
+     },
+     "cover": "265px",
+     "lift": "154px",
+     "collapsed": true,
+     "mapZoom": 4,
+     "mapCenter": {
+      "lat": 36.491973470593685,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 457,
+      "r": 82.5,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 417,
+      "r": 82.5,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 377,
+      "r": 82.5,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 337,
+      "r": 82.5,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 297,
+      "r": 82.5,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 257,
+      "r": 82.5,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 157,
+      "r": 82.5,
+      "b": 197
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "269px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "ko",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 417.9,
+      "r": 301.1,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 377.9,
+      "r": 301.1,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 337.9,
+      "r": 301.1,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 297.9,
+      "r": 301.1,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 257.9,
+      "r": 301.1,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 217.9,
+      "r": 301.1,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 123.9,
+      "r": 301.1,
+      "b": 203
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "263px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 420.3,
+      "r": 315.8,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 420.3,
+      "r": 315.8,
+      "b": 497
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 380.3,
+      "r": 315.8,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 380.3,
+      "r": 315.8,
+      "b": 457
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 340.3,
+      "r": 315.8,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 340.3,
+      "r": 315.8,
+      "b": 417
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 300.3,
+      "r": 315.8,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 300.3,
+      "r": 315.8,
+      "b": 377
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 260.3,
+      "r": 315.8,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 260.3,
+      "r": 315.8,
+      "b": 337
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 220.3,
+      "r": 315.8,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 220.3,
+      "r": 315.8,
+      "b": 297
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 124.3,
+      "r": 315.8,
+      "b": 201
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.3,
+      "r": 315.8,
+      "b": 201
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "265px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "ko",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 420.3,
+      "r": 315.8,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 420.3,
+      "r": 315.8,
+      "b": 497
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 168.7,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 380.3,
+      "r": 315.8,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 380.3,
+      "r": 315.8,
+      "b": 457
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 168.7,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 340.3,
+      "r": 315.8,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 340.3,
+      "r": 315.8,
+      "b": 417
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 300.3,
+      "r": 315.8,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 300.3,
+      "r": 315.8,
+      "b": 377
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 260.3,
+      "r": 315.8,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 260.3,
+      "r": 315.8,
+      "b": 337
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 220.3,
+      "r": 315.8,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 220.3,
+      "r": 315.8,
+      "b": 297
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 124.3,
+      "r": 315.8,
+      "b": 201
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.3,
+      "r": 315.8,
+      "b": 201
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 168.7,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "265px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.56260003738548,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 457,
+      "r": 105.7,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 417,
+      "r": 105.7,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 377,
+      "r": 105.7,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 337,
+      "r": 105.7,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 297,
+      "r": 105.7,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 257,
+      "r": 105.7,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 157,
+      "r": 105.7,
+      "b": 197
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "269px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "en",
+   "mode": "occurrence",
+   "fold": "open",
+   "actualCollapsed": false,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 379.5,
+      "r": 328,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 339.5,
+      "r": 328,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 299.5,
+      "r": 328,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 259.5,
+      "r": 328,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 219.5,
+      "r": 328,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 179.5,
+      "r": 328,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 123.5,
+      "r": 328,
+      "b": 241
+     },
+     "hit": true,
+     "valueKey": null,
+     "vkHit": null,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "225px",
+     "collapsed": false,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 37.23032838760387,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "en",
+   "mode": "value",
+   "fold": "collapsed",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 400.5,
+      "r": 328,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 400.5,
+      "r": 328,
+      "b": 497
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 360.5,
+      "r": 328,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 360.5,
+      "r": 328,
+      "b": 457
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 320.5,
+      "r": 328,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 320.5,
+      "r": 328,
+      "b": 417
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 280.5,
+      "r": 328,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 280.5,
+      "r": 328,
+      "b": 377
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 240.5,
+      "r": 328,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 240.5,
+      "r": 328,
+      "b": 337
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 200.5,
+      "r": 328,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 200.5,
+      "r": 328,
+      "b": 297
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 328,
+      "b": 221
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 328,
+      "b": 221
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "245px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  },
+  {
+   "w": 430,
+   "h": 932,
+   "lang": "en",
+   "mode": "value",
+   "fold": "open",
+   "actualCollapsed": true,
+   "mapMoved": false,
+   "rows": [
+    {
+     "scrollY": 0,
+     "head": 501,
+     "legend": {
+      "l": 10,
+      "t": 400.5,
+      "r": 328,
+      "b": 497
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 400.5,
+      "r": 328,
+      "b": 497
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 59,
+      "r": 237.1,
+      "b": 165
+     },
+     "zoom": {
+      "l": 374,
+      "t": 383,
+      "r": 420,
+      "b": 473
+     },
+     "attr": {
+      "l": 328,
+      "t": 453,
+      "r": 372,
+      "b": 497
+     },
+     "full": {
+      "l": 374,
+      "t": 327,
+      "r": 420,
+      "b": 373
+     },
+     "stage": {
+      "l": 0,
+      "t": 49,
+      "r": 430,
+      "b": 515
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 0,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 40,
+     "head": 461,
+     "legend": {
+      "l": 10,
+      "t": 360.5,
+      "r": 328,
+      "b": 457
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 360.5,
+      "r": 328,
+      "b": 457
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 19,
+      "r": 237.1,
+      "b": 125
+     },
+     "zoom": {
+      "l": 374,
+      "t": 343,
+      "r": 420,
+      "b": 433
+     },
+     "attr": {
+      "l": 328,
+      "t": 413,
+      "r": 372,
+      "b": 457
+     },
+     "full": {
+      "l": 374,
+      "t": 287,
+      "r": 420,
+      "b": 333
+     },
+     "stage": {
+      "l": 0,
+      "t": 9,
+      "r": 430,
+      "b": 475
+     },
+     "cover": "14px",
+     "lift": "18px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 40,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 80,
+     "head": 421,
+     "legend": {
+      "l": 10,
+      "t": 320.5,
+      "r": 328,
+      "b": 417
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 320.5,
+      "r": 328,
+      "b": 417
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 373,
+      "r": 372,
+      "b": 417
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "45px",
+     "lift": "49px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 80,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 120,
+     "head": 381,
+     "legend": {
+      "l": 10,
+      "t": 280.5,
+      "r": 328,
+      "b": 377
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 280.5,
+      "r": 328,
+      "b": 377
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 333,
+      "r": 372,
+      "b": 377
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "85px",
+     "lift": "89px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 120,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 160,
+     "head": 341,
+     "legend": {
+      "l": 10,
+      "t": 240.5,
+      "r": 328,
+      "b": 337
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 240.5,
+      "r": 328,
+      "b": 337
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 293,
+      "r": 372,
+      "b": 337
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "125px",
+     "lift": "129px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 160,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 200,
+     "head": 301,
+     "legend": {
+      "l": 10,
+      "t": 200.5,
+      "r": 328,
+      "b": 297
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 200.5,
+      "r": 328,
+      "b": 297
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 253,
+      "r": 372,
+      "b": 297
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "165px",
+     "lift": "169px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 200,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": true
+    },
+    {
+     "scrollY": 300,
+     "head": 201,
+     "legend": {
+      "l": 10,
+      "t": 124.5,
+      "r": 328,
+      "b": 221
+     },
+     "hit": true,
+     "valueKey": {
+      "l": 10,
+      "t": 124.5,
+      "r": 328,
+      "b": 221
+     },
+     "vkHit": true,
+     "tl": {
+      "l": 10,
+      "t": 10,
+      "r": 237.1,
+      "b": 116
+     },
+     "zoom": {
+      "l": 374,
+      "t": 334,
+      "r": 420,
+      "b": 424
+     },
+     "attr": {
+      "l": 328,
+      "t": 153,
+      "r": 372,
+      "b": 197
+     },
+     "full": {
+      "l": 374,
+      "t": 278,
+      "r": 420,
+      "b": 324
+     },
+     "stage": {
+      "l": 0,
+      "t": 0,
+      "r": 430,
+      "b": 466
+     },
+     "cover": "265px",
+     "lift": "245px",
+     "collapsed": true,
+     "mapZoom": 5,
+     "mapCenter": {
+      "lat": 36.24427318493909,
+      "lng": 128.49609375000003
+     },
+     "y": 300,
+     "overTl": false,
+     "overZoom": false,
+     "overAttr": false,
+     "aboveSheet": false
+    }
+   ]
+  }
+ ]
+}
