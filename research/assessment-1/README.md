@@ -1,12 +1,12 @@
 # 1번 과제: 실제 종의 판단 결과 표시 — 입력 감사 (2026-09-24 UTC)
 
-> 2026-09-26 안내: 이 문서는 시범 지표 발행 전의 당시 기록이다. 이후 `dist/assessments.json`(verified-pilot-2)에 MFPI 3종·MCUI 2종의 검증 전 시범 지표가 발행됐고 MBPI·BBVI·실제 매트릭스 배치는 0종이다. 현재 상태는 [연결 감사](../verified-indices/coverage-reconciliation-2026-09-25.md)와 [README](../../README.md)를 본다.
+> 2026-09-26 안내: 이 문서는 시범 지표 발행 전의 당시 기록이다. 이후 `dist/assessments.json`(verified-pilot-2)에 MFPI 3종·MCUI 2종의 검증 전 시범 지표가 발행됐고 MBPI·BBVI·실제 매트릭스 배치는 0종이다. 현재 상태는 [연결 감사](../verified-indices/coverage-reconciliation-2026-09-25.md)와 [개발 기록(옛 README)](../../docs/development-log.md)를 본다.
 
 상태: **실제 종 0종 배치, 점수 0건. 1번 과제 미완료.** 이 PR은 산출 보류 사유를 종마다 보여주는 안전한 화면과, 향후 검수 완료된 입력만 표시할 수 있는 세부 근거 화면을 추가한다. 운영 DB 및 배포 파일의 점수 JSON을 만들거나 수정하지 않는다. 시범 가중치와 산출값은 외부 검증 전이다.
 
 ## 감사 범위와 식별
 
-기준: `main` [a05dfc0](https://github.com/gyunghun1214/blue-bio-map/commit/a05dfc0063586db38083a27308402df0edf44b12)의 [스키마](../../docs/evidence-schema.md), [산출 코드](../../scripts/evaluate_candidates.py), 공개된 [별도 시연 자료](https://github.com/gyunghun1214/blue-bio-map/blob/a05dfc0063586db38083a27308402df0edf44b12/dist/data.json), 운영 프로필의 저장소 내 [연결 코드](../../dist/live-data.js), [README](../../README.md), 사용자 제공 제안서, 아직 main에 합쳐지지 않은 [생리활성 조사 PR #5](https://github.com/gyunghun1214/blue-bio-map/pull/5)의 [조사문](https://github.com/gyunghun1214/blue-bio-map/blob/research/bioactivity-provenance-2026-09-24/research/bioactivity/README.md) 및 [출처표](https://github.com/gyunghun1214/blue-bio-map/blob/research/bioactivity-provenance-2026-09-24/research/bioactivity/evidence.csv). PR #5의 자료를 이 브랜치에 입력으로 복제하거나 MBPI 승인으로 취급하지 않았다.
+기준: `main` [a05dfc0](https://github.com/gyunghun1214/blue-bio-map/commit/a05dfc0063586db38083a27308402df0edf44b12)의 [스키마](../../docs/evidence-schema.md), [산출 코드](../../scripts/evaluate_candidates.py), 공개된 [별도 시연 자료](https://github.com/gyunghun1214/blue-bio-map/blob/a05dfc0063586db38083a27308402df0edf44b12/dist/data.json), 운영 프로필의 저장소 내 [연결 코드](../../dist/live-data.js), [개발 기록(옛 README)](../../docs/development-log.md), 사용자 제공 제안서, 아직 main에 합쳐지지 않은 [생리활성 조사 PR #5](https://github.com/gyunghun1214/blue-bio-map/pull/5)의 [조사문](https://github.com/gyunghun1214/blue-bio-map/blob/research/bioactivity-provenance-2026-09-24/research/bioactivity/README.md) 및 [출처표](https://github.com/gyunghun1214/blue-bio-map/blob/research/bioactivity-provenance-2026-09-24/research/bioactivity/evidence.csv). PR #5의 자료를 이 브랜치에 입력으로 복제하거나 MBPI 승인으로 취급하지 않았다.
 
 운영 화면의 종 목록은 런타임에 원격 발행 프로필을 읽는다. 이 Git 스냅샷은 사용자 언급 **현재 8종의 전체 이름, 최신 승인학명과 AphiaID, 행별 입력**을 포함하지 않는다. 운영 DB를 수정하거나 이 감사에서 공개 프로필 목록을 별도 동결하지 않았다. 따라서 아래 3종은 저장소에 고정된 별도 시연 자료의 범위이고, 운영 8종 전체의 종별 검수 결과로 일반화하지 않는다. 운영 모드에서는 내려온 각각의 실제 종에 보류 사유를 동적으로 보여준다.
 

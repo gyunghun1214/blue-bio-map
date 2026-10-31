@@ -57,9 +57,10 @@ class OperatorNoticeTest(unittest.TestCase):
         self.assertNotIn("만든 방법", self.html)
         self.assertNotIn("mt-made", self.html)
         self.assertNotIn("mt-made", text("dist/method.css"))
-        # the early trial stays on record: .openai/ is kept and README says it is no longer used
+        # the early trial stays on record: .openai/ is kept and the development log (README until 2026-10-31, now
+        # docs/development-log.md) says it is no longer used
         self.assertTrue((ROOT / ".openai/hosting.json").exists())
-        self.assertIn("Codex/ChatGPT의 Sites 도구로만 갱신된다(초기 시험판, 지금은 쓰지 않음).", text("README.md"))
+        self.assertIn("Codex/ChatGPT의 Sites 도구로만 갱신된다(초기 시험판, 지금은 쓰지 않음).", text("docs/development-log.md"))
 
 
 if __name__ == "__main__":
