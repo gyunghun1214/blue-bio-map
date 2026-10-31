@@ -24,7 +24,7 @@
 @media (min-width:741px){
   body{word-break:keep-all;overflow-wrap:break-word}
   :is(p,li,dd,dt,small,summary,figcaption,td,th,h2,h3,h4,label,b,span.ax-note):not(#site-gate *){text-wrap-style:pretty}  /* 첫 화면은 intro.css 그대로. text-wrap 줄임말은 nowrap까지 풀어 버리므로 style만 */
-  #all-sources,.citation,.foot-ops a,.mt-ck-rec a{overflow-wrap:anywhere}
+  #all-sources,.citation,.foot-ops a{overflow-wrap:anywhere}
 }
 
 /* M5: 741–1179px(1024 태블릿 가로·작은 노트북)에서는 '필터 더 보기' 접기가 없어 분류군·활용 특성 칩이 왼쪽 칸을 다 차지하고 첫 종 카드가

@@ -47,7 +47,7 @@ async function until(expr,ms=30000){const end=Date.now()+ms;while(Date.now()<end
 async function shot(name){if(!want(name.split('-').slice(2).join('-')))return;const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(OUT,name+'.png'),Buffer.from(r.data,'base64'));}
 
 // Scrollers people swipe through on purpose: wider text there is not clipped (나).
-const SCROLLERS=['.species-list','.use-chips','.cmp-groups','.chips','.mt-chips','#all-sources','.table-wrap','.cmp-table-wrap','.mt-nat-wrap','.mt-ck-wrap','.leaflet-pane'];
+const SCROLLERS=['.species-list','.use-chips','.cmp-groups','.chips','.mt-chips','#all-sources','.table-wrap','.cmp-table-wrap','.mt-nat-wrap','.leaflet-pane'];
 // Runs in the page: measures the text under the given roots.
 const collect=`((roots,scrollers)=>{
   const SKIP='.sr-only,script,style,noscript,template,.hidden-label,.i18n-ko,svg,title,option,select,textarea,input';

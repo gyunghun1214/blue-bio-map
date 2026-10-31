@@ -153,60 +153,6 @@ body:has(#method.active) .tabs button:focus-visible{outline-color:#bfe3ef}
 #method .method-card ul{margin:10px 0 0;padding-left:20px}
 #method .method-card li b,#method .method-card p b{color:var(--mt-ink)}
 #method .method-card.flash{outline:2px solid var(--mt-accent-hi);outline-offset:10px;border-radius:6px;box-shadow:none}
-/* 04 검증 기록 (posthoc-scorecard.json, renderPosthocTable; 2026-10-19 LKH). The result reads in words as well as colour:
-   passed = accent and filled, a consistency check that is not independent = blue with a dashed border and no fill (never the
-   passed look), not met = amber, not met and stopped = brown, not established = grey. Below 900px each row is a card whose
-   cells name their column (data-label). */
-#method .mt-ck{--oc-pass:#3dd6c3;--oc-consistent:#8fd3e8;--oc-fail:#e3b26a;--oc-stopped:#c99a6b;--oc-void:#a9bbc6;margin-top:20px}
-#method .mt-ck [data-oc=pass]{--oc:var(--oc-pass)}#method .mt-ck [data-oc=consistent]{--oc:var(--oc-consistent)}#method .mt-ck [data-oc=fail]{--oc:var(--oc-fail)}
-#method .mt-ck [data-oc=stopped]{--oc:var(--oc-stopped)}#method .mt-ck [data-oc=void]{--oc:var(--oc-void)}
-#method .mt-ck [data-oc=registered]{--oc:var(--oc-void)}
-#method .mt-ck-pill[data-oc=registered]{border-style:dashed;background:none}
-#method .mt-ck-ledger{margin-top:4px}
-#method .mt-ck-sum{color:var(--mt-ink);font-size:15px;font-weight:600;line-height:1.7}
-#method .mt-ck-sum span{white-space:nowrap}
-#method .mt-ck-sum span:before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;background:var(--oc);vertical-align:0}
-#method .mt-ck-sum span[data-oc=consistent]:before{width:8px;height:8px;border:1px dashed var(--oc);background:none}
-#method .mt-ck-wrap{margin-top:14px;overflow-x:auto;border:1px solid var(--mt-line2);border-radius:12px;background:var(--mt-low)}
-#method .mt-ck-table{width:100%;min-width:900px;border-collapse:collapse;color:var(--mt-ink2);font-size:13.5px;line-height:1.55}
-#method .mt-ck-table :is(th,td){padding:13px 14px;border-bottom:1px solid var(--mt-line);background:none;text-align:left;vertical-align:top}
-#method .mt-ck-table thead th{color:var(--mt-ink3);font-size:12.5px;font-weight:600;white-space:nowrap}
-#method .mt-ck-table tbody tr:last-child>*{border-bottom:0}
-#method .mt-ck-table tbody tr{scroll-margin-top:calc(var(--chrome,56px) + 16px)}
-#method .mt-ck-table tbody tr.flash>*{background:rgba(68,215,192,.1)}
-#method .mt-ck-table tbody th{width:21%;min-width:0;color:var(--mt-ink);font-weight:400}
-#method .mt-ck-table tbody th>b{display:block;font-weight:700}
-#method .mt-ck-table td:nth-of-type(1){width:24%}
-#method .mt-ck-table td:nth-of-type(2){width:16%}
-#method .mt-ck-table td:nth-of-type(3){width:19%}
-#method .mt-ck-table td:nth-of-type(4){width:20%}
-#method .mt-ck-table td b{display:block;color:var(--mt-ink);font-weight:650}
-#method .mt-ck-table td b.mt-ck-na{color:var(--mt-ink2);font-weight:500}
-#method .mt-ck-table :is(th,td) small{display:block;margin-top:4px;color:var(--mt-ink3);font-size:12px;line-height:1.5}
-#method .mt-ck-table .mt-ck-rec{margin-top:8px}
-#method .mt-ck-table .mt-ck-rec :is(a,span){display:block;overflow-wrap:anywhere}
-#method .mt-ck-table .mt-ck-fig{margin-top:8px;color:var(--mt-ink2);font-size:12.5px;font-variant-numeric:tabular-nums}
-#method .mt-ck-pill{display:inline-block;padding:3px 10px;border:1px solid var(--oc);border-radius:999px;background:color-mix(in srgb,var(--oc) 14%,transparent);color:var(--oc);font-size:12.5px;font-weight:700;line-height:1.45}
-#method .mt-ck-pill[data-oc=pass]{background:var(--oc);color:var(--mt-on-accent)}
-#method .mt-ck-pill[data-oc=consistent]{border-style:dashed;background:none}
-#method .mt-ck.flash{outline:2px solid var(--mt-accent-hi);outline-offset:6px;border-radius:8px}
-#method .mt-ck-foot{max-width:92ch;margin-top:12px;color:var(--mt-ink3);font-size:13px;line-height:1.7}
-@media (max-width:900px){
-  #method .mt-ck-wrap{overflow:visible;border:0;background:none}
-  #method .mt-ck-table{min-width:0}
-  #method .mt-ck-table,#method .mt-ck-table tbody,#method .mt-ck-table tr,#method .mt-ck-table :is(th,td){display:block;width:auto!important}
-  #method .mt-ck-table thead{display:none}
-  #method .mt-ck-table tbody tr{margin-top:10px;padding:12px 14px;border:1px solid var(--mt-line2);border-left:3px solid var(--oc);border-radius:12px;background:var(--mt-low)}
-  #method .mt-ck-table tbody tr[data-oc=consistent]{border-left-style:dashed}
-  #method .mt-ck-table tbody tr.flash{background:#0b2a3a}
-  #method .mt-ck-table tbody tr.flash>*{background:none}
-  #method .mt-ck-table tbody th{padding:0 0 6px;border:0;font-size:15px}
-  #method .mt-ck-table td{display:grid;grid-template-columns:88px minmax(0,1fr);gap:2px 10px;padding:7px 0 0;border:0}
-  #method .mt-ck-table td:before{content:attr(data-label);grid-row:1/span 4;color:var(--mt-ink3);font-size:12px}
-  #method .mt-ck-table td>*{grid-column:2}
-  #method .mt-ck-table td>.mt-ck-pill{justify-self:start}
-}
-@media (max-width:600px){#method .mt-ck-table td{grid-template-columns:76px minmax(0,1fr)}}
 /* 04 method change timeline (ledger: method-changelog.json) */
 #method .mt-changelog{max-width:92ch;margin-top:20px;color:var(--mt-ink2);font-size:15px;line-height:1.7}
 #method .mt-changelog :where(p){color:inherit}

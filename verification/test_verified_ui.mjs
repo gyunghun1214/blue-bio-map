@@ -57,10 +57,10 @@ for(const text of ['9.66 g','8.72 mg','15.9 mg','K4040020000a','rda-10.4-raw-mar
 // 3.27: the MBPI drug-origin check is computed and failed, so MBPI and the BBVI built on it carry that label in the record;
 // 2026-10-17 (LKH): validation results and the single-paper label stay in the records and are not drawn on the screen
 // 2026-10-19 (LKH, 사이트 v3 1~3/10 '되살리기'): the stored result of the MBPI check is one line of the MBPI section again, and a
-// preliminary MCUI opens its section with one line on its back-test, each linked to its row of the method tab's 검증 기록; the
+// preliminary MCUI opens its section with one line on its back-test (2026-10-31: no '검증 기록 보기' button, fold 04 left); the
 // single-paper label and the replication words stay in the record
-const MBPI_CHECK='<p class="fine mbpi-check">MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용 <button type="button" class="go-checks" data-go-checks="MBPI">검증 기록 보기</button></p>';
-const PRELIM_LINE='<p class="fine mcui-prelim"><b>예비 평가(공식 평가 전) · 분포 범위 계산 · 역검증에서 위협종 2종을 놓쳐 기준 미충족 · IUCN이나 국가 평가가 나오면 교체</b> <button type="button" class="go-checks" data-go-checks="MCUI_preliminary">검증 기록 보기</button></p>';
+const MBPI_CHECK='<p class="fine mbpi-check">MBPI 검증: 기준 미충족(신약 기원종 순위) · 1차 선별용</p>';
+const PRELIM_LINE='<p class="fine mcui-prelim"><b>예비 평가(공식 평가 전) · 분포 범위 계산 · 역검증에서 위협종 2종을 놓쳐 기준 미충족 · IUCN이나 국가 평가가 나오면 교체</b></p>';
 {const vs=original.method.posthoc.validation_sets;
   assert.ok(vs.MBPI.result!=='passed'&&vs.MCUI_preliminary.result!=='passed'&&vs.MCUI_preliminary.false_lc_for_threatened.length===2,'the two lines say what the record stores');}
 assert.match(html,/data-axis=\"BBVI\"><summary><span>BBVI · 통합 활용<\/span><b>72 · 정식 산출<\/b>/);

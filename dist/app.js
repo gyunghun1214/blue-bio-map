@@ -880,63 +880,11 @@ function cmnpdLine(s){
   return `<p class="cp-cmnpd" title="${esc(tip)}"><b>후보 화합물 탐색 <span class="cp-cmnpd-tag">참고 자료</span></b>`+
     `${sourceLink(src.url,'CMNPD')} 보고 화합물 <strong>${r.compound_count.toLocaleString()}개</strong> · ${lic}</p>`;
 }
-// 검증 기록 (dist/posthoc-scorecard.json, built by scripts/build_posthoc_scorecard.py from posthoc.validation_sets). A same-data
-// or two-species consistency check is never shown as 통과. Display only: nothing here reaches a score, the matrix, the map
-// colours or a chip. Schema 1 is read; a higher number is a newer file; anything else is ignored.
-// 2026-10-19 (team lead, LKH: '되살리기'): the verification records are on screen again, replacing the 2026-10-17 decision
-// that no verification state is shown. Fold 04 of the method tab lists every check with its stored result
-// (renderPosthocTable), and the species detail's MBPI and preliminary MCUI lines link to their rows (openChecks). The
-// journey-card badges were not brought back: renderVerifyBadges keeps any badge left in the markup hidden and empty.
-let posthocScorecard=null;
-const SCORECARD_OC={'통과':'pass','실패':'fail','실패 후 사용 중단':'stopped','일관성 확인(독립 아님)':'consistent','검증 불성립':'void'};
-function scorecardFile(file,outdated){
-  const v=/^posthoc-scorecard-(\d+)$/.exec(file?.schema_version||'');
-  if(v&&Number(v[1])>1)outdated.push({file:'posthoc-scorecard.json',version:file.schema_version});
-  if(file?.schema_version!=='posthoc-scorecard-1'||file.display_only!==true||!Array.isArray(file.rows))return null;
-  return file.rows.every(r=>r&&SCORECARD_OC[r.outcome_class])?file:null;
-}
+// 2026-10-31 (LKH): fold 04 '검증 기록' left the method tab with its table, the species-detail buttons that opened it and the
+// load of posthoc-scorecard.json. The file, its build and the research records stay. The journey-card badges stay off:
+// renderVerifyBadges keeps any badge left in the markup hidden and empty.
 function renderVerifyBadges(){
   document.querySelectorAll('#method .mt-vbadge[data-ind]').forEach(b=>{b.hidden=true;b.textContent='';b.title='';delete b.dataset.state;});
-}
-// 04 검증 기록: one row per check, in the file's order. The result reads in words as well as colour (a consistency check that
-// is not independent has its own words, colour and dashed border, never the 통과 look), and the line above the table counts
-// each class. The numbers a row quotes come from its record file (figure, read there by the build) with that record's version.
-const CHECK_COUNT_LABEL={'통과':'통과','실패':'기준 미충족','실패 후 사용 중단':'미충족 후 사용 중단','일관성 확인(독립 아님)':'일관성 확인(독립 아님)','검증 불성립':'검증 불성립'};
-const checkVersion=v=>String(v||'').replace(/^verified-pilot-/,'시범 ').replace(/^verified-/,'');
-function renderPosthocTable(){
-  const body=$('mt-ck-body');if(!body)return;
-  const sc=posthocScorecard;
-  if(!sc){
-    $('mt-ck-title').textContent='검증 기록';body.innerHTML='';$('mt-ck-foot').textContent='';
-    $('mt-ck-sum').textContent=data?'검증 기록 파일(posthoc-scorecard.json)을 읽지 못했습니다. 기록은 저장소의 research/verified-indices에 있습니다.':'검증 기록을 불러오는 중입니다.';return;
-  }
-  $('mt-ck-title').textContent=`검증 기록 ${sc.total}건`;
-  $('mt-ck-sum').innerHTML=Object.keys(SCORECARD_OC).filter(c=>sc.counts?.[c]).map(c=>`<span data-oc="${SCORECARD_OC[c]}">${esc(CHECK_COUNT_LABEL[c])} ${esc(sc.counts[c])}</span>`).join(' · ');
-  const record=p=>`<a href="${escRaw(sc.repository+p)}" target="_blank" rel="noopener" title="${escRaw(p)}">${escRaw(p.split('/').pop())} ↗</a>`;
-  const commitUrl=c=>sc.repository.replace(/\/blob\/[^/]+\/$/,'/commit/')+c;
-  body.innerHTML=[...sc.rows].sort((a,b)=>a.order-b.order).map(r=>{const oc=SCORECARD_OC[r.outcome_class];
-    return `<tr data-oc="${oc}" data-key="${esc(r.key)}" id="mt-ck-${esc(r.key)}">`+
-      `<th scope="row"><b>${esc(r.name)}</b><small class="mt-ck-rec">기록 ${r.records.map(record).join('')}${r.record_note?`<span>${esc(r.record_note)}</span>`:''}</small></th>`+
-      `<td data-label="무엇을 확인했나"><span>${esc(r.checked)}</span></td>`+
-      `<td data-label="사전 등록"><b>${esc(r.preregistered_label)}</b><small>${esc(r.preregistered_note)}</small></td>`+
-      `<td data-label="결과"><span class="mt-ck-pill" data-oc="${oc}">${esc(r.outcome_label)}</span>`+
-        `${r.figure?`<small class="mt-ck-fig">${esc(checkVersion(r.figure.record_version))} 기록: ${esc(r.figure.text)}</small>`:''}</td>`+
-      `<td data-label="그 뒤 처리"><b${r.action==='none'?' class="mt-ck-na"':''}>${esc(r.action_label)}</b><small>${esc(r.action_detail)}</small>`+
-        `${r.action_history?`<small class="mt-ck-hist">${esc(r.action_history)}</small>`:''}</td></tr>`;}).join('')+
-    // 2026-10-21 (site v4 09): checks registered before any result: the pre-registration file, the commit that added it
-    // alone, and when the result comes; never counted above (its result is not stored yet)
-    (Array.isArray(sc.registered)?sc.registered:[]).filter(r=>r?.key&&r.name&&r.prereg&&/^[0-9a-f]{7}$/.test(r.prereg_commit||'')&&/^\d{4}-\d{2}$/.test(r.results_due||'')).map(r=>
-      `<tr data-oc="registered" data-key="${esc(r.key)}" id="mt-ck-${esc(r.key)}">`+
-      `<th scope="row"><b>${esc(r.name)}</b><small class="mt-ck-rec">기록 ${record(r.prereg)}</small></th>`+
-      `<td data-label="무엇을 확인했나"><span>${esc(r.checked)}</span></td>`+
-      `<td data-label="사전 등록"><b>예</b><small><a href="${escRaw(commitUrl(r.prereg_commit))}" target="_blank" rel="noopener">사전 등록 커밋 ${esc(r.prereg_commit)} ↗</a></small></td>`+
-      `<td data-label="결과"><span class="mt-ck-pill" data-oc="registered">등록됨</span><small class="mt-ck-fig">${esc(r.results_due)} 공개 예정</small></td>`+
-      `<td data-label="그 뒤 처리"><b class="mt-ck-na">결과가 나오면 이 줄에 적음</b></td></tr>`).join('');
-  $('mt-ck-foot').textContent=`‘일관성 확인(독립 아님)’은 점수를 만든 자료와 같은 자료로 보거나 2종만 비교한 확인이라 통과로 세지 않습니다. `+
-    `‘검증 불성립’은 미리 정한 최소 표본 수에 못 미쳐 판정하지 못했다는 뜻입니다. 사전 등록 ‘예’ ${sc.preregistered}건은 결과를 보기 전에 기준을 정했습니다. `+
-    `결과 칸의 숫자는 각 기록 파일에 저장된 그때 값이고, 기록 파일은 프로젝트 GitHub 저장소에 있습니다. ${checkVersion(sc.report_version)} 기준.`;
-  // the full history of rule changes stays a file (the 2026-10-17 timeline is not drawn again; LKH 2026-10-21, option A)
-  const ledger=$('mt-ck-ledger');if(ledger)ledger.innerHTML=`지표 규칙이 바뀐 이력 전체: ${record('research/method-changelog.json')}`;
 }
 // 4.0 (team-lead decision 2026-10-04): 미탐색 후보 outside the 30 (dist/unexplored-candidates.json). A species of the box that
 // shares its genus with one of the 30 whose published BBVI is at least the threshold; no indicator was collected for it
@@ -1188,8 +1136,7 @@ const subNationalMcui = s => s?.assessment?.mcui_basis==='sub_national'&&pilotSc
 // stands in as a preliminary assessment until an official result is published. It is never called IUCN or official; the
 // detail's MCUI section names it and its basis. 2026-10-19 (LKH, '되살리기'): a Rapid LC value (mcui_basis 'preliminary',
 // rawPreliminaryMcui; a range state's national list is not marked) carries '예비' beside its number everywhere
-// ('10.0 (LC·예비)', mcuiCatTag), a hollow matrix point, and in the detail one line with its back-test and a link to its row
-// of the method tab's 검증 기록 (preliminaryMcuiLine).
+// ('10.0 (LC·예비)', mcuiCatTag), a hollow matrix point, and in the detail one line with its back-test (preliminaryMcuiLine).
 const earlyMcui = s => s?.assessment?.conservation_status?.state==='preliminary_scored'&&pilotScore(s,'MCUI')!==null;
 // 4.3 (team-lead decision 2026-10-05): a scored Rapid LC check, the last basis, with its own marker and label.
 const rawPreliminaryMcui = s => s?.assessment?.mcui_basis==='preliminary'&&pilotScore(s,'MCUI')!==null;
@@ -1378,14 +1325,12 @@ function mcuiComposition(s){
   return `IUCN ${c.category}${c.assessment_year?' · 평가 '+c.assessment_year:''} · 출처 ${c.source_id||'—'}${check?` · 현행 평가 확인 ${check}${src?` (${src})`:''}`:''}`;
 }
 // 2026-10-19 (LKH, 사이트 v3 2/10): the MCUI section of a Rapid LC species opens with what the value is, how it was judged,
-// how its method fared in the back-test (posthoc.validation_sets.MCUI_preliminary as stored) and when it is replaced, and a
-// link to that check's row of the method tab's 검증 기록.
+// how its method fared in the back-test (posthoc.validation_sets.MCUI_preliminary as stored) and when it is replaced.
 function preliminaryMcuiLine(s){
   if(!rawPreliminaryMcui(s))return '';
   const b=data.assessmentInfo?.method?.posthoc?.validation_sets?.MCUI_preliminary, r=validationResult('MCUI_preliminary'), missed=b?.false_lc_for_threatened?.length;
   const check=r==='passed'?'역검증 기준 통과':r==='failed'?`역검증에서 ${missed?`위협종 ${missed}종을 놓쳐 `:''}기준 미충족`:'';
-  return `<p class="fine mcui-prelim"><b>${esc(['예비 평가(공식 평가 전)','분포 범위 계산',check,'IUCN이나 국가 평가가 나오면 교체'].filter(Boolean).join(' · '))}</b>`+
-    `${b?` <button type="button" class="go-checks" data-go-checks="MCUI_preliminary">검증 기록 보기</button>`:''}</p>`;
+  return `<p class="fine mcui-prelim"><b>${esc(['예비 평가(공식 평가 전)','분포 범위 계산',check,'IUCN이나 국가 평가가 나오면 교체'].filter(Boolean).join(' · '))}</b></p>`;
 }
 // 2026-10-17 (LKH): the one line naming where a preliminary category comes from, in the species detail only (never '공식')
 function categorySourceLine(s){
@@ -1992,7 +1937,7 @@ function axisCards(s){
 // 2026-10-12: the MBPI section opens with the stratum of the scored item. 2026-10-19 (LKH, 사이트 v3 3/10): above it, one line
 // on what the number was measured on: '근거: [표적 종류] [종말점] 시험 [N]건 · 분리 화합물·펩타이드의 시험값이며 종 추출물
 // 효능 시험은 아님', N = the measurements of the scored item (bestBio: its ChEMBL activity records, or its measured values),
-// and below it the stored result of the MBPI check with a link to its row of the method tab's 검증 기록. Species detail only:
+// and below it the stored result of the MBPI check. Species detail only:
 // the sea expedition's cards keep their wording.
 const MBPI_ASSAY_KIND={ace_peptide:'ACE 저해',ace_compound:'ACE 저해',xo:'잔틴 산화효소 억제',anticancer:'암세포주',amp:'항균',relaxed:'ChEMBL 표적',compound:'분리 화합물'};
 function mbpiAssayLine(s){
@@ -2008,7 +1953,7 @@ function mbpiFirstLine(s){
   const st=mbpiStratumOf(s), k=mbpiKindOf(s), assay=mbpiAssayLine(s), r=validationResult('MBPI');
   const check=r&&st?`MBPI 검증: ${r==='passed'?'통과':'기준 미충족'}(신약 기원종 순위) · 1차 선별용`:'';
   return (assay||st?`<p class="fine mbpi-first">${assay?`<b>${escL(assay)}</b>`:''}${st?`${assay?'<br>':''}근거 층: ${escL(st.long)}`:''}${k?`<br>근거 종류: ${escL(k.long)} · ${esc(mbpiKindShare(k))}`:''}</p>`:'')+
-    (check?`<p class="fine mbpi-check">${esc(check)} <button type="button" class="go-checks" data-go-checks="MBPI">검증 기록 보기</button></p>`:'');
+    (check?`<p class="fine mbpi-check">${esc(check)}</p>`:'');
 }
 // 4.10: one line under the MBPI section for the secondary MBPI-Rx (mbpiRxOf); it opens to the published post-hoc reason, the
 // classification criterion and the pre-registration. A null value reads 없음 with the published reason, never 0.
@@ -4929,10 +4874,10 @@ async function loadCollection(){
   $('map-judgment').textContent='해역별 활용·보전 판단: 입력 확인 중';
   $('map-source').textContent='공개 기준 자료 · 공개 1° 셀';
   try{
-    const [next,readiness,traits,outside,literature,searches,cmnpd,scorecard,changelog,aquaTier,namesEn]=await Promise.all([loadPublishedProfiles(),
-      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','posthoc-scorecard.json','method-changelog.json','aquaculture-tier.json','species-names-en.json']
+    const [next,readiness,traits,outside,literature,searches,cmnpd,changelog,aquaTier,namesEn]=await Promise.all([loadPublishedProfiles(),
+      ...['matrix-readiness.json','trait-evidence.json','unexplored-candidates.json','supplementary-literature.json','replication-search.json','cmnpd-candidates.json','method-changelog.json','aquaculture-tier.json','species-names-en.json']
         .map(f=>readData(f,FRESH_READ).then(r=>r.ok?r.json():null).catch(()=>null))]);
-    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);aquacultureTier=aquacultureTierRows(aquaTier,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);posthocScorecard=scorecardFile(scorecard,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
+    next.outdated??=[];matrixReadiness=readinessRows(readiness,next.outdated);aquacultureTier=aquacultureTierRows(aquaTier,next.outdated);traitDisplay=traitDisplayRows(traits,next.outdated);supplementaryLit=supplementaryRows(literature,next.outdated);replicationSearch=replicationSearchRows(searches,next.outdated);cmnpdCandidates=cmnpdRows(cmnpd,next.outdated);methodChangelog=changelogFile(changelog,next.outdated);
     unexploredOutside=unexploredRows(outside,next.outdated);
     next.readinessAssessmentDate=readiness?.assessments_snapshot||null;next.readinessCandidateDate=readiness?.candidate_snapshot||null;
     if(request!==requestNumber)return;
@@ -5083,14 +5028,6 @@ document.querySelectorAll('.flow [data-step]').forEach(g=>{const go=()=>{const c
 // fold opens it first.
 const smoothScroll=()=>matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
 function methodGo(el){if(!el)return;const d=el.closest('details');if(d)d.open=true;el.scrollIntoView({behavior:smoothScroll(),block:'start'});}
-// '검증 기록 보기' (species detail): the method tab at that check's row of fold 04, out of the evidence drawer first
-function openChecks(key){
-  if(drawerIsOpen())closeDrawer(false);
-  setView('method',false);
-  const t=(key&&$('mt-ck-'+key))||$('mt-checks');
-  requestAnimationFrame(()=>{methodGo(t);t?.classList.add('flash');setTimeout(()=>t?.classList.remove('flash'),1800);});
-}
-document.addEventListener('click',e=>{const b=e.target.closest?.('[data-go-checks]');if(!b)return;e.preventDefault();openChecks(b.dataset.goChecks);});
 // the citation list fold (#9): a way in that asks for the sources opens it
 function openSources(){const f=$('mt-sources-fold');if(f)f.open=true;}
 const METHOD_GO={journey:()=>$('mt-journey'),sources:()=>document.querySelector('#method .source-section'),flow:()=>document.querySelector('#method .flow-wrap')};
@@ -5104,7 +5041,7 @@ function renderMethodPage(){
   renderMethodChangelog();
   const n=v=>Number.isFinite(v)?String(v):'—';
   if($('mt-cmnpd'))$('mt-cmnpd').textContent=cmnpdMethodText();
-  renderVerifyBadges();renderPosthocTable();
+  renderVerifyBadges();
   $('mt-total').textContent=n(data?.species?.length);
   const rule=matrixRule();if(!rule)return;
   document.querySelectorAll('#method .mt-q').forEach(q=>{const t=rule.types?.[q.dataset.q];if(!t)return;q.dataset.type=t.id;q.querySelector('b').textContent=matrixTypePlain(t.id);q.querySelector('span').textContent=t.label;});
