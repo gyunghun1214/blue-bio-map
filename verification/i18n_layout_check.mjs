@@ -47,7 +47,7 @@ async function until(expr,ms=30000){const end=Date.now()+ms;while(Date.now()<end
 async function shot(name){if(!want(name.split('-').slice(2).join('-')))return;const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(OUT,name+'.png'),Buffer.from(r.data,'base64'));}
 
 // Scrollers people swipe through on purpose: wider text there is not clipped (나).
-const SCROLLERS=['.species-list','.use-chips','.cmp-groups','.chips','.mt-chips','#all-sources','.table-wrap','.cmp-table-wrap','.mt-nat-wrap','.leaflet-pane'];
+const SCROLLERS=['.species-list','.use-chips','.cmp-groups','.chips','.mt-chips','#all-sources','.table-wrap','.cmp-table-wrap','.mt-nat-wrap','.mt-ck-wrap','.leaflet-pane'];
 // Runs in the page: measures the text under the given roots.
 const collect=`((roots,scrollers)=>{
   const SKIP='.sr-only,script,style,noscript,template,.hidden-label,.i18n-ko,svg,title,option,select,textarea,input';
@@ -73,7 +73,9 @@ const collect=`((roots,scrollers)=>{
       const rs=[...rg.getClientRects()].filter(r=>r.width>1&&r.height>1);if(!rs.length)continue;
       const lines=new Set(rs.map(r=>Math.round(r.top/4))).size, words=t.split(' ').length;
       nodes.push({n,el,t,rs});
-      if(lines>words&&t.length>1)out.broken.push({sel:sel(el),text:t.slice(0,80),lines});
+      // 2026-11-01: a record file name of fold 04 (.mt-ck-file) is one long token that wraps at its hyphens by design; until
+      // 2026-10-31 it was a link ending in ' ↗' (two words), so it never counted here
+      if(lines>words&&t.length>1&&!el.closest('.mt-ck-file'))out.broken.push({sel:sel(el),text:t.slice(0,80),lines});
       let cut=0;
       for(const r of rs){const v=clipOf(el,r);if(!v)continue;boxes.push({...v,k:nodes.length-1});
         if((v.r<r.right-2||v.l>r.left+2)&&!inScroller(el))cut=Math.max(cut,Math.round(r.right-v.r+v.l-r.left));
