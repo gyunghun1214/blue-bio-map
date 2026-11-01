@@ -1,6 +1,7 @@
 """Who runs the map, how to reach the team and how it was made (2026-10-19, LKH's site fixes for the v3 review): the footer
 line, the feedback link (a new issue on the public repository, outside the site), its issue template, the next-step
-targets. The '만든 방법' list of the tools used to build the site was removed 2026-10-25."""
+targets. The '만든 방법' list of the tools used to build the site was removed 2026-10-25. Since 2026-11-01 (LKH) the
+repository is private, so the two '의견 보내기' links to its issue page left the screen."""
 import re
 import unittest
 from pathlib import Path
@@ -22,17 +23,16 @@ class OperatorNoticeTest(unittest.TestCase):
         foot = self.html[self.html.index("<footer>"):self.html.index("</footer>")]
         # since 2026-10-21 (prompt 02) dist/operations.js adds the after-contest line from dist/operations.json to the span
         self.assertIn('<p class="foot-ops"><span data-ops-operator>운영: alt F4 팀(OCEAN 20 해커톤 출품)</span> · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 '
-                      '버전 번호와 함께 공개 · <a class="foot-link" data-feedback="foot" href="' + FEEDBACK_URL
-                      + '" target="_blank" rel="noopener">의견 보내기</a><span data-feedback-issue hidden> · '
-                      '<a class="foot-link" href="' + FEEDBACK_URL + '" target="_blank" rel="noopener">GitHub 이슈</a></span></p>', foot)
+                      '버전 번호와 함께 공개</p>', foot)
 
     def test_feedback_stays_outside_the_site(self):
         # the coordinate dialog ends with the same link; the site has no form that takes personal details. Since
         # 2026-10-21 a form address in dist/operations.json (an outside survey, no account) can replace both links and the
         # footer keeps the issue link beside it (verification/test_operations.mjs)
-        self.assertIn('절차는 기관 검토를 거쳐 확정합니다. <a class="coord-link" data-feedback="coord" href="' + FEEDBACK_URL
-                      + '" target="_blank" rel="noopener">의견 보내기</a></p>', self.html)
-        self.assertEqual(self.html.count(FEEDBACK_URL), 3)
+        # since 2026-11-01 (LKH) the repository is private: no link to its issue page is left on the screen
+        self.assertIn('절차는 기관 검토를 거쳐 확정합니다.</p>', self.html)
+        self.assertEqual(self.html.count(FEEDBACK_URL), 0)
+        self.assertNotIn("github.com/gyunghun1214", self.html + text("dist/i18n-en.js"))
         for page in ("dist/index.html", "dist/expedition.html"):
             self.assertNotRegex(text(page), r"<form\b|<textarea\b")
 
