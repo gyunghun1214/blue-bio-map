@@ -32,7 +32,6 @@ if(!OUT)throw Error('Usage: node verification/uicheck.mjs <output-directory>');
 fs.mkdirSync(OUT,{recursive:true});
 const URL0=process.env.URL0||'http://127.0.0.1:8765/';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'cdp-'));
-const FEEDBACK_URL='https://github.com/gyunghun1214/blue-bio-map/issues/new?template=feedback.md';
 const chromePath=process.env.CHROME_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
 const chrome=spawn(chromePath,['--headless=new','--remote-debugging-port=0','--no-first-run','--disable-gpu',
   '--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
@@ -628,9 +627,10 @@ try{
   // 2026-10-17 (LKH): the squid's aquaculture line says what the record holds ('사육 시도 기록'); its tier stays 'none' in aquaculture-tier.json
   check('Both-high species (살오징어): 대체생산·양식 연구 현황 before the map summary; other types do not get it',gap.before&&gap.altText.includes('대체생산·양식 연구 현황')&&gap.altText.includes('사육 시도 기록')&&!gap.altText.includes('조사 필요')&&readDist('aquaculture-tier.json').rows.find(r=>r.aphia_id===342067)?.tier==='none'&&!gap.oyAlt,JSON.stringify({before:gap.before,oyAlt:gap.oyAlt,alt:gap.altText.slice(0,200)}));
   // 2026-10-17 (LKH): the dialog says where raw coordinates are kept ('비공개 저장소에만 보관') and that it is a procedure guide; it has no form
-  // 2026-10-19 (LKH, prompt 4/10): its text ends with the feedback link of the footer (a new GitHub issue, outside the site)
+  // 2026-10-19 (LKH, prompt 4/10): its text ended with the feedback link of the footer (a new GitHub issue); since 2026-11-01
+  // (LKH) the repository is private, so the dialog and the footer have no link to it
   check('Species links: iNaturalist search (external) and the precise-coordinate dialog that gives no raw coordinates, ending with the outside feedback link',gap.inat.startsWith('https://www.inaturalist.org/taxa/search?q=Todarodes%20pacificus')&&gap.open&&!gap.form&&['원좌표는 비공개 저장소에만 보관합니다','이용 절차 안내','시민','연구자','기관','계획된 승인 절차'].every(x=>gap.txt.includes(x))&&!/제공하지 않습니다|운영하지 않습니다|제공 대상이 아닙니다/.test(gap.txt)&&
-    JSON.stringify(gap.fb)===JSON.stringify([`의견 보내기|${FEEDBACK_URL}|_blank|noopener`])&&/확정합니다\. 의견 보내기\s*닫기\s*$/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,fb:gap.fb,txt:gap.txt.slice(-120)}));
+    JSON.stringify(gap.fb)==='[]'&&/확정합니다\.\s*닫기\s*$/.test(gap.txt),JSON.stringify({inat:gap.inat,open:gap.open,form:gap.form,fb:gap.fb,txt:gap.txt.slice(-120)}));
   // 2026-10-19 (LKH, prompt 4/10): the footer says who runs the map, how it is updated, and opens feedback as a new GitHub issue
   // in a new tab (the issue form is GitHub's: the site itself has no form that takes personal details; the one form on the page
   // is the guide's question box, a single text field answered from its fixed list, chatbot.js sends nothing)
@@ -638,8 +638,8 @@ try{
   // since 2026-10-21 (site v4 01) the GitHub issue link beside a form link stays hidden until operations.json has a form, so the text skips [hidden]
   const foot=await evaluate(`(()=>{const f=document.querySelector('footer .foot-ops'),a=f&&f.querySelector('a'),c=f&&f.cloneNode(true);c?.querySelectorAll('[hidden]').forEach(e=>e.remove());return {t:c?c.textContent:'',a:a?[a.textContent,a.getAttribute('href'),a.target,a.rel].join('|'):'',
     forms:[...document.querySelectorAll('form,textarea')].filter(e=>!e.matches('form.bbc-form')).length,guide:[...document.querySelectorAll('form.bbc-form input')].map(i=>i.type).join()};})()`);
-  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영 · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개 · 의견 보내기'&&
-    foot.a===`의견 보내기|${FEEDBACK_URL}|_blank|noopener`&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
+  check('Footer: operator, update rule and the outside feedback link; no form on the site but the guide\'s question box',foot.t==='운영: alt F4 팀(OCEAN 20 해커톤 출품) · 대회 뒤 2026-11-06부터도 계속 운영 · 갱신: 자료는 분기마다, 지표 규칙이 바뀌면 버전 번호와 함께 공개'&&
+    foot.a===''&&foot.forms===0&&['','text'].includes(foot.guide),JSON.stringify(foot));
   // 2026-10-16: the scorecard table and fold 05 (application promise table) were taken off the method tab
   // 2026-10-17 (LKH): the change-history fold (04) left too; method-changelog.json stays in dist
   // 2026-10-17 (LKH): the MCUI SCALE card (#mt-mcui-map) left the top of the tab; the hero is the first block
