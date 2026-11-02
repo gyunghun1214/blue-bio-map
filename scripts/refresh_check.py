@@ -221,8 +221,8 @@ def post_json(url: str, payload: dict, headers: dict, timeout: int = 120):
 SYSTEM_PROMPT = ("너는 해양생물 지도 'Blue-bio Value Map' 팀의 자료 담당 보조다. 분기마다 공개 자료를 다시 받아 사이트 값과 비교한 표가 주어진다. "
                  "할 일: 사람 검토자가 볼 한국어 정리를 쓴다. 규칙: (1) 표에 있는 사실만 쓰고, 표에 없는 숫자·종·출처는 만들지 않는다. "
                  "(2) 점수를 다시 계산하거나 반영 여부를 결정하지 않는다. 결정은 사람이 한다. (3) 바뀐 항목마다 어느 원문에서 무엇을 확인하면 되는지, "
-                 "사이트의 어느 값(affects)에 닿는지 한 줄씩 쓴다. (4) '확인 불가'는 다시 돌려 볼 항목으로 따로 묶는다. "
-                 "(5) 바뀐 것이 없으면 그렇다고 짧게 쓴다. 형식: 마크다운, 맨 위 세 줄 요약, 그 아래 '먼저 볼 것' 목록. 400자~1200자.")
+                 "사이트의 어느 값(표의 affects)에 닿는지 한 줄씩 쓴다. 영어 필드 이름(affects, rows 등)은 쓰지 않고 '닿는 화면 값'처럼 한국어로 쓴다. (4) '확인 불가'는 다시 돌려 볼 항목으로 따로 묶는다. "
+                 "(5) 바뀐 것이 없으면 그렇다고 짧게 쓴다. 형식: 마크다운, 제목 줄 없이 맨 위 세 줄 요약, 그 아래 '먼저 볼 것' 목록(소제목은 ###까지). 400자~1200자.")
 
 
 def ai_brief(table: dict) -> str:
@@ -300,6 +300,11 @@ def numbers_not_in(text: str, source: str) -> list[str]:
     return sorted({n for n in re.findall(r"\d+(?:\.\d+)?", text) if n not in seen and len(n) > 1})
 
 
+def demote_headings(text: str) -> str:
+    """Keep the AI's own headings below this report's '## AI 정리' (# and ## become ###)."""
+    return re.sub(r"(?m)^#{1,2}(?=\s)", "###", text)
+
+
 def render(table: dict) -> str:
     rows = table["rows"]
     changed = [r for r in rows if r["result"] == "바뀜"]
@@ -315,7 +320,7 @@ def render(table: dict) -> str:
         lines += [f"- IUCN 적색목록 GBIF 사본 갱신일: {ed.get('updated') or '확인 불가'} (우리 마지막 확인 {ed.get('our_check')}) → **{ed['result']}**", ""]
     lines += ["## AI 정리", ""]
     if table.get("ai_text"):
-        lines += [table["ai_text"], "", f"<sub>정리: {table['ai_model']}. 표가 기준이며, AI는 표를 바꾸지 않습니다.</sub>"]
+        lines += [demote_headings(table["ai_text"]), "", f"<sub>정리: {table['ai_model']}. 표가 기준이며, AI는 표를 바꾸지 않습니다.</sub>"]
         if table.get("ai_unmatched_numbers"):
             lines += ["", f"> 표에 없는 숫자가 AI 정리에 있습니다({', '.join(table['ai_unmatched_numbers'][:10])}). 아래 표를 기준으로 보세요."]
     else:

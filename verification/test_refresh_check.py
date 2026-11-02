@@ -117,6 +117,10 @@ class RefreshCheckTest(unittest.TestCase):
             self.assertIn("actions/ai-inference", md)
             self.assertIn("표에 없는 숫자", md)  # 9999 is not in the table
 
+    def test_ai_headings_stay_under_ai_section(self):
+        self.assertEqual(rc.demote_headings("# 제목\n## 먼저 볼 것\n### 그대로\n본문 ## 그대로"),
+                         "### 제목\n### 먼저 볼 것\n### 그대로\n본문 ## 그대로")
+
     def test_invention_guard(self):
         self.assertEqual(rc.numbers_not_in("범주 VU, 기록 1607건, 새 수치 4242", '{"count": 1607}'), ["4242"])
 
