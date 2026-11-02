@@ -1,4 +1,4 @@
-// 사용법 안내 도우미 AI 답변 Worker(worker/index.mjs, 2026-10-29 Claude Haiku 5.5): 경로·메서드·출처·질문 검사, 비밀값이 없을 때,
+// 사용법 안내 도우미 AI 답변 Worker(worker/index.mjs, 2026-10-29 Claude Haiku 5.5, 2026-11-02부터 Claude Opus 5.5): 경로·메서드·출처·질문 검사, 비밀값이 없을 때,
 // IP/전체 호출 제한, Anthropic API 요청 모양(모델·생각 끔·짧은 답·캐시), 실패·거절·잘린 답, 답 검사(NO_ANSWER·금지 낱말·근거에 없는 숫자),
 // 프롬프트 근거(화면 글 + FAQ, 종 값 자리표시는 값 없이). Anthropic API와 제한 바인딩은 가짜로 바꿔 끼운다(실제 호출 없음).
 // Run: node verification/test_ask_worker.mjs
@@ -49,8 +49,8 @@ const [,url,init]=calls.find(c=>c[0]==='api');
 assert.equal(url,'https://api.anthropic.com/v1/messages');
 assert.equal(init.headers['x-api-key'],'test-key');assert.equal(init.headers['anthropic-version'],'2026-10-21');
 const body=JSON.parse(init.body);
-assert.equal(body.model,'claude-haiku-5-5');assert.equal(MODEL,'claude-haiku-5-5');
-assert.ok(body.max_tokens<=600,'짧은 답');assert.deepEqual(body.thinking,{type:'disabled'});assert.deepEqual(body.output_config,{effort:'low'});
+assert.equal(body.model,'claude-opus-5-5');assert.equal(MODEL,'claude-opus-5-5');
+assert.ok(body.max_tokens<=2000,'짧은 답');assert.equal(body.thinking,undefined,'Opus 5.5는 thinking disabled가 400');assert.deepEqual(body.output_config,{effort:'low'});
 assert.ok(!('temperature' in body||'top_p' in body||'top_k' in body),'2026-10-21에서는 샘플링 값을 보내지 않음');
 assert.equal(body.system[0].text,systemPrompt(html,js));assert.deepEqual(body.system[0].cache_control,{type:'ephemeral'});
 assert.equal(body.messages.length,1);assert.equal(body.messages[0].content,'<question lang="en">휴대폰에서도 돼요?</question>','태그를 깨는 <> 는 지운다');
@@ -85,4 +85,4 @@ for(const name of [...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g),..
   assert.ok(p.includes(`‘${name}’`),`FAQ 자리표시가 화면 글자 ‘${name}’로 바뀌어야 함`);
 for(const f of ['worker/index.mjs','worker/prompt.mjs','wrangler.jsonc','dist/chatbot.js'])
   assert.doesNotMatch(fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),/sk-ant-/,`${f}: 키가 저장소에 있으면 안 됨`);
-console.log('PASS: /api/ask GET(ai 여부)·키 없음 503·경로·메서드·출처·질문 검사, IP·전체 호출 제한, Haiku 5.5 요청 모양, 실패·거절·잘린 답 502, NO_ANSWER, 답 검사(숫자·금지 낱말·길이), 프롬프트 근거');
+console.log('PASS: /api/ask GET(ai 여부)·키 없음 503·경로·메서드·출처·질문 검사, IP·전체 호출 제한, Opus 5.5 요청 모양, 실패·거절·잘린 답 502, NO_ANSWER, 답 검사(숫자·금지 낱말·길이), 프롬프트 근거');

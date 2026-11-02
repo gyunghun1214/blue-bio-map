@@ -40,7 +40,7 @@ for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing
   ['검증은 통과했어요?','validation'],['지표 검증 통과했나요','validation'],
   ['MCUI는 뭐예요','mcui'],['매트릭스 점은 어떻게 읽어요','matrix']])
   assert.equal(match(q)?.id,id,`심사 질문 "${q}" → ${match(q)?.id}`);
-// (3c) 정해진 답 먼저: FAQ가 찾은 질문과 칩은 서버에 묻지 않고, 못 찾은 입력만 같은 사이트의 api/ask(worker/index.mjs, Claude Haiku 5.5)로.
+// (3c) 정해진 답 먼저: FAQ가 찾은 질문과 칩은 서버에 묻지 않고, 못 찾은 입력만 같은 사이트의 api/ask(worker/index.mjs, Claude Opus 5.5)로.
 // 오프라인 시연이거나 AI를 쓸 수 없으면 묻지 않는다. 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
 assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'","'api/ask'"],'chatbot.js는 같은 사이트의 api/ask에만 묻는다(GET 상태 + POST 질문)');
 assert.ok(js.includes('if(f)answer(f);else if(id)unknown();else askAi(text);'),'FAQ가 먼저, 칩(id)은 AI로 가지 않음');

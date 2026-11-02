@@ -12,7 +12,7 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
   },
-  // Claude Haiku 5.5 through the Anthropic API. The key is only the Worker secret ANTHROPIC_API_KEY (Cloudflare dashboard →
+  // Claude Opus 5.5 (since 2026-11-02; Haiku 5.5 before) through the Anthropic API. The key is only the Worker secret ANTHROPIC_API_KEY (Cloudflare dashboard →
   // blue-bio-map → Settings → Variables and Secrets), never in this repo. Without it /api/ask says ai:false and the chat keeps its fixed answers.
   // 5 questions per IP per minute, and 30 per minute in total as a cost ceiling.
   "ratelimits": [
