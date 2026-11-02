@@ -253,6 +253,7 @@ def main(argv=None) -> int:
     b.add_argument("--verify", default="")
     b.add_argument("--out", required=True)
     b.add_argument("--no-ai", action="store_true")
+    b.add_argument("--ai-always", action="store_true", help="고칠 것이 없어도 AI 정리를 붙인다 (키 확인용 수동 실행)")
     args = ap.parse_args(argv)
 
     if args.cmd == "live":
@@ -267,10 +268,12 @@ def main(argv=None) -> int:
     live = json.loads(Path(args.live).read_text(encoding="utf-8")) if args.live and Path(args.live).exists() else None
     result = find_problems(read_links(Path(args.links) if args.links else None), live, args.verify, load_known())
     ai_text, ai_model = None, "고칠 것 없음"
-    if result["problems"]:
+    if result["problems"] or args.ai_always:
+        brief = {"problems": result["problems"], "link_counts": result["link_counts"]}
+        if not result["problems"]:
+            brief["notes"] = result["notes"]
         ai_text, ai_model = (None, "AI 끔") if args.no_ai else ai_summary(
-            {"problems": result["problems"], "link_counts": result["link_counts"]}, os.environ.get("GITHUB_TOKEN"),
-            key=os.environ.get("ANTHROPIC_API_KEY"))
+            brief, os.environ.get("GITHUB_TOKEN"), key=os.environ.get("ANTHROPIC_API_KEY"))
     run_url = ""
     if os.environ.get("GITHUB_RUN_ID"):
         run_url = f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
