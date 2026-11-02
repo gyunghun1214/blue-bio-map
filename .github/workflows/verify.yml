@@ -5,6 +5,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # The weekly check (weekly-check.yml) calls this whole workflow again, since some screens depend on the date.
+  workflow_call:
 
 permissions:
   contents: read

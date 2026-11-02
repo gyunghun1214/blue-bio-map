@@ -1,0 +1,126 @@
+name: 주간 점검 (AI 정리)
+
+# 매주 사이트를 스스로 점검한다: 자동 검사(verify.yml 전체), 바깥 링크, 라이브 사이트가 main과 같은지.
+# 고칠 것이 있으면 AI(GitHub Models)가 정리한 이슈를 연다(라벨 weekly-check). 사이트 파일은 고치지 않는다.
+# 저장소 변수 AI_FIX_ENABLED · AI_FIX_AUTO 가 모두 true면 그 이슈로 Claude 수정안 초안 PR까지 만든다(ai-fix.yml).
+# 처음에는 꺼져 있다. 설명: docs/ai-maintenance.md
+#
+# - schedule: 매주 월요일 00:00 UTC (09:00 KST)
+# - workflow_dispatch: Actions > 이 작업 > Run workflow
+# - pull_request: 이 파일이나 스크립트를 고친 PR에서 시험 실행만 (이슈는 열지 않고 실행 요약만)
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/weekly_check.py
+      - scripts/ai_fix_guard.py
+      - config/weekly-check.json
+      - .github/workflows/weekly-check.yml
+      - .github/workflows/ai-fix.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-check-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    # 날짜에 따라 바뀌는 화면(금어기 등)이 있어, 코드가 그대로여도 매주 전체 검사를 다시 돌린다. PR 시험 실행에서는 생략.
+    if: github.event_name != 'pull_request'
+    uses: ./.github/workflows/verify.yml
+
+  look:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: 바깥 링크 확인
+        run: python scripts/check_links.py --out weekly-out/links.csv
+      - name: 라이브 사이트가 main과 같은지
+        run: python scripts/weekly_check.py live --out weekly-out/live.json
+      - uses: actions/upload-artifact@v6
+        with:
+          name: weekly-look
+          path: weekly-out/
+          retention-days: 30
+
+  report:
+    needs: [verify, look]
+    if: always() && needs.look.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      models: read
+      issues: write
+    env:
+      PYTHONUTF8: '1'
+    outputs:
+      issue: ${{ steps.issue.outputs.number }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v7
+        with:
+          name: weekly-look
+          path: weekly-out
+      - name: 보고서 만들기 · AI 정리
+        id: rep
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/weekly_check.py report --links weekly-out/links.csv --live weekly-out/live.json \
+            --verify "${{ needs.verify.result }}" --out weekly-out
+          cat weekly-out/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: 사이트 파일이 그대로인지 확인
+        run: git diff --exit-code -- dist/
+      - name: 고칠 것이 있으면 이슈 (열린 주간 점검 이슈가 있으면 댓글)
+        id: issue
+        if: github.event_name != 'pull_request' && steps.rep.outputs.problems != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh label create weekly-check --color 0E8A16 --description '주간 점검이 연 이슈' 2>/dev/null || true
+          gh label create ai-fix --color 5319E7 --description '붙이면 Claude가 수정안 초안 PR을 만든다 (켜져 있을 때만)' 2>/dev/null || true
+          head -c 60000 weekly-out/report.md > body.md
+          open=$(gh issue list --label weekly-check --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body-file body.md
+            echo "number=$open" >> "$GITHUB_OUTPUT"
+          else
+            url=$(gh issue create --title "주간 점검: 고칠 것 ${{ steps.rep.outputs.problems }}건 ($(date -u +%Y-%m-%d))" \
+                    --label weekly-check --body-file body.md)
+            echo "number=${url##*/}" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: weekly-report
+          path: weekly-out/report.*
+          retention-days: 90
+
+  fix:
+    # 두 스위치가 모두 켜져 있을 때만: Claude가 이슈를 읽고 수정안 초안 PR을 만든다. 병합은 사람이 한다.
+    needs: report
+    if: needs.report.outputs.issue != '' && vars.AI_FIX_ENABLED == 'true' && vars.AI_FIX_AUTO == 'true'
+    uses: ./.github/workflows/ai-fix.yml
+    with:
+      issue_number: ${{ needs.report.outputs.issue }}
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: write
