@@ -1915,6 +1915,12 @@ try{
       judge.line.text.includes(`각각 ${facts.rule} 이상`)&&judge.missing.text.includes(`${facts.n}종`)&&(facts.placed===facts.n?judge.missing.text.includes('모두'):judge.missing.text.includes(`${facts.placed}종이 놓여`))&&
       judge.none.text.startsWith('아래 탭에서 직접 찾아보거나')&&judge.none.tabs.map(t=>t.split('|')[0]).join()==='explore,compare,method',JSON.stringify({facts,judge,apiCalls}));
     await evaluate("[...document.querySelectorAll('.bbc-log button[data-tab=\"compare\"]')].at(-1).click();1");await sleep(400);
+    // M-13 (2026-11-03, LKH '홍합의 mcui는 몇이야?'): 종 이름이 든 값 질문은 그 종의 화면 값으로, 이어 묻기('그럼 bbvi는?')는 같은 종으로. 서버에 묻지 않는다.
+    const mussel=await evaluate(`(()=>{const s=data.species.find(x=>x.label.startsWith('홍합')),v=k=>scoreValue(s,k,pilotScore(s,k));return {label:s.label,MCUI:v('MCUI'),BBVI:v('BBVI')};})()`);
+    const spQ={mcui:await askBot('홍합의 mcui는 몇이야?'),bbvi:await askBot('그럼 bbvi는?'),what:await askBot('MCUI는 뭐예요')};
+    check('M-13 guide helper: a species value question gets that species value from the page (and a follow-up keeps the species), a meaning question still gets the explanation, nothing sent',
+      spQ.mcui.text.startsWith(`${mussel.label}의 MCUI(보전 시급성)는 ${mussel.MCUI}점이에요.`)&&spQ.bbvi.text.startsWith(`${mussel.label}의 BBVI(활용가치)는 ${mussel.BBVI}점이에요.`)&&
+      spQ.what.text.startsWith('MCUI(보전 시급성)는 보전 상태 범주')&&await evaluate("window.__ask.filter(m=>m==='POST').length")===0,JSON.stringify({mussel,spQ}));
     check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
     // M-12 (2026-10-29): /api/ask를 가짜로 바꿔 AI가 켜진 상태. 새 대화에서 표기가 바뀌고, FAQ 질문은 보내지 않으며, 못 찾은 질문만 보내
     // 'AI 답변' 표시와 함께 답한다. AI가 답을 못 찾으면(no_answer) 세 탭 바로가기로 돌아간다. 끝나면 원래 fetch로 돌리고 새 대화에서 표기가 돌아온다.
@@ -1932,10 +1938,12 @@ try{
     await evaluate("window.fetch=window.__fetch0;document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
     await press();await sleep(500);
     const backNote=await evaluate("document.querySelector('.bbc-note').textContent");
-    check('M-12 guide helper with AI (mocked /api/ask): note says AI answers when no prepared answer, FAQ first (no question sent), an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the note returns without AI',
+    check('M-12 guide helper with AI (mocked /api/ask): note says AI answers when no prepared answer, FAQ first (no question sent), the question goes with the earlier talk and the species values, an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the note returns without AI',
       aiNote==='준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'&&aiFaq.text.includes(`각각 ${facts.rule} 이상`)&&aiBubble.ai&&aiBubble.text==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&
       aiBubble.tag==='AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'&&aiBubble.waits===0&&aiNone.text.startsWith('아래 탭에서 직접 찾아보거나')&&aiNoneTabs===3&&
-      JSON.stringify(aiCalls)===JSON.stringify(['GET','POST {"q":"zqxj 멍이 AI 시험","lang":"ko"}','POST {"q":"zqxj 답 없는 질문","lang":"ko"}'])&&backNote==='미리 준비한 답변으로 안내해요',
+      // 2026-11-03: 질문과 함께 앞 대화(history)와 종 값 줄(facts, 종마다 한 줄)을 보낸다
+      JSON.stringify(aiCalls.map(c=>{const [m,...b]=c.split(' ');if(!b.length)return m;const j=JSON.parse(b.join(' '));return [m,j.q,j.lang,Array.isArray(j.history)&&j.history.length>0,j.facts?.length===facts.n];}))
+        ===JSON.stringify(['GET',['POST','zqxj 멍이 AI 시험','ko',true,true],['POST','zqxj 답 없는 질문','ko',true,true]])&&backNote==='미리 준비한 답변으로 안내해요',
       JSON.stringify({aiNote,aiFaq,aiNew,aiBubble,aiNone,aiNoneTabs,aiCalls,backNote}));
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
