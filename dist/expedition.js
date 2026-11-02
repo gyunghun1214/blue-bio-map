@@ -294,9 +294,14 @@ function scoreHtml(stop,k,big){
 // The arrival card. Sections carry their discovery step; CSS shows a section once state.reveal reaches it.
 const onRoute=i=>i<STATE.n; // stops off the route come after the route stops in DATA.stops
 const badges=stop=>stop.cell?'':'<span class="x-badge is-off">항로 밖</span>';
-// 2026-10-25 (LKH, 팀원 제안): 항로 마지막 지점과 카드 모아 보기 끝에, 지도로 만난 바다를 돌보는 활동 링크 한 줄(바깥 사이트로는 링크만).
+// 2026-10-25 (LKH, 팀원 제안): 지도로 만난 바다를 돌보는 활동 링크(바깥 사이트로는 링크만, CSP 그대로).
 // 2026-10-30 (LKH 휴대폰 점검 5): 바다 정화 활동을 작은 한 줄 대신 강조 칸과 단추 둘로(expedition.css .x-care)
-const careLine=()=>`<div class="x-care"><b>바다 정화 활동에 함께하기</b><span>지도로 만난 바다를 직접 돌보고 싶다면</span><div class="x-care-acts"><a href="https://www.caresea.kr/" target="_blank" rel="noopener">반려해변 ↗</a><a href="https://www.1365.go.kr/" target="_blank" rel="noopener">1365 자원봉사포털 ↗</a></div></div>`;
+// 2026-11-02 (LKH: 바다 탐험 종마다 봉사 링크로 바로 가는 단추): 카드마다 '바다 정화 봉사' 줄(careRow)을 두고, 강조 칸(careLine)은
+// 자세히 보기 안 '이 생물이 사는 바다 지키기'로 옮긴다. 마지막 지점·카드 모아 보기 끝의 한 칸은 카드마다 단추가 생겨 뺐다.
+const CARE_LINKS=[['https://www.caresea.kr/','반려해변 ↗'],['https://www.1365.go.kr/','1365 자원봉사포털 ↗']];
+const careActs=()=>`<div class="x-care-acts">${CARE_LINKS.map(([u,t])=>`<a href="${u}" target="_blank" rel="noopener">${t}</a>`).join('')}</div>`;
+const careLine=()=>`<div class="x-care"><b>바다 정화 활동에 함께하기</b><span>해변 쓰레기를 함께 주우며 이 생물이 사는 바다를 돌볼 수 있습니다.</span>${careActs()}</div>`;
+const careRow=()=>`<div class="x-care-row"><b>바다 정화 봉사</b>${careActs()}</div>`;
 function cardHtml(stop,i,level,mode){
   const c=stop.cell, lead=headlineAxes(stop), rest=['MFPI','MBPI','MCUI','BBVI'].filter(k=>!lead.includes(k)), sea=c?seaNames(c):'', type=stop.matrix_type?.label;
   const where=c?`${sea?`<p class="x-sea">${esc(sea)}</p>`:''}
@@ -314,7 +319,7 @@ function cardHtml(stop,i,level,mode){
   <div class="x-r" data-r="3"><div class="x-scores">${lead.map(k=>scoreHtml(stop,k,true)).join('')}</div>
     <div class="x-scores is-small">${rest.map(k=>scoreHtml(stop,k,false)).join('')}</div>
     <div class="x-actions"><button type="button" class="x-primary" data-detail="${i}">자세히 보기</button><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a></div>
-    ${mode!=='cards'&&i===STATE.n-1?careLine():''}
+    ${careRow()}
     ${level>=REVEAL_DETAIL?'<p class="x-fine x-seen">근거 열람함</p>':''}</div>
 </article>`;
 }
@@ -380,6 +385,7 @@ function detailHtml(stop,i){
   <section><h3>종합 <small>BBVI ${fmtAxis(stop,'BBVI')??'—'}</small></h3>
     <p>MFPI와 MBPI를 식량 가중치 ${esc(DATA.food_weight)}로 결합한 값입니다. ${esc(NOTES.score)}입니다.</p>
     ${version?`<p class="x-fine">지표 버전 ${esc(version)}${DATA.status==='released'?' · 정식 산출':''}</p>`:''}</section>
+  <section class="x-care-sec"><h3>이 생물이 사는 바다 지키기</h3>${careLine()}</section>
   <details class="x-sources"><summary>논문·원자료 링크 ${stop.sources.length}개</summary><ul>${sources}</ul></details>
   <div class="x-actions"><a class="x-ghost" href="${esc(mapHref(stop))}">지도에서 보기</a>${nextBtn}</div>`;
 }
@@ -414,7 +420,7 @@ function renderCard(){
   card.hidden=false;
 }
 function renderCards(){
-  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('')+careLine();
+  $('cards-list').innerHTML=DATA.stops.map((st,i)=>cardHtml(st,i,Math.max(REVEAL_DONE,STATE.reveal[i]??0),'cards')).join('');
 }
 function render(){renderProgress();renderCard();}
 function save(){
