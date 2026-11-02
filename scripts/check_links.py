@@ -14,7 +14,7 @@ CSV columns: url, status (last HTTP code, or the error), result, final_url, loca
 result is one of
   정상       2xx at the end (after redirects)
   이동됨     a permanent redirect (301/308) to another address that works: the link still opens, the address could be updated
-  깨짐       404/410, or the host does not exist
+  깨짐       404/410, or the host does not exist (a temporary DNS failure is 확인 불가)
   확인 불가  the site refused an automatic request (401/403/429), a server error, a timeout or a network error: open by hand
 The exit code is 0 unless --fail-on-broken is given and a link is 깨짐 (the checker is a report, not a gate: outside sites
 come and go independently of this repository).
@@ -174,7 +174,8 @@ def check(url: str, timeout: float):
         # HEAD refused or failed: try GET once (some servers only answer GET)
     if status is not None and 200 <= status < 300:
         result = '이동됨' if permanent and not trivial_move(url, final) else '정상'
-    elif status in (404, 410) or (error and 'gaierror' in error):
+    elif status in (404, 410) or (error and 'gaierror' in error and 'Temporary failure' not in error):
+        # 'Temporary failure in name resolution' (EAI_AGAIN) is the resolver, not the host: it reads as 확인 불가
         result = '깨짐'
     else:
         result = '확인 불가'

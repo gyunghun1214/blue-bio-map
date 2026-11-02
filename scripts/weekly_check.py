@@ -9,8 +9,8 @@
 live    라이브 주소에서 몇 개 파일을 받아 저장소 dist/ 의 같은 파일과 sha256을 비교하고, /api/ask 의 AI 켜짐 여부를 본다.
 report  링크 표(scripts/check_links.py 결과), 라이브 결과, 자동 검사(verify.yml) 결과를 합쳐 report.md · report.json 을
         쓴다. '고칠 것'은 (1) 자동 검사 실패 (2) 라이브가 열리지 않거나 main과 다름 (3) 새로 깨지거나 이동된 링크
-        (config/weekly-check.json 의 known_links 에 있는 것은 뺀다). 고칠 것이 있으면 AI(GitHub Models, Actions의
-        GITHUB_TOKEN, 권한 models: read)가 사람이 읽을 한국어 정리를 덧붙인다. AI는 표를 바꾸지 않고, 표에 없는 숫자가
+        (config/weekly-check.json 의 known_links 에 있는 것은 뺀다). 고칠 것이 있으면 AI(저장소 비밀값 ANTHROPIC_API_KEY가 있으면
+        Claude, 없으면 Actions 토큰으로 GitHub Models)가 사람이 읽을 한국어 정리를 덧붙인다. AI는 표를 바꾸지 않고, 표에 없는 숫자가
         나오면 그 정리는 버린다.
 
 이 스크립트는 사이트 파일(dist/)을 고치지 않는다.
@@ -144,30 +144,59 @@ def _post(req: urllib.request.Request) -> bytes:
         return r.read()
 
 
-def ai_summary(brief: dict, token: str | None, post=None) -> tuple[str | None, str]:
-    if not token:
-        return None, "토큰 없음"
-    system = ("너는 해양생물 지도 사이트 'Blue-bio Value Map'의 주간 점검 보조다. 자동 점검에서 나온 '고칠 것' 목록이 주어진다. "
-              "할 일: 팀이 볼 한국어 정리를 쓴다. 규칙: (1) 목록에 있는 사실만 쓰고, 목록에 없는 숫자·주소·원인은 만들지 않는다. "
-              "(2) 무엇을 먼저 볼지 순서를 정하고 항목마다 한 줄로 확인 방법을 쓴다. (3) 고칠지 말지는 사람이 정한다. "
-              "(4) 사이트 점수나 화면 문구를 바꾸라고 하지 않는다. 형식: 마크다운, 맨 위 두 줄 요약, 그 아래 '먼저 볼 것' 목록. 300자~900자.")
+SYSTEM_PROMPT = ("너는 해양생물 지도 사이트 'Blue-bio Value Map'의 주간 점검 보조다. 자동 점검에서 나온 '고칠 것' 목록이 주어진다. "
+                 "할 일: 팀이 볼 한국어 정리를 쓴다. 규칙: (1) 목록에 있는 사실만 쓰고, 목록에 없는 숫자·주소·원인은 만들지 않는다. "
+                 "(2) 무엇을 먼저 볼지 순서를 정하고 항목마다 한 줄로 확인 방법을 쓴다. (3) 고칠지 말지는 사람이 정한다. "
+                 "(4) 사이트 점수나 화면 문구를 바꾸라고 하지 않는다. 형식: 마크다운, 맨 위 두 줄 요약, 그 아래 '먼저 볼 것' 목록. 300자~900자.")
+# Same model and request shape as the site's guide helper (worker/index.mjs) and the quarterly data check.
+CLAUDE_MODEL = "claude-opus-5-5"
+CLAUDE_API = "https://api.anthropic.com/v1/messages"
+
+
+def _claude(payload: str, key: str, post) -> str:
+    body = {"model": CLAUDE_MODEL, "max_tokens": 3000, "output_config": {"effort": "low"},
+            "system": SYSTEM_PROMPT, "messages": [{"role": "user", "content": payload}]}
+    req = urllib.request.Request(CLAUDE_API, data=json.dumps(body).encode(), method="POST",
+                                 headers={"Content-Type": "application/json", "x-api-key": key,
+                                          "anthropic-version": "2026-10-21"})
+    m = json.loads(post(req))
+    if m.get("stop_reason") != "end_turn":  # a cut or refused answer is not used
+        raise ValueError(f"stop {m.get('stop_reason')}")
+    return "".join(b.get("text", "") for b in m.get("content") or [] if b.get("type") == "text").strip()
+
+
+def _github_models(payload: str, token: str, model: str, post) -> str:
+    body = {"model": model, "temperature": 0.2, "max_tokens": 1200,
+            "messages": [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": payload}]}
+    req = urllib.request.Request(MODELS_URL, data=json.dumps(body).encode(), method="POST",
+                                 headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
+                                          "Accept": "application/json"})
+    raw = post(req)
+    try:
+        return json.loads(raw)["choices"][0]["message"]["content"].strip()
+    except ValueError:
+        raise ValueError(f"JSON 아님 (본문 {raw[:80]!r})") from None
+
+
+def ai_summary(brief: dict, token: str | None, post=None, key: str | None = None) -> tuple[str | None, str]:
+    """Korean notes for the team. Claude when the ANTHROPIC_API_KEY secret is set, otherwise GitHub Models with the
+    Actions token (on 2026-11-02 GitHub Models answered '200 OK' with no JSON in this repository, so Claude comes first).
+    Returns (text, model) or (None, reasons)."""
+    post = post or _post
     payload = json.dumps(brief, ensure_ascii=False)
-    body = {"messages": [{"role": "system", "content": system}, {"role": "user", "content": payload}],
-            "temperature": 0.2, "max_tokens": 1200}
+    tries = ([(CLAUDE_MODEL, lambda: _claude(payload, key, post))] if key else []) + \
+            ([(m, lambda m=m: _github_models(payload, token, m, post)) for m in MODELS] if token else [])
+    if not tries:
+        return None, "열쇠·토큰 없음"
     errors = []
-    for model in MODELS:
-        req = urllib.request.Request(MODELS_URL, data=json.dumps({**body, "model": model}).encode(), method="POST",
-                                     headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
-                                              "Accept": "application/json"})
-        raw = b""
+    for model, call in tries:
         try:
-            raw = (post or _post)(req)
-            text = json.loads(raw)["choices"][0]["message"]["content"].strip()
+            text = call()
         except urllib.error.HTTPError as e:
-            errors.append(f"{model}: HTTP {e.code} {e.read()[:150]!r}")
+            errors.append(f"{model}: HTTP {e.code}")  # the body is not logged (it could echo the request)
             continue
         except Exception as e:  # noqa: BLE001
-            errors.append(f"{model}: {type(e).__name__} (본문 {raw[:150]!r})")
+            errors.append(f"{model}: {type(e).__name__} {e}"[:200])
             continue
         extra = numbers_not_in(text, payload)
         if not text:
@@ -194,7 +223,7 @@ def render(result: dict, live: dict | None, verify: str, run_url: str, ai_text: 
     lines.append("- 이 점검은 사이트를 고치지 않습니다. 고칠 것은 사람이 확인하고, 켜 두었다면 Claude가 수정안 PR(초안)을 씁니다.")
     lines.append("")
     if ai_text:
-        lines += ["## AI 정리", "", ai_text, "", f"<sub>정리: {ai_model} (GitHub Models). 아래 표가 기준입니다.</sub>", ""]
+        lines += ["## AI 정리", "", ai_text, "", f"<sub>정리: {ai_model}. 아래 표가 기준입니다.</sub>", ""]
     elif p:
         lines += [f"<sub>AI 정리 없음({ai_model}). 아래 표만 보면 됩니다.</sub>", ""]
     if p:
@@ -240,7 +269,8 @@ def main(argv=None) -> int:
     ai_text, ai_model = None, "고칠 것 없음"
     if result["problems"]:
         ai_text, ai_model = (None, "AI 끔") if args.no_ai else ai_summary(
-            {"problems": result["problems"], "link_counts": result["link_counts"]}, os.environ.get("GITHUB_TOKEN"))
+            {"problems": result["problems"], "link_counts": result["link_counts"]}, os.environ.get("GITHUB_TOKEN"),
+            key=os.environ.get("ANTHROPIC_API_KEY"))
     run_url = ""
     if os.environ.get("GITHUB_RUN_ID"):
         run_url = f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
