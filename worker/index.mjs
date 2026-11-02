@@ -1,11 +1,11 @@
 // 사용법 안내 도우미의 AI 답변(/api/ask). FAQ(dist/chatbot.js)가 못 찾은 질문만 온다.
 // 정적 파일은 이 Worker를 거치지 않는다(wrangler.jsonc assets.run_worker_first = /api/*).
-// 모델은 Claude Haiku 5.5(Anthropic API). 키는 Worker 비밀값 ANTHROPIC_API_KEY에만 있고 저장소·화면 코드에는 없다.
+// 모델은 Claude Opus 5.5(Anthropic API, 2026-11-02 Haiku 5.5에서 바꿈). 키는 Worker 비밀값 ANTHROPIC_API_KEY에만 있고 저장소·화면 코드에는 없다.
 // GET은 AI를 쓸 수 있는지만 알려 준다(비밀값이 없으면 ai:false, 모델 호출 없음). 실패·한도 초과·검사 탈락은 모두 오류나 no_answer로
 // 돌려주고, 화면은 정해진 안내(세 탭 바로가기)로 돌아간다.
 import {systemPrompt,checkAnswer,numbers,pageText,faqText} from './prompt.mjs';
 
-export const MODEL='claude-haiku-5-5';
+export const MODEL='claude-opus-5-5';
 const API='https://api.anthropic.com/v1/messages';
 const MAX_QUESTION=200;
 
@@ -38,9 +38,10 @@ export default {
     lang=lang==='en'?'en':'ko';
     try{
       const g=await grounding(env,url.origin);
-      const r=await fetch(API,{method:'POST',signal:AbortSignal.timeout(12000),
+      const r=await fetch(API,{method:'POST',signal:AbortSignal.timeout(25000),
         headers:{'Content-Type':'application/json','x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2026-10-21'},
-        body:JSON.stringify({model:MODEL,max_tokens:600,thinking:{type:'disabled'},output_config:{effort:'low'},
+        // Opus 5.5는 생각을 끌 수 없어(thinking 생략 = adaptive) effort low로 줄인다. 생각 토큰도 max_tokens에 들어가 넉넉히 두고, 답 길이는 checkAnswer가 막는다.
+        body:JSON.stringify({model:MODEL,max_tokens:2000,output_config:{effort:'low'},
           system:[{type:'text',text:g.prompt,cache_control:{type:'ephemeral'}}],
           messages:[{role:'user',content:`<question lang="${lang}">${q.replace(/[<>]/g,'')}</question>`}]})});
       if(!r.ok)throw new Error('status '+r.status);
