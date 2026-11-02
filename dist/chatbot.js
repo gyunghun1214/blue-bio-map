@@ -1,6 +1,6 @@
 'use strict';
 // 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 먼저 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답을 한다.
-// 2026-10-29: FAQ가 못 찾은 질문만 /api/ask(worker/index.mjs, Claude Haiku 5.5)에 보내 화면 글과 FAQ만 근거로 짧게 답한다('AI 답변' 표시).
+// 2026-10-29: FAQ가 못 찾은 질문만 /api/ask(worker/index.mjs, 2026-11-02부터 Claude Opus 5.5)에 보내 화면 글과 FAQ만 근거로 짧게 답한다('AI 답변' 표시).
 // 종의 점수·근거 같은 값은 AI가 말하지 않고 FAQ 자리표시(chatbotFact)로만 나온다. AI를 쓸 수 없으면(키 없음·정적 서버·오프라인 시연·오류·
 // 한도 초과·답 검사 탈락) '아래 탭에서 직접 찾아보거나…' 안내와 세 탭 바로가기를 보인다.
 // 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
@@ -528,7 +528,7 @@ if(typeof document!=='undefined')(function(){
     const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');log.scrollTop=log.scrollHeight;
     let reply=null;
     try{
-      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko'}),signal:AbortSignal.timeout(15000)});
+      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko'}),signal:AbortSignal.timeout(30000)});
       if(r.ok)reply=(await r.json())?.answer;
     }catch{}
     wait.closest('.bbc-row')?.remove();
