@@ -11545,7 +11545,6 @@ Cloudflare Web Analytics
 종을 골라서 지도에서 보기
 종끼리 비교하기
 BBVI·MCUI가 뭔가요?
-미리 준비한 답변으로 안내해요
 @aria-label=궁금한 점 입력
 @placeholder=궁금한 점을 적어 보세요
 보내기
