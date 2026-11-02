@@ -337,7 +337,6 @@ if(typeof document!=='undefined')(function(){
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
-    '<p class="bbc-note">미리 준비한 답변으로 안내해요</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
     '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다" aria-expanded="false" aria-controls="bbc-panel" aria-keyshortcuts="Shift+ArrowUp Shift+ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+Home" draggable="false" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
     '<span class="bbc-safe" aria-hidden="true"></span>';
@@ -507,17 +506,16 @@ if(typeof document!=='undefined')(function(){
     const row=m.closest('.bbc-row')||m;
     log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
-  // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 입력창 위 표기를 바꾼다.
+  // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 첫 인사를 AI 안내 문구로 바꾼다.
+  // 입력창 위 회색 안내 줄은 2026-11-03 LKH 결정으로 지웠다. AI 사용은 첫 인사와 AI 답의 'AI 답변' 표시로 알린다.
   // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
-  const noteEl=root.querySelector('.bbc-note'),NOTE_FIXED=noteEl.textContent;
   const WELCOME='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.';
   let aiReady=Promise.resolve(false);
   function checkAi(){
-    // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꿔 아래 표기와 맞춘다
+    // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꾼다
     const note=on=>{
       const w=log.querySelector('[data-welcome]');
-      if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;
-      if(on||noteEl.dataset.ai){noteEl.textContent=on?chatbotT('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'):NOTE_FIXED;noteEl.dataset.ai=on?'1':'';}};
+      if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;};
     if(globalThis.BBVM_OFFLINE===true){aiReady=Promise.resolve(false);note(false);return;}
     aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
     aiReady.then(note);

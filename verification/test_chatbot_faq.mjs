@@ -46,7 +46,8 @@ assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'",
 assert.ok(js.includes('if(f)answer(f);else if(id)unknown();else askAi(text);'),'FAQ가 먼저, 칩(id)은 AI로 가지 않음');
 assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\|\|!\(await aiReady\)\)return unknown\(\);/.test(js),'오프라인 시연·AI 없음이면 바로 정해진 안내');
 assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return unknown();"),'AI 실패·답 없음이면 정해진 안내');
-assert.ok(js.includes('<p class="bbc-note">미리 준비한 답변으로 안내해요</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
+assert.ok(js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름');
+assert.ok(!js.includes('bbc-note'),'입력창 위 안내 줄(.bbc-note)은 지웠다(2026-11-03 LKH)');
 assert.ok(js.includes("'아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.'"),'매칭 실패 문구');
 assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
 // (3d) 값 자리표시: 아는 종류만, 종 이름은 자료에 있는 종, 앱 자료가 없을 때도 빈칸·undefined 없이 안내 문구
@@ -57,7 +58,7 @@ for(const f of faq)for(const [tok,kind,arg] of f.a.matchAll(/\{(\w+)(?::([^}]+))
     const out=fact(kind,arg);assert.ok(out&&!/undefined|null|NaN/.test(out),`${f.id}: 자료 없을 때 ${tok} → ${out}`);}
 }
 assert.ok(fact('matrix')&&!/undefined/.test(fact('matrix')));
-// (3e) 2026-10-17 화면 약점 문구 정리: 화면에 나오는 글(답, 칩으로 보이는 질문, 시작 질문, 탭 바로가기, 입력창 표기, 앱 자료가 없을 때의 대체 문구)에
+// (3e) 2026-10-17 화면 약점 문구 정리: 화면에 나오는 글(답, 칩으로 보이는 질문, 시작 질문, 탭 바로가기, 앱 자료가 없을 때의 대체 문구)에
 // 약점 낱말과 '아님·않음' 안내를 쓰지 않는다. 검증 항목은 칩으로 내보내지 않고(입력으로만 닿음) 근거와 방법 탭만 가리킨다.
 const BANNED=['미충족','미통과','실패','불성립','사용 중단','제한적 확인','예비','공식 평가 전','공식 평가 아님','자체 평가','자체 예비','Rapid LC','역검증',
   '서식국','다른 나라','재현','근거 논문 1편','단일 논문','조사 필요','확인 필요','미확인','미산출','점수 없음','정보충분도','공백','사후 검증','사전 등록',
@@ -66,8 +67,8 @@ const BANNED=['미충족','미통과','실패','불성립','사용 중단','제�
 const NEG=/아님|아닙니다|아니에요|아니라|아니고|아니요|않음|않습니다|않아요|않고|뜻하지/;
 const chipIds=[...new Set(faq.flatMap(f=>f.next||[]))];
 const shown=[...faq.map(f=>[f.id,f.a]),...chipIds.map(id=>[`${id} 칩`,faq.find(f=>f.id===id).q[0]]),...starters.map(([id,l])=>[`${id} 시작 질문`,l]),
-  ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),['입력창 표기',js.match(/<p class="bbc-note">([^<]*)<\/p>/)[1]],
-  ...['준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요','멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
+  ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),
+  ...['멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
   ...[['matrix'],['score','참굴:MCUI'],['basis','참굴'],['mcuiwhy','살오징어']].map(a=>[`대체 문구 ${a[0]}`,fact(...a)]),['판단문 대체 문구',vm.runInContext("chatbotPlain('x')",ctx)]];
 for(const [where,text] of shown){
   for(const w of BANNED)assert.ok(!text.includes(w),`${where}: 금지 낱말 '${w}'`);
