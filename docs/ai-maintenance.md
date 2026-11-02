@@ -18,7 +18,8 @@
 ```
 
 - 주간 점검은 사이트 파일(`dist/`)을 고치지 않는다. 보고서는 Actions 실행 요약과 artifact `weekly-report`에도 남는다.
-- 바로 돌리기: Actions → 주간 점검 (AI 정리) → Run workflow.
+- 바로 돌리기: Actions → 주간 점검 (AI 정리) → Run workflow. AI 정리는 고칠 것이 있는 주에만 붙는다.
+  키가 제대로 들어갔는지 보려면 Run workflow에서 '고칠 것이 없어도 AI 정리 붙이기'를 켠다.
 - '확인 불가' 링크(봇을 막는 사이트)는 고칠 것으로 세지 않는다. 이미 알고 그대로 두기로 한 링크는
   `config/weekly-check.json`의 `known_links`에 적으면 '참고'로만 나온다.
 - AI 정리는 덧붙임일 뿐이다. 2026-11-02 첫 실행에서 GitHub Models가 이 저장소에 '200 OK'만 돌려줘 정리가 비었고,

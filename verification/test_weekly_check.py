@@ -107,6 +107,21 @@ class AiGuard(unittest.TestCase):
         self.assertIn("JSON", why)
 
 
+class ReportCli(unittest.TestCase):
+    def test_ai_only_when_problems_unless_forced(self):
+        import os
+        from unittest import mock
+        calls = []
+        with tempfile.TemporaryDirectory() as d, mock.patch.dict(os.environ, {"ANTHROPIC_API_KEY": "k"}, clear=False), \
+                mock.patch.object(weekly_check, "ai_summary", lambda brief, *a, **k: calls.append(brief) or ("요약", "m")):
+            os.environ.pop("GITHUB_OUTPUT", None)
+            weekly_check.main(["report", "--verify", "success", "--out", d])
+            self.assertEqual(calls, [])
+            weekly_check.main(["report", "--verify", "success", "--out", d, "--ai-always"])
+            self.assertEqual(len(calls), 1)
+            self.assertIn("요약", Path(d, "report.md").read_text(encoding="utf-8"))
+
+
 class LinkCheck(unittest.TestCase):
     def test_temporary_dns_failure_is_not_broken(self):
         import socket

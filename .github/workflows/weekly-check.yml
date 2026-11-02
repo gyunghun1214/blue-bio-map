@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: '0 0 * * 1'
   workflow_dispatch:
+    inputs:
+      ai_always:
+        description: '고칠 것이 없어도 AI 정리 붙이기 (키 확인용)'
+        type: boolean
+        default: false
   pull_request:
     paths:
       - scripts/weekly_check.py
@@ -83,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           python scripts/weekly_check.py report --links weekly-out/links.csv --live weekly-out/live.json \
-            --verify "${{ needs.verify.result }}" --out weekly-out
+            --verify "${{ needs.verify.result }}" --out weekly-out ${{ inputs.ai_always && '--ai-always' || '' }}
           cat weekly-out/report.md >> "$GITHUB_STEP_SUMMARY"
           cat weekly-out/report.md
       - name: 사이트 파일이 그대로인지 확인
