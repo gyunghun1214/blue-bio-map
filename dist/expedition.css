@@ -120,6 +120,15 @@ kbd{display:inline-block;min-width:1.8em;padding:1px 6px;margin-right:3px;border
 .x-care-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .x-care-acts a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--teal);color:#04121e;font-weight:800;text-decoration:none}
 .x-care-acts a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* 2026-11-02 LKH: 카드마다 봉사 링크로 바로 가는 줄(이름표 + 손가락 크기 단추 둘) */
+.x-care-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.x-care-row>b{color:var(--teal);font-size:14px;font-weight:800}
+.x-care-row .x-care-acts{margin-top:0}
+.x-care-row .x-care-acts a{min-height:44px;padding:0 14px;font-size:14px}
+.x-detail .x-care{color:var(--paper-ink);border-color:var(--paper-teal);background:rgba(11,122,116,.08)}
+.x-detail .x-care>b{color:var(--paper-teal)}
+.x-detail .x-care-acts a{background:var(--paper-teal);color:#fff}
+.x-detail .x-care-acts a:focus-visible{outline-color:var(--paper-ink)}
 .x-seen{color:var(--teal)}
 
 .x-steer{position:fixed;z-index:9;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px;border:1px solid var(--line);border-radius:99px;background:rgba(3,16,32,.7);backdrop-filter:blur(8px)}
