@@ -38,7 +38,9 @@ GBIF = "https://api.gbif.org/v1"
 OBIS = "https://api.obis.org/v3"
 IUCN_ON_GBIF = "19491596-35ae-4a91-9a98-85cf505f1bd3"  # IUCN Red List checklist dataset on GBIF
 MODELS_URL = "https://models.github.ai/inference/chat/completions"
-MODELS = ("openai/gpt-4.1", "openai/gpt-4.1-mini")
+# (endpoint, model) tried in order; the second endpoint is GitHub Models' older address, which also takes the Actions token.
+MODELS = ((MODELS_URL, "openai/gpt-4.1"), (MODELS_URL, "openai/gpt-4.1-mini"),
+          ("https://models.inference.ai.azure.com/chat/completions", "gpt-4o-mini"))
 UA = {"User-Agent": "BlueBioValueMap-refresh-check/1.0 (github.com/gyunghun1214/blue-bio-map)", "Accept": "application/json"}
 # Relative change in a re-counted record total that is listed as '바뀜'. Smaller drifts are listed as '같음(작은 차이)'.
 COUNT_CHANGE = 0.10
@@ -53,6 +55,7 @@ class Fetcher:
     def __init__(self, fixture: dict | None = None):
         self.fixture = fixture
         self.calls = 0
+        self.down: dict[str, int] = {}
 
     def get(self, url: str):
         self.calls += 1
@@ -60,23 +63,29 @@ class Fetcher:
             if url not in self.fixture:
                 raise LookupError(url)
             return self.fixture[url]
+        host = urllib.parse.urlsplit(url).hostname
+        if self.down.get(host, 0) >= 3:  # a host that failed 3 calls in a row is skipped for the rest of the run
+            raise RuntimeError(f"{host} 응답 없음(이번 실행에서 연속 실패)")
         last = None
-        for wait in (5, 20, 60, None):
+        for wait in (3, 10, None):
             try:
-                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
+                with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
                     body = r.read()
-                    time.sleep(0.3)
-                    return json.loads(body) if body.strip() else None
+                time.sleep(0.2)
+                self.down[host] = 0
+                return json.loads(body) if body.strip() else None
             except urllib.error.HTTPError as e:
                 if e.code in (204, 404):
+                    self.down[host] = 0
                     return None
-                last = e
+                last = f"HTTP {e.code}"
             except (OSError, ValueError) as e:
-                last = e
+                last = f"{type(e).__name__}: {e}"
             if wait is None:
                 break
             time.sleep(wait)
-        raise RuntimeError(f"{url}: {last}")
+        self.down[host] = self.down.get(host, 0) + 1
+        raise RuntimeError(f"{last} · {url}")
 
 
 def species_list(data: dict) -> list[dict]:
@@ -137,7 +146,12 @@ def check_iucn(f: Fetcher, sp: dict) -> list[dict]:
         got = f.get(f"{GBIF}/species/{key}/iucnRedListCategory")
     except Exception as e:  # noqa: BLE001
         return [row(sp, "IUCN(GBIF 사본)", "적색목록 범주", before, None, "확인 불가", str(e)[:200])]
-    now = (got or {}).get("code") or IUCN_CODES.get(((got or {}).get("category") or "").upper()) or "NE"
+    now = (got or {}).get("code") or IUCN_CODES.get(((got or {}).get("category") or "").upper())
+    if not now and before != "NE":
+        # The copy has no entry for a species the site shows as assessed: missing from the copy, not a new category.
+        return [row(sp, "IUCN(GBIF 사본)", "적색목록 범주", before, None, "확인 불가",
+                    "GBIF 사본에 이 종의 범주가 없음(사본 누락일 수 있어 IUCN 원문으로 확인)")]
+    now = now or "NE"
     if now == before:
         return [row(sp, "IUCN(GBIF 사본)", "적색목록 범주", before, now, "같음")]
     return [row(sp, "IUCN(GBIF 사본)", "적색목록 범주", before, now, "바뀜",
@@ -188,6 +202,21 @@ def check_red_list_edition(f: Fetcher, checked_on: str) -> dict:
             "result": "바뀜" if stamp and stamp > checked_on else "같음"}
 
 
+class _KeepPost(urllib.request.HTTPRedirectHandler):
+    """Follow 301/302/303/307/308 as the same POST with the same body (urllib would turn a POST into a bodyless GET)."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return urllib.request.Request(newurl, data=req.data, headers=dict(req.header_items()), method=req.get_method())
+
+
+def post_json(url: str, payload: dict, headers: dict, timeout: int = 120):
+    opener = urllib.request.build_opener(_KeepPost)
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST",
+                                 headers={"Content-Type": "application/json", **headers})
+    with opener.open(req, timeout=timeout) as r:
+        return f"{r.status} {r.geturl()}", r.read()
+
+
 def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
     """Korean notes for the human reviewer. Returns (text, model) or (None, reason)."""
     if not token:
@@ -204,15 +233,12 @@ def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
                          {"role": "user", "content": json.dumps(brief, ensure_ascii=False)}],
             "temperature": 0.2, "max_tokens": 1500}
     errors = []
-    for model in MODELS:
-        req = urllib.request.Request(MODELS_URL, data=json.dumps({**body, "model": model}).encode(), method="POST",
-                                     headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
-                                              "Accept": "application/json", "X-GitHub-Api-Version": "2022-11-28"})
-        raw = b""
+    for url, model in MODELS:
+        raw, status = b"", None
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
-                raw = r.read()
-                status = r.status
+            status, raw = post_json(url, {**body, "model": model},
+                                    {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
+                                     "X-GitHub-Api-Version": "2022-11-28"})
             text = json.loads(raw)["choices"][0]["message"]["content"].strip()
             if text:
                 return text, model
@@ -220,7 +246,7 @@ def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
         except urllib.error.HTTPError as e:
             errors.append(f"{model}: HTTP {e.code} {e.read()[:300]!r}")
         except Exception as e:  # noqa: BLE001
-            errors.append(f"{model}: {e} (HTTP {locals().get('status')}, 본문 {raw[:300]!r})")
+            errors.append(f"{model}: {e} (HTTP {status}, 본문 {raw[:300]!r})")
     for line in errors:
         print("AI 정리 실패:", line, file=sys.stderr)
     return None, "; ".join(errors)[:600]

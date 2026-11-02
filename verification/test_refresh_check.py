@@ -40,6 +40,8 @@ class FakeFetcher(rc.Fetcher):
             sp = self.by_key[int(url.split("/species/")[1].split("/")[0])]
             if sp["aphia_id"] == 342067:  # planted: squid LC -> VU
                 return {"category": "VULNERABLE", "code": "VU"}
+            if sp["aphia_id"] == 1666974:  # planted: the GBIF copy has no entry for cuttlefish (site DD)
+                return None
             shown = rc.shown_iucn(sp)
             return None if shown == "NE" else {"code": shown}
         if "/dataset/" in url:
@@ -77,6 +79,10 @@ class RefreshCheckTest(unittest.TestCase):
     def test_missing_gbif_name_is_unknown_not_changed(self):
         rows = [r for r in self.table["rows"] if r["aphia_id"] == 371986 and r["source"].startswith("IUCN")]
         self.assertEqual([r["result"] for r in rows], ["확인 불가"])
+
+    def test_missing_entry_in_copy_is_unknown_not_a_change(self):
+        rows = [r for r in self.table["rows"] if r["aphia_id"] == 1666974 and r["source"].startswith("IUCN")]
+        self.assertEqual([(r["before"], r["result"]) for r in rows], [("DD", "확인 불가")])
 
     def test_small_count_drift_is_not_a_change(self):
         rows = [r for r in self.table["rows"] if r["aphia_id"] == 250680 and r["source"] == "OBIS"]
