@@ -41,7 +41,7 @@ for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing
   ['MCUI는 뭐예요','mcui'],['매트릭스 점은 어떻게 읽어요','matrix']])
   assert.equal(match(q)?.id,id,`심사 질문 "${q}" → ${match(q)?.id}`);
 // (3c) 정해진 답 먼저: FAQ가 찾은 질문과 칩은 서버에 묻지 않고, 못 찾은 입력만 같은 사이트의 api/ask(worker/index.mjs, Claude Opus 5.5)로.
-// 오프라인 시연이거나 AI를 쓸 수 없으면 묻지 않는다. 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
+// 오프라인 시연이거나 AI를 쓸 수 없으면 묻지 않는다. AI가 켜지면 첫 인사로 알리고, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
 assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'","'api/ask'"],'chatbot.js는 같은 사이트의 api/ask에만 묻는다(GET 상태 + POST 질문)');
 // 2026-11-03: 칩(id)은 그 답 → 입력은 종 값 질문 → 예시와 거의 같은 질문만 정해진 답 → AI → (AI 없음·실패) 키워드로 찾은 답 → 탭 안내
 assert.ok(js.includes('if(id){const f=byId(id);if(f)answer(f);else unknown();return;}'),'칩(id)은 AI로 가지 않음');
@@ -51,6 +51,10 @@ assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return false;")
 assert.ok(js.includes("history:talk.slice(0,-1),facts:chatbotFactLines()"),'AI에 앞 대화와 종 값을 함께 보냄');
 assert.ok(js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름');
 assert.ok(!js.includes('bbc-note'),'입력창 위 안내 줄(.bbc-note)은 지웠다(2026-11-03 LKH)');
+// 2026-11-03 LKH: AI 답 아래 'AI 답변' 표시를 지웠다. AI 사용은 AI가 켜졌을 때의 첫 인사로 알린다.
+assert.ok(!js.includes('bbc-ai-tag')&&!js.includes('AI 답변 · Claude가'),'AI 답 아래 표시 없음');
+assert.ok(!read('chatbot.css').includes('bbc-ai-tag'),'chatbot.css에 AI 답 표시 규칙 없음');
+assert.ok(js.includes('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'),'AI가 켜지면 첫 인사로 알림');
 assert.ok(js.includes("'아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.'"),'매칭 실패 문구');
 assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
 // (3d) 값 자리표시: 아는 종류만, 종 이름은 자료에 있는 종, 앱 자료가 없을 때도 빈칸·undefined 없이 안내 문구
@@ -71,7 +75,7 @@ const NEG=/아님|아닙니다|아니에요|아니라|아니고|아니요|않음
 const chipIds=[...new Set(faq.flatMap(f=>f.next||[]))];
 const shown=[...faq.map(f=>[f.id,f.a]),...chipIds.map(id=>[`${id} 칩`,faq.find(f=>f.id===id).q[0]]),...starters.map(([id,l])=>[`${id} 시작 질문`,l]),
   ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),
-  ...['멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
+  ...['멍이가 사이트 글에서 답을 찾는 중이에요…'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
   ...[['matrix'],['score','참굴:MCUI'],['basis','참굴'],['mcuiwhy','살오징어']].map(a=>[`대체 문구 ${a[0]}`,fact(...a)]),['판단문 대체 문구',vm.runInContext("chatbotPlain('x')",ctx)]];
 for(const [where,text] of shown){
   for(const w of BANNED)assert.ok(!text.includes(w),`${where}: 금지 낱말 '${w}'`);
