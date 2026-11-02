@@ -9,7 +9,7 @@
    - IUCN 적색목록 범주: GBIF에 실린 IUCN 체크리스트 사본으로 30종을 다시 읽음, 사본의 갱신일(새 판 신호)
    - OBIS·GBIF 출현 기록 수: 자체 예비평가(Rapid LC)에 쓴 16종을 저장된 같은 조회 조건으로 다시 셈(10% 넘게 달라지면 '바뀜')
 2. **비교하기**: 사이트가 쓰는 값(`dist/assessments.json`, 스냅샷 2026-10-15 · 방법 4.19)과 한 줄씩 맞춰 `바뀜 / 확인 불가 / 같음`으로 나눈다. 이 표는 규칙으로 만든다(AI가 만들지 않음).
-3. **AI 정리**: GitHub Models(Actions 토큰, 별도 키 없음)가 표를 읽고 "먼저 볼 것"을 한국어로 정리한다. 규칙: 표에 없는 숫자·종을 만들지 않고, 점수를 다시 계산하거나 반영을 결정하지 않는다. 표에 없는 숫자가 정리에 나오면 목록에 경고를 붙인다. AI 호출이 실패하면 표만으로 목록을 만든다.
+3. **AI 정리**: Claude(저장소 비밀값 `ANTHROPIC_API_KEY`, 사이트 안내 도우미와 같은 모델 `claude-opus-5-5`)가 표를 읽고 "먼저 볼 것"을 한국어로 정리한다. 규칙: 표에 없는 숫자·종을 만들지 않고, 점수를 다시 계산하거나 반영을 결정하지 않는다. 표에 없는 숫자가 정리에 나오면 목록에 경고를 붙인다. AI 호출이 실패하면 표만으로 목록을 만든다.
 4. **검토 대기**: 결과를 `reports/data-refresh/<날짜>/`에 담은 draft PR "검토 대기: 분기 자료 확인 <날짜>"를 연다. 이 PR은 기록만 담고 `dist/`를 건드리지 않으므로, 병합하거나 닫아도 화면은 바뀌지 않는다(작업 안에서 `git diff --exit-code -- dist/`로도 확인).
 5. **사람이 반영**: 팀이 원문을 열어 확인하고, 반영할 항목만 기존 수집 스크립트(`collect_*.py` → `build_*.py`)로 따로 갱신 PR을 만든다. 점수·화면 확인과 방법 변경 기록은 지금처럼 한다.
 
@@ -24,7 +24,7 @@
 ## 필요한 설정
 
 - PR을 만들려면 Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests"가 켜져 있어야 한다. 꺼져 있으면 같은 내용을 이슈로 남긴다.
-- AI 정리는 `permissions: models: read`만 쓴다. GitHub Models 무료 한도 안에서 한 번 실행에 요청 1~2번.
+- AI 정리: Settings → Secrets and variables → Actions → New repository secret에 `ANTHROPIC_API_KEY`(Cloudflare Worker에 넣은 것과 같은 Anthropic 키)를 넣는다. 한 번 실행에 요청 1번. 비밀값이 없으면 GitHub Models(`permissions: models: read`)를 시도하고, 그것도 안 되면 표만으로 목록을 만든다(2026-11-02 시험에서 GitHub Models는 이 저장소에서 응답하지 않았다).
 
 ## 넣지 않은 것
 

@@ -9,7 +9,8 @@ AI가 바뀐 곳을 한국어로 정리한 '검토 대기 목록'을 만든다. 
   - OBIS·GBIF 출현 기록 수: 자체 예비평가(Rapid LC)에 쓴 16종을 저장된 같은 조건으로 다시 셈
 KOSIS 어업생산 통계는 인증키가 있어야 해서 넣지 않았다(키를 넣으면 다음에 더할 수 있음).
 
-AI 정리는 GitHub Models(Actions의 GITHUB_TOKEN, 권한 models: read)를 쓴다. AI는 표를 바꾸지 않고 설명만 쓴다.
+AI 정리는 저장소 비밀값 ANTHROPIC_API_KEY가 있으면 Claude(사이트 안내 도우미와 같은 모델·호출 방식), 없으면
+GitHub Models(Actions의 GITHUB_TOKEN, 권한 models: read)를 쓴다. AI는 표를 바꾸지 않고 설명만 쓴다.
 AI 호출이 안 되면 표만으로 목록을 만든다.
 
 Usage:
@@ -230,14 +231,41 @@ def ai_brief(table: dict) -> str:
                        "counts": table["counts"], "rows_to_review": changed}, ensure_ascii=False)
 
 
+CLAUDE_MODEL = "claude-opus-5-5"  # same model and request shape as the site's guide helper (worker/index.mjs)
+CLAUDE_API = "https://api.anthropic.com/v1/messages"
+
+
+def claude_summary(table: dict, key: str) -> tuple[str | None, str]:
+    payload = {"model": CLAUDE_MODEL, "max_tokens": 3000, "output_config": {"effort": "low"},
+               "system": [{"type": "text", "text": SYSTEM_PROMPT}],
+               "messages": [{"role": "user", "content": ai_brief(table)}]}
+    try:
+        _, raw = post_json(CLAUDE_API, payload, {"x-api-key": key, "anthropic-version": "2026-10-21"})
+        m = json.loads(raw)
+        if m.get("stop_reason") != "end_turn":  # a cut or refused answer is not used
+            return None, f"{CLAUDE_MODEL}: stop {m.get('stop_reason')}"
+        text = "".join(b.get("text", "") for b in m.get("content") or [] if b.get("type") == "text").strip()
+        return (text, CLAUDE_MODEL) if text else (None, f"{CLAUDE_MODEL}: 빈 답")
+    except urllib.error.HTTPError as e:
+        return None, f"{CLAUDE_MODEL}: HTTP {e.code}"  # the body is not logged
+    except Exception as e:  # noqa: BLE001
+        return None, f"{CLAUDE_MODEL}: {type(e).__name__}"
+
+
 def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
-    """Korean notes for the human reviewer through GitHub Models. Returns (text, model) or (None, reason).
-    In Actions the workflow also has the official actions/ai-inference step, used when this direct call gets no answer."""
+    """Korean notes for the human reviewer. Claude (Anthropic API) when the ANTHROPIC_API_KEY secret is set,
+    otherwise GitHub Models with the Actions token. Returns (text, model) or (None, reason)."""
+    errors = []
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if key:
+        text, model = claude_summary(table, key)
+        if text:
+            return text, model
+        errors.append(model)
     if not token:
-        return None, "토큰 없음"
+        return None, "; ".join(errors + ["GitHub 토큰 없음"])
     body = {"messages": [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": ai_brief(table)}],
             "temperature": 0.2, "max_tokens": 1500}
-    errors = []
     for url, model in MODELS:
         raw, status = b"", None
         try:
@@ -287,7 +315,7 @@ def render(table: dict) -> str:
         lines += [f"- IUCN 적색목록 GBIF 사본 갱신일: {ed.get('updated') or '확인 불가'} (우리 마지막 확인 {ed.get('our_check')}) → **{ed['result']}**", ""]
     lines += ["## AI 정리", ""]
     if table.get("ai_text"):
-        lines += [table["ai_text"], "", f"<sub>정리: {table['ai_model']} (GitHub Models). 표가 기준이며, AI는 표를 바꾸지 않습니다.</sub>"]
+        lines += [table["ai_text"], "", f"<sub>정리: {table['ai_model']}. 표가 기준이며, AI는 표를 바꾸지 않습니다.</sub>"]
         if table.get("ai_unmatched_numbers"):
             lines += ["", f"> 표에 없는 숫자가 AI 정리에 있습니다({', '.join(table['ai_unmatched_numbers'][:10])}). 아래 표를 기준으로 보세요."]
     else:
@@ -360,7 +388,7 @@ def main(argv: list[str] | None = None) -> int:
             "trigger": labels.get(args.trigger, args.trigger),
             "url": f"{server}/{repo}/actions/runs/{run_id}" if server and repo and run_id else ""}
     token = None if args.no_ai or fixture is not None else os.environ.get("GITHUB_TOKEN")
-    table = run(Fetcher(fixture), data, not args.no_ai and token is not None, token, meta)
+    table = run(Fetcher(fixture), data, not args.no_ai and fixture is None, token, meta)
     write_outputs(out, table)
     return 0
 
