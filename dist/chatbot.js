@@ -610,7 +610,7 @@ if(typeof document!=='undefined')(function(){
     log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
   // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 첫 인사를 AI 안내 문구로 바꾼다.
-  // 입력창 위 회색 안내 줄은 2026-11-03 LKH 결정으로 지웠다. AI 사용은 첫 인사와 AI 답의 'AI 답변' 표시로 알린다.
+  // 입력창 위 회색 안내 줄은 2026-11-03 LKH 결정으로 지웠다. AI를 쓸 수 있으면 첫 인사가 AI 안내 문구로 바뀐다(AI 답 아래 'AI 답변' 표시는 2026-11-03 LKH 결정으로 지웠다).
   // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
   const WELCOME='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.';
   let aiReady=Promise.resolve(false);
@@ -634,8 +634,7 @@ if(typeof document!=='undefined')(function(){
     }catch{}
     wait.closest('.bbc-row')?.remove();
     if(typeof reply!=='string'||!reply.trim())return false;
-    const m=add('bbc-bot bbc-ai',reply.trim(),'ai');remember('assistant',reply.trim());
-    const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent=chatbotT('AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요');m.append(tag);
+    add('bbc-bot bbc-ai',reply.trim(),'ai');remember('assistant',reply.trim());
     log.scrollTop=log.scrollHeight;
     return true;
   }

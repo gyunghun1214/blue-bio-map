@@ -1923,7 +1923,7 @@ try{
       spQ.what.text.startsWith('MCUI(보전 시급성)는 보전 상태 범주')&&await evaluate("window.__ask.filter(m=>m==='POST').length")===0,JSON.stringify({mussel,spQ}));
     check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
     // M-12 (2026-10-29, 2026-11-03 안내 줄 지움): /api/ask를 가짜로 바꿔 AI가 켜진 상태. 새 대화에서 첫 인사가 AI 안내 문구로 바뀌고(입력창 위 줄은 없음), FAQ 질문은 보내지 않으며, 못 찾은 질문만 보내
-    // 'AI 답변' 표시와 함께 답한다. AI가 답을 못 찾으면(no_answer) 세 탭 바로가기로 돌아간다. 끝나면 원래 fetch로 돌리고 새 대화에서 첫 인사가 돌아온다.
+    // AI 답을 말풍선에 그대로 보인다(답 아래 'AI 답변' 표시는 2026-11-03 LKH 결정으로 지움). AI가 답을 못 찾으면(no_answer) 세 탭 바로가기로 돌아간다. 끝나면 원래 fetch로 돌리고 새 대화에서 첫 인사가 돌아온다.
     await evaluate(`window.__askReply={answer:'지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'};window.__ask=[];window.fetch=(u,i)=>String(u).includes('api/ask')?(window.__ask.push((i?.method||'GET')+(i?.body?' '+i.body:'')),
       Promise.resolve(new Response(JSON.stringify(i?.method==='POST'?window.__askReply:{ai:true}),{status:200,headers:{'content-type':'application/json'}}))):window.__fetch0(u,i);
       document.querySelector('.bbc-close').click();${freshChat}`);await sleep(300);
@@ -1931,7 +1931,7 @@ try{
     const welcomeNow="(()=>({text:[...document.querySelectorAll('.bbc-log [data-welcome]')].at(-1)?.textContent||'',note:!!document.querySelector('.bbc-note')}))()";
     const aiWelcome=await evaluate(welcomeNow);
     const aiFaq=await askBot('50점은 누가 정했어요?'),aiNew=await askBot('zqxj 멍이 AI 시험');await sleep(300);
-    const aiBubble=await evaluate("(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {ai:m.classList.contains('bbc-ai'),text:m.childNodes[0].textContent,tag:m.querySelector('.bbc-ai-tag')?.textContent||'',waits:document.querySelectorAll('.bbc-wait').length};})()");
+    const aiBubble=await evaluate("(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {ai:m.classList.contains('bbc-ai'),text:m.childNodes[0].textContent,tag:m.querySelector('.bbc-ai-tag')?.textContent||'',whole:m.textContent.trim(),waits:document.querySelectorAll('.bbc-wait').length};})()");
     await evaluate("window.__askReply={answer:null,reason:'no_answer'};1");
     const aiNone=await askBot('zqxj 답 없는 질문');await sleep(300);
     const aiNoneTabs=await evaluate("[...document.querySelectorAll('.bbc-log .bbc-tabs')].at(-1)?.querySelectorAll('button[data-tab]').length||0");
@@ -1939,9 +1939,9 @@ try{
     await evaluate("window.fetch=window.__fetch0;document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
     await press();await sleep(500);
     const backWelcome=await evaluate(welcomeNow);
-    check('M-12 guide helper with AI (mocked /api/ask): the welcome says AI answers when no prepared answer (no note line above the input), FAQ first (no question sent), the question goes with the earlier talk and the species values, an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the prepared-answer welcome returns without AI',
+    check('M-12 guide helper with AI (mocked /api/ask): the welcome says AI answers when no prepared answer (no note line above the input), FAQ first (no question sent), the question goes with the earlier talk and the species values, an unmatched question gets the AI answer (no tag under it), no_answer goes back to the three tabs, the prepared-answer welcome returns without AI',
       aiWelcome.text==='안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.'&&!aiWelcome.note&&aiFaq.text.includes(`각각 ${facts.rule} 이상`)&&aiBubble.ai&&aiBubble.text==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&
-      aiBubble.tag==='AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'&&aiBubble.waits===0&&aiNone.text.startsWith('아래 탭에서 직접 찾아보거나')&&aiNoneTabs===3&&
+      aiBubble.tag===''&&aiBubble.whole==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&aiBubble.waits===0&&aiNone.text.startsWith('아래 탭에서 직접 찾아보거나')&&aiNoneTabs===3&&
       // 2026-11-03: 질문과 함께 앞 대화(history)와 종 값 줄(facts, 종마다 한 줄)을 보낸다
       JSON.stringify(aiCalls.map(c=>{const [m,...b]=c.split(' ');if(!b.length)return m;const j=JSON.parse(b.join(' '));return [m,j.q,j.lang,Array.isArray(j.history)&&j.history.length>0,j.facts?.length===facts.n];}))
         ===JSON.stringify(['GET',['POST','zqxj 멍이 AI 시험','ko',true,true],['POST','zqxj 답 없는 질문','ko',true,true]])&&backWelcome.text==='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.'&&!backWelcome.note,
