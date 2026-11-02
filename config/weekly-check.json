@@ -1,0 +1,13 @@
+{
+ "_설명": "주간 점검(scripts/weekly_check.py)에서 '고칠 것'으로 세지 않고 '참고'로만 적을 링크. 사람이 확인하고 그대로 두기로 한 것만 넣는다. Claude 수정안은 이 파일을 고칠 수 없다(config/ 금지).",
+ "known_links": {
+  "https://rpn.gov.ru/upload/iblock/1dd/prikaz-minprirody-rossii-ot-23.05.2023-_-320.pdf": "러시아 정부 출처(우뭇가사리 MCUI 근거). 해외 접속이 막힌 것으로 보여 그대로 둠 (2026-11-02 점검)",
+  "http://www.mnh.si.edu/rc/db/collection_db_policy1.html": "GBIF 인용 문구 안의 옛 주소(자료 원문 그대로). 그대로 둠",
+  "https://species.nibr.go.kr/geo/html/index.do:KOGL": "링크가 아니라 '주소:공공누리' 글자를 점검기가 주소로 읽은 것",
+  "https://www.marinespecies.org/rest/AphiaClassificationByAphiaID/": "WoRMS API 기본 주소(화면에 링크로 나오지 않음)",
+  "https://m.dailian.co.kr/news/view/1060200": "기사 주소 뒤에 제목이 붙는 이동. 링크는 그대로 열림",
+  "https://www.dailian.co.kr/news/view/981448/": "기사 주소 뒤에 제목이 붙는 이동. 링크는 그대로 열림",
+  "https://www.fao.org/3/I6655EN/i6655en.pdf": "FAO 자료실 새 주소로 이동, 링크는 그대로 열림. 주소 교체는 사람이 판단",
+  "https://www.fao.org/3/I6655EN/uFiSh1.0.xlsx": "FAO 자료실 새 주소로 이동, 링크는 그대로 열림. 주소 교체는 사람이 판단"
+ }
+}
