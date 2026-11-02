@@ -11,7 +11,7 @@
     ├ 자동 검사 전체 다시 돌리기 (verify.yml: 코드·자료 검사, 브라우저 화면 검사)
     ├ 바깥 링크 확인 (scripts/check_links.py)
     ├ 라이브 사이트가 main과 같은지 (scripts/weekly_check.py live)
-    └ 보고서 + AI 정리 (scripts/weekly_check.py report, GitHub Models)
+    └ 보고서 + AI 정리 (scripts/weekly_check.py report: 비밀값 ANTHROPIC_API_KEY가 있으면 Claude, 없으면 GitHub Models)
           └ 고칠 것이 있으면 이슈 (라벨 weekly-check; 열린 이슈가 있으면 댓글)
                 └ [꺼져 있음] Claude 수정안 (.github/workflows/ai-fix.yml)
                       └ 초안(draft) PR + 검사 → 사람이 보고 병합
@@ -21,6 +21,9 @@
 - 바로 돌리기: Actions → 주간 점검 (AI 정리) → Run workflow.
 - '확인 불가' 링크(봇을 막는 사이트)는 고칠 것으로 세지 않는다. 이미 알고 그대로 두기로 한 링크는
   `config/weekly-check.json`의 `known_links`에 적으면 '참고'로만 나온다.
+- AI 정리는 덧붙임일 뿐이다. 2026-11-02 첫 실행에서 GitHub Models가 이 저장소에 '200 OK'만 돌려줘 정리가 비었고,
+  표(고칠 것·참고)는 그대로 나왔다. 비밀값 `ANTHROPIC_API_KEY`를 넣으면 Claude가 정리한다(분기 자료 확인과 같은 키).
+- 일시적인 DNS 실패('Temporary failure in name resolution')는 '깨짐'이 아니라 '확인 불가'로 센다.
 - 멍이 AI가 꺼져 있으면(`/api/ask` → `ai:false`) '참고'로만 적는다. 열쇠가 끝나 일부러 끈 경우도 있어서다.
 
 ## Claude 수정안 켜는 법 (지금은 꺼져 있음)
@@ -57,7 +60,8 @@ PR이 만들어지려면 Settings → Actions → General → "Allow GitHub Acti
 
 ## 비용
 
-- 주간 점검: GitHub Actions 시간(비공개 저장소 무료 한도 안)과 GitHub Models(무료 한도). 돈은 들지 않는다.
+- 주간 점검: GitHub Actions 시간(비공개 저장소 무료 한도 안). AI 정리는 고칠 것이 있는 주에만 한 번 부르며,
+  Claude면 짧은 정리 한 번이라 몇 센트 수준(추정), 키가 없으면 GitHub Models(무료)를 시도한다.
   verify.yml 전체를 매주 한 번 더 돌리므로 Windows 실행 시간이 주 25분쯤 늘어난다(무료 한도에서 2배로 계산).
 - Claude 수정안(켤 때만): Claude Opus 5.5 기준 입력 100만 토큰당 4달러, 출력 100만 토큰당 20달러.
   작은 링크 수정 한 번은 대략 1~3달러로 추정한다(실제 금액은 Anthropic 콘솔 사용량에서 확인). 고칠 것이 없는 주에는 돌지 않는다.

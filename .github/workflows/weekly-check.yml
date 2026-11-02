@@ -1,7 +1,7 @@
 name: 주간 점검 (AI 정리)
 
 # 매주 사이트를 스스로 점검한다: 자동 검사(verify.yml 전체), 바깥 링크, 라이브 사이트가 main과 같은지.
-# 고칠 것이 있으면 AI(GitHub Models)가 정리한 이슈를 연다(라벨 weekly-check). 사이트 파일은 고치지 않는다.
+# 고칠 것이 있으면 AI(Claude, 키가 없으면 GitHub Models)가 정리한 이슈를 연다(라벨 weekly-check). 사이트 파일은 고치지 않는다.
 # 저장소 변수 AI_FIX_ENABLED · AI_FIX_AUTO 가 모두 true면 그 이슈로 Claude 수정안 초안 PR까지 만든다(ai-fix.yml).
 # 처음에는 꺼져 있다. 설명: docs/ai-maintenance.md
 #
@@ -78,6 +78,8 @@ jobs:
       - name: 보고서 만들기 · AI 정리
         id: rep
         env:
+          # AI 정리: 저장소 비밀값 ANTHROPIC_API_KEY가 있으면 Claude, 없으면 GitHub Models(이 토큰)로.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           python scripts/weekly_check.py report --links weekly-out/links.csv --live weekly-out/live.json \
