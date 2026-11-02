@@ -46,6 +46,23 @@
 .bbc-chips button{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink2);font:inherit;font-size:12.5px;text-align:left;cursor:pointer}
 .bbc-chips button:hover,.bbc-show:hover{border-color:var(--teal);color:var(--teal-ink)}
 .bbc-wait{color:var(--muted)}
+/* AI 답 기다리는 동안의 해변 파도(2026-11-03, LKH 결정; 그림은 chatbot.js WAVE). 모래색 토큰이 없어 여기서만 --bbc-sand를 만든다.
+   움직임 줄이기면 물이 조금 올라온 멈춘 그림 한 장. 유형 색(빨강·노랑·파랑·초록)은 쓰지 않는다. */
+.bbc-wave{--bbc-sand:#f1e2c4;--bbc-sand:color-mix(in srgb,var(--surface) 60%,#dfb877);display:block;width:100%;height:32px;margin-top:8px;border-radius:8px;overflow:hidden}
+.bbc-wave-sand{fill:var(--bbc-sand)}
+.bbc-wave-water{fill:#89d1c9;fill:color-mix(in srgb,var(--teal-fill) 50%,var(--surface))}
+.bbc-wave-deep{fill:var(--teal);fill-opacity:.32}
+.bbc-wave-foam{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.bbc-wave-crest{fill:none;stroke:#fff;stroke-opacity:.6;stroke-width:1;vector-effect:non-scaling-stroke}
+.bbc-wave-wash{transform:translateY(3px)}
+@media (prefers-reduced-motion:no-preference){
+  .bbc-wave-wash{animation:bbc-wash 2.6s ease-in-out infinite}
+  .bbc-wave-run{animation:bbc-run 2.6s linear infinite}
+  .bbc-wave-deep{animation:bbc-run 3.9s linear infinite reverse}
+  .bbc-wave-crest{animation:bbc-run 2s linear infinite}
+}
+@keyframes bbc-wash{0%,100%{transform:translateY(0)}45%{transform:translateY(8px)}}
+@keyframes bbc-run{to{transform:translateX(-60px)}}
 .bbc-ai-tag{display:block;margin-top:6px;color:var(--muted);font-size:var(--fs-min)}
 .bbc-note{margin:0;padding:6px 12px 0;color:var(--muted);font-size:var(--fs-min);line-height:1.4}
 .bbc-form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}

@@ -522,10 +522,18 @@ if(typeof document!=='undefined')(function(){
     aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
     aiReady.then(note);
   }
+  // AI 답을 기다리는 동안 대기 말풍선 글자 아래에 붙는 해변 파도(2026-11-03, LKH 결정). 위는 바다, 아래는 모래사장이고
+  // 물(.bbc-wave-wash)이 모래 위로 밀려왔다 빠지며 파도 3겹이 다른 속도로 흐른다. 움직임은 chatbot.css에만 있고, 읽히는 건 글자뿐이다.
+  // 파도 줄은 주기 60(가로 -60~300)이라 CSS가 -60만큼 옮겨도 이음매가 없다. preserveAspectRatio none으로 말풍선 폭에 맞춘다.
+  const wave=(y,a)=>`M-60 ${y}q15 ${-a} 30 0`+'t30 0'.repeat(11);
+  const WAVE='<svg class="bbc-wave" viewBox="0 0 240 32" preserveAspectRatio="none" aria-hidden="true" focusable="false">'+
+    '<rect class="bbc-wave-sand" width="240" height="32"/><g class="bbc-wave-wash"><g class="bbc-wave-run">'+
+    `<path class="bbc-wave-water" d="${wave(14,2.5)}V-12H-60Z"/><path class="bbc-wave-foam" d="${wave(14,2.5)}"/></g></g>`+
+    `<path class="bbc-wave-deep" d="${wave(5,1.8)}V0H-60Z"/><path class="bbc-wave-crest" d="${wave(9,1.5)}"/></svg>`;
   // FAQ가 못 찾은 질문만 AI에 묻는다. 답이 없거나 실패하면 unknown()으로 돌아간다.
   async function askAi(text){
     if(globalThis.BBVM_OFFLINE===true||!(await aiReady))return unknown();
-    const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');log.scrollTop=log.scrollHeight;
+    const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');wait.insertAdjacentHTML('beforeend',WAVE);log.scrollTop=log.scrollHeight;
     let reply=null;
     try{
       const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko'}),signal:AbortSignal.timeout(30000)});

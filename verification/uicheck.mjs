@@ -1918,25 +1918,30 @@ try{
     check('M-11 guide helper: a tab link opens that tab',await evaluate("document.getElementById('compare')?.classList.contains('active')||document.querySelector('.tabs button[data-view=\"compare\"]').getAttribute('aria-current')==='page'"),'');
     // M-12 (2026-10-29): /api/ask를 가짜로 바꿔 AI가 켜진 상태. 새 대화에서 표기가 바뀌고, FAQ 질문은 보내지 않으며, 못 찾은 질문만 보내
     // 'AI 답변' 표시와 함께 답한다. AI가 답을 못 찾으면(no_answer) 세 탭 바로가기로 돌아간다. 끝나면 원래 fetch로 돌리고 새 대화에서 표기가 돌아온다.
+    // 2026-11-03: 가짜 답을 1초 늦게 줘서 기다리는 동안 대기 말풍선(.bbc-wait) 안에 해변 파도(.bbc-wave, aria-hidden)가 있고, 답이 오거나 no_answer여도 남지 않는지 본다.
     await evaluate(`window.__askReply={answer:'지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'};window.__ask=[];window.fetch=(u,i)=>String(u).includes('api/ask')?(window.__ask.push((i?.method||'GET')+(i?.body?' '+i.body:'')),
-      Promise.resolve(new Response(JSON.stringify(i?.method==='POST'?window.__askReply:{ai:true}),{status:200,headers:{'content-type':'application/json'}}))):window.__fetch0(u,i);
+      new Promise(r=>setTimeout(r,i?.method==='POST'?1000:0)).then(()=>new Response(JSON.stringify(i?.method==='POST'?window.__askReply:{ai:true}),{status:200,headers:{'content-type':'application/json'}}))):window.__fetch0(u,i);
       document.querySelector('.bbc-close').click();${freshChat}`);await sleep(300);
     await press();await sleep(300);
     const aiNote=await evaluate("document.querySelector('.bbc-note').textContent");
-    const aiFaq=await askBot('50점은 누가 정했어요?'),aiNew=await askBot('zqxj 멍이 AI 시험');await sleep(300);
+    const waveState="(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1),w=m?.querySelector('.bbc-wave');return {wait:!!m?.classList.contains('bbc-wait'),wave:!!w,hidden:w?.getAttribute('aria-hidden')||'',left:document.querySelectorAll('.bbc-wait,.bbc-wave').length};})()";
+    const aiFaq=await askBot('50점은 누가 정했어요?'),aiNew=await askBot('zqxj 멍이 AI 시험'),aiWaiting=await evaluate(waveState);await sleep(1300);
+    const aiAfter=await evaluate(waveState);
     const aiBubble=await evaluate("(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {ai:m.classList.contains('bbc-ai'),text:m.childNodes[0].textContent,tag:m.querySelector('.bbc-ai-tag')?.textContent||'',waits:document.querySelectorAll('.bbc-wait').length};})()");
     await evaluate("window.__askReply={answer:null,reason:'no_answer'};1");
-    const aiNone=await askBot('zqxj 답 없는 질문');await sleep(300);
+    const noneWaiting=(await askBot('zqxj 답 없는 질문'),await evaluate(waveState));await sleep(1300);
+    const aiNone=await evaluate("(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1);return {text:m?.childNodes[0]?.textContent||''};})()"),noneAfter=await evaluate(waveState);
     const aiNoneTabs=await evaluate("[...document.querySelectorAll('.bbc-log .bbc-tabs')].at(-1)?.querySelectorAll('button[data-tab]').length||0");
     const aiCalls=await evaluate('window.__ask');
     await evaluate("window.fetch=window.__fetch0;document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
     await press();await sleep(500);
     const backNote=await evaluate("document.querySelector('.bbc-note').textContent");
-    check('M-12 guide helper with AI (mocked /api/ask): note says AI answers when no prepared answer, FAQ first (no question sent), an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, the note returns without AI',
+    check('M-12 guide helper with AI (mocked /api/ask, 1 s late): note says AI answers when no prepared answer, FAQ first (no question sent), while waiting the last bubble is .bbc-wait with an aria-hidden .bbc-wave, an unmatched question gets the AI answer with its tag, no_answer goes back to the three tabs, no wait bubble or wave left either way, the note returns without AI',
+      aiWaiting.wait&&aiWaiting.wave&&aiWaiting.hidden==='true'&&aiAfter.left===0&&noneWaiting.wait&&noneWaiting.wave&&noneAfter.left===0&&
       aiNote==='준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'&&aiFaq.text.includes(`각각 ${facts.rule} 이상`)&&aiBubble.ai&&aiBubble.text==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&
       aiBubble.tag==='AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'&&aiBubble.waits===0&&aiNone.text.startsWith('아래 탭에서 직접 찾아보거나')&&aiNoneTabs===3&&
       JSON.stringify(aiCalls)===JSON.stringify(['GET','POST {"q":"zqxj 멍이 AI 시험","lang":"ko"}','POST {"q":"zqxj 답 없는 질문","lang":"ko"}'])&&backNote==='미리 준비한 답변으로 안내해요',
-      JSON.stringify({aiNote,aiFaq,aiNew,aiBubble,aiNone,aiNoneTabs,aiCalls,backNote}));
+      JSON.stringify({aiNote,aiFaq,aiNew,aiWaiting,aiAfter,aiBubble,noneWaiting,noneAfter,aiNone,aiNoneTabs,aiCalls,backNote}));
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }
