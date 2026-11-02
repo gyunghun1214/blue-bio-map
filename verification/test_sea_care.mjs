@@ -80,17 +80,23 @@ assert.ok(!/fetch\([^)]*(caresea|1365)/.test(app+exp),'nothing is fetched from t
 assert.match(app,/class="detail-act" data-sea-care>/,'the 바다 지키기 button');
 assert.match(app,/closest\('\[data-sea-care\]'\)[^\n]*f\.open=true;openDrawer\('\.sea-care-fold > summary',b\)/,'the button opens the fold, never an outside page');
 
-// (5) expedition: last route stop and the end of the card list only
-const care=exp.match(/const careLine=\(\)=>`([^`]+)`/)?.[1];
-assert.ok(care&&care.includes('https://www.caresea.kr/')&&care.includes('https://www.1365.go.kr/'),'careLine links');
-assert.equal((care.match(/target="_blank" rel="noopener"/g)||[]).length,2);
-assert.equal((exp.match(/careLine\(\)/g)||[]).length,2,'two places');
-assert.match(exp,/mode!=='cards'&&i===STATE\.n-1\?careLine\(\):''/,'card: last route stop only');
-assert.match(exp,/\.join\(''\)\+careLine\(\);/,'card list: once at the end');
+// (5) expedition (2026-11-02 LKH: 종마다 봉사 링크로 바로 가는 단추): every card carries the clean-up row,
+// the highlighted box sits in the detail panel; neither is fetched or framed
+const acts=exp.match(/const CARE_LINKS=(\[[^\n]+\]);/)?.[1];
+assert.ok(acts&&acts.includes('https://www.caresea.kr/')&&acts.includes('https://www.1365.go.kr/'),'clean-up links');
+assert.match(exp,/const careActs=\(\)=>`<div class="x-care-acts">\$\{CARE_LINKS\.map\(\(\[u,t\]\)=>`<a href="\$\{u\}" target="_blank" rel="noopener">\$\{t\}<\/a>`\)/,'new tab, noopener');
+const care=exp.match(/const careLine=\(\)=>`([^`]+)`/)?.[1], row=exp.match(/const careRow=\(\)=>`([^`]+)`/)?.[1];
+assert.ok(care&&care.includes('${careActs()}')&&row&&row.includes('${careActs()}'),'box and row share the links');
+assert.equal((exp.match(/careRow\(\)/g)||[]).length,1,'careRow: one place (the card)');
+assert.match(exp,/data-detail="\$\{i\}">자세히 보기<\/button>[^\n]*<\/div>\n\s*\$\{careRow\(\)\}/,'card: the row right under the card buttons, on every stop');
+assert.equal((exp.match(/careLine\(\)/g)||[]).length,1,'careLine: one place (the detail panel)');
+assert.match(exp,/<section class="x-care-sec"><h3>이 생물이 사는 바다 지키기<\/h3>\$\{careLine\(\)\}<\/section>/,'detail panel: the box');
+for(const w of ['없음','없습니다','준비 중','지킵니다','효과','바로 신청','연계'])assert.ok(!(care+row).includes(w),`expedition: '${w}' on screen`);
 
 // (6) English dictionary
+const CARE_LINKS_TEXT=[...acts.matchAll(/'([^']*[가-힣][^']*)'/g)].map(m=>m[1]);
 const en=read('i18n-en.js');
-const all=[h,X.seaCare({aphiaID:397082,cells:[{sizeDeg:1}]},new Date('2026-10-26T03:00:00Z')),X.seaCare({aphiaID:534443,cells:[{sizeDeg:1}]},new Date('2026-06-01T03:00:00Z')),care,X.seaSeasonTag({aphiaID:494972})||'<b>지금 금어기</b>'];
+const all=[h,X.seaCare({aphiaID:397082,cells:[{sizeDeg:1}]},new Date('2026-10-26T03:00:00Z')),X.seaCare({aphiaID:534443,cells:[{sizeDeg:1}]},new Date('2026-06-01T03:00:00Z')),care,X.seaSeasonTag({aphiaID:494972})||'<b>지금 금어기</b>',row,...CARE_LINKS_TEXT];
 for(const [id,wins] of Object.entries(X.SEA_WINDOWS))for(const [,to,where,note] of wins)all.push(`<span>${(where?where+' ':'')+X.mdText(to)}까지</span><span>${note||''}</span>`);
 const texts=[...new Set([...all.flatMap(x=>x.replace(/<[^>]+>/g,'\n').split('\n')),
   ...Object.values(X.SEA_RULES).flat(),'이 생물이 사는 바다 지키기','바다 지키기'].map(t=>t.replace(/^[\s·]+|[\s·]+$/g,'').trim()).filter(t=>/[가-힣]/.test(t)))];

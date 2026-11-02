@@ -11,7 +11,7 @@ const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const html=read('index.html');
 const ctx={};vm.createContext(ctx);  // document가 없으면 화면 부분은 건너뛴다
 const js=read('chatbot.js');
-vm.runInContext(js+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,CHATBOT_TAB_LINKS,chatbotMatch,chatbotMascot,chatbotFact,CHATBOT_MASCOT_STATES});',ctx);
+vm.runInContext(js+';Object.assign(globalThis,{CHATBOT_FAQ,CHATBOT_STARTERS,CHATBOT_TAB_LINKS,chatbotMatch,chatbotMascot,chatbotFact,CHATBOT_MASCOT_STATES,chatbotSure,chatbotSpeciesQuestion,chatbotSpeciesReply,chatbotFindSpecies,chatbotFactLines});',ctx);
 const {CHATBOT_FAQ:faq,CHATBOT_STARTERS:starters,CHATBOT_TAB_LINKS:tabLinks,chatbotMatch:match,chatbotMascot:mascot,chatbotFact:fact,CHATBOT_MASCOT_STATES:moods}=ctx;
 
 // (1) id가 겹치지 않고, 대표 질문·이어서 물어볼 질문이 실제 항목을 가리킴
@@ -43,10 +43,14 @@ for(const [q,id] of [['미역은 왜 매트릭스에 없어요?','matrix-missing
 // (3c) 정해진 답 먼저: FAQ가 찾은 질문과 칩은 서버에 묻지 않고, 못 찾은 입력만 같은 사이트의 api/ask(worker/index.mjs, Claude Opus 5.5)로.
 // 오프라인 시연이거나 AI를 쓸 수 없으면 묻지 않는다. 입력창 근처 표기, 답이 없을 때 세 탭(index.html의 탭 버튼과 같은 순서)
 assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'","'api/ask'"],'chatbot.js는 같은 사이트의 api/ask에만 묻는다(GET 상태 + POST 질문)');
-assert.ok(js.includes('if(f)answer(f);else if(id)unknown();else askAi(text);'),'FAQ가 먼저, 칩(id)은 AI로 가지 않음');
-assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\|\|!\(await aiReady\)\)return unknown\(\);/.test(js),'오프라인 시연·AI 없음이면 바로 정해진 안내');
-assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return unknown();"),'AI 실패·답 없음이면 정해진 안내');
-assert.ok(js.includes('<p class="bbc-note">미리 준비한 답변으로 안내해요</p>')&&js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름과 표기');
+// 2026-11-03: 칩(id)은 그 답 → 입력은 종 값 질문 → 예시와 거의 같은 질문만 정해진 답 → AI → (AI 없음·실패) 키워드로 찾은 답 → 탭 안내
+assert.ok(js.includes('if(id){const f=byId(id);if(f)answer(f);else unknown();return;}'),'칩(id)은 AI로 가지 않음');
+assert.ok(/if\(sq\)return speciesAnswer\(sq\);\s*const sure=chatbotSure\(text\);\s*if\(sure\)return answer\(sure\);\s*if\(await askAi\(text\)\)return;\s*const f=chatbotMatch\(text\);\s*if\(f\)answer\(f\);else unknown\(\);/.test(js),'종 값 → 거의 같은 질문 → AI → 키워드 답 → 탭 안내');
+assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\|\|!\(await aiReady\)\)return false;/.test(js),'오프라인 시연·AI 없음이면 AI에 묻지 않음');
+assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return false;"),'AI 실패·답 없음이면 정해진 답·안내로');
+assert.ok(js.includes("history:talk.slice(0,-1),facts:chatbotFactLines()"),'AI에 앞 대화와 종 값을 함께 보냄');
+assert.ok(js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름');
+assert.ok(!js.includes('bbc-note'),'입력창 위 안내 줄(.bbc-note)은 지웠다(2026-11-03 LKH)');
 assert.ok(js.includes("'아래 탭에서 직접 찾아보거나, 다른 말로 다시 물어봐 주세요.'"),'매칭 실패 문구');
 assert.equal(tabLinks.map(t=>t[0]).join(),[...html.matchAll(/<button data-view="(\w+)"/g)].map(m=>m[1]).join(),'세 탭 바로가기');
 // (3d) 값 자리표시: 아는 종류만, 종 이름은 자료에 있는 종, 앱 자료가 없을 때도 빈칸·undefined 없이 안내 문구
@@ -57,7 +61,7 @@ for(const f of faq)for(const [tok,kind,arg] of f.a.matchAll(/\{(\w+)(?::([^}]+))
     const out=fact(kind,arg);assert.ok(out&&!/undefined|null|NaN/.test(out),`${f.id}: 자료 없을 때 ${tok} → ${out}`);}
 }
 assert.ok(fact('matrix')&&!/undefined/.test(fact('matrix')));
-// (3e) 2026-10-17 화면 약점 문구 정리: 화면에 나오는 글(답, 칩으로 보이는 질문, 시작 질문, 탭 바로가기, 입력창 표기, 앱 자료가 없을 때의 대체 문구)에
+// (3e) 2026-10-17 화면 약점 문구 정리: 화면에 나오는 글(답, 칩으로 보이는 질문, 시작 질문, 탭 바로가기, 앱 자료가 없을 때의 대체 문구)에
 // 약점 낱말과 '아님·않음' 안내를 쓰지 않는다. 검증 항목은 칩으로 내보내지 않고(입력으로만 닿음) 근거와 방법 탭만 가리킨다.
 const BANNED=['미충족','미통과','실패','불성립','사용 중단','제한적 확인','예비','공식 평가 전','공식 평가 아님','자체 평가','자체 예비','Rapid LC','역검증',
   '서식국','다른 나라','재현','근거 논문 1편','단일 논문','조사 필요','확인 필요','미확인','미산출','점수 없음','정보충분도','공백','사후 검증','사전 등록',
@@ -66,8 +70,8 @@ const BANNED=['미충족','미통과','실패','불성립','사용 중단','제�
 const NEG=/아님|아닙니다|아니에요|아니라|아니고|아니요|않음|않습니다|않아요|않고|뜻하지/;
 const chipIds=[...new Set(faq.flatMap(f=>f.next||[]))];
 const shown=[...faq.map(f=>[f.id,f.a]),...chipIds.map(id=>[`${id} 칩`,faq.find(f=>f.id===id).q[0]]),...starters.map(([id,l])=>[`${id} 시작 질문`,l]),
-  ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),['입력창 표기',js.match(/<p class="bbc-note">([^<]*)<\/p>/)[1]],
-  ...['준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요','멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
+  ...tabLinks.map(([id,l])=>[`${id} 탭 바로가기`,l]),
+  ...['멍이가 사이트 글에서 답을 찾는 중이에요…','AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요'].map(t=>(assert.ok(js.includes(`'${t}'`),t),['AI 표기',t])),
   ...[['matrix'],['score','참굴:MCUI'],['basis','참굴'],['mcuiwhy','살오징어']].map(a=>[`대체 문구 ${a[0]}`,fact(...a)]),['판단문 대체 문구',vm.runInContext("chatbotPlain('x')",ctx)]];
 for(const [where,text] of shown){
   for(const w of BANNED)assert.ok(!text.includes(w),`${where}: 금지 낱말 '${w}'`);
@@ -84,6 +88,52 @@ Object.assign(ctx,{assessedForMatrix:()=>true,extinctionMcui:()=>10});
 assert.equal(fact('matrix'),'지금은 3종 모두 매트릭스에 놓여 있어요.');
 assert.equal(fact('mcuiwhy','가'),'가의 멸종위험 범주(LC)만 보면 MCUI는 10.0점이지만, 자원 감소 신호(어획량 −40.0%)로 35.0점이 됐어요.');
 for(const k of ['data','assessedForMatrix','pilotScore','scoreText','scoreValue','stockMcui','extinctionMcui','stockChange'])delete ctx[k];
+
+// (3f) 2026-11-03 종별 값 질문과 이어 묻기(LKH: '홍합의 mcui는 몇이야?'에 MCUI 일반 설명). 화면 함수는 가짜로 끼운다.
+const SP=[{aphiaID:1,label:'홍합(참담치)',koLabel:'홍합(참담치)',name:'Mytilus coruscus',enName:'Korean mussel',group:'패류',v:{BBVI:35.6,MFPI:60.9,MBPI:10.3,MCUI:10},cat:'LC'},
+  {aphiaID:2,label:'참굴',koLabel:'참굴',name:'Magallana gigas',v:{BBVI:71.6,MFPI:71.6,MBPI:71.6,MCUI:10},cat:'LC'},
+  {aphiaID:3,label:'톳',koLabel:'톳',name:'Sargassum fusiforme',v:{BBVI:64,MFPI:63.3,MBPI:65,MCUI:10},cat:'LC'},
+  {aphiaID:4,label:'살오징어',koLabel:'살오징어',name:'Todarodes pacificus',v:{BBVI:52,MFPI:46.1,MBPI:57,MCUI:60},cat:'LC',stock:true},
+  {aphiaID:5,label:'전복(종 수준)',koLabel:'전복(종 수준)',name:'Haliotis discus',v:{BBVI:35,MFPI:54.7,MBPI:16,MCUI:80},cat:'EN'}];
+Object.assign(ctx,{data:{species:SP},pilotScore:(s,k)=>s.v[k]??null,scoreValue:(s,k,v)=>k==='BBVI'||k==='MBPI'?v.toFixed(0):v.toFixed(1),
+  matrixType:s=>s.v.BBVI>=50?'sustainable_use':'baseline_survey',matrixTypeLabel:id=>({sustainable_use:'활용 연구 검토',baseline_survey:'기초조사 검토'})[id],
+  mcuiCategory:s=>s.cat,stockMcui:s=>!!s.stock,extinctionMcui:s=>s.stock?10:s.v.MCUI,stockChange:s=>'−79.8%',mcuiBasisShortOf:s=>s.aphiaID===1?'한국 국가 평가':'IUCN'});
+const sq=(t,f)=>{const r=ctx.chatbotSpeciesQuestion(t,f);return r&&[r.s.aphiaID,r.keys.join()];};
+assert.deepEqual(sq('홍합의 mcui는 몇이야?'),[1,'MCUI'],'LKH 질문');
+assert.deepEqual(sq('참담치 BBVI 알려줘'),[1,'BBVI']);assert.deepEqual(sq('홍합 mcui'),[1,'MCUI']);
+assert.deepEqual(sq('홍합 점수는?'),[1,''],'지표 없이 값 → 네 값 요약');assert.deepEqual(sq('톳 어때?'),[3,'']);
+assert.deepEqual(sq('그럼 bbvi는?',{s:SP[0],keys:['MCUI']}),[1,'BBVI'],'이어 묻기: 앞 종');
+assert.deepEqual(sq('참굴은?',{s:SP[0],keys:['MCUI']}),[2,'MCUI'],'이어 묻기: 앞 지표');
+assert.deepEqual(sq('전복 보전 시급성은 몇 점?'),[5,'MCUI'],"'전복(종 수준)'은 '전복'으로도");
+assert.deepEqual(sq('What is the MCUI of Korean mussel?'),[1,'MCUI']);
+for(const t of ['홍합은 왜 MCUI가 낮아?','홍합이랑 참굴 BBVI 비교해줘','홍합은 어디에 살아?','홍합 신약으로 쓸 수 있어?','mcui는 몇이야','MCUI는 뭐예요','BBVI는 어떻게 계산해요'])
+  assert.equal(sq(t),null,`"${t}"는 AI나 정해진 답으로`);
+assert.equal(sq('BBVI는 어떻게 계산해?',{s:SP[0],keys:['MCUI']}),null,'계산을 물으면 앞 종이 있어도 설명으로');
+for(const t of ['MCUI는 뭐예요','what is MCUI','mcui가 뭐야','bbvi'])assert.equal(sq(t,{s:SP[0],keys:['BBVI']}),null,`"${t}": 뜻을 묻는 말은 앞 종이 있어도 설명으로`);
+assert.deepEqual(sq('bbvi는 몇 점이야?',{s:SP[0],keys:['MCUI']}),[1,'BBVI']);assert.deepEqual(sq('what about BBVI?',{s:SP[0],keys:['MCUI']}),[1,'BBVI']);
+assert.deepEqual(sq('홍합 MCUI는 뭐야?'),[1,'MCUI'],'종 이름과 함께면 값');
+const rp=(id,keys)=>ctx.chatbotSpeciesReply(SP.find(s=>s.aphiaID===id),keys);
+assert.equal(rp(1,['MCUI']),'홍합(참담치)의 MCUI(보전 시급성)는 10.0점이에요. 보전 상태 범주(LC)를 점수로 옮긴 값이고, 한국 국가 평가에서 왔어요.');
+assert.equal(rp(1,['BBVI']),'홍합(참담치)의 BBVI(활용가치)는 36점이에요. MFPI(식량 지표) 60.9점과 MBPI(생리활성 지표) 10점을 합친 값이에요.');
+assert.equal(rp(1,['MFPI']),'홍합(참담치)의 MFPI(식량 지표)는 60.9점이에요.');
+assert.equal(rp(4,['MCUI']),'살오징어의 MCUI(보전 시급성)는 60.0점이에요. 보전 상태 범주(LC)만 보면 10.0점이지만, 자원 감소 신호(어획량 −79.8%)로 60.0점이 됐어요.');
+assert.equal(rp(1,[]),'홍합(참담치)의 유형은 ‘기초조사 검토’이고, BBVI(활용가치) 36점(MFPI 60.9점·MBPI 10점), MCUI(보전 시급성) 10.0점이에요.');
+// 정해진 답은 예시 질문과 거의 같을 때만: 키워드 하나(mcui) 겹친 종 값 질문·이어 묻기는 고르지 않는다
+assert.equal(ctx.chatbotSure('홍합의 mcui는 몇이야?'),null);assert.equal(ctx.chatbotSure('그럼 그건 뭐야?'),null);
+assert.equal(ctx.chatbotSure('지도에서 색깔은 무슨 뜻이야'),null,'예시와 덜 비슷하면 AI로');
+for(const [t,id] of [['MCUI는 뭐예요','mcui'],['mcui가 뭐야','mcui'],['BBVI는 어떻게 계산해?','bbvi'],['붉은 점은 뭐야','red-dots'],['살오징어는 IUCN에서 LC인데 왜 60점이에요?','squid']])
+  assert.equal(ctx.chatbotSure(t)?.id,id,`"${t}"는 정해진 답`);
+assert.equal(ctx.chatbotSure('홍합은 IUCN에서 LC인데 왜 60점이에요?'),null,'예시 질문에 없는 종이면 정해진 답으로 가지 않음');
+// AI에 보내는 종 값 줄: 종마다 한 줄, 화면 값 그대로
+const lines=ctx.chatbotFactLines();assert.equal(lines.length,SP.length);
+assert.equal(lines[0],'홍합(참담치) (Mytilus coruscus, Korean mussel) · 패류: 유형 ‘기초조사 검토’, BBVI(활용가치) 36점, MFPI(식량 지표) 60.9점, MBPI(생리활성 지표) 10점, MCUI(보전 시급성) 10.0점(범주 LC, 근거 한국 국가 평가)');
+assert.ok(lines[3].includes('범주만으로는 10.0점, 자원 감소 신호(어획량 −79.8%)로 올라감'));
+// 종 값 답과 대체 문구에도 약점 낱말·'아님' 안내가 없다(화면 낱말 규칙)
+const spShown=[...SP.flatMap(s=>[[],['BBVI'],['MFPI'],['MBPI'],['MCUI']].map(k=>rp(s.aphiaID,k))),...lines,
+  ctx.chatbotSpeciesReply({label:'가',v:{}},['MCUI']),ctx.chatbotSpeciesReply({label:'가',v:{}},[])];
+for(const t of spShown){for(const w of BANNED)assert.ok(!t.includes(w),`종 값 답: 금지 낱말 '${w}' in ${t}`);assert.ok(!NEG.test(t),`종 값 답: ${t}`);assert.ok(!/undefined|null|NaN/.test(t),t);}
+for(const k of ['data','pilotScore','scoreValue','matrixType','matrixTypeLabel','mcuiCategory','stockMcui','extinctionMcui','stockChange','mcuiBasisShortOf'])delete ctx[k];
+assert.equal(sq('홍합의 mcui는 몇이야?'),null,'앱 자료가 없으면 종을 찾지 않음');
 
 // (4) 유형·탭 이름과 '높음' 기준값은 답변에 직접 쓰지 않고 자리표시로 읽어 옴
 const tabs=[...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g)].map(m=>m[1]);

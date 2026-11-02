@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import worker,{MODEL} from '../worker/index.mjs';
-import {systemPrompt,checkAnswer,numbers,BANNED,NO_ANSWER} from '../worker/prompt.mjs';
+import {systemPrompt,checkAnswer,numbers,BANNED,NO_ANSWER,dataNumbers,factLines,conversation} from '../worker/prompt.mjs';
 
 const read=f=>fs.readFileSync(new URL('../dist/'+f,import.meta.url),'utf8');
 const html=read('index.html'),js=read('chatbot.js');
@@ -83,6 +83,26 @@ const faqBlock=js.slice(js.indexOf('const CHATBOT_FAQ=['),js.indexOf('const CHAT
 assert.equal((p.slice(p.lastIndexOf('[FAQ]')).match(/^- /gm)||[]).length,(faqBlock.match(/\ba:'/g)||[]).length);
 for(const name of [...html.matchAll(/<button data-view="\w+"[^>]*>([^<]+)</g),...html.matchAll(/data-key="\w+"><b>([^<]+)</g)].map(m=>m[1]))
   assert.ok(p.includes(`‘${name}’`),`FAQ 자리표시가 화면 글자 ‘${name}’로 바뀌어야 함`);
+// (8) 2026-11-03 앞 대화와 종 값. 앞 대화는 Messages 차례로(첫 차례 user, 마지막은 지금 질문, 같은 역할이 이어지면 뒤의 것),
+// 종 값 줄은 숫자가 모두 assessments.json 값인 줄만 쓰고 그 숫자는 답에 써도 된다. 지어낸 숫자 줄은 버린다.
+const dn=dataNumbers(JSON.parse(read('assessments.json')));
+assert.deepEqual(factLines(['홍합(참담치): BBVI(활용가치) 36점, MFPI(식량 지표) 60.9점, MBPI(생리활성 지표) 10점, MCUI(보전 시급성) 10.0점(범주 LC)','홍합: MCUI 99.9점',42,'x'.repeat(301),'<b>참굴</b>: BBVI 72점'],dn),
+  ['홍합(참담치): BBVI(활용가치) 36점, MFPI(식량 지표) 60.9점, MBPI(생리활성 지표) 10점, MCUI(보전 시급성) 10.0점(범주 LC)','b참굴/b: BBVI 72점']);
+assert.deepEqual(factLines('x',dn),[]);
+assert.deepEqual(conversation([{role:'assistant',text:'안녕'},{role:'user',text:'홍합 MCUI는?'},{role:'assistant',text:'10.0점이에요.'},{role:'user',text:'그럼'},{role:'user',text:'잘못'},{role:'x',text:'y'}],'그럼 BBVI는?','ko'),
+  [{role:'user',content:'<question lang="ko">홍합 MCUI는?</question>'},{role:'assistant',content:'10.0점이에요.'},{role:'user',content:'<question lang="ko">그럼 BBVI는?</question>'}]);
+calls=[];reply=()=>({stop_reason:'end_turn',content:[{type:'text',text:'홍합(참담치)의 BBVI(활용가치)는 36점이에요.'}]});
+const fx=['홍합(참담치) (Mytilus coruscus) · 패류: 유형 ‘기초조사 검토’, BBVI(활용가치) 36점, MFPI(식량 지표) 60.9점, MBPI(생리활성 지표) 10점, MCUI(보전 시급성) 10.0점(범주 LC, 근거 한국 국가 평가)','가짜: BBVI 12.34567점'];
+const withCtx=await run(ask({q:'그럼 BBVI는?',history:[{role:'user',text:'홍합 MCUI는 몇이야?'},{role:'assistant',text:'홍합(참담치)의 MCUI(보전 시급성)는 10.0점이에요.'}],facts:fx}));
+assert.equal(withCtx.body.answer,'홍합(참담치)의 BBVI(활용가치)는 36점이에요.','종 값 줄의 숫자는 답에 써도 됨');
+const b2=JSON.parse(calls.find(c=>c[0]==='api')[2].body);
+assert.equal(b2.messages.length,3);assert.equal(b2.messages[2].content,'<question lang="ko">그럼 BBVI는?</question>');
+assert.equal(b2.system.length,2);assert.ok(b2.system[1].text.includes(fx[0])&&!b2.system[1].text.includes('가짜'),'종 값 줄: 자료와 맞는 줄만');
+assert.equal(b2.system[1].cache_control,undefined);
+assert.equal((await run(ask({q:'질문'}))).status,200);assert.equal(JSON.parse(calls.filter(c=>c[0]==='api').at(-1)[2].body).system.length,1,'종 값이 없으면 시스템 글 하나');
+reply=()=>({stop_reason:'end_turn',content:[{type:'text',text:'BBVI는 12.34567점이에요.'}]});
+assert.deepEqual((await run(ask({q:'질문',facts:fx}))).body,{answer:null,reason:'no_answer'},'버린 줄의 숫자는 답에 못 씀');
+assert.equal((await run(new Request(site+'/api/ask',{method:'POST',headers:{Origin:site,'Content-Type':'application/json','Content-Length':'40000'},body:JSON.stringify({q:'x',pad:'가'.repeat(13000)})}))).status,413);
 for(const f of ['worker/index.mjs','worker/prompt.mjs','wrangler.jsonc','dist/chatbot.js'])
   assert.doesNotMatch(fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),/sk-ant-/,`${f}: 키가 저장소에 있으면 안 됨`);
 console.log('PASS: /api/ask GET(ai 여부)·키 없음 503·경로·메서드·출처·질문 검사, IP·전체 호출 제한, Opus 5.5 요청 모양, 실패·거절·잘린 답 502, NO_ANSWER, 답 검사(숫자·금지 낱말·길이), 프롬프트 근거');

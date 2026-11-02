@@ -3,17 +3,18 @@
 // 모델은 Claude Opus 5.5(Anthropic API, 2026-11-02 Haiku 5.5에서 바꿈). 키는 Worker 비밀값 ANTHROPIC_API_KEY에만 있고 저장소·화면 코드에는 없다.
 // GET은 AI를 쓸 수 있는지만 알려 준다(비밀값이 없으면 ai:false, 모델 호출 없음). 실패·한도 초과·검사 탈락은 모두 오류나 no_answer로
 // 돌려주고, 화면은 정해진 안내(세 탭 바로가기)로 돌아간다.
-import {systemPrompt,checkAnswer,numbers,pageText,faqText} from './prompt.mjs';
+import {systemPrompt,checkAnswer,numbers,pageText,faqText,dataNumbers,factLines,conversation} from './prompt.mjs';
 
 export const MODEL='claude-opus-5-5';
 const API='https://api.anthropic.com/v1/messages';
 const MAX_QUESTION=200;
+const MAX_BODY=32768; // 질문 + 앞 대화 8개 + 종 값 줄
 
 let cached=null; // isolate마다 한 번만 읽는다. 새 배포는 새 isolate라 새 글을 읽는다.
 async function grounding(env,origin){
   if(!cached){
-    const [html,js]=await Promise.all(['/index.html','/chatbot.js'].map(p=>env.ASSETS.fetch(new Request(origin+p)).then(r=>r.text())));
-    cached={prompt:systemPrompt(html,js),known:numbers(pageText(html)+'\n'+faqText(js,html))};
+    const [html,js,data]=await Promise.all(['/index.html','/chatbot.js','/assessments.json'].map(p=>env.ASSETS.fetch(new Request(origin+p)).then(r=>r.text())));
+    cached={prompt:systemPrompt(html,js),known:numbers(pageText(html)+'\n'+faqText(js,html)),data:dataNumbers(JSON.parse(data))};
   }
   return cached;
 }
@@ -32,22 +33,25 @@ export default {
     const ip=request.headers.get('CF-Connecting-IP')||'unknown';
     if(!(await env.ASK_IP_LIMIT.limit({key:ip})).success||!(await env.ASK_ALL_LIMIT.limit({key:'all'})).success)
       return json({error:'rate_limited'},429,{'Retry-After':'60'});
-    let q,lang;
-    try{({q,lang}=await request.json()??{});}catch{}
+    if(Number(request.headers.get('Content-Length')||0)>MAX_BODY)return json({error:'bad_question'},413);
+    let q,lang,history,facts;
+    try{({q,lang,history,facts}=await request.json()??{});}catch{}
     if(typeof q!=='string'||!(q=q.trim())||q.length>MAX_QUESTION)return json({error:'bad_question'},400);
     lang=lang==='en'?'en':'ko';
     try{
-      const g=await grounding(env,url.origin);
+      const g=await grounding(env,url.origin),lines=factLines(facts,g.data);
+      const known=new Set([...g.known,...lines.flatMap(l=>[...numbers(l)])]);
+      const system=[{type:'text',text:g.prompt,cache_control:{type:'ephemeral'}}];
+      if(lines.length)system.push({type:'text',text:'[종 값] 화면의 종 카드·종 상세에 나오는 값이에요(종 한 줄씩).\n'+lines.map(l=>'- '+l).join('\n')});
       const r=await fetch(API,{method:'POST',signal:AbortSignal.timeout(25000),
         headers:{'Content-Type':'application/json','x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2026-10-21'},
         // Opus 5.5는 생각을 끌 수 없어(thinking 생략 = adaptive) effort low로 줄인다. 생각 토큰도 max_tokens에 들어가 넉넉히 두고, 답 길이는 checkAnswer가 막는다.
         body:JSON.stringify({model:MODEL,max_tokens:2000,output_config:{effort:'low'},
-          system:[{type:'text',text:g.prompt,cache_control:{type:'ephemeral'}}],
-          messages:[{role:'user',content:`<question lang="${lang}">${q.replace(/[<>]/g,'')}</question>`}]})});
+          system,messages:conversation(history,q,lang)})});
       if(!r.ok)throw new Error('status '+r.status);
       const m=await r.json();
       if(m.stop_reason!=='end_turn')throw new Error('stop '+m.stop_reason); // refusal·max_tokens(잘린 답)는 내보내지 않는다
-      const answer=checkAnswer((m.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''),g.known);
+      const answer=checkAnswer((m.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''),known);
       return answer?json({answer,model:MODEL}):json({answer:null,reason:'no_answer'});
     }catch(error){
       console.error('ask failed:',String(error).slice(0,200)); // 질문 내용과 키는 남기지 않는다
