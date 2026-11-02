@@ -9,6 +9,7 @@ import re
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,7 +83,44 @@ class AiGuard(unittest.TestCase):
         self.assertEqual((nxt.get_method(), nxt.data, nxt.full_url), ("POST", b"{}", "https://b.example/y"))
 
     def test_no_token_no_ai(self):
-        self.assertEqual(weekly_check.ai_summary({}, None), (None, "토큰 없음"))
+        self.assertEqual(weekly_check.ai_summary({}, None), (None, "열쇠·토큰 없음"))
+
+    def test_claude_first_when_key_set(self):
+        seen = []
+
+        def post(req):
+            seen.append(req.full_url)
+            return json.dumps({"stop_reason": "end_turn", "content": [{"type": "text", "text": "링크 확인 필요"}]}).encode()
+        text, model = weekly_check.ai_summary({"problems": []}, "t", post, key="k")
+        self.assertEqual((text, model), ("링크 확인 필요", "claude-opus-5-5"))
+        self.assertEqual(seen, [weekly_check.CLAUDE_API])
+
+    def test_models_ok_body_falls_through(self):
+        # 2026-11-02: GitHub Models answered '200 OK' with no JSON; Claude failing too leaves the table alone.
+        def post(req):
+            if "anthropic" in req.full_url:
+                raise urllib.error.HTTPError(req.full_url, 401, "", {}, None)
+            return b"OK\r\n"
+        text, why = weekly_check.ai_summary({"problems": []}, "t", post, key="k")
+        self.assertIsNone(text)
+        self.assertIn("claude-opus-5-5: HTTP 401", why)
+        self.assertIn("JSON", why)
+
+
+class LinkCheck(unittest.TestCase):
+    def test_temporary_dns_failure_is_not_broken(self):
+        import socket
+        import check_links
+        real = check_links.follow
+        try:
+            for err, want in (((-3, "Temporary failure in name resolution"), "확인 불가"),
+                              ((-2, "Name or service not known"), "깨짐")):
+                def boom(url, method, timeout, err=err):
+                    raise urllib.error.URLError(socket.gaierror(*err))
+                check_links.follow = boom
+                self.assertEqual(check_links.check("https://x.example/", 5)["result"], want)
+        finally:
+            check_links.follow = real
 
 
 class FixGuard(unittest.TestCase):
