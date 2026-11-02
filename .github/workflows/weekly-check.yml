@@ -83,6 +83,7 @@ jobs:
           python scripts/weekly_check.py report --links weekly-out/links.csv --live weekly-out/live.json \
             --verify "${{ needs.verify.result }}" --out weekly-out
           cat weekly-out/report.md >> "$GITHUB_STEP_SUMMARY"
+          cat weekly-out/report.md
       - name: 사이트 파일이 그대로인지 확인
         run: git diff --exit-code -- dist/
       - name: 고칠 것이 있으면 이슈 (열린 주간 점검 이슈가 있으면 댓글)

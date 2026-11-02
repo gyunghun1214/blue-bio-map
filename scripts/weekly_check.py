@@ -131,6 +131,19 @@ def numbers_not_in(text: str, source: str) -> list[str]:
     return sorted({n for n in re.findall(r"\d+(?:\.\d+)?", text) if n not in seen and len(n) > 1})
 
 
+class _KeepPost(urllib.request.HTTPRedirectHandler):
+    """Follow redirects as the same POST with the same body. urllib would turn a POST into a bodyless GET, and the
+    GitHub Models endpoint answers through a redirect (found 2026-11-02 in the quarterly data check)."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return urllib.request.Request(newurl, data=req.data, headers=dict(req.header_items()), method=req.get_method())
+
+
+def _post(req: urllib.request.Request) -> bytes:
+    with urllib.request.build_opener(_KeepPost).open(req, timeout=120) as r:
+        return r.read()
+
+
 def ai_summary(brief: dict, token: str | None, post=None) -> tuple[str | None, str]:
     if not token:
         return None, "토큰 없음"
@@ -146,18 +159,15 @@ def ai_summary(brief: dict, token: str | None, post=None) -> tuple[str | None, s
         req = urllib.request.Request(MODELS_URL, data=json.dumps({**body, "model": model}).encode(), method="POST",
                                      headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
                                               "Accept": "application/json"})
+        raw = b""
         try:
-            if post:
-                raw = post(req)
-            else:
-                with urllib.request.urlopen(req, timeout=120) as r:
-                    raw = r.read()
+            raw = (post or _post)(req)
             text = json.loads(raw)["choices"][0]["message"]["content"].strip()
         except urllib.error.HTTPError as e:
-            errors.append(f"{model}: HTTP {e.code}")
+            errors.append(f"{model}: HTTP {e.code} {e.read()[:150]!r}")
             continue
         except Exception as e:  # noqa: BLE001
-            errors.append(f"{model}: {type(e).__name__}")
+            errors.append(f"{model}: {type(e).__name__} (본문 {raw[:150]!r})")
             continue
         extra = numbers_not_in(text, payload)
         if not text:

@@ -75,6 +75,12 @@ class AiGuard(unittest.TestCase):
         self.assertIsNone(bad)
         self.assertIn("37", why)
 
+    def test_redirect_keeps_post(self):
+        import urllib.request
+        req = urllib.request.Request("https://a.example/x", data=b"{}", method="POST", headers={"Authorization": "t"})
+        nxt = weekly_check._KeepPost().redirect_request(req, None, 307, "", {}, "https://b.example/y")
+        self.assertEqual((nxt.get_method(), nxt.data, nxt.full_url), ("POST", b"{}", "https://b.example/y"))
+
     def test_no_token_no_ai(self):
         self.assertEqual(weekly_check.ai_summary({}, None), (None, "토큰 없음"))
 
