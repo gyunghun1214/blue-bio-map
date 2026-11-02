@@ -23,7 +23,7 @@ AI 사용을 알리는 곳은 이제 첫 인사 하나다. AI를 쓸 수 있으�
 ## 돌린 검사 (클라우드, 2026-11-03)
 
 - CI 단위 검사(`.github/workflows/verify.yml`의 unit 단계 명령 전부, Python unittest 포함 67개): 모두 통과.
-- `node verification/uicheck.mjs`(FIXTURE=dist/live-snapshot.json): 결과는 PR 설명에 적는다.
+- `node verification/uicheck.mjs`(FIXTURE=dist/live-snapshot.json): 299 PASS / 4 FAIL. FAIL 4개는 클라우드에서 바깥 지도 타일이 막혀 생기는 것(A-5 공유 링크의 수심 지도, 위성 GIBS, 수심 GEBCO, 예전 '기본' 저장값)으로 이번 변경과 상관없다. M-10·M-12 통과.
 - 화면 확인(`shots.cjs`, Playwright): 390×844·1440×900 × 한국어·`?lang=en`, 가짜 `/api/ask`로 AI를 켜고 "zqxj 시험"을 보냈다. 바꾼 뒤 AI 답 아래 표시 없음, 첫 인사는 AI 안내 문구, 콘솔 오류 0.
 
 ## 스크린샷
