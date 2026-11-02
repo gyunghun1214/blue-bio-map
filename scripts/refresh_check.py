@@ -203,19 +203,27 @@ def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
     body = {"messages": [{"role": "system", "content": system},
                          {"role": "user", "content": json.dumps(brief, ensure_ascii=False)}],
             "temperature": 0.2, "max_tokens": 1500}
-    last = None
+    errors = []
     for model in MODELS:
         req = urllib.request.Request(MODELS_URL, data=json.dumps({**body, "model": model}).encode(), method="POST",
                                      headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
-                                              "Accept": "application/json"})
+                                              "Accept": "application/json", "X-GitHub-Api-Version": "2022-11-28"})
+        raw = b""
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
-                text = json.loads(r.read())["choices"][0]["message"]["content"].strip()
+                raw = r.read()
+                status = r.status
+            text = json.loads(raw)["choices"][0]["message"]["content"].strip()
             if text:
                 return text, model
+            errors.append(f"{model}: 빈 답")
+        except urllib.error.HTTPError as e:
+            errors.append(f"{model}: HTTP {e.code} {e.read()[:300]!r}")
         except Exception as e:  # noqa: BLE001
-            last = f"{model}: {e}"
-    return None, last
+            errors.append(f"{model}: {e} (HTTP {locals().get('status')}, 본문 {raw[:300]!r})")
+    for line in errors:
+        print("AI 정리 실패:", line, file=sys.stderr)
+    return None, "; ".join(errors)[:600]
 
 
 def numbers_not_in(text: str, source: str) -> list[str]:

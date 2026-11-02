@@ -45,7 +45,7 @@ jobs:
         run: git diff --exit-code -- dist/
       - name: 실행 요약에 검토 대기 목록 싣기
         if: always()
-        run: test -f refresh-out/review.md && cat refresh-out/review.md >> "$GITHUB_STEP_SUMMARY" || true
+        run: test -f refresh-out/review.md && tee -a "$GITHUB_STEP_SUMMARY" < refresh-out/review.md || true
       - uses: actions/upload-artifact@v6
         if: always()
         with:
