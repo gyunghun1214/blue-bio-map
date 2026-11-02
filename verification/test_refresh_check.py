@@ -105,6 +105,18 @@ class RefreshCheckTest(unittest.TestCase):
             self.assertEqual(json.loads((Path(tmp) / "review.json").read_text(encoding="utf-8"))["counts"]["바뀜"], 0)
         self.assertEqual(before, {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in dist.rglob("*.json")})
 
+    def test_attach_ai_answer_rerenders(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rc.write_outputs(Path(tmp), json.loads(json.dumps(self.table)))
+            self.assertTrue((Path(tmp) / "ai" / "user.txt").read_text(encoding="utf-8").startswith("{"))
+            ans = Path(tmp) / "answer.txt"
+            ans.write_text("요약: 살오징어 범주가 LC에서 VU로 바뀜. 9999", encoding="utf-8")
+            self.assertEqual(rc.main(["--out", tmp, "--attach-ai", str(ans)]), 0)
+            md = (Path(tmp) / "review.md").read_text(encoding="utf-8")
+            self.assertIn("살오징어 범주가 LC에서 VU로", md)
+            self.assertIn("actions/ai-inference", md)
+            self.assertIn("표에 없는 숫자", md)  # 9999 is not in the table
+
     def test_invention_guard(self):
         self.assertEqual(rc.numbers_not_in("범주 VU, 기록 1607건, 새 수치 4242", '{"count": 1607}'), ["4242"])
 

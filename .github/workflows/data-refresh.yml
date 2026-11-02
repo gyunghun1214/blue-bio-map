@@ -38,9 +38,24 @@ jobs:
         with:
           python-version: '3.12'
       - name: 공개 자료 다시 받기 · 사이트 값과 비교 · AI 정리
+        id: check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/refresh_check.py --out refresh-out
+      # 위 단계의 직접 호출이 AI 답을 못 받았을 때: GitHub 공식 액션으로 같은 프롬프트를 보낸다.
+      - name: AI 정리 (GitHub Models · actions/ai-inference)
+        id: ai
+        if: steps.check.outputs.need_ai == 'true'
+        continue-on-error: true
+        uses: actions/ai-inference@v1
+        with:
+          model: openai/gpt-4.1
+          system-prompt-file: refresh-out/ai/system.txt
+          prompt-file: refresh-out/ai/user.txt
+          max-tokens: 1500
+      - name: AI 정리를 목록에 붙이기
+        if: steps.ai.outcome == 'success' && steps.ai.outputs.response-file != ''
+        run: python scripts/refresh_check.py --out refresh-out --attach-ai "${{ steps.ai.outputs.response-file }}" --ai-model openai/gpt-4.1
       - name: 사이트 파일이 그대로인지 확인
         run: git diff --exit-code -- dist/
       - name: 실행 요약에 검토 대기 목록 싣기
@@ -78,7 +93,7 @@ jobs:
           branch="data-refresh/${day}-${GITHUB_RUN_ID}"
           dir="reports/data-refresh/${day}"
           mkdir -p "$dir"
-          cp refresh-out/review.md refresh-out/review.json "$dir/"
+          cp refresh-out/review.md refresh-out/review.json "$dir/"  # AI 프롬프트 파일(refresh-out/ai/)은 넣지 않음
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git switch -c "$branch"

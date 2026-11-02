@@ -217,20 +217,25 @@ def post_json(url: str, payload: dict, headers: dict, timeout: int = 120):
         return f"{r.status} {r.geturl()}", r.read()
 
 
+SYSTEM_PROMPT = ("너는 해양생물 지도 'Blue-bio Value Map' 팀의 자료 담당 보조다. 분기마다 공개 자료를 다시 받아 사이트 값과 비교한 표가 주어진다. "
+                 "할 일: 사람 검토자가 볼 한국어 정리를 쓴다. 규칙: (1) 표에 있는 사실만 쓰고, 표에 없는 숫자·종·출처는 만들지 않는다. "
+                 "(2) 점수를 다시 계산하거나 반영 여부를 결정하지 않는다. 결정은 사람이 한다. (3) 바뀐 항목마다 어느 원문에서 무엇을 확인하면 되는지, "
+                 "사이트의 어느 값(affects)에 닿는지 한 줄씩 쓴다. (4) '확인 불가'는 다시 돌려 볼 항목으로 따로 묶는다. "
+                 "(5) 바뀐 것이 없으면 그렇다고 짧게 쓴다. 형식: 마크다운, 맨 위 세 줄 요약, 그 아래 '먼저 볼 것' 목록. 400자~1200자.")
+
+
+def ai_brief(table: dict) -> str:
+    changed = [r for r in table["rows"] if r["result"] != "같음"]
+    return json.dumps({"run": table["run"], "baseline": table["baseline"], "red_list_edition": table["red_list_edition"],
+                       "counts": table["counts"], "rows_to_review": changed}, ensure_ascii=False)
+
+
 def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
-    """Korean notes for the human reviewer. Returns (text, model) or (None, reason)."""
+    """Korean notes for the human reviewer through GitHub Models. Returns (text, model) or (None, reason).
+    In Actions the workflow also has the official actions/ai-inference step, used when this direct call gets no answer."""
     if not token:
         return None, "토큰 없음"
-    changed = [r for r in table["rows"] if r["result"] != "같음"]
-    brief = {"run": table["run"], "baseline": table["baseline"], "red_list_edition": table["red_list_edition"],
-             "counts": table["counts"], "rows_to_review": changed}
-    system = ("너는 해양생물 지도 'Blue-bio Value Map' 팀의 자료 담당 보조다. 분기마다 공개 자료를 다시 받아 사이트 값과 비교한 표가 주어진다. "
-              "할 일: 사람 검토자가 볼 한국어 정리를 쓴다. 규칙: (1) 표에 있는 사실만 쓰고, 표에 없는 숫자·종·출처는 만들지 않는다. "
-              "(2) 점수를 다시 계산하거나 반영 여부를 결정하지 않는다. 결정은 사람이 한다. (3) 바뀐 항목마다 어느 원문에서 무엇을 확인하면 되는지, "
-              "사이트의 어느 값(affects)에 닿는지 한 줄씩 쓴다. (4) '확인 불가'는 다시 돌려 볼 항목으로 따로 묶는다. "
-              "(5) 바뀐 것이 없으면 그렇다고 짧게 쓴다. 형식: 마크다운, 맨 위 세 줄 요약, 그 아래 '먼저 볼 것' 목록. 400자~1200자.")
-    body = {"messages": [{"role": "system", "content": system},
-                         {"role": "user", "content": json.dumps(brief, ensure_ascii=False)}],
+    body = {"messages": [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": ai_brief(table)}],
             "temperature": 0.2, "max_tokens": 1500}
     errors = []
     for url, model in MODELS:
@@ -238,7 +243,7 @@ def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
         try:
             status, raw = post_json(url, {**body, "model": model},
                                     {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
-                                     "X-GitHub-Api-Version": "2022-11-28"})
+                                     "X-GitHub-Api-Version": "2022-11-28", "User-Agent": UA["User-Agent"]})
             text = json.loads(raw)["choices"][0]["message"]["content"].strip()
             if text:
                 return text, model
@@ -250,6 +255,15 @@ def ai_summary(table: dict, token: str | None) -> tuple[str | None, str | None]:
     for line in errors:
         print("AI 정리 실패:", line, file=sys.stderr)
     return None, "; ".join(errors)[:600]
+
+
+def attach_ai(table: dict, text: str | None, model: str | None) -> dict:
+    table["ai_text"], table["ai_model"] = (text or None), model
+    table.pop("ai_unmatched_numbers", None)
+    if table["ai_text"]:
+        table["ai_unmatched_numbers"] = numbers_not_in(
+            table["ai_text"], json.dumps({k: v for k, v in table.items() if k != "ai_text"}, ensure_ascii=False))
+    return table
 
 
 def numbers_not_in(text: str, source: str) -> list[str]:
@@ -316,11 +330,7 @@ def run(fetcher: Fetcher, data: dict, use_ai: bool, token: str | None, meta: dic
              "red_list_edition": check_red_list_edition(fetcher, checked_on), "rows": rows,
              "counts": {k: sum(r["result"] == k for r in rows) for k in ("바뀜", "확인 불가", "같음")}}
     text, model = ai_summary(table, token) if use_ai else (None, "AI 끔")
-    table["ai_text"], table["ai_model"] = text, model
-    if text:
-        table["ai_unmatched_numbers"] = numbers_not_in(text, json.dumps({k: v for k, v in table.items() if k != "ai_text"},
-                                                                         ensure_ascii=False) + meta.get("date", ""))
-    return table
+    return attach_ai(table, text, model)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -329,7 +339,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--fixture", help="JSON {url: response} for offline runs")
     ap.add_argument("--no-ai", action="store_true")
     ap.add_argument("--trigger", default=os.environ.get("GITHUB_EVENT_NAME", "manual"))
+    ap.add_argument("--attach-ai", metavar="FILE", help="add an AI answer file to an existing --out review and re-render")
+    ap.add_argument("--ai-model", default="openai/gpt-4.1")
     args = ap.parse_args(argv)
+    out = Path(args.out)
+    if args.attach_ai:
+        table = json.loads((out / "review.json").read_text(encoding="utf-8"))
+        answer = Path(args.attach_ai)
+        text = answer.read_text(encoding="utf-8").strip() if answer.is_file() else ""
+        if text:
+            attach_ai(table, text, args.ai_model + " (actions/ai-inference)")
+        write_outputs(out, table)
+        return 0
     data = json.loads(ASSESSMENTS.read_text(encoding="utf-8"))
     fixture = json.loads(Path(args.fixture).read_text(encoding="utf-8")) if args.fixture else None
     now = datetime.now(timezone.utc)
@@ -340,13 +361,23 @@ def main(argv: list[str] | None = None) -> int:
             "url": f"{server}/{repo}/actions/runs/{run_id}" if server and repo and run_id else ""}
     token = None if args.no_ai or fixture is not None else os.environ.get("GITHUB_TOKEN")
     table = run(Fetcher(fixture), data, not args.no_ai and token is not None, token, meta)
-    out = Path(args.out)
+    write_outputs(out, table)
+    return 0
+
+
+def write_outputs(out: Path, table: dict) -> None:
     out.mkdir(parents=True, exist_ok=True)
     (out / "review.json").write_text(json.dumps(table, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (out / "review.md").write_text(render(table), encoding="utf-8")
+    ai = out / "ai"  # prompt files for the actions/ai-inference step (not copied into the review PR)
+    ai.mkdir(exist_ok=True)
+    (ai / "system.txt").write_text(SYSTEM_PROMPT, encoding="utf-8")
+    (ai / "user.txt").write_text(ai_brief(table), encoding="utf-8")
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+            fh.write(f"need_ai={'false' if table.get('ai_text') else 'true'}\n")
     c = table["counts"]
     print(f"바뀜 {c['바뀜']} · 확인 불가 {c['확인 불가']} · 같음 {c['같음']} · AI {table['ai_model']} -> {out}")
-    return 0
 
 
 if __name__ == "__main__":
