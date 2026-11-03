@@ -184,6 +184,106 @@ function chatbotFact(kind,arg){
   }catch{}
   return chatbotT(kind==='score'?'(값은 종 상세 참고)':kind==='basis'?'종 상세에 적힌 근거':kind==='mcuiwhy'?'값과 근거는 종 상세의 MCUI 칸에서 볼 수 있어요.':'');
 }
+// 2026-11-03 종별 값 질문(LKH: '홍합의 mcui는 몇이야?'에 MCUI 일반 설명이 나왔다). 질문에 종 이름이 하나 있고 값을 물으면 FAQ보다 먼저
+// 그 종의 값으로 답한다. 값은 chatbotFact처럼 app.js가 화면에 쓰는 함수(pilotScore·scoreValue·matrixType)로 읽는다(숫자 하드코딩 없음).
+// 이전 질문의 종·지표(focus)를 기억해 '그럼 BBVI는?'·'참굴은?' 같은 이어 묻기도 같은 종·지표로 답한다. 이유·뜻·계산을 묻거나
+// 종이 둘 이상이면 여기서 답하지 않고 AI(종 값과 앞 대화를 함께 받음)로 보낸다.
+const CHATBOT_METRICS=[
+  {key:'BBVI',name:'활용가치',k:['bbvi','활용가치','활용지표','활용점수','usevalue']},
+  {key:'MFPI',name:'식량 지표',k:['mfpi','식량','영양','food','nutrition']},
+  {key:'MBPI',name:'생리활성 지표',k:['mbpi','신약','생리활성','기능성','bioactiv','drug']},
+  {key:'MCUI',name:'보전 시급성',k:['mcui','보전','시급','멸종','conservation','urgency']}];
+const CHATBOT_VALUE_RE=/몇|얼마|점수|값|수치|어때|어떤가|어떻게\s*돼|알려|높아|낮아|높니|낮니|score|value|how\s+(?:high|low|much)|what\s+about|how\s+about/i;
+const CHATBOT_WHAT_RE=/뭐|무엇|무슨|what\s+is|what's|what\s+are/i; // 종 이름과 함께면 값, 종 없이면 뜻을 묻는 말('MCUI는 뭐예요')
+const CHATBOT_WHY_RE=/왜|이유|어째서|근거|뜻|의미|계산|어떻게\s*(?:정|매|구|계|나와|나온)|차이|비교|why|reason|mean|calculat|how\s+(?:is|was|do|does|come)|compare|differ/i;
+const CHATBOT_FOLLOW_RE=/그럼|그러면|그건|그거|그게|그 종|이 종|걔|얘|아까|방금|\bthen\b|that one|that species|\bit\b|what\s+about|how\s+about/i;
+const CHATBOT_FILLER=/그러면|그럼|이야|이에요|예요|인가요|인가|이니|야|은|는|이|가|의|요|점|몇|값|점수|얼마|어때|알려줘|알려|줘|돼|되/g;
+const chatbotPlainText=t=>String(t||'').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'');
+const chatbotSpeciesList=()=>{try{return typeof data!=='undefined'&&Array.isArray(data?.species)?data.species:[];}catch{return [];}};
+// 종 이름: 화면 이름·한국어 이름·학명·영어 이름, '홍합(참담치)'은 '홍합'과 '참담치'도(괄호 안이 '종 수준' 같은 설명이면 앞 이름만).
+function chatbotSpeciesNames(s){
+  const out=new Set();
+  for(const n of [s?.label,s?.koLabel,s?.name,s?.enName,...(Array.isArray(s?.enAlt)?s.enAlt:[])]){
+    if(typeof n!=='string'||!n.trim())continue;out.add(n);
+    const m=n.match(/^([^(]+)\(([^)]+)\)/);if(m){out.add(m[1]);if(!/종|수준|species|level/i.test(m[2]))out.add(m[2]);}
+  }
+  return [...out].map(chatbotPlainText).filter(Boolean);
+}
+// 질문에 나온 종(같은 종은 한 번). 한 글자 이름(톳)은 낱말 첫머리일 때만.
+function chatbotFindSpecies(text){
+  const t=chatbotPlainText(text),raw=String(text||'').toLowerCase(),out=[];
+  for(const s of chatbotSpeciesList()){
+    let best='';
+    for(const n of chatbotSpeciesNames(s))if(n.length>best.length&&(n.length>1?t.includes(n):new RegExp(`(^|[^\\p{L}])${n}`,'u').test(raw)))best=n;
+    if(best)out.push({s,name:best});
+  }
+  return out.filter(a=>!out.some(b=>b!==a&&b.name.length>a.name.length&&b.name.includes(a.name)));
+}
+// 값을 묻는 종 질문이면 {s,keys}(keys가 비면 네 값 요약), 아니면 null. focus = 이전 질문의 {s,keys}.
+function chatbotSpeciesQuestion(text,focus={}){
+  if(CHATBOT_WHY_RE.test(text))return null;
+  const found=chatbotFindSpecies(text),t=chatbotPlainText(text);
+  if(found.length>1)return null;
+  const hit=CHATBOT_METRICS.filter(m=>m.k.some(w=>t.includes(w)));
+  let rest=t;if(found[0])rest=rest.split(found[0].name).join('');
+  for(const m of hit)for(const w of m.k)rest=rest.split(w).join('');
+  const short=rest.replace(CHATBOT_FILLER,'').length<=3,keys=hit.map(m=>m.key);
+  let value=CHATBOT_VALUE_RE.test(text);
+  if(found.length===1){
+    if(CHATBOT_WHAT_RE.test(text)&&keys.length)value=true;  // '홍합 MCUI는 뭐야?'·'What is the MCUI of Korean mussel?'
+    if(keys.length)return value||short?{s:found[0].s,keys}:null;
+    if(value)return {s:found[0].s,keys:[]};
+    return short?{s:found[0].s,keys:focus.keys||[]}:null;   // '참굴은?': 앞에서 물은 지표로
+  }
+  // '그럼 BBVI는?'·'BBVI는 몇 점?': 앞 종으로. 'MCUI는 뭐예요'처럼 뜻을 묻는 말은 설명으로 둔다.
+  if(focus.s&&keys.length&&!CHATBOT_WHAT_RE.test(text)&&(value||(short&&CHATBOT_FOLLOW_RE.test(text))))return {s:focus.s,keys};
+  return null;
+}
+function chatbotValue(s,k){try{const v=pilotScore(s,k);return Number.isFinite(v)?scoreValue(s,k,v):null;}catch{return null;}}
+function chatbotTypeName(s){try{const id=matrixType(s);const l=id&&matrixTypeLabel(id);return l&&l!==id?chatbotTr(l):null;}catch{return null;}}
+// 한 종의 값 답. 숫자는 화면과 같은 자리수(scoreValue). MCUI는 범주와 근거, 자원 감소로 정해졌으면 그 신호까지.
+function chatbotSpeciesReply(s,keys){
+  const nm=s.label,name=s.koLabel||s.label,v=k=>chatbotValue(s,k);
+  const line=k=>{
+    const m=CHATBOT_METRICS.find(x=>x.key===k),x=v(k);
+    if(x===null)return chatbotT('{0}의 {1}({2}) 값은 종 상세에서 볼 수 있어요.',{0:nm,1:k,2:chatbotT(m.name)});
+    if(k==='BBVI'&&v('MFPI')!==null&&v('MBPI')!==null)
+      return chatbotT('{0}의 BBVI(활용가치)는 {1}점이에요. MFPI(식량 지표) {2}점과 MBPI(생리활성 지표) {3}점을 합친 값이에요.',{0:nm,1:x,2:v('MFPI'),3:v('MBPI')});
+    if(k!=='MCUI')return chatbotT('{0}의 {1}({2})는 {3}점이에요.',{0:nm,1:k,2:chatbotT(m.name),3:x});
+    let cat=null,risk=null,stock=false,ch='';
+    try{cat=mcuiCategory(s);stock=!!stockMcui(s);risk=extinctionMcui(s);ch=stockChange(s.assessment?.stock_decline);}catch{}
+    const head=chatbotT('{0}의 MCUI(보전 시급성)는 {1}점이에요.',{0:nm,1:x});
+    if(stock&&cat&&Number.isFinite(risk)&&ch)return head+' '+chatbotT('보전 상태 범주({0})만 보면 {1}점이지만, 자원 감소 신호(어획량 {2})로 {3}점이 됐어요.',{0:cat,1:scoreValue(s,'MCUI',risk),2:ch,3:x});
+    return head+(cat?' '+chatbotT('보전 상태 범주({0})를 점수로 옮긴 값이고, {1}에서 왔어요.',{0:cat,1:chatbotFact('basis',name)}):'');
+  };
+  if(keys.length)return keys.map(line).join(' ');
+  const type=chatbotTypeName(s),vals={0:nm,1:type,2:v('BBVI'),3:v('MFPI'),4:v('MBPI'),5:v('MCUI')};
+  if([2,3,4,5].some(i=>vals[i]===null))return chatbotT('{0}의 값은 종 상세에서 볼 수 있어요.',{0:nm});
+  return type?chatbotT('{0}의 유형은 ‘{1}’이고, BBVI(활용가치) {2}점(MFPI {3}점·MBPI {4}점), MCUI(보전 시급성) {5}점이에요.',vals)
+    :chatbotT('{0}의 값은 BBVI(활용가치) {2}점(MFPI {3}점·MBPI {4}점), MCUI(보전 시급성) {5}점이에요.',vals);
+}
+// AI에 함께 보내는 종 값(화면에 나오는 값 그대로, 한 종 한 줄). worker가 줄마다 숫자를 assessments.json 값과 대조한다.
+function chatbotFactLines(){
+  return chatbotSpeciesList().map(s=>{
+    const v=k=>chatbotValue(s,k),name=s.koLabel||s.label;if(['BBVI','MFPI','MBPI','MCUI'].some(k=>v(k)===null))return null;
+    let cat=null,stock=false,ch='',risk=null;try{cat=mcuiCategory(s);stock=!!stockMcui(s);ch=stockChange(s.assessment?.stock_decline);risk=extinctionMcui(s);}catch{}
+    const mcui=[cat&&`범주 ${cat}`,`근거 ${chatbotFact('basis',name)}`,stock&&ch&&Number.isFinite(risk)&&`범주만으로는 ${scoreValue(s,'MCUI',risk)}점, 자원 감소 신호(어획량 ${ch})로 올라감`].filter(Boolean).join(', ');
+    const type=(()=>{try{const id=matrixType(s);return id?matrixTypeLabel(id):null;}catch{return null;}})();
+    return `${name}${s.name?` (${s.name}${s.enName?`, ${s.enName}`:''})`:''}${s.group?` · ${s.group}`:''}: ${type?`유형 ‘${type}’, `:''}BBVI(활용가치) ${v('BBVI')}점, MFPI(식량 지표) ${v('MFPI')}점, MBPI(생리활성 지표) ${v('MBPI')}점, MCUI(보전 시급성) ${v('MCUI')}점(${mcui})`;
+  }).filter(Boolean);
+}
+// 정해진 답을 그대로 내도 될 만큼 질문이 예시 질문과 거의 같을 때만(AI를 쓸 수 있을 때). 키워드 하나 겹친 것으로는 고르지 않는다.
+// 이어 묻는 말('그럼'·'그건')이 있거나, 예시 질문에 없는 종 이름이 들어 있으면 고르지 않는다.
+const CHATBOT_SURE=.75;
+function chatbotSure(text){
+  const q=chatbotNormalize(text);if(q.length<2||CHATBOT_FOLLOW_RE.test(text))return null;
+  let best=null,top=0;
+  for(const f of CHATBOT_FAQ){const sim=Math.max(...f.q.map(e=>chatbotSimilar(q,chatbotNormalize(e))));if(sim>top){top=sim;best=f;}}
+  if(top<CHATBOT_SURE)return null;
+  const named=chatbotFindSpecies(text).map(x=>x.s);
+  if(named.length&&!named.every(s=>best.q.some(e=>chatbotFindSpecies(e).some(x=>x.s===s))))return null;
+  return best;
+}
 function chatbotMatch(text){
   const q=chatbotNormalize(text);if(q.length<2)return null;
   let best=null,top=0;
@@ -337,7 +437,6 @@ if(typeof document!=='undefined')(function(){
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
     '<div class="bbc-log" role="log" aria-live="polite"></div>'+
-    '<p class="bbc-note">미리 준비한 답변으로 안내해요</p>'+
     '<form class="bbc-form"><input type="text" class="bbc-input" aria-label="궁금한 점 입력" placeholder="궁금한 점을 적어 보세요" autocomplete="off" maxlength="200"><button type="submit">보내기</button></form></section>'+
     '<button type="button" class="bbc-fab" aria-label="사용법 안내 열기. 끌거나 Shift와 방향키로 옮길 수 있습니다" aria-expanded="false" aria-controls="bbc-panel" aria-keyshortcuts="Shift+ArrowUp Shift+ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+Home" draggable="false" title="누르면 사용법 안내 · 끌어서 옮길 수 있어요"></button>'+
     '<span class="bbc-safe" aria-hidden="true"></span>';
@@ -499,25 +598,27 @@ if(typeof document!=='undefined')(function(){
     for(const [id,label] of list){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.faq=id;box.append(b);}
     log.append(box);
   }
+  // 앞 대화(질문과 답, 최근 8개)와 지금 이야기하는 종·지표(focus). AI에 앞 대화를 함께 보내 '그럼'·'그 종' 같은 말을 이어서 알아듣게 한다.
+  const talk=[],focus={s:null,keys:[]};
+  const remember=(role,text)=>{talk.push({role,text:String(text).slice(0,500)});if(talk.length>8)talk.splice(0,talk.length-8);};
   function answer(f){
-    const m=add('bbc-bot',fill(f.a),'answer');
+    const text=fill(f.a),m=add('bbc-bot',text,'answer');remember('assistant',text);
     if(f.show){const b=document.createElement('button');b.type='button';b.className='bbc-show';b.textContent='화면에서 보여주기';b.dataset.show=f.id;m.append(b);}
     if(f.next)buttons(f.next.map(id=>[id,byId(id).q[0]]),'bbc-next');
     // 답의 첫 줄이 보이게 올린다(끝까지 내리면 긴 답의 앞부분이 잘림, 2026-10-18)
     const row=m.closest('.bbc-row')||m;
     log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
-  // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 입력창 위 표기를 바꾼다.
+  // AI 답변(/api/ask)을 쓸 수 있는지: 대화를 새로 열 때마다 GET으로 묻는다(모델 호출 없음). 쓸 수 있으면 첫 인사를 AI 안내 문구로 바꾼다.
+  // 입력창 위 회색 안내 줄은 2026-11-03 LKH 결정으로 지웠다. AI를 쓸 수 있으면 첫 인사가 AI 안내 문구로 바뀐다(AI 답 아래 'AI 답변' 표시는 2026-11-03 LKH 결정으로 지웠다).
   // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
-  const noteEl=root.querySelector('.bbc-note'),NOTE_FIXED=noteEl.textContent;
   const WELCOME='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.';
   let aiReady=Promise.resolve(false);
   function checkAi(){
-    // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꿔 아래 표기와 맞춘다
+    // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꾼다
     const note=on=>{
       const w=log.querySelector('[data-welcome]');
-      if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;
-      if(on||noteEl.dataset.ai){noteEl.textContent=on?chatbotT('준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요'):NOTE_FIXED;noteEl.dataset.ai=on?'1':'';}};
+      if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;};
     if(globalThis.BBVM_OFFLINE===true){aiReady=Promise.resolve(false);note(false);return;}
     aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
     aiReady.then(note);
@@ -530,20 +631,28 @@ if(typeof document!=='undefined')(function(){
     '<rect class="bbc-wave-sand" width="240" height="32"/><g class="bbc-wave-wash"><g class="bbc-wave-run">'+
     `<path class="bbc-wave-water" d="${wave(14,2.5)}V-12H-60Z"/><path class="bbc-wave-foam" d="${wave(14,2.5)}"/></g></g>`+
     `<path class="bbc-wave-deep" d="${wave(5,1.8)}V0H-60Z"/><path class="bbc-wave-crest" d="${wave(9,1.5)}"/></svg>`;
-  // FAQ가 못 찾은 질문만 AI에 묻는다. 답이 없거나 실패하면 unknown()으로 돌아간다.
+  // 정해진 답과 거의 같은 질문이 아니면 AI에 묻는다(앞 대화와 종 값을 함께). 답을 받으면 true, 못 받으면 false(ask가 정해진 답이나 안내로).
   async function askAi(text){
-    if(globalThis.BBVM_OFFLINE===true||!(await aiReady))return unknown();
+    if(globalThis.BBVM_OFFLINE===true||!(await aiReady))return false;
     const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');wait.insertAdjacentHTML('beforeend',WAVE);log.scrollTop=log.scrollHeight;
     let reply=null;
     try{
-      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko'}),signal:AbortSignal.timeout(30000)});
+      const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko',history:talk.slice(0,-1),facts:chatbotFactLines()}),signal:AbortSignal.timeout(30000)});
       if(r.ok)reply=(await r.json())?.answer;
     }catch{}
     wait.closest('.bbc-row')?.remove();
-    if(typeof reply!=='string'||!reply.trim())return unknown();
-    const m=add('bbc-bot bbc-ai',reply.trim(),'ai');
-    const tag=document.createElement('small');tag.className='bbc-ai-tag';tag.textContent=chatbotT('AI 답변 · Claude가 사이트 글을 바탕으로 만들었어요');m.append(tag);
+    if(typeof reply!=='string'||!reply.trim())return false;
+    add('bbc-bot bbc-ai',reply.trim(),'ai');remember('assistant',reply.trim());
     log.scrollTop=log.scrollHeight;
+    return true;
+  }
+  // 종 값 답(chatbotSpeciesReply). '화면에서 보여주기'는 바다 탐험 탭에서 그 종 카드를 눌러 종 상세를 연다.
+  function speciesAnswer({s,keys}){
+    const text=chatbotSpeciesReply(s,keys),m=add('bbc-bot',text,'answer');remember('assistant',text);
+    const card=`.species-card[data-species="${s.aphiaID}"]`;
+    if(document.querySelector(card)){const b=document.createElement('button');b.type='button';b.className='bbc-show';b.textContent=chatbotT('화면에서 보여주기');b.dataset.species=s.aphiaID;m.append(b);}
+    const row=m.closest('.bbc-row')||m;
+    log.scrollTop=Math.max(0,row.getBoundingClientRect().top-log.getBoundingClientRect().top+log.scrollTop-8);
   }
   // FAQ가 못 찾은 질문: 탭에서 찾아보라는 안내와 세 탭 바로가기(탭 이름은 화면의 버튼 글자). 답을 지어내지 않는다.
   function unknown(){
@@ -559,10 +668,19 @@ if(typeof document!=='undefined')(function(){
     mood('point',true);if(mobile())close();
     setTimeout(()=>{const b=document.querySelector(`.tabs button[data-view="${id}"]`);if(b&&b.getAttribute('aria-current')!=='page')b.click();scrollTo({top:0,behavior:reduced()?'auto':'smooth'});},0);
   }
-  function ask(text,id){
-    add('bbc-user',text);
-    const f=id?byId(id):chatbotMatch(text);
-    if(f)answer(f);else if(id)unknown();else askAi(text);
+  // 순서(2026-11-03): 칩 → 그 답. 입력은 ① 종 값 질문이면 그 종의 값 ② 예시 질문과 거의 같으면 정해진 답 ③ AI(앞 대화·종 값과 함께)
+  // ④ AI를 쓸 수 없거나 답을 못 받으면 예전처럼 키워드로 찾은 정해진 답, 그것도 없으면 탭 안내.
+  async function ask(text,id){
+    add('bbc-user',text);remember('user',text);
+    if(id){const f=byId(id);if(f)answer(f);else unknown();return;}
+    const sq=chatbotSpeciesQuestion(text,focus),named=chatbotFindSpecies(text),keys=CHATBOT_METRICS.filter(m=>m.k.some(w=>chatbotPlainText(text).includes(w))).map(m=>m.key);
+    if(sq){focus.s=sq.s;if(sq.keys.length)focus.keys=sq.keys;}else{if(named.length===1)focus.s=named[0].s;if(keys.length)focus.keys=keys;}
+    if(sq)return speciesAnswer(sq);
+    const sure=chatbotSure(text);
+    if(sure)return answer(sure);
+    if(await askAi(text))return;
+    const f=chatbotMatch(text);
+    if(f)answer(f);else unknown();
   }
   let opening=0;  // 깡충 인사 뒤 창을 열 타이머(F). 기다리는 동안의 누르기·끌기는 무시한다.
   function open(){
@@ -714,7 +832,8 @@ if(typeof document!=='undefined')(function(){
   root.querySelector('.bbc-form').addEventListener('submit',e=>{e.preventDefault();const t=input.value.trim();if(!t)return;input.value='';ask(t);});
   log.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
-    if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}else if(b.dataset.tab)goTab(b.dataset.tab);else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
+    if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}
+    else if(b.dataset.species){const card=`.species-card[data-species="${b.dataset.species}"]`;mood('point',true);show({show:{click:['[data-view="explore"]',card],target:card}});}else if(b.dataset.tab)goTab(b.dataset.tab);else if(b.dataset.faq)ask(b.textContent,b.dataset.faq);
   });
   addEventListener('resize',place);
   // 탭은 탭 버튼 말고도(‘선택 종 비교하기’, ‘근거 보기’ 등) 바뀌므로 #explore의 class 변화를 지켜본다.

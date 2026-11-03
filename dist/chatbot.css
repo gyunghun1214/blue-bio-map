@@ -63,8 +63,6 @@
 }
 @keyframes bbc-wash{0%,100%{transform:translateY(0)}45%{transform:translateY(8px)}}
 @keyframes bbc-run{to{transform:translateX(-60px)}}
-.bbc-ai-tag{display:block;margin-top:6px;color:var(--muted);font-size:var(--fs-min)}
-.bbc-note{margin:0;padding:6px 12px 0;color:var(--muted);font-size:var(--fs-min);line-height:1.4}
 .bbc-form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 .bbc-input{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14px}
 .bbc-form button{padding:0 12px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-weight:600;cursor:pointer}
