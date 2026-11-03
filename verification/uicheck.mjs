@@ -1951,6 +1951,28 @@ try{
       JSON.stringify(aiCalls.map(c=>{const [m,...b]=c.split(' ');if(!b.length)return m;const j=JSON.parse(b.join(' '));return [m,j.q,j.lang,Array.isArray(j.history)&&j.history.length>0,j.facts?.length===facts.n];}))
         ===JSON.stringify(['GET',['POST','zqxj 멍이 AI 시험','ko',true,true],['POST','zqxj 답 없는 질문','ko',true,true]])&&backWelcome.text==='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.'&&!backWelcome.note,
       JSON.stringify({aiWelcome,aiFaq,aiNew,aiWaiting,aiAfter,aiBubble,noneWaiting,noneAfter,aiNone,aiNoneTabs,aiCalls,backWelcome}));
+    // M-12b (2026-11-03 코드 점검): 처음 연 순간 AI 확인(GET)이 연결 오류로 실패하면 정해진 답 첫 인사로 시작하고, 못 찾은 질문을 보낼 때 GET을 한 번 더 해
+    // 켜졌으면 AI 답을 받는다(첫 인사도 AI 안내로 바뀜). 답을 기다리는 동안은 보내기 단추가 꺼지고 새 질문은 말풍선에 올라가지 않으며 적던 글은 입력칸에 남는다.
+    await evaluate(`window.__askReply={answer:'지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'};window.__ask=[];window.__getFail=1;window.fetch=(u,i)=>String(u).includes('api/ask')?(window.__ask.push(i?.method||'GET'),
+      (i?.method!=='POST'&&window.__getFail-->0)?Promise.reject(new TypeError('Failed to fetch')):
+      new Promise(r=>setTimeout(r,i?.method==='POST'?1000:0)).then(()=>new Response(JSON.stringify(i?.method==='POST'?window.__askReply:{ai:true}),{status:200,headers:{'content-type':'application/json'}}))):window.__fetch0(u,i);
+      document.querySelector('.bbc-close').click();${freshChat}`);await sleep(300);
+    await press();await sleep(500);
+    const retryWelcome=await evaluate(welcomeNow);
+    const userCount="document.querySelectorAll('.bbc-log .bbc-user').length";
+    await askBot('zqxj 다시 확인 시험');
+    const busyNow=await evaluate(`(async()=>{const before=${userCount},i=document.querySelector('.bbc-input'),b=document.querySelector('.bbc-form button[type="submit"]');
+      const disabled=b.disabled,busy=document.querySelector('.bbc-log').getAttribute('aria-busy');i.value='zqxj 기다리는 동안 질문';document.querySelector('.bbc-form').requestSubmit();
+      await new Promise(r=>setTimeout(r,100));return {disabled,busy,added:${userCount}-before,kept:i.value};})()`);
+    await sleep(1400);
+    const retryAfter=await evaluate(`(()=>{const m=[...document.querySelectorAll('.bbc-log .bbc-bot')].at(-1),b=document.querySelector('.bbc-form button[type="submit"]');
+      return {ai:m.classList.contains('bbc-ai'),text:m.textContent.trim(),disabled:b.disabled,busy:document.querySelector('.bbc-log').getAttribute('aria-busy'),
+        welcome:[...document.querySelectorAll('.bbc-log [data-welcome]')].at(-1)?.textContent||'',calls:window.__ask};})()`);
+    await evaluate("document.querySelector('.bbc-input').value='';window.fetch=window.__fetch0;document.querySelector('.bbc-close').click();"+freshChat);await sleep(300);
+    check('M-12b guide helper: a failed first AI check (connection error) starts with the prepared-answer welcome, the next unmatched question checks again and gets the AI answer; while waiting the send button is off, a new question is not added and stays in the input',
+      retryWelcome.text.startsWith('안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로')&&busyNow.disabled&&busyNow.busy==='true'&&busyNow.added===0&&busyNow.kept==='zqxj 기다리는 동안 질문'&&
+      retryAfter.ai&&retryAfter.text==='지도 위쪽의 ‘출현 기록’ 버튼을 눌러 보세요.'&&!retryAfter.disabled&&retryAfter.busy==='false'&&retryAfter.welcome.includes('AI(Claude)')&&
+      JSON.stringify(retryAfter.calls)===JSON.stringify(['GET','GET','POST']),JSON.stringify({retryWelcome,busyNow,retryAfter}));
     await send('Emulation.setEmulatedMedia',{features:[]});
     await evaluate("document.querySelector('.bbc-close').click();"+freshChat);
   }
