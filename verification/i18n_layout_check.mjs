@@ -171,6 +171,11 @@ try{
       await until("document.getElementById('site-gate').classList.contains('is-ready')",30000);await sleep(600);
       add(lang,size,'gate',await measure(['#site-gate']));await shot(`${lang}-${size}-gate`);
       await evaluate("document.getElementById('gate-enter').click();1");await sleep(1200);
+      // 2026-11-03: 멍이 첫 인사 말풍선은 첫 화면을 지날 때마다 뜨고, 사람은 탭을 누르거나 스크롤하면 바로 접힌다. 이 검사는 setView로
+      // 탭을 바꿔 그 누르기가 없으므로, 뜬 말풍선을 × 로 접은 뒤 잰다(말풍선 자체는 verification/2026-11-03-meongi-hello/check.mjs가 본다).
+      await until("!document.documentElement.classList.contains('gate-on')",5000);
+      await until("!document.querySelector('.bbc-hint')?.hidden",3000).catch(()=>{});
+      await evaluate("document.querySelector('.bbc-hint:not([hidden]) .bbc-hint-x')?.click();1");
     }
     // explore: first listed species, detail folds open
     await evaluate(`(async()=>{setView('explore');await new Promise(r=>setTimeout(r,500));document.querySelector('[data-species]')?.click();await new Promise(r=>setTimeout(r,900));

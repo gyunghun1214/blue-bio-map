@@ -407,7 +407,11 @@ function chatbotPanelPlace(fab,panel,view,margin=CHATBOT_DRAG.margin,gap=CHATBOT
 
 if(typeof document!=='undefined')(function(){
   const store={get(k){try{return localStorage.getItem(k);}catch{return null;}},set(k,v){try{localStorage.setItem(k,v);}catch{}}};
-  const HINT_KEY='bbChatHintSeen';
+  // 첫 인사 말풍선(2026-11-03, LKH: 첫 화면에서 지도로 넘어온 사람이 멍이를 한 번 눌러 보게): 같은 탭에서 한 번(sessionStorage).
+  // 예전에는 이 기기에서 평생 한 번(localStorage bbChatHintSeen)이라 한 번 본 PC에서는 다시 뜨지 않았다. 그 값은 지운다.
+  const HELLO_KEY='bbMeongiHello';
+  const sess={get(k){try{return sessionStorage.getItem(k);}catch{return null;}},set(k,v){try{sessionStorage.setItem(k,v);}catch{}}};
+  try{localStorage.removeItem('bbChatHintSeen');}catch{}
   const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=()=>matchMedia('(max-width: 767.98px)').matches;
   const visible=el=>!!el&&el.getClientRects().length>0;
@@ -432,7 +436,7 @@ if(typeof document!=='undefined')(function(){
   }
 
   const root=document.createElement('div');root.className='bbc';
-  root.innerHTML='<div class="bbc-hint" hidden><span><span class="bbc-hint-lead">처음이세요? </span>멍이가 사용법을 알려드릴게요</span><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
+  root.innerHTML='<div class="bbc-hint" hidden><div class="bbc-hint-body"><strong class="bbc-hint-title">안녕하세요, 멍이예요!</strong><span class="bbc-hint-text">지도 보는 법이나 점수 뜻이 궁금하면 물어보세요.</span><span class="bbc-hint-chips"></span></div><button type="button" class="bbc-hint-x" aria-label="안내 닫기">×</button></div>'+
     '<section class="bbc-panel" id="bbc-panel" role="dialog" aria-modal="false" aria-labelledby="bbc-title" hidden>'+
     '<header class="bbc-head"><span class="bbc-avatar"></span><div class="bbc-titles"><strong id="bbc-title">사용법 안내 도우미</strong><small aria-hidden="true">안내 캐릭터 멍이</small></div>'+
     '<button type="button" class="bbc-reset" hidden>멍이 원래 자리로</button><button type="button" class="bbc-close" aria-label="사용법 안내 닫기">×</button></header>'+
@@ -559,22 +563,35 @@ if(typeof document!=='undefined')(function(){
     // 휴대폰(767px 이하)에서는 대화창이 화면 아래 시트라 지도 컨트롤 위에 겹쳐도 되므로 줄이지 않는다(2026-10-18, LKH: 시트가 손가락 두 마디로 줄던 원인).
     if(top>p.top&&!mobile())panel.style.maxHeight=Math.max(260,p.bottom-top)+'px';
   }
-  function dismissHint(){if(!hint.hidden){hint.hidden=true;store.set(HINT_KEY,'1');}clearTimeout(hintTimer);}
-  // 처음 안내 말풍선(2026-10-18, LKH): 첫 화면(지구본)이 닫혀 지도가 보인 뒤 HINT_MS 동안만 보이고 스스로 접힌다. 그 전에 화면을 스크롤하거나
-  // 멍이 밖을 누르면 바로 접힌다. 한 번 접히면 다시 보이지 않는다(HINT_KEY). 멍이 버튼은 그대로 남는다.
-  const HINT_MS=7000;let hintTimer=0;
+  function dismissHint(){if(!hint.hidden)hint.hidden=true;root.classList.remove('bbc-call');clearTimeout(hintTimer);document.removeEventListener('pointerdown',outside);}
+  // 첫 인사 말풍선(2026-10-18, 2026-11-03 키움): 첫 화면(지구본)이 닫혀 지도가 보일 때마다, 첫 화면 없이 열린 탭이면 그 탭에서 한 번 뜬다.
+  // 멍이가 한 번 깡충 뛰고 둘레에 빛 고리(.bbc-call, meongi.css)가 돈다. 질문 단추 두 개(CHATBOT_STARTERS의 overview·indices)를 누르면
+  // 대화창이 열리며 바로 그 답을 한다. HINT_MS 뒤 스스로 접히고(말풍선 위에 마우스·포커스가 있으면 기다림), 그 전에 화면을 스크롤하거나
+  // 멍이 밖을 누르면 바로 접힌다. 멍이 버튼은 그대로 남는다.
+  const HINT_MS=10000;let hintTimer=0;
+  const HELLO_ASK=['overview','indices'];
+  {const box=hint.querySelector('.bbc-hint-chips');
+    for(const [id,label] of CHATBOT_STARTERS.filter(x=>HELLO_ASK.includes(x[0]))){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.faq=id;box.append(b);}
+    box.addEventListener('click',e=>{const b=e.target.closest('button[data-faq]');if(!b)return;dismissHint();if(panel.hidden)open();ask(b.textContent,b.dataset.faq);});
+    const wait=()=>{clearTimeout(hintTimer);},resume=()=>{if(hint.hidden||hint.matches(':hover')||hint.contains(document.activeElement))return;clearTimeout(hintTimer);hintTimer=setTimeout(dismissHint,4000);};
+    hint.addEventListener('pointerenter',wait);hint.addEventListener('focusin',wait);
+    hint.addEventListener('pointerleave',resume);hint.addEventListener('focusout',()=>setTimeout(resume,0));}
   function showHint(){
+    sess.set(HELLO_KEY,'1');
     hint.hidden=false;place();
-    hintTimer=setTimeout(dismissHint,HINT_MS);
+    root.classList.toggle('bbc-still',still());root.classList.add('bbc-call');if(!still())mascotOnce(fab.firstElementChild,'bbc-m-hop',720);
+    clearTimeout(hintTimer);hintTimer=setTimeout(dismissHint,HINT_MS);
     const once={once:true,passive:true};
     addEventListener('scroll',dismissHint,once);
     // 종 카드 줄(#species-list)을 옆으로 넘겨도 바로 접는다(2026-10-25: 휴대폰에서 말풍선이 카드 줄 위에 뜬다). 카드 누르기는 아래 pointerdown이 접는다.
     document.addEventListener('scroll',e=>{if(e.target.id==='species-list')dismissHint();},{capture:true,passive:true});
-    document.addEventListener('pointerdown',e=>{if(!root.contains(e.target))dismissHint();},once);
+    document.addEventListener('pointerdown',outside,{passive:true});
   }
+  // 말풍선 안(질문 단추·×)을 누른 것은 세지 않고, 멍이 밖을 처음 누를 때 접는다.
+  function outside(e){if(!root.contains(e.target)){document.removeEventListener('pointerdown',outside);dismissHint();}}
   function hintWhenGateGone(){
     const html=document.documentElement;
-    if(!html.classList.contains('gate-on'))return showHint();
+    if(!html.classList.contains('gate-on')){if(!sess.get(HELLO_KEY))showHint();return;}
     const mo=new MutationObserver(()=>{if(!html.classList.contains('gate-on')){mo.disconnect();showHint();}});
     mo.observe(html,{attributes:true,attributeFilter:['class']});
   }
@@ -858,6 +875,6 @@ if(typeof document!=='undefined')(function(){
   const tray=document.getElementById('cmp-tray');
   if(tray&&typeof ResizeObserver==='function')new ResizeObserver(()=>requestAnimationFrame(place)).observe(tray);
   addEventListener('load',()=>setTimeout(place,300));
-  if(!store.get(HINT_KEY))hintWhenGateGone();
+  hintWhenGateGone();
   place();
 })();
