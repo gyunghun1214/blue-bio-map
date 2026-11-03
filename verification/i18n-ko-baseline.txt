@@ -11529,8 +11529,10 @@ Pretendard
 Cloudflare Web Analytics
 ).
 ### chatbot
-처음이세요?
-멍이가 사용법을 알려드릴게요
+안녕하세요, 멍이예요!
+지도 보는 법이나 점수 뜻이 궁금하면 물어보세요.
+이 지도는 뭘 보여주나요?
+BBVI·MCUI가 뭔가요?
 @aria-label=안내 닫기
 ×
 사용법 안내 도우미

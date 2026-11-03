@@ -134,7 +134,6 @@
   .bbc-input{font-size:16px}
   .bbc-fab[aria-expanded="true"]{display:none} /* 시트의 닫기 버튼과 Esc로 닫는다; 버튼이 입력창을 가리지 않게 */
 }
-@media (max-width:400px){.bbc-hint-lead{display:none}}
 /* 2026-10-25 휴대폰(740px 이하, 아래 탭바가 있는 폭): 멍이 버튼이 내용을 가리지 않게. 741px 이상은 그대로.
    - (2026-10-26) 스크롤 동안 가장자리로 접던 .bbc-tucked는 meongi.css의 '흐려지기'(.bbc-fab.is-scrolling)로 바뀌었다.
    - 맨 아래까지 내리면 마지막 줄이 버튼 위에서 끝나게 body 아래 여백에 버튼 높이(48px)와 띄움(16px)을 더한다(theme.css의 줄은 그대로).

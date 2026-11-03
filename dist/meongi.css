@@ -40,3 +40,24 @@
 /* 2026-10-29 휴대폰 다시 점검 6: 손가락 기기에서 스크롤이 멈추면 멍이 밑에 단추·링크가 있는지 보고, 있으면 위로 비켜 앉는다
    (mobile-compact.js가 .bbc에 --bbc-dodge를 준다). transform(흐려질 때 0.85배)과 따로 움직이도록 translate를 쓴다. */
 .bbc-fab{translate:0 var(--bbc-dodge,0px)}
+/* 2026-11-03 (LKH: 첫 화면에서 지도로 넘어온 사람이 멍이를 눌러 보게) 첫 인사 말풍선을 키우고 질문 단추 두 개를 둔다.
+   말풍선이 떠 있는 동안 멍이 둘레에 빛 고리(.bbc-call). 움직임 줄이기(.bbc-still·시스템 설정)면 고리는 멈춘 채로 보인다. */
+.bbc-hint{align-items:flex-start;gap:4px;width:max-content;max-width:min(300px,calc(100vw - var(--bbc-right) - 82px));padding:12px 6px 12px 14px;border:2px solid var(--teal-fill);border-radius:14px;font-size:14px;line-height:1.45}
+.bbc-hint-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.bbc-hint-title{font-size:16px;font-weight:700;color:var(--ink)}
+.bbc-hint-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.bbc-hint-chips button{padding:6px 11px;border:1px solid var(--teal-fill);border-radius:999px;background:var(--teal-soft);color:var(--teal-ink);font:inherit;font-size:13px;font-weight:600;line-height:1.3;text-align:left;cursor:pointer}
+.bbc-hint-chips button:hover{background:#d2eeea}
+.bbc-hint-x{flex:none;margin-top:-6px}
+.bbc-call .bbc-fab{box-shadow:0 0 0 3px var(--teal-fill),var(--shadow)}
+@media (prefers-reduced-motion:no-preference){
+  .bbc-call:not(.bbc-still) .bbc-fab{animation:bbc-call 1.6s ease-out infinite}
+}
+@keyframes bbc-call{0%{box-shadow:0 0 0 3px var(--teal-fill),0 0 0 3px rgba(18,163,154,.8),var(--shadow)}70%{box-shadow:0 0 0 3px var(--teal-fill),0 0 0 18px rgba(18,163,154,0),var(--shadow)}100%{box-shadow:0 0 0 3px var(--teal-fill),0 0 0 3px rgba(18,163,154,0),var(--shadow)}}
+@media (max-width:740px){
+  .bbc:not(.bbc-moved) .bbc-hint{max-width:calc(100vw - 32px)}
+}
+/* 3열 탐색 지도(theme.css: 멍이 바로 위, 230px)는 질문 단추가 한 줄씩 들어가게 조금 넓힌다 */
+@media (min-width:1180px){
+  body:has(#explore.active) .bbc:not(.bbc-moved) .bbc-hint{max-width:270px}
+}
