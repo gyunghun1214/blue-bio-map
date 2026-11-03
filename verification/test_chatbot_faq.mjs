@@ -46,7 +46,13 @@ assert.deepEqual([...js.matchAll(/fetch\(([^,)]+)/g)].map(m=>m[1]),["'api/ask'",
 // 2026-11-03: 칩(id)은 그 답 → 입력은 종 값 질문 → 예시와 거의 같은 질문만 정해진 답 → AI → (AI 없음·실패) 키워드로 찾은 답 → 탭 안내
 assert.ok(js.includes('if(id){const f=byId(id);if(f)answer(f);else unknown();return;}'),'칩(id)은 AI로 가지 않음');
 assert.ok(/if\(sq\)return speciesAnswer\(sq\);\s*const sure=chatbotSure\(text\);\s*if\(sure\)return answer\(sure\);\s*if\(await askAi\(text\)\)return;\s*const f=chatbotMatch\(text\);\s*if\(f\)answer\(f\);else unknown\(\);/.test(js),'종 값 → 거의 같은 질문 → AI → 키워드 답 → 탭 안내');
-assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\|\|!\(await aiReady\)\)return false;/.test(js),'오프라인 시연·AI 없음이면 AI에 묻지 않음');
+// 2026-11-03 코드 점검: 처음 확인을 시간 초과·연결 오류로 못 받았으면('unknown') 질문할 때 한 번 더 묻고, 서버가 못 쓴다고 했으면('off') 다시 묻지 않는다
+assert.ok(/async function askAi\(text\)\{\s*if\(globalThis\.BBVM_OFFLINE===true\)return false;\s*if\(!\(await aiReady\)\)\{\s*if\(aiState!=='unknown'\)return false;\s*setBusy\(true\);const on=await checkAi\(\);setBusy\(false\);\s*if\(!on\)return false;\s*\}/.test(js),'오프라인 시연·AI 없음이면 AI에 묻지 않고, 확인을 못 받았으면 한 번 더 확인');
+assert.ok(/\.then\(j=>\{aiState=j\?\.ai===true\?'on':'off';return aiState==='on';\},\(\)=>\{aiState='unknown';return false;\}\)/.test(js),'GET 답은 on/off, 시간 초과·연결 오류는 unknown');
+// AI 답을 기다리는 동안은 새 질문·칩을 받지 않고(입력칸 글은 남김), 답이 오거나 실패하면 다시 받는다
+assert.ok(/async function ask\(text,id\)\{\s*if\(busy\)return;/.test(js)&&/if\(!t\|\|busy\)return;input\.value='';ask\(t\);/.test(js),'기다리는 동안 새 질문을 받지 않음');
+assert.ok(/let reply=null;setBusy\(true\);/.test(js)&&/\}catch\{\}\s*setBusy\(false\);\s*wait\.closest/.test(js),'답이 오거나 실패하면 다시 받음');
+assert.ok(/add\('bbc-user',text\)\.dataset\.i18nKeep='';/.test(js),'사람이 적은 글에는 번역·KO 표시 없음');
 assert.ok(js.includes("if(typeof reply!=='string'||!reply.trim())return false;"),'AI 실패·답 없음이면 정해진 답·안내로');
 assert.ok(js.includes("history:talk.slice(0,-1),facts:chatbotFactLines()"),'AI에 앞 대화와 종 값을 함께 보냄');
 assert.ok(js.includes('<strong id="bbc-title">사용법 안내 도우미</strong>'),'이름');

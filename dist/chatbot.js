@@ -1,6 +1,6 @@
 'use strict';
 // 사용법 안내 도우미(안내 캐릭터 멍이). 질문을 먼저 아래 FAQ에서 키워드·예시 질문으로 찾아 정해진 답을 한다.
-// 2026-10-29: FAQ가 못 찾은 질문만 /api/ask(worker/index.mjs, 2026-11-02부터 Claude Opus 5.5)에 보내 화면 글과 FAQ만 근거로 짧게 답한다('AI 답변' 표시).
+// 2026-10-29: FAQ가 못 찾은 질문만 /api/ask(worker/index.mjs, 2026-11-02부터 Claude Opus 5.5)에 보내 화면 글과 FAQ만 근거로 짧게 답한다(AI 답 아래 표시는 2026-11-03에 지웠다).
 // 종의 점수·근거 같은 값은 AI가 말하지 않고 FAQ 자리표시(chatbotFact)로만 나온다. AI를 쓸 수 없으면(키 없음·정적 서버·오프라인 시연·오류·
 // 한도 초과·답 검사 탈락) '아래 탭에서 직접 찾아보거나…' 안내와 세 탭 바로가기를 보인다.
 // 답변 속 {tab:id}·{type:사분면 키}·{plain:사분면 키}·{rule}은 화면에 보일 때 앱의 실제 글자와 기준값으로 바꾼다(하드코딩 금지).
@@ -613,16 +613,23 @@ if(typeof document!=='undefined')(function(){
   // 입력창 위 회색 안내 줄은 2026-11-03 LKH 결정으로 지웠다. AI를 쓸 수 있으면 첫 인사가 AI 안내 문구로 바뀐다(AI 답 아래 'AI 답변' 표시는 2026-11-03 LKH 결정으로 지웠다).
   // 오프라인 시연(live-data.js)에서는 묻지 않는다. 정적 서버(404)·오류·시간 초과면 정해진 답만.
   const WELCOME='안녕하세요! 사용법 안내 도우미 멍이예요. 미리 준비한 답으로 이 지도 사용법을 알려드릴게요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.';
-  let aiReady=Promise.resolve(false);
+  // aiState: 'on'(쓸 수 있음) · 'off'(서버가 못 쓴다고 함: 키 없음·정적 서버 404) · 'unknown'(시간 초과·연결 오류로 답을 못 받음).
+  // 2026-11-03 코드 점검: 처음 연 순간 와이파이가 느려 4초 안에 못 받으면('unknown') 질문을 보낼 때 한 번 더 묻는다. 'off'는 다시 묻지 않는다.
+  let aiReady=Promise.resolve(false),aiState='unknown';
   function checkAi(){
     // 2026-10-29 PC 다시 점검 L5: AI를 쓸 수 있으면 첫 인사도 '미리 준비한 답으로'만이 아니라고 바꾼다
     const note=on=>{
       const w=log.querySelector('[data-welcome]');
       if(w)w.textContent=on?'안녕하세요! 사용법 안내 도우미 멍이예요. 준비한 답으로 이 지도 사용법을 알려드리고, 준비된 답이 없으면 AI(Claude)가 사이트 글로 답해요. 아래에서 고르거나 궁금한 점을 직접 적어 보세요.':WELCOME;};
-    if(globalThis.BBVM_OFFLINE===true){aiReady=Promise.resolve(false);note(false);return;}
-    aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null).then(j=>j?.ai===true).catch(()=>false);
+    if(globalThis.BBVM_OFFLINE===true){aiState='off';aiReady=Promise.resolve(false);note(false);return aiReady;}
+    aiReady=fetch('api/ask',{signal:AbortSignal.timeout(4000)}).then(r=>r.ok?r.json():null)
+      .then(j=>{aiState=j?.ai===true?'on':'off';return aiState==='on';},()=>{aiState='unknown';return false;});
     aiReady.then(note);
+    return aiReady;
   }
+  // AI 답을 기다리는 동안(최대 30초)은 새 질문·질문 칩을 받지 않는다(질문 둘이 먼저 뜨고 답 둘이 뒤에 붙지 않게). 적던 글은 입력칸에 남는다.
+  let busy=false;
+  const setBusy=on=>{busy=on;log.setAttribute('aria-busy',String(on));const b=root.querySelector('.bbc-form button[type="submit"]');if(b)b.disabled=on;};
   // AI 답을 기다리는 동안 대기 말풍선 글자 아래에 붙는 해변 파도(2026-11-03, LKH 결정). 위는 바다, 아래는 모래사장이고
   // 물(.bbc-wave-wash)이 모래 위로 밀려왔다 빠지며 파도 3겹이 다른 속도로 흐른다. 움직임은 chatbot.css에만 있고, 읽히는 건 글자뿐이다.
   // 파도 줄은 주기 60(가로 -60~300)이라 CSS가 -60만큼 옮겨도 이음매가 없다. preserveAspectRatio none으로 말풍선 폭에 맞춘다.
@@ -633,13 +640,19 @@ if(typeof document!=='undefined')(function(){
     `<path class="bbc-wave-deep" d="${wave(5,1.8)}V0H-60Z"/><path class="bbc-wave-crest" d="${wave(9,1.5)}"/></svg>`;
   // 정해진 답과 거의 같은 질문이 아니면 AI에 묻는다(앞 대화와 종 값을 함께). 답을 받으면 true, 못 받으면 false(ask가 정해진 답이나 안내로).
   async function askAi(text){
-    if(globalThis.BBVM_OFFLINE===true||!(await aiReady))return false;
+    if(globalThis.BBVM_OFFLINE===true)return false;
+    if(!(await aiReady)){
+      if(aiState!=='unknown')return false;
+      setBusy(true);const on=await checkAi();setBusy(false);
+      if(!on)return false;
+    }
     const wait=add('bbc-bot bbc-wait',chatbotT('멍이가 사이트 글에서 답을 찾는 중이에요…'),'think');wait.insertAdjacentHTML('beforeend',WAVE);log.scrollTop=log.scrollHeight;
-    let reply=null;
+    let reply=null;setBusy(true);
     try{
       const r=await fetch('api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,lang:chatbotEn()?'en':'ko',history:talk.slice(0,-1),facts:chatbotFactLines()}),signal:AbortSignal.timeout(30000)});
       if(r.ok)reply=(await r.json())?.answer;
     }catch{}
+    setBusy(false);
     wait.closest('.bbc-row')?.remove();
     if(typeof reply!=='string'||!reply.trim())return false;
     add('bbc-bot bbc-ai',reply.trim(),'ai');remember('assistant',reply.trim());
@@ -671,7 +684,9 @@ if(typeof document!=='undefined')(function(){
   // 순서(2026-11-03): 칩 → 그 답. 입력은 ① 종 값 질문이면 그 종의 값 ② 예시 질문과 거의 같으면 정해진 답 ③ AI(앞 대화·종 값과 함께)
   // ④ AI를 쓸 수 없거나 답을 못 받으면 예전처럼 키워드로 찾은 정해진 답, 그것도 없으면 탭 안내.
   async function ask(text,id){
-    add('bbc-user',text);remember('user',text);
+    if(busy)return;
+    // 영어 화면에서 사람이 적은 한국어에는 사전 번역·KO 표시를 붙이지 않는다(data-i18n-keep)
+    add('bbc-user',text).dataset.i18nKeep='';remember('user',text);
     if(id){const f=byId(id);if(f)answer(f);else unknown();return;}
     const sq=chatbotSpeciesQuestion(text,focus),named=chatbotFindSpecies(text),keys=CHATBOT_METRICS.filter(m=>m.k.some(w=>chatbotPlainText(text).includes(w))).map(m=>m.key);
     if(sq){focus.s=sq.s;if(sq.keys.length)focus.keys=sq.keys;}else{if(named.length===1)focus.s=named[0].s;if(keys.length)focus.keys=keys;}
@@ -829,7 +844,7 @@ if(typeof document!=='undefined')(function(){
   root.querySelector('.bbc-close').addEventListener('click',close);
   root.querySelector('.bbc-hint-x').addEventListener('click',dismissHint);
   panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}});
-  root.querySelector('.bbc-form').addEventListener('submit',e=>{e.preventDefault();const t=input.value.trim();if(!t)return;input.value='';ask(t);});
+  root.querySelector('.bbc-form').addEventListener('submit',e=>{e.preventDefault();const t=input.value.trim();if(!t||busy)return;input.value='';ask(t);});
   log.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
     if(b.dataset.show){mood('point',true);show(byId(b.dataset.show));}
